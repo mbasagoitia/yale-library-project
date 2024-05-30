@@ -1,70 +1,65 @@
-# Getting Started with Create React App
+# Yale Ensembles Library Project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a project aimed at organizing the Yale Ensembles Library's (starting with the Yale Philharmonia) holdings collection using the Dickinson Classification system, a system used by the performance libraries of institutions such as Vassar College and Columbia University, and building a counting and searching mechanism that allows materials to easily be tracked and found within the library. The Dickinson Classification system is a flexible, scalable, and organized system that uses ten major divisions for musical materials, further organized by composer (each of which is assigned a unique cutter number), work, and publisher/edition.
 
-## Available Scripts
 
-In the project directory, you can run:
+## Classification Scheme Overview
 
-### `npm start`
+Described by Carol June Bradley in The Dickinson Classification for Music (read more here: https://www.jstor.org/stable/23505207), the classification scheme is as follows:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+The first line is the division number; this expresses the original medium of the work.
+The second line consists of the composer's Cutter number.
+The third line describes the piece in hand: a species title indication, such as ov for overture; the first letter of the title, if distinctive; an opus or thematic catalogue number.
+The fourth line is the first letter of the editor's or publisher's name, whichever is more appropriate to accurate description of the volumne in hand.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+For example:
 
-### `npm test`
+61 Orchestra, full
+B73 Brahms
+ov species title indication: edition of Brahms' concert overtures
+C Cranz edition
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+A more comprehensive overview of the ten genres covered by the Dickinson Classification system can be found here: https://library.vassar.edu/musiclibrary/home/musical-score-call-numbers
 
-### `npm run build`
+## Part One: Accession/Call Number Assigning System
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+An initial inventory of the performance library will be taken, and each set of music parts and its corresponding score, if present, will be assigned two values:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- A unique accession number, which serves as a chronological record of acquisitions. New pieces that we purchase throughout the year will be added to the end of the existing list, which is created through an initial inventory.
+- A (not necessarily unique) call number*, which is determined based on the guidelines outlined by the Dickinson Classification system.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Pieces will be logically organized in the physical library by call number.
 
-### `npm run eject`
+When adding a new piece to the library, both the accession number and the call number will be dynamically assigned based upon a series of user inputs (genre, composer, species title, edition/publisher). Composer cutter numbers will be assigned based on Yale University's composer cutter number list, accessible here: https://web.library.yale.edu/cataloging/music/cuttera
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Automatically assigning a meaningful call number through a user-friendly interface avoids the complicated process of manually assigning each number, and it quickly informs the librarian of the appropriate section that the new piece should be placed. While a small library may see minimal benefit from this system, there is good potential of scalability as the library grows.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+*The call number may not necessarily be unique because we may own several pieces of the same genre by the same composer, having the same edition/publisher (i.e. Brahms Symphony no. 1 and Brahms Symphony no. 2, both Barentreiter editions, or Mozart Cosi Fan Tutte and The Marriage of Figaro). In these cases, enough information is present to sufficiently organize the materials to a high degree, and the librarian can simply order by number, alphabetically, or in some other logical way beyond that, if desired.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Part Two: Automatic Cataloguing System
 
-## Learn More
+In order to keep track of music that goes in and out of the library, special attention will be kept of the number of existing materials in each section, and will therefore be organized into logical subsections and automatically counted. For example, the database will keep track of the total number of Beethoven's works in our library, and further, the number of Beethoven symphonies that we own, the number of Beethoven overtures that we own, etc.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Example:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Orchestral Music (500)
+    - Beethoven (11)
+        - Overtures (2)
+        - Symphonies (9)
+    - Mozart (45)
+        - Symphonies (35)
+        - Operas (4)
+        - Chamber Music (6)
+            - String quartets (3)
+            - Woodwind quintets (3)
 
-### Code Splitting
+When a new piece is added to a specific section, all relevant numbers will automatically update to reflect that. It is not necessary to keep track of this information in the physical library, as it doesn't contribute to the organizational scheme. However, since pieces with similar call numbers will be closely-grouped, it will be convenient for the librarian to periodically check that the number of expected materials in each subsection matches what is actually present, reducing the risk of lost or missing materials.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Part Three: Searching System
 
-### Analyzing the Bundle Size
+When we need to pull parts and scores from our collection, each piece and its relevant information (call number, location, form (digital/physical), condition, in/out status, etc.) should be easily and quickly accessible by a few keywords. I intend to implement a system that allows librarians to search our entire collection within seconds, finding the necessary materials easily. A series of filters and keyword searches will be available to the user.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Physical Parts vs Digital Scans
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Currently, the Philharmonia holdings exist in two locations: as digital scans saved on the computer, and as physical parts on the shelves. Some exist in both forms, and others in only one. A thorough inventory will also be conducted of the digital holdings (scans), and the database will store information about what form the materials are available in (digital, physical, or both). The digital holdings will be organized in a logical manner on the computer, similar to the physical shelves. The existing file names may be changed for the purposes of clarity and searchability.
