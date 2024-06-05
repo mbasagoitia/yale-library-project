@@ -15,18 +15,18 @@ const publishers = [
       label: "Academic and Specialist",
       options: [
         { value: 8, abbr: "oup", label: "Oxford University Press" },
-        { value: 9, abbr: "cuf", label: "Cambridge University Press" },
+        { value: 9, abbr: "cup", label: "Cambridge University Press" },
         { value: 10, abbr: "wbs", label: "Warner Bros. Publications" },
-        { value: 11, abbr: "bbr", label: "Breitkopf & Härtel" }
+        { value: 11, abbr: "bkh", label: "Breitkopf & Härtel" }
       ]
     },
     {
       label: "Independent Publishers",
       options: [
-        { value: 12, abbr: "kmr", label: "Kalmus" },
+        { value: 12, abbr: "kal", label: "Kalmus" },
         { value: 13, abbr: "lan", label: "LudwigMasters" },
         { value: 14, abbr: "emi", label: "EMI Music Publishing" },
-        { value: 15, abbr: "cpy", label: "Carl Fischer" },
+        { value: 15, abbr: "cfs", label: "Carl Fischer" },
         { value: 16, abbr: "luc", label: "Lucks Music Library" }
       ]
     },
@@ -34,7 +34,7 @@ const publishers = [
       label: "Historical and Early Music",
       options: [
         { value: 17, abbr: "hen", label: "Henle" },
-        { value: 18, abbr: "dob", label: "Dover Publications" },
+        { value: 18, abbr: "dov", label: "Dover Publications" },
         { value: 19, abbr: "ksc", label: "Kalmus Classical" }
       ]
     }

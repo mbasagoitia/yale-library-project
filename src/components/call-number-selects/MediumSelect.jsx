@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-function MediumDropdown({ items }) {
+function MediumSelect({ items, setMediumType }) {
   const [selectedItem, setSelectedItem] = useState(null);
 
   useEffect(() => {
@@ -13,12 +13,14 @@ function MediumDropdown({ items }) {
   }, [items]);
 
   const handleSelect = (item) => {
+    // Is this redundant?
     setSelectedItem(item);
+    setMediumType(item);
   };
 
   return (
     <div>
-      <select onChange={(e) => handleSelect(items[e.target.value])}>
+      <select onChange={(e) => handleSelect(items[e.target.value])} required>
         {items.map((item, index) => (
           <option key={index} value={index}>
             {item.label}
@@ -27,10 +29,10 @@ function MediumDropdown({ items }) {
       </select>
 
       {selectedItem && selectedItem.options && (
-        <GenreDropdown items={selectedItem.options} />
+        <MediumSelect items={selectedItem.options} setMediumType={setMediumType} />
       )}
     </div>
   );
 }
 
-export default MediumDropdown;
+export default MediumSelect;

@@ -36,3 +36,30 @@
     transform: rotate(360deg);
   }
 }
+
+.searchableList {
+  position: relative;
+}
+
+.custom-dropdown-menu {
+  max-height: 20vh; /* 20% of the viewport height */
+  overflow-y: auto; /* Enable vertical scrolling */
+  position: absolute;
+  width: 100%;
+  top: 100%; /* Position it right below the search bar */
+  left: 0;
+  z-index: 1000; /* Ensure it appears above other elements */
+  background-color: white; /* Ensure it has a background */
+  border: 1px solid rgba(0, 0, 0, 0.15); /* Border for better visibility */
+}
+
+.custom-dropdown-menu .dropdown-item {
+  white-space: nowrap; /* Prevent text from wrapping */
+}
+
+.custom-dropdown-menu .dropdown-header {
+  background-color: #f8f9fa; /* Light background for headers */
+  padding: 0.5rem 1rem; /* Padding for better spacing */
+  font-weight: bold; /* Bold text for headers */
+}
+
