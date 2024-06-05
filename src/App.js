@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import GenreDropdown from './classifications/components/GenreDropdown';
-import topLevel from './classifications/topLevel';
+import MediumDropdown from './classifications/components/MediumDropdown';
+import medium from './classifications/medium';
 
 function App() {
 
   useEffect(() => {
     // Reset nested dropdowns whenever the first level menu changes
-  }, [topLevel]);
+  }, [medium]);
 
   return (
     <div className="App">
       <h2>Select Genre</h2>
-      <GenreDropdown items={topLevel} />
+      <MediumDropdown items={medium} />
     </div>
   );
 }

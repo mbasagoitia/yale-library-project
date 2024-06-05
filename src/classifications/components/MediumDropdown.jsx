@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-function GenreDropdown({ items }) {
+function MediumDropdown({ items }) {
   const [selectedItem, setSelectedItem] = useState(null);
 
   useEffect(() => {
@@ -33,4 +33,4 @@ function GenreDropdown({ items }) {
   );
 }
 
-export default GenreDropdown;
+export default MediumDropdown;
