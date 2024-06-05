@@ -1,117 +1,119 @@
 const topLevel = [
   {
     label: "0 - Miscellaneous",
-    options: {
-      "00": "Miscellaneous collections, instrumental and vocal, several composers",
-      "01": "Monuments, historical sets",
-      "04": "Facsimiles",
-      "05": "Collected works of one composer"
-    }
+    options: [
+      { value: "00", label: "Miscellaneous collections, instrumental and vocal, several composers" },
+      { value: "01", label: "Monuments, historical sets" },
+      { value: "04", label: "Facsimiles" },
+      { value: "05", label: "Collected works of one composer" }
+    ]
   },
   {
     label: "1 - Keyboard Instruments",
-    options: {
-      "11": "Piano, harpsichord, clavichord, virginal, etc. (not organ)",
-      "12": "Piano ensemble",
-      "15": "Organ and harmonium",
-      "16": "Organ ensemble"
-    }
+    options: [
+      { value: "11", label: "Piano, harpsichord, clavichord, virginal, etc. (not organ)" },
+      { value: "12", label: "Piano ensemble" },
+      { value: "15", label: "Organ and harmonium" },
+      { value: "16", label: "Organ ensemble" }
+    ]
   },
   {
     label: "2 - Bowed String Instruments",
-    options: {
-      "21": "Violin and piano",
-      "22": "Viola and piano",
-      "23": "Cello and piano",
-      "24": "Double bass and piano"
-    }
+    options: [
+      { value: "21", label: "Violin and piano" },
+      { value: "22", label: "Viola and piano" },
+      { value: "23", label: "Cello and piano" },
+      { value: "24", label: "Double bass and piano" }
+    ]
   },
   {
     label: "3 - Wind Instruments",
-    options: {
-      "31": "Flute (piccolo, recorder) and piano",
-      "32": "Oboe (English horn) and piano",
-      "33": "Clarinet and piano",
-      "34": "Bassoon and piano"
-    }
+    options: [
+      { value: "31", label: "Flute (piccolo, recorder) and piano" },
+      { value: "32", label: "Oboe (English horn) and piano" },
+      { value: "33", label: "Clarinet and piano" },
+      { value: "34", label: "Bassoon and piano" }
+    ]
   },
   {
     label: "4 - Plectral, Percussion, and Electric Instruments",
-    options: {
-      "41": "Harp alone",
-      "43": "Guitar",
-      "44": "Banjo",
-      "46": "Percussion instruments"
-    }
+    options: [
+      { value: "41", label: "Harp alone" },
+      { value: "43", label: "Guitar" },
+      { value: "44", label: "Banjo" },
+      { value: "46", label: "Percussion instruments" }
+    ]
   },
   {
     label: "5 - Chamber Ensembles",
-    options: {
-      "51": "Keyboard, bowed string, wind, percussion (any combination)",
-      "52": "Bowed string",
-      "53": "Wind",
-      "54": "Plectral string with percussion"
-    }
+    options: [
+      { value: "51", label: "Keyboard, bowed string, wind, percussion (any combination)" },
+      { value: "52", label: "Bowed string" },
+      { value: "53", label: "Wind" },
+      { value: "54", label: "Plectral string with percussion" }
+    ]
   },
   {
     label: "6 - Orchestral Ensemble",
-    options: {
-      "61": "Full orchestra",
-      "62": "String orchestra",
-      "63": "Band or wind orchestra",
-      "65": "Chamber orchestra",
-      "66 - Soloist with Orchestra": {
-        "661": "Piano with orchestra",
-        "6615": "Organ with orchestra",
-        "662": "Violin with orchestra",
-        "6622": "Viola with orchestra",
-        "6623": "Cello with orchestra",
-        "6631": "Flute with orchestra",
-        "6632": "Oboe with orchestra",
-        "6633": "Clarinet with orchestra",
-        "6634": "Bassoon with orchestra",
-        "6635": "Horn with orchestra",
-        "6636": "Trumpet with orchestra",
-        "6637": "Trombone with orchestra",
-        "66382": "Tuba with orchestra",
-        "66384": "Saxophone with orchestra",
-        "664": "Harp with orchestra",
-        "6643": "Guitar with orchestra",
-        "6646": "Percussion with orchestra",
-        "665": "Concerti grossi",
-        "666": "Double, triple, etc. concerti with dissimilar soloists",
-        "667": "Vocal soloist with orchestra"
+    options: [
+      { value: "61", label: "Full orchestra" },
+      { value: "62", label: "String orchestra" },
+      { value: "63", label: "Band or wind orchestra" },
+      { value: "65", label: "Chamber orchestra" },
+      { value: "66", label: "Soloist with Orchestra",
+        options: [
+          { value: "661", label: "Piano with orchestra" },
+          { value: "6615", label: "Organ with orchestra" },
+          { value: "662", label: "Violin with orchestra" },
+          { value: "6622", label: "Viola with orchestra" },
+          { value: "6623", label: "Cello with orchestra" },
+          { value: "6631", label: "Flute with orchestra" },
+          { value: "6632", label: "Oboe with orchestra" },
+          { value: "6633", label: "Clarinet with orchestra" },
+          { value: "6634", label: "Bassoon with orchestra" },
+          { value: "6635", label: "Horn with orchestra" },
+          { value: "6636", label: "Trumpet with orchestra" },
+          { value: "6637", label: "Trombone with orchestra" },
+          { value: "66382", label: "Tuba with orchestra" },
+          { value: "66384", label: "Saxophone with orchestra" },
+          { value: "664", label: "Harp with orchestra" },
+          { value: "6643", label: "Guitar with orchestra" },
+          { value: "6646", label: "Percussion with orchestra" },
+          { value: "665", label: "Concerti grossi" },
+          { value: "666", label: "Double, triple, etc. concerti with dissimilar soloists" },
+          { value: "667", label: "Vocal soloist with orchestra" }
+        ]
       },
-      "67": "Special orchestral ensembles",
-      "68": "Combinations with incidental chorus, with or without vocal soli"
-    }
+      { value: "67", label: "Special orchestral ensembles" },
+      { value: "68", label: "Combinations with incidental chorus, with or without vocal soli" }
+    ]
   },
   {
     label: "7 - Voice Solo and Solo Ensemble",
-    options: {
-      "71": "Secular vocal solo, accompanied by piano or other solo instrument",
-      "72": "Secular vocal ensemble, accompaniment for solo instrument",
-      "75": "Sacred vocal solo with single instrument accompaniment",
-      "76": "Sacred vocal ensemble with single instrument accompaniment"
-    }
+    options: [
+      { value: "71", label: "Secular vocal solo, accompanied by piano or other solo instrument" },
+      { value: "72", label: "Secular vocal ensemble, accompaniment for solo instrument" },
+      { value: "75", label: "Sacred vocal solo with single instrument accompaniment" },
+      { value: "76", label: "Sacred vocal ensemble with single instrument accompaniment" }
+    ]
   },
   {
     label: "8 - Choral and Solo-Choral Ensemble",
-    options: {
-      "81": "Secular choral works, more than one movement",
-      "82": "Single secular choruses and collections",
-      "85": "Sacred choral works, more than one movement",
-      "86": "Single sacred choruses and collections"
-    }
+    options: [
+      { value: "81", label: "Secular choral works, more than one movement" },
+      { value: "82", label: "Single secular choruses and collections" },
+      { value: "85", label: "Sacred choral works, more than one movement" },
+      { value: "86", label: "Single sacred choruses and collections" }
+    ]
   },
   {
     label: "9 - Dramatic Ensembles",
-    options: {
-      "91": "Operas and musicals",
-      "92": "Scenes, cantatas designed for stage presentation",
-      "95": "Ballets",
-      "97": "Incidental music to dramas, masques, pageants, pantomimes, etc."
-    }
+    options: [
+      { value: "91", label: "Operas and musicals" },
+      { value: "92", label: "Scenes, cantatas designed for stage presentation" },
+      { value: "95", label: "Ballets" },
+      { value: "97", label: "Incidental music to dramas, masques, pageants, pantomimes, etc." }
+    ]
   }
 ];
 

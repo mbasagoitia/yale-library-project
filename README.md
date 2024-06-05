@@ -10,7 +10,7 @@ Described by Carol June Bradley in The Dickinson Classification for Music (read 
 The first line is the division number; this expresses the original medium of the work.
 The second line consists of the composer's Cutter number.
 The third line describes the piece in hand: a species title indication, such as ov for overture; the first letter of the title, if distinctive; an opus or thematic catalogue number.
-The fourth line is the first letter of the editor's or publisher's name, whichever is more appropriate to accurate description of the volumne in hand.
+The fourth line is the first letter of the editor's or publisher's name, whichever is more appropriate to accurate description of the volume in hand.
 
 For example:
 
@@ -34,8 +34,7 @@ When adding a new piece to the library, both the accession number and the call n
 
 Automatically assigning a meaningful call number through a user-friendly interface avoids the complicated process of manually assigning each number, and it quickly informs the librarian of the appropriate section that the new piece should be placed. While a small library may see minimal benefit from this system, there is good potential of scalability as the library grows.
 
-*The call number may not necessarily be unique because we may own several pieces of the same genre by the same composer, having the same edition/publisher (i.e. Brahms Symphony no. 1 and Brahms Symphony no. 2, both Barentreiter editions, or Mozart Cosi Fan Tutte and The Marriage of Figaro). In these cases, enough information is present to sufficiently organize the materials to a high degree, and the librarian can simply order by number, alphabetically, or in some other logical way beyond that, if desired.
-
+*The call number may not necessarily be unique because we may own several pieces of the same genre by the same composer, having the same edition/publisher (i.e. Brahms Symphony no. 1 and Brahms Symphony no. 2, both Barentreiter editions). In these cases, enough information is present to sufficiently organize the materials to a high degree, and the librarian can simply order by number, alphabetically, or in some other logical way beyond that, if desired.
 
 ## Part Two: Automatic Cataloguing System
 
@@ -58,8 +57,13 @@ When a new piece is added to a specific section, all relevant numbers will autom
 
 ## Part Three: Searching System
 
-When we need to pull parts and scores from our collection, each piece and its relevant information (call number, location, form (digital/physical), condition, in/out status, etc.) should be easily and quickly accessible by a few keywords. I intend to implement a system that allows librarians to search our entire collection within seconds, finding the necessary materials easily. A series of filters and keyword searches will be available to the user.
+When we need to pull parts and scores from our collection, each piece and its relevant information (call number, location, form (digital/physical), condition, in/out status, etc.) should be easily and quickly accessible by a few keywords. I intend to implement a system that allows librarians to search our entire collection within seconds, finding the necessary materials easily. A series of filters and keyword searches will be available to the user. A default filtering method will automatically list relevant pieces on the "home page" of the application.
+
+Filter by: Genre - Composer - Edition - Medium (Score/parts)
 
 ## Physical Parts vs Digital Scans
 
 Currently, the Philharmonia holdings exist in two locations: as digital scans saved on the computer, and as physical parts on the shelves. Some exist in both forms, and others in only one. A thorough inventory will also be conducted of the digital holdings (scans), and the database will store information about what form the materials are available in (digital, physical, or both). The digital holdings will be organized in a logical manner on the computer, similar to the physical shelves. The existing file names may be changed for the purposes of clarity and searchability.
+
+## Scores
+

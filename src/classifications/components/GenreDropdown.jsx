@@ -1,23 +1,24 @@
-import React, { useState } from 'react';
-import topLevel from '../topLevel';
+import React, { useState, useEffect } from 'react';
 
 function GenreDropdown({ items }) {
   const [selectedItem, setSelectedItem] = useState(null);
 
-  const handleSelect = (item) => {
-    if (item.options) {
-      // If the selected item has options, update the selected item
-      setSelectedItem(item);
+  useEffect(() => {
+    // Reset selectedItem to the first item whenever items change
+    if (items.length > 0) {
+      setSelectedItem(items[0]);
     } else {
-      // If the selected item does not have options, log it to the console
-      console.log(item.label);
+      setSelectedItem(null);
     }
+  }, [items]);
+
+  const handleSelect = (item) => {
+    setSelectedItem(item);
   };
 
   return (
     <div>
       <select onChange={(e) => handleSelect(items[e.target.value])}>
-        <option>Select an option</option>
         {items.map((item, index) => (
           <option key={index} value={index}>
             {item.label}
@@ -26,7 +27,7 @@ function GenreDropdown({ items }) {
       </select>
 
       {selectedItem && selectedItem.options && (
-        <GenreDropdown items={Object.entries(selectedItem.options).map(([key, value]) => ({ label: value }))} />
+        <GenreDropdown items={selectedItem.options} />
       )}
     </div>
   );
