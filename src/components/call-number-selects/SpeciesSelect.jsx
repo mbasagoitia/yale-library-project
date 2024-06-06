@@ -1,44 +1,18 @@
-import { useState, useEffect } from "react";
 import species from "../../classifications/species";
 import SearchFilter from "../SearchFilter";
 
 const SpeciesSelect = ({ setSpecies }) => {
-    const [speciesTitle, setSpeciesTitle] = useState("");
-    const [opusNumber, setOpusNumber] = useState("");
-    const [number, setNumber] = useState("");
-
-    useEffect(() => {
-        let updatedTitle = speciesTitle;
-        if (opusNumber) {
-            updatedTitle += ` Op. ${opusNumber}`;
-        }
-        if (number) {
-            updatedTitle += ` No. ${number}`;
-        }
-        setSpecies(updatedTitle);
-    }, [speciesTitle, opusNumber, number, setSpecies]);
-
+    // Set cutter number when the user selects the composer
     const onItemClick = (item) => {
-        setSpeciesTitle(item.name);
-    };
-
+        console.log(item);
+        setSpecies(item.abbr);
+    }
+    // The dropdown list will be a searchable filter
     return (
         <>
-            <SearchFilter items={species} onItemClick={onItemClick} />
-            <input
-                type="number"
-                value={opusNumber}
-                onChange={(e) => setOpusNumber(e.target.value)}
-                placeholder="Opus Number"
-            />
-            <input
-                type="number"
-                value={number}
-                onChange={(e) => setNumber(e.target.value)}
-                placeholder="Number"
-            />
+        <SearchFilter items={species} onItemClick={onItemClick} />
         </>
-    );
-};
+    )
+}
 
 export default SpeciesSelect;

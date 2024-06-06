@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import CallNumber from './components/CallNumber';
+import Home from './pages/Home';
+import './App.css';
+
 
 function App() {
 
   return (
     <div className="App">
-      <CallNumber />
+      <Home />
     </div>
   );
 }

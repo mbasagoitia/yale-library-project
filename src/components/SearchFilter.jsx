@@ -1,20 +1,30 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { InputGroup, FormControl, Dropdown } from 'react-bootstrap';
 
 const SearchFilter = ({ items, onItemClick }) => {
   const [filteredItems, setFilteredItems] = useState(items);
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState('');
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
-    // Open the dropdown when typing in the search bar
-    if (searchText !== "") {
-      setIsDropdownOpen(true);
+    if (isDropdownOpen) {
+      document.addEventListener('click', handleClickOutside);
     } else {
+      document.removeEventListener('click', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [isDropdownOpen]);
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setIsDropdownOpen(false);
     }
-  }, [searchText]);
+  };
 
   const handleInputChange = (value) => {
     setSearchText(value);
@@ -23,23 +33,24 @@ const SearchFilter = ({ items, onItemClick }) => {
 
   const filterItems = (value) => {
     const lowerCaseValue = value.toLowerCase();
-    const filtered = items.map(category => ({
+    const filtered = items.map((category) => ({
       ...category,
-      options: category.options.filter(option =>
+      options: category.options.filter((option) =>
         option.label.toLowerCase().includes(lowerCaseValue)
-      )
-    })).filter(category => category.options.length > 0);
+      ),
+    })).filter((category) => category.options.length > 0);
     setFilteredItems(filtered);
   };
 
-  const handleItemClick = (item) => {
-    setSelectedItemId(item.value);
-    onItemClick(item);
-    setIsDropdownOpen(false); // Close the dropdown after selection
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const handleDropdownClick = () => {
-    setIsDropdownOpen(!isDropdownOpen);
+  const handleDropdownItemClick = (item) => {
+    setSelectedItemId(item.value);
+    setSearchText(item.label);
+    onItemClick(item);
+    setIsDropdownOpen(false);
   };
 
   const isItemSelected = (item) => {
@@ -47,15 +58,16 @@ const SearchFilter = ({ items, onItemClick }) => {
   };
 
   return (
-    <div className="searchableList">
+    <div className="searchableList" ref={dropdownRef}>
       <div className="searchBar">
         <InputGroup>
           <FormControl
             placeholder="Search..."
             aria-label="Search"
             aria-describedby="searchBar"
+            value={searchText}
             onChange={(e) => handleInputChange(e.target.value)}
-            onClick={handleDropdownClick}
+            onClick={toggleDropdown}
           />
         </InputGroup>
       </div>
@@ -67,7 +79,7 @@ const SearchFilter = ({ items, onItemClick }) => {
               {category.options.map((item) => (
                 <Dropdown.Item
                   key={item.value}
-                  onClick={() => handleItemClick(item)}
+                  onClick={() => handleDropdownItemClick(item)}
                   active={isItemSelected(item)}
                 >
                   {item.label}

@@ -13,9 +13,12 @@ function MediumSelect({ items, setMediumType }) {
   }, [items]);
 
   const handleSelect = (item) => {
+    console.log(item);
     // Is this redundant?
     setSelectedItem(item);
-    setMediumType(item);
+    if (item.value) {
+      setMediumType(item.value);
+    }
   };
 
   return (
