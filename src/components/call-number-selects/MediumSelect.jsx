@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function MediumSelect({ items, setMediumType }) {
   const [selectedItem, setSelectedItem] = useState(null);
@@ -14,7 +15,6 @@ function MediumSelect({ items, setMediumType }) {
 
   const handleSelect = (item) => {
     console.log(item);
-    // Is this redundant?
     setSelectedItem(item);
     if (item.value) {
       setMediumType(item.value);
@@ -22,8 +22,13 @@ function MediumSelect({ items, setMediumType }) {
   };
 
   return (
-    <div>
-      <select onChange={(e) => handleSelect(items[e.target.value])} required>
+    <div className="my-2">
+      <select
+        className="form-select"
+        id="mediumSelect"
+        onChange={(e) => handleSelect(items[e.target.value])}
+        required
+      >
         {items.map((item, index) => (
           <option key={index} value={index}>
             {item.label}

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Form, FormGroup, FormCheck, FormLabel, FormControl, Button } from "react-bootstrap";
+import { Form, FormGroup, FormCheck, FormLabel, FormControl, Button, Row, Col } from "react-bootstrap";
 import conditions from "./conditions";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const AdditionalInfo = () => {
     const [ownPhysical, setOwnPhysical] = useState(true);
@@ -62,9 +63,9 @@ const AdditionalInfo = () => {
     return (
         <div className="additionalInfo">
             <Form onSubmit={handleSubmit}>
-                <FormGroup>
-                    <FormLabel>Media Type</FormLabel>
-                    <div>
+                <FormGroup as={Row} className="mt-2">
+                    <FormLabel as="legend" column sm={2}>Media Type</FormLabel>
+                    <Col sm={10}>
                         <FormCheck 
                             type="checkbox" 
                             id="physical" 
@@ -86,12 +87,12 @@ const AdditionalInfo = () => {
                             checked={ownScore}
                             onChange={() => setOwnScore(!ownScore)}
                         />
-                    </div>
+                    </Col>
                 </FormGroup>
 
-                <FormGroup>
-                    <FormLabel>Select Condition:</FormLabel>
-                    <div>
+                <FormGroup as={Row} className="mt-2">
+                    <FormLabel as="legend" column sm={2}>Select Condition</FormLabel>
+                    <Col sm={10}>
                         {conditions.map((item) => (
                             <FormCheck 
                                 key={item.id} 
@@ -102,12 +103,12 @@ const AdditionalInfo = () => {
                                 onChange={() => handleConditionSelect(item.id)}
                             />
                         ))}
-                    </div>
+                    </Col>
                 </FormGroup>
 
-                <FormGroup>
-                    <FormLabel>Is this set missing any parts?</FormLabel>
-                    <div>
+                <FormGroup as={Row} className="mt-2">
+                    <FormLabel as="legend" column sm={2}>Is this set missing any parts?</FormLabel>
+                    <Col sm={10}>
                         <FormCheck 
                             type="radio" 
                             id="missingYes" 
@@ -122,22 +123,28 @@ const AdditionalInfo = () => {
                             checked={!missingParts}
                             onChange={handleMissingPartsSelect}
                         />
-                    </div>
+                    </Col>
                 </FormGroup>
 
-                <FormGroup>
-                    <FormLabel>Additional Notes</FormLabel>
-                    <FormControl 
-                        as="textarea" 
-                        rows={3} 
-                        onChange={handleAdditionalNotes}
-                        value={notes}
-                        isInvalid={!!formErrors.notes}
-                    />
-                    <FormControl.Feedback type="invalid">{formErrors.notes}</FormControl.Feedback>
+                <FormGroup as={Row} className="mt-2">
+                    <FormLabel column sm={2}>Additional Notes</FormLabel>
+                    <Col sm={10}>
+                        <FormControl 
+                            as="textarea" 
+                            rows={3} 
+                            onChange={handleAdditionalNotes}
+                            value={notes}
+                            isInvalid={!!formErrors.notes}
+                        />
+                        <FormControl.Feedback type="invalid">{formErrors.notes}</FormControl.Feedback>
+                    </Col>
                 </FormGroup>
 
-                <Button type="submit">Submit</Button>
+                <FormGroup as={Row} className="mt-4">
+                    <Col sm={{ span: 10, offset: 1 }}>
+                        <Button type="submit">Catalogue</Button>
+                    </Col>
+                </FormGroup>
             </Form>
         </div>
     );

@@ -19,7 +19,7 @@ const Home = () => {
             </div>
             <div className="addNew">
                 {!isModalOpen ? (
-                    <button onClick={(e) => handleOpenModal(e)}>+</button>
+                    <button onClick={(e) => handleOpenModal(e)}>Add New Piece</button>
                 ) : <div className="modal-overlay">
                         {/* <div className="modal"> */}
                             <div className="modal-content">

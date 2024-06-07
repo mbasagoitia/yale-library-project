@@ -81,11 +81,10 @@
 
 /* Modal box */
 .modal-content {
-  background: white !important; /* Ensure the background is set */
-  width: 60px; /* Adjust this value to control the width of the modal */
+  background: white; /* Ensure the background is set */
   max-width: 800px; /* Maximum width */
   max-height: 80%; /* Maximum height */
-  border-radius: 10px !important; /* Rounded corners */
+  border-radius: 10px; /* Rounded corners */
   padding: 2rem;
   overflow-y: scroll;
   display: flex;

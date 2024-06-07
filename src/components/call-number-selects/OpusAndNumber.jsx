@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Container, Row, Col } from "react-bootstrap";
 
 const OpusAndNumber = ({ setOpus, setNumber }) => {
   const [opusValue, setOpusValue] = useState("");
@@ -15,22 +16,28 @@ const OpusAndNumber = ({ setOpus, setNumber }) => {
   };
 
   return (
-    <div className="opusAndNumber">
-      <label htmlFor="opusInput">Opus:</label>
-      <input
-        type="number"
-        id="opusInput"
-        value={opusValue}
-        onChange={handleOpusChange}
-      />
-      <label htmlFor="numberInput">Number:</label>
-      <input
-        type="number"
-        id="numberInput"
-        value={numberValue}
-        onChange={handleNumberChange}
-      />
-    </div>
+    <>
+        <Col md={2}>
+          <label htmlFor="opusInput" className="form-label">Opus:</label>
+          <input
+            type="number"
+            className="form-control"
+            id="opusInput"
+            value={opusValue}
+            onChange={handleOpusChange}
+          />
+        </Col>
+        <Col md={2}>
+          <label htmlFor="numberInput" className="form-label">Number:</label>
+          <input
+            type="number"
+            className="form-control"
+            id="numberInput"
+            value={numberValue}
+            onChange={handleNumberChange}
+          />
+        </Col>
+    </>
   );
 };
 
