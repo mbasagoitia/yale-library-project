@@ -3,7 +3,7 @@ import { Form, FormGroup, FormCheck, FormLabel, FormControl, Button, Row, Col } 
 import conditions from "./conditions";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const AdditionalInfo = () => {
+const AdditionalInfo = ({ callNumber }) => {
     const [ownPhysical, setOwnPhysical] = useState(true);
     const [ownDigital, setOwnDigital] = useState(false);
     const [ownScore, setOwnScore] = useState(true);
@@ -91,7 +91,7 @@ const AdditionalInfo = () => {
                 </FormGroup>
 
                 <FormGroup as={Row} className="mt-2">
-                    <FormLabel as="legend" column sm={2}>Select Condition</FormLabel>
+                    <FormLabel as="legend" column sm={2}>Condition</FormLabel>
                     <Col sm={10}>
                         {conditions.map((item) => (
                             <FormCheck 

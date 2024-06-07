@@ -93,13 +93,7 @@
   z-index: 1000;
 }
 
-  /* .modal-content {
-    height: 100%;
-    width: 100%;
-    background-color: red;
-    padding: 20px;
-    overflow-y: auto;
-    color: white;
-    z-index: 2000;
-  } */
-
+.callNumLine {
+  font-size: 2rem;
+  text-align: left;
+}

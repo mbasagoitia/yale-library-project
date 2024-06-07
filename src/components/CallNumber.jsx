@@ -6,10 +6,11 @@ import SpeciesSelect from "./call-number-selects/SpeciesSelect";
 import PublisherSelect from "./call-number-selects/PublisherSelect";
 import OpusAndNumber from "./call-number-selects/OpusAndNumber";
 import medium from "../classifications/medium";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const CallNumber = () => {
   const [submitted, setSubmitted] = useState(false);
-  const [callNumber, setCallNumber] = useState("");
+  const [callNumber, setCallNumber] = useState([]);
   const [mediumType, setMediumType] = useState(0x0);
   const [cutterNumber, setCutterNumber] = useState("");
   const [species, setSpecies] = useState("");
@@ -31,30 +32,30 @@ const CallNumber = () => {
     } else if (number) {
       speciesTitle += ` no.${number}`;
     }
-    let call = `${mediumType} ${cutterNumber} ${speciesTitle} ${publisher}`;
+    let call = [mediumType, cutterNumber, speciesTitle, publisher];
     setCallNumber(call);
     setSubmitted(true);
   };
 
   return (
     <Container>
-      <h1>Catalogue Information</h1>
+      <h1>New Piece Information</h1>
       <form onSubmit={handleSubmit}>
-      <Row>
-        <Col md={8} className="mb-3">
-          <label htmlFor="titleInput" className="form-label">Title:</label>
-          <input type="text" className="form-control" id="titleInput" />
-        </Col>
+        <Row className="mt-4">
+          <Col md={8} className="mb-3">
+            <label htmlFor="titleInput" className="form-label">Title:</label>
+            <input type="text" className="form-control" id="titleInput" />
+          </Col>
           <OpusAndNumber setOpus={setOpus} setNumber={setNumber} />
-      </Row>
-      <Row className="mt-4">
-        <Col xs={12} md={6}>
+        </Row>
+        <Row className="mt-4">
+          <Col xs={12} md={6}>
             <div className="mb-3">
               <h3>Ensemble Type</h3>
               <MediumSelect items={medium} setMediumType={setMediumType} />
             </div>
-        </Col>
-        <Col xs={12} md={6}>
+          </Col>
+          <Col xs={12} md={6}>
             <div className="mb-3">
               <h3>Composer</h3>
               <ComposerSelect setCutterNumber={setCutterNumber} />
@@ -78,8 +79,13 @@ const CallNumber = () => {
         <button type="submit" className="btn btn-primary my-4">Generate Call Number</button>
       </form>
       {submitted && (
-        <div className="alert alert-success" role="alert">
-          <h1>{`Call Number: ${callNumber}`}</h1>
+        <div className="alert alert-success d-flex flex-column align-items-center" role="alert">
+          <h4>Call Number:</h4>
+          <div>
+          {callNumber.map((line, index) => (
+            <div className="callNumLine" key={index}>{line}</div>
+          ))}
+          </div>
         </div>
       )}
     </Container>
