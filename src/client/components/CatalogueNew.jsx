@@ -3,6 +3,7 @@ import CallNumber from "./CallNumber";
 import AdditionalInfo from "./AdditionalInfo";
 
 const CatalogueNew = () => {
+    const [title, setTitle] = useState("");
     const [callNumber, setCallNumber] = useState([]);
     const [additionalInfo, setAdditionalInfo] = useState({
         ownPhysical: true,
@@ -49,8 +50,10 @@ const CatalogueNew = () => {
     return (
         <div className="catalogueNew">
             <form onSubmit={handleSubmit}>
-                <CallNumber callNumber={callNumber} setCallNumber={setCallNumber} />
-                <AdditionalInfo setAdditionalInfo={setAdditionalInfo} formErrors={formErrors} setFormErrors={setFormErrors} />
+                <CallNumber callNumber={callNumber} setCallNumber={setCallNumber} title={title} setTitle={setTitle} setFormErrors={setFormErrors} />
+                <div className="mt-4">
+                    <AdditionalInfo additionalInfo={additionalInfo} setAdditionalInfo={setAdditionalInfo} formErrors={formErrors} setFormErrors={setFormErrors} />
+                </div>
             </form>
         </div>
     )
