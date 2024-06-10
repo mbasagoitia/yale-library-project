@@ -22,16 +22,56 @@
   width: 100%;
 }
 
-.yale-header-tag {
+.site-header a {
   font-family: 'Yale Display Roman', serif;
+  font-size: 20px;
+  text-decoration: none;
+  color: white;
 }
 
 .App-link {
   color: #61dafb;
 }
 
+.site-nav {
+  min-height: 20vh;
+  display: flex;
+  justify-content: center;
+}
+
+.nav-content {
+  width: 100%;
+  max-width: 1500px;
+  font-size: 20px;
+  font-family: 'Mallory Compact', sans-serif;
+}
+
+.search-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+input[type="text"] {
+  padding-right: 35px;
+}
+
+.search-button {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.fa {
+  color: #000000A6;
+}
+
+
 body {
-  font-family: 'Yale New Roman', serif;
+  font-family: 'Mallory', sans-serif;
 }
 
 .btn-primary {
@@ -61,13 +101,13 @@ body {
   position: relative;
 }
 
-.dropdown-toggle {
+.catalogueNew .dropdown-toggle {
   color: white;
   width: 100%;
   white-space: normal;
 }
 
-.dropdown-menu {
+.catalogueNew .dropdown-menu {
   width: 100%;
   background-color: white;
   color: black;
@@ -75,7 +115,7 @@ body {
   white-space: normal;
 }
 
-.dropdown-item {
+.catalogueNew .dropdown-item {
   white-space: normal;
 }
 
@@ -102,6 +142,11 @@ body {
   font-weight: bold; 
 }
 
+.additionalInfo .form-check {
+  display: flex;
+  gap: 2rem;
+}
+
 .feedback {
   font-size: .875em;
   color: var(--bs-form-invalid-color);
@@ -117,12 +162,13 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 100;
 }
 
 .popup {
   max-height: 80%;
   max-width: 800px;
-  width: 40vw;
+  width: 50vw;
   min-width: 200px;
   overflow-y: scroll;
   display: flex;

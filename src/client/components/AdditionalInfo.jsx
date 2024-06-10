@@ -1,5 +1,5 @@
 import React from "react";
-import { FormGroup, FormCheck, FormLabel, FormControl, Button, Row, Col } from "react-bootstrap";
+import { FormGroup, FormCheck, FormLabel, FormControl, Button, Row, Col, Container } from "react-bootstrap";
 import conditions from "./conditions";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -33,7 +33,7 @@ const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setForm
     }
 
     return (
-        <div className="additionalInfo">
+        <Container className="additionalInfo">
             <FormGroup as={Row} className="mt-2">
                 <FormLabel as="legend" column sm={2}>Holdings Type</FormLabel>
                 <Col sm={10}>
@@ -97,7 +97,7 @@ const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setForm
                 </Col>
             </FormGroup>
 
-            <FormGroup as={Row} className="mt-2">
+            <FormGroup as={Row} className="mt-4">
                 <FormLabel column sm={2}>Additional Notes</FormLabel>
                 <Col sm={10}>
                     <FormControl 
@@ -116,7 +116,7 @@ const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setForm
                     <Button type="submit">Catalogue</Button>
                 </Col>
             </FormGroup>
-        </div>
+        </Container>
     );
 }
 
