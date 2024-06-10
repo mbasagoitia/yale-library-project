@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Dropdown from 'react-bootstrap/Dropdown';
 
 function MediumSelect({ items, setMediumType }) {
   const [selectedItem, setSelectedItem] = useState(null);
@@ -26,18 +27,19 @@ function MediumSelect({ items, setMediumType }) {
 
   return (
     <div className="my-2">
-      <select
-        className="form-select"
-        id="mediumSelect"
-        onChange={(e) => handleSelect(items[e.target.value])}
-        required
-      >
-        {items.map((item, index) => (
-          <option key={index} value={index}>
-            {item.label}
-          </option>
-        ))}
-      </select>
+      <Dropdown>
+        <Dropdown.Toggle variant="primary" id="dropdown-basic">
+          {selectedItem ? selectedItem.label : 'Select Medium'}
+        </Dropdown.Toggle>
+
+        <Dropdown.Menu>
+          {items.map((item, index) => (
+            <Dropdown.Item key={index} onClick={() => handleSelect(item)}>
+              {item.label}
+            </Dropdown.Item>
+          ))}
+        </Dropdown.Menu>
+      </Dropdown>
 
       {selectedItem && selectedItem.options && (
         <MediumSelect

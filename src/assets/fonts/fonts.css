@@ -1,0 +1,34 @@
+@font-face {
+    font-family: 'Yale Display Roman';
+    src: url('yale-typeface/yale-display-roman.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Yale New Bold';
+    src: url('yale-typeface/YaleNew-Bold.otf') format('opentype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Yale New Bold Italic';
+    src: url('yale-typeface/YaleNew-BoldItalic.otf') format('opentype');
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Yale New Italic';
+    src: url('yale-typeface/YaleNew-Italic.otf') format('opentype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Yale New Roman';
+    src: url('yale-typeface/YaleNew-Roman.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}

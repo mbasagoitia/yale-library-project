@@ -35,7 +35,7 @@ const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setForm
     return (
         <div className="additionalInfo">
             <FormGroup as={Row} className="mt-2">
-                <FormLabel as="legend" column sm={2}>Media Type</FormLabel>
+                <FormLabel as="legend" column sm={2}>Holdings Type</FormLabel>
                 <Col sm={10}>
                     <FormCheck 
                         type="checkbox" 
