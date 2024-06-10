@@ -16,7 +16,7 @@ const Navigation = () => {
                         <NavDropdown.Item href="/">Custom Report</NavDropdown.Item>
                     </NavDropdown>
                     <Nav.Link href="/">Digital Catalogue</Nav.Link>
-                    <Nav.Link href="/">Classification Guide</Nav.Link>
+                    <Nav.Link href="/classification-guide">Classification Guide</Nav.Link>
                     <NavDropdown title="Librarian" id="basic-nav-dropdown">
                         <NavDropdown.Item href="/">Log In</NavDropdown.Item>
                         <NavDropdown.Item href="/">Log Out</NavDropdown.Item>

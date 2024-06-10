@@ -18,6 +18,14 @@
   color: white;
 }
 
+h1, h2, h3, h4, h5 {
+  font-family: 'Yale New Roman', serif;
+}
+
+h2 {
+  color: #286dc0;
+}
+
 .header-content {
   width: 100%;
 }
@@ -41,8 +49,8 @@
 
 .nav-content {
   width: 100%;
-  max-width: 1500px;
-  font-size: 20px;
+  max-width: 1200px;
+  font-size: clamp(16px, 1.2vw, 20px);
   font-family: 'Mallory Compact', sans-serif;
 }
 
@@ -72,6 +80,14 @@ input[type="text"] {
 
 body {
   font-family: 'Mallory', sans-serif;
+  font-size: clamp(16px, 1.5vw, 20px);
+}
+
+.page-content {
+  max-width: 1000px;
+  text-align: left;
+  padding: 3rem;
+  color: #222;
 }
 
 .btn-primary {
