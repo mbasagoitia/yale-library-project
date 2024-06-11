@@ -119,3 +119,30 @@ const medium = [
   
   export default medium;
   
+//   SELECT
+//     c.id AS category_id,
+//     c.label AS category_label,
+//     JSON_GROUP_ARRAY(
+//         JSON_OBJECT(
+//             'value', o.value,
+//             'label', o.label,
+//             'options', (
+//                 SELECT JSON_GROUP_ARRAY(
+//                     JSON_OBJECT(
+//                         'value', sub_o.value,
+//                         'label', sub_o.label
+//                     )
+//                 )
+//                 FROM medium_options AS sub_o
+//                 WHERE sub_o.category_id = c.id AND sub_o.value LIKE o.value || '__%'
+//             )
+//         )
+//     ) AS options
+// FROM
+//     medium_category AS c
+// LEFT JOIN
+//     medium_options AS o ON c.id = o.category_id
+// WHERE
+//     o.category_id IS NOT NULL
+// GROUP BY
+//     c.id;

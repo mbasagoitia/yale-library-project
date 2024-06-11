@@ -1,5 +1,3 @@
-// Add option for opus number, which will go alongside the species title indication if present
-
 const species = [
     {
       label: "Orchestral",

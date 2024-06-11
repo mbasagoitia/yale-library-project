@@ -1,71 +1,64 @@
 const express = require('express');
-// const session = require('express-session');
-// const MySQLStore = require('express-mysql-session')(session);
 const sqlite3 = require('sqlite3').verbose();
 const cors = require('cors');
-// const nodemon = require('nodemon');
 const path = require('path');
 const morgan = require('morgan');
-// const errorHandler = require('./middlewares/errorHandler.js');
 
 const app = express();
 
 app.use(express.json());
-
-
-// app.use(nodemon);
 app.use(morgan("dev"));
-
 app.use(cors());
 app.use(morgan('dev'));
-
-// Serve static files from the "public" directory
 app.use(express.static("public"));
-
-// Serve static files from the "client/build" directory
 app.use(express.static(path.join(__dirname, "../client/build")));
 
-// Database setup
-const db = new sqlite3.Database('./composers.db');
+const db = new sqlite3.Database('./philharmonia_library.db');
 
-// const dbConfig = {
-//   host: process.env.DB_HOST,
-//   user: process.env.DB_USER,
-//   password: process.env.DB_PASSWORD,
-//   database: process.env.DB_DATABASE,
-// };
+const mediumData = require("./dataToInsert/medium.json");
 
-// const pool = mysql.createPool(); 
-
-// const sessionStore = new MySQLStore({}, pool);
-
-// app.use(
-//   session({
-//     secret: process.env.SECRET_KEY,
-//     resave: false,
-//     saveUninitialized: false,
-//     store: sessionStore,
-//   })
-// );
+const publishersData = require('./dataToInsert/publishers.json');
+const speciesData = require('./dataToInsert/species.json');
 
 db.serialize(() => {
-  db.run("CREATE TABLE user (id INT, name TEXT)");
+    db.run(`CREATE TABLE IF NOT EXISTS species_category (
+        id INTEGER PRIMARY KEY,
+        label TEXT
+    )`);
+
+    db.run(`CREATE TABLE IF NOT EXISTS species_options (
+        id INTEGER PRIMARY KEY,
+        abbr TEXT,
+        label TEXT,
+        species_category_id INTEGER,
+        FOREIGN KEY (species_category_id) REFERENCES species_category(id)
+    )`);
+
+    const insertSpeciesCategory = db.prepare('INSERT INTO species_category (label) VALUES (?)');
+    const insertSpeciesOptions = db.prepare('INSERT INTO species_options (abbr, label, species_category_id) VALUES (?, ?, ?)');
+
+    const categoryIds = {}; // Initialize categoryIds object
+
+    // Insert data into species_category table and collect category IDs
+    speciesData.species.forEach(category => {
+        const { lastID } = insertSpeciesCategory.run(category.label);
+        categoryIds[category.label] = lastID;
+    });
+
+    // Insert data into species_options table with correct category IDs
+    speciesData.species.forEach(category => {
+        const categoryId = categoryIds[category.label];
+        category.options.forEach(option => {
+            insertSpeciesOptions.run(option.abbr, option.label, parseInt(categoryId));
+        });
+    });
+
+    insertSpeciesCategory.finalize();
+    insertSpeciesOptions.finalize();
 });
 
-// Use relevant routers
-// app.use("/api", apiRouter);
-
-app.use((req, res, next) => {
-  try {
-    res.sendFile(join(__dirname, "../client/build/index.html"));
-  } catch (err) {
-    next(err);
-  }
-});
-
-// app.use(errorHandler);
-
-const port = process.env.port || 5000;
+db.close();
+const port = process.env.PORT || 5000;
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);

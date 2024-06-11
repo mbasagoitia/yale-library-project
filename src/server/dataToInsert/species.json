@@ -1,0 +1,103 @@
+{
+    "species": [
+      {
+        "label": "Orchestral",
+        "species_category_id": 1,
+        "options": [
+          { "abbr": "ovt", "label": "Overture" },
+          { "abbr": "spo", "label": "Symphonic Poem" },
+          { "abbr": "sym", "label": "Symphony" },
+          { "abbr": "sfn", "label": "Sinfonietta" },
+          { "abbr": "sv", "label": "Symphonic Variations" },
+          { "abbr": "tv", "label": "Theme and Variations" },
+          { "abbr": "ssu", "label": "Symphonic Suite" }
+        ]
+      },
+      {
+        "label": "Concertos",
+        "species_category_id": 2,
+        "options": [
+          { "abbr": "con", "label": "Concerto" }
+        ]
+      },
+      {
+        "label": "Chamber Music",
+        "species_category_id": 3,
+        "options": [
+          { "abbr": "cm", "label": "Chamber Music" },
+          { "abbr": "son", "label": "Sonata" },
+          { "abbr": "cs", "label": "Chamber Symphony" }
+        ]
+      },
+      {
+        "label": "Opera",
+        "species_category_id": 4,
+        "options": [
+          { "abbr": "opr", "label": "Opera" },
+          { "abbr": "obf", "label": "Opera Buffa" },
+          { "abbr": "ose", "label": "Opera Seria" },
+          { "abbr": "cmo", "label": "Comic Opera" },
+          { "abbr": "opt", "label": "Operetta" }
+        ]
+      },
+      {
+        "label": "Ballet",
+        "species_category_id": 5,
+        "options": [
+          { "abbr": "bal", "label": "Ballet" }
+        ]
+      },
+      {
+        "label": "Vocal and Choral",
+        "species_category_id": 6,
+        "options": [
+          { "abbr": "sui", "label": "Suite" },
+          { "abbr": "can", "label": "Cantata" },
+          { "abbr": "ora", "label": "Oratorio" },
+          { "abbr": "mas", "label": "Mass" },
+          { "abbr": "req", "label": "Requiem" },
+          { "abbr": "mad", "label": "Madrigal" },
+          { "abbr": "mot", "label": "Motet" },
+          { "abbr": "cho", "label": "Choral Music" },
+          { "abbr": "art", "label": "Lied / Art Song" }
+        ]
+      },
+      {
+        "label": "Keyboard and Instrumental",
+        "species_category_id": 7,
+        "options": [
+          { "abbr": "par", "label": "Partita" },
+          { "abbr": "fan", "label": "Fantasia" },
+          { "abbr": "cap", "label": "Capriccio" },
+          { "abbr": "rha", "label": "Rhapsody" },
+          { "abbr": "ser", "label": "Serenade" },
+          { "abbr": "div", "label": "Divertimento" },
+          { "abbr": "mar", "label": "March" },
+          { "abbr": "noc", "label": "Nocturne" },
+          { "abbr": "etu", "label": "Etude" },
+          { "abbr": "pre", "label": "Prelude" },
+          { "abbr": "fug", "label": "Fugue" },
+          { "abbr": "imp", "label": "Impromptu" },
+          { "abbr": "int", "label": "Intermezzo" },
+          { "abbr": "maz", "label": "Mazurka" },
+          { "abbr": "pol", "label": "Polonaise" },
+          { "abbr": "wal", "label": "Waltz" },
+          { "abbr": "tar", "label": "Tarantella" },
+          { "abbr": "bal", "label": "Ballade" },
+          { "abbr": "sch", "label": "Scherzo" },
+          { "abbr": "rom", "label": "Romance" }
+        ]
+      },
+      {
+        "label": "Miscellaneous",
+        "species_category_id": 8,
+        "options": [
+          { "abbr": "inc", "label": "Incidental Music" },
+          { "abbr": "ovf", "label": "Overture-Fantasy" },
+          { "abbr": "dsu", "label": "Dance Suite" },
+          { "abbr": "cha", "label": "Character Piece" }
+        ]
+      }
+    ]
+  }
+  

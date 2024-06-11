@@ -1,0 +1,48 @@
+{
+  "publishers": [
+    {
+      "label": "Major Publishers",
+      "publisher_category_id": 1,
+      "options": [
+        { "abbr": "BH", "label": "Boosey & Hawkes" },
+        { "abbr": "S", "label": "Simrock" },
+        { "abbr": "EP", "label": "Edition Peters" },
+        { "abbr": "A", "label": "Alfred Music" },
+        { "abbr": "SM", "label": "Schott Music" },
+        { "abbr": "SK", "label": "Sikorski" },
+        { "abbr": "B", "label": "Barenreiter" },
+        { "abbr": "HI", "label": "Hinshaw Music" }
+      ]
+    },
+    {
+      "label": "Academic and Specialist",
+      "publisher_category_id": 2,
+      "options": [
+        { "abbr": "O", "label": "Oxford University Press" },
+        { "abbr": "C", "label": "Cambridge University Press" },
+        { "abbr": "W", "label": "Warner Bros. Publications" },
+        { "abbr": "BKH", "label": "Breitkopf & Härtel" }
+      ]
+    },
+    {
+      "label": "Independent Publishers",
+      "publisher_category_id": 3,
+      "options": [
+        { "abbr": "K", "label": "Kalmus" },
+        { "abbr": "LM", "label": "LudwigMasters" },
+        { "abbr": "E", "label": "EMI Music Publishing" },
+        { "abbr": "CF", "label": "Carl Fischer" },
+        { "abbr": "L", "label": "Lucks Music Library" }
+      ]
+    },
+    {
+      "label": "Historical and Early Music",
+      "publisher_category_id": 4,
+      "options": [
+        { "abbr": "H", "label": "Henle" },
+        { "abbr": "D", "label": "Dover Publications" },
+        { "abbr": "KC", "label": "Kalmus Classical" }
+      ]
+    }
+  ]
+}
