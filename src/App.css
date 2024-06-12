@@ -85,6 +85,7 @@ body {
 
 .page-content {
   max-width: 1000px;
+  margin: 0 auto;
   text-align: left;
   padding: 3rem;
   color: #222;
@@ -187,6 +188,7 @@ body {
   width: 50vw;
   min-width: 200px;
   overflow-y: scroll;
+  text-align: center;
   display: flex;
   flex-direction: column;
   background:  #dddddd;

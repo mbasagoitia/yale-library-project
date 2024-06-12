@@ -16,10 +16,10 @@ const ClassificationGuide = () => {
                     ovt
                     C
                 </pre>
-                <p><strong>Division Number (61 - Orchestra - Full):</strong> Indicates the medium (e.g., orchestral, vocal, etc.).</p>
-                <p><strong>Composer's Cutter Number (B813 - Brahms):</strong> Assigned to the composer according to a predetermined system. The Yale Philharmonia utilizes the composer cutter numbers defined by the cataloguing system at Yale's Irving S. Gilmore Music Library, found <a href="https://web.library.yale.edu/cataloging/music/cuttera" target="_blank" rel="noreferrer">here</a>.</p>
-                <p><strong>Species Title Indication (ovt - overture):</strong> Indicates the genre of the composition, such as an overture. May also be an opus/number designation if distinctive, such as 18/1 (in the case of Beethoven's string quartets).</p>
-                <p><strong>Publisher/Editor (C - Cranz edition):</strong> Letter(s) indicating the name of the editor or publisher, whichever is more appropriate to the volume in hand.</p>
+                <p><strong>Division Number (61 - Orchestra - Full):</strong><br></br> Indicates the medium (e.g., orchestral, vocal, etc.).</p>
+                <p><strong>Composer's Cutter Number (B813 - Brahms):</strong><br></br> Assigned to the composer according to a predetermined system. The Yale Philharmonia utilizes the composer cutter numbers defined by the cataloguing system at Yale's Irving S. Gilmore Music Library, found <a href="https://web.library.yale.edu/cataloging/music/cuttera" target="_blank" rel="noreferrer">here</a>.</p>
+                <p><strong>Species Title Indication (ovt - overture):</strong><br></br> Indicates the genre of the composition, such as an overture. May also be an opus/number designation if distinctive, such as 18/1 (in the case of Beethoven's string quartets).</p>
+                <p><strong>Publisher/Editor (C - Cranz edition):</strong><br></br> Letter(s) indicating the name of the editor or publisher, whichever is more appropriate to the volume in hand.</p>
             </section>
             <section>
                 <h2>Arrangements</h2>
