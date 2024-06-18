@@ -1,12 +1,14 @@
 const express = require('express');
-const sqlite3 = require('sqlite3').verbose();
+const mysql = require("mysql2");
 const cors = require('cors');
 const path = require('path');
 const morgan = require('morgan');
+const dotenv = require("dotenv");
 const composerRouter = require("./routes/composerRouter");
 // const nodemon = require("nodemon");
 
 const app = express();
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
 app.use(express.json());
 app.use(morgan("dev"));
@@ -22,7 +24,29 @@ app.use(morgan('dev'));
 app.use(express.static("public"));
 app.use(express.static(path.join(__dirname, "../client/build")));
 
+const db = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PW,
+  database: process.env.DB_DATABASE
+});
+
+db.connect((err) => {
+  if (err) {
+    throw err;
+  }
+  console.log('Connected to MySQL database');
+});
+
+// Middleware to add db to request object
+app.use((req, res, next) => {
+  req.db = db;
+  next();
+});
+
+
 app.use("/api", composerRouter);
+
 
 const port = process.env.PORT || 5000;
 

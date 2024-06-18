@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import SearchFilter from "../SearchFilter";
+import ComposerFilter from "../ComposerFilter";
 
 const ComposerSelect = ({ mainInfo, setMainInfo }) => {
 
@@ -11,12 +11,11 @@ const ComposerSelect = ({ mainInfo, setMainInfo }) => {
         })
         .then((res) => {
             if (!res.ok) {
-                throw new Error("Network response was not ok");
+                throw new Error("Network response error");
             }
             return res.json();
         })
         .then((data) => {
-            console.log(data);
             setComposerList(data);
         })
         .catch((error) => {
@@ -31,7 +30,7 @@ const ComposerSelect = ({ mainInfo, setMainInfo }) => {
 
     return (
         <>
-        <SearchFilter items={composerList} onItemClick={onItemClick} />
+        <ComposerFilter items={composerList} onItemClick={onItemClick} />
         </>
     )
 }

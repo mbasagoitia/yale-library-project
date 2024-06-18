@@ -9,7 +9,7 @@ const generateCallNum = (info) => {
       } else if (number) {
         speciesTitle += ` no.${number}`;
       }
-      let call = [medium.value, composer.cutterNumber, speciesTitle, publisher.abbr];
+      let call = [medium.value, composer.cutter_number, speciesTitle, publisher.abbr];
       return call;
 }
 
