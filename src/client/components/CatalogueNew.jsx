@@ -3,9 +3,10 @@ import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import MainInfo from "./MainInfo";
 import AdditionalInfo from "./AdditionalInfo";
 import generateCallNum from "../helpers/generateCallNum.js";
+import catalogueNew from "../helpers/catalogueNew.js";
 
 const CatalogueNew = () => {
-    // General info that goes into database for each piece
+    // General info that goes into database for each piece, which is used to generate call number
     const [mainInfo, setMainInfo] = useState({
         title: "",
         opus: "",
@@ -17,6 +18,7 @@ const CatalogueNew = () => {
         callNumber: []
     })
 
+    // Additional info relating to the holdings type, condition, etc.
     const [additionalInfo, setAdditionalInfo] = useState({
         ownPhysical: true,
         ownDigital: false,
@@ -43,45 +45,54 @@ const CatalogueNew = () => {
         }
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const { title, medium, composer, genre, publisher, callNumber } = mainInfo;
+    const handleSubmit = async (e) => {
 
+        e.preventDefault();
+    
+        const { title, medium, composer, genre, publisher, callNumber } = mainInfo;
+    
         if (title && medium && composer && genre && publisher && callNumber) {
             if (additionalInfo.missingParts && !additionalInfo.notes.trim()) {
                 setFormErrors({ notes: "Please specify which parts are missing." });
             } else {
-                // Send information to database and catalogue new piece.
-                console.log(mainInfo, additionalInfo);
-                setSubmitted(true);
-
-                // Reset form
-                setMainInfo({
-                    title: "",
-                    opus: "",
-                    number: "",
-                    medium: {},
-                    composer: {},
-                    genre: {},
-                    publisher: {},
-                    callNumber: []
-                });
-
-                setAdditionalInfo({
-                    ownPhysical: true,
-                    ownDigital: false,
-                    ownScore: true,
-                    condition: 1,
-                    missingParts: false,
-                    notes: ""
-                });
-
-                setFormErrors({});
+                try {
+                    const allInfo = { ...mainInfo, ...additionalInfo };
+                    await catalogueNew(allInfo);
+    
+                    console.log('Catalogue successful');
+                    setSubmitted(true);
+    
+                    // Reset form
+                    setMainInfo({
+                        title: "",
+                        opus: "",
+                        number: "",
+                        medium: {},
+                        composer: {},
+                        genre: {},
+                        publisher: {},
+                        callNumber: []
+                    });
+    
+                    setAdditionalInfo({
+                        ownPhysical: true,
+                        ownDigital: false,
+                        ownScore: true,
+                        condition: 1,
+                        missingParts: false,
+                        notes: ""
+                    });
+    
+                    setFormErrors({});
+                } catch (error) {
+                    console.error('Catalogue error:', error);
+                }
             }
         } else {
             setFormErrors({ notes: "Please fill in all required fields." });
         }
-    }
+    };
+    
     
     return (
         <div className="catalogueNew">
