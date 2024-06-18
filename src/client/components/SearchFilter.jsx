@@ -76,9 +76,9 @@ const SearchFilter = ({ items, onItemClick }) => {
           {filteredItems.map((category) => (
             <div key={category.label}>
               <Dropdown.Header>{category.label}</Dropdown.Header>
-              {category.options.map((item) => (
+              {category.options.map((item, idx) => (
                 <Dropdown.Item
-                  key={item.value}
+                  key={`${idx + item.value}`}
                   onClick={() => handleDropdownItemClick(item)}
                   active={isItemSelected(item)}
                 >

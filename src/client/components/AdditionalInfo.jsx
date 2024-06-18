@@ -35,8 +35,8 @@ const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setForm
     return (
         <Container className="additionalInfo">
             <FormGroup as={Row} className="mt-2">
-                <FormLabel as="legend" column sm={2}>Holdings Type</FormLabel>
-                <Col sm={10}>
+                <FormLabel as="legend" column sm={4}>Holdings Type</FormLabel>
+                <Col sm={8}>
                     <FormCheck 
                         type="checkbox" 
                         id="physical" 
@@ -62,8 +62,8 @@ const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setForm
             </FormGroup>
 
             <FormGroup as={Row} className="mt-2">
-                <FormLabel as="legend" column sm={2}>Condition</FormLabel>
-                <Col sm={10}>
+                <FormLabel as="legend" column sm={4}>Condition</FormLabel>
+                <Col sm={8}>
                     {conditions.map((item) => (
                         <FormCheck 
                             key={item.id} 
@@ -78,8 +78,8 @@ const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setForm
             </FormGroup>
 
             <FormGroup as={Row} className="mt-2">
-                <FormLabel as="legend" column sm={2}>Is this set missing any parts?</FormLabel>
-                <Col sm={10}>
+                <FormLabel as="legend" column sm={4}>Is this set missing any parts?</FormLabel>
+                <Col sm={8}>
                     <FormCheck 
                         type="radio" 
                         id="missingYes" 
@@ -98,8 +98,8 @@ const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setForm
             </FormGroup>
 
             <FormGroup as={Row} className="mt-4">
-                <FormLabel column sm={2}>Additional Notes</FormLabel>
-                <Col sm={10}>
+                <FormLabel column sm={4}>Additional Notes</FormLabel>
+                <Col sm={8}>
                     <FormControl 
                         as="textarea" 
                         rows={3} 

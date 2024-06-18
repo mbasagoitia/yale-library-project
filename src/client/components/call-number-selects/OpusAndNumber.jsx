@@ -1,18 +1,13 @@
-import React, { useState } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Col } from "react-bootstrap";
 
-const OpusAndNumber = ({ setOpus, setNumber }) => {
-  const [opusValue, setOpusValue] = useState("");
-  const [numberValue, setNumberValue] = useState("");
+const OpusAndNumber = ({ mainInfo, setMainInfo }) => {
 
   const handleOpusChange = (e) => {
-    setOpusValue(e.target.value);
-    setOpus(e.target.value);
+    setMainInfo({ ...mainInfo, opus: e.target.value });
   };
 
   const handleNumberChange = (e) => {
-    setNumberValue(e.target.value);
-    setNumber(e.target.value);
+    setMainInfo({ ...mainInfo, number: e.target.value });
   };
 
   return (
@@ -23,7 +18,7 @@ const OpusAndNumber = ({ setOpus, setNumber }) => {
             type="number"
             className="form-control"
             id="opusInput"
-            value={opusValue}
+            value={mainInfo.opus}
             onChange={handleOpusChange}
           />
         </Col>
@@ -33,7 +28,7 @@ const OpusAndNumber = ({ setOpus, setNumber }) => {
             type="number"
             className="form-control"
             id="numberInput"
-            value={numberValue}
+            value={mainInfo.number}
             onChange={handleNumberChange}
           />
         </Col>

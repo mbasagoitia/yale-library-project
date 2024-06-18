@@ -1,11 +1,10 @@
 import species from "../../classifications/species";
 import SearchFilter from "../SearchFilter";
 
-const SpeciesSelect = ({ setSpecies }) => {
+const SpeciesSelect = ({ mainInfo, setMainInfo }) => {
     // Set cutter number when the user selects the composer
     const onItemClick = (item) => {
-        console.log(item);
-        setSpecies(item.abbr);
+        setMainInfo({ ...mainInfo, genre: item });
     }
     // The dropdown list will be a searchable filter
     return (

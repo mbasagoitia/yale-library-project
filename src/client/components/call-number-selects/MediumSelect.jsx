@@ -1,35 +1,40 @@
 import React, { useState, useEffect } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import Dropdown from 'react-bootstrap/Dropdown';
 
-function MediumSelect({ items, setMediumType }) {
-  const [selectedItem, setSelectedItem] = useState(null);
+function MediumSelect({ items, mainInfo, setMainInfo }) {
+  const [selectedItem, setSelectedItem] = useState(items.length > 0 ? items[0] : { label: 'Select Medium', value: '' });
 
   useEffect(() => {
     // Reset selectedItem to the first item whenever items change
     if (items.length > 0) {
-      setSelectedItem(items[0]);
-      setMediumType(items[0].value || items[0].options[0].value);
+      const initialItem = items[0];
+      setSelectedItem(initialItem);
+      const mediumObject = initialItem.value ? initialItem : (initialItem.options && initialItem.options[0]);
+      if (mediumObject !== mainInfo.medium) {
+        setMainInfo(prevMainInfo => ({
+          ...prevMainInfo,
+          medium: mediumObject
+        }));
+      }
     } else {
-      setSelectedItem(null);
+      setSelectedItem({ label: 'Select Medium', value: '' });
     }
-  }, [items, setMediumType]);
+  }, [items]); // Removed setMainInfo and mainInfo from dependency array
 
   const handleSelect = (item) => {
-    console.log(item);
     setSelectedItem(item);
-    if (item.value) {
-      setMediumType(item.value);
-    } else {
-      setMediumType(item.options[0].value);
-    }
+    const mediumObject = item.value ? item : (item.options && item.options[0]);
+    setMainInfo(prevMainInfo => ({
+      ...prevMainInfo,
+      medium: mediumObject
+    }));
   };
 
   return (
     <div className="my-2">
       <Dropdown>
         <Dropdown.Toggle variant="primary" id="dropdown-basic">
-          {selectedItem ? selectedItem.label : 'Select Medium'}
+          {selectedItem.label}
         </Dropdown.Toggle>
 
         <Dropdown.Menu>
@@ -45,7 +50,8 @@ function MediumSelect({ items, setMediumType }) {
         <MediumSelect
           key={selectedItem.value || selectedItem.label} // Ensure reset by changing the key
           items={selectedItem.options}
-          setMediumType={setMediumType}
+          mainInfo={mainInfo} // Pass down mainInfo as well
+          setMainInfo={setMainInfo}
         />
       )}
     </div>
