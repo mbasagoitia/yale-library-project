@@ -1,7 +1,7 @@
 import React from "react";
 import { FormGroup, FormCheck, FormLabel, FormControl, Button, Row, Col, Container } from "react-bootstrap";
 import conditions from "./conditions";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import TooltipIcon from "./PDTooltipIcon";
 
 const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setFormErrors }) => {
 
@@ -16,6 +16,11 @@ const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setForm
             setAdditionalInfo(prevState => ({ ...prevState, notes: "" }));
             setFormErrors({});
         }
+    }
+
+    const handlePdSelect = (e) => {
+        const pd = e.target.id === "pdYes";
+        setAdditionalInfo(prevState => ({ ...prevState, publicDomain: pd }));
     }
 
     const handleAdditionalNotes = (e) => {
@@ -35,8 +40,8 @@ const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setForm
     return (
         <Container className="additionalInfo">
             <FormGroup as={Row} className="mt-2">
-                <FormLabel as="legend" column sm={4}>Holdings Type</FormLabel>
-                <Col sm={8}>
+                <FormLabel as="legend" column sm={4} className="my-2">Holdings Type</FormLabel>
+                <Col sm={8} className="my-2">
                     <FormCheck 
                         type="checkbox" 
                         id="physical" 
@@ -61,9 +66,29 @@ const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setForm
                 </Col>
             </FormGroup>
 
-            <FormGroup as={Row} className="mt-2">
-                <FormLabel as="legend" column sm={4}>Condition</FormLabel>
-                <Col sm={8}>
+            <FormGroup as={Row} className="mt-2 lg-border">
+                <FormLabel as="legend" column sm={4} className="my-2 d-flex align-items-center justify-content-between">Is this piece in the public domain? <TooltipIcon /></FormLabel>
+                <Col sm={8} className="my-2">
+                    <FormCheck 
+                        type="radio" 
+                        id="pdYes" 
+                        label="Yes" 
+                        checked={additionalInfo.publicDomain}
+                        onChange={handlePdSelect}
+                    />
+                    <FormCheck 
+                        type="radio" 
+                        id="pdNo" 
+                        label="No" 
+                        checked={!additionalInfo.publicDomain}
+                        onChange={handlePdSelect}
+                    />
+                </Col>
+            </FormGroup>
+
+            <FormGroup as={Row} className="mt-2 lg-border">
+                <FormLabel as="legend" column sm={4} className="my-2">Condition</FormLabel>
+                <Col sm={8} className="my-2">
                     {conditions.map((item) => (
                         <FormCheck 
                             key={item.id} 
@@ -77,9 +102,9 @@ const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setForm
                 </Col>
             </FormGroup>
 
-            <FormGroup as={Row} className="mt-2">
-                <FormLabel as="legend" column sm={4}>Is this set missing any parts?</FormLabel>
-                <Col sm={8}>
+            <FormGroup as={Row} className="mt-2 lg-border">
+                <FormLabel as="legend" column sm={4} className="my-2">Is this set missing any parts?</FormLabel>
+                <Col sm={8} className="my-2">
                     <FormCheck 
                         type="radio" 
                         id="missingYes" 
@@ -97,9 +122,9 @@ const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setForm
                 </Col>
             </FormGroup>
 
-            <FormGroup as={Row} className="mt-4">
-                <FormLabel column sm={4}>Additional Notes</FormLabel>
-                <Col sm={8}>
+            <FormGroup as={Row} className="mt-4 lg-border">
+                <FormLabel column sm={4} className="my-2">Additional Notes</FormLabel>
+                <Col sm={8} className="my-2">
                     <FormControl 
                         as="textarea" 
                         rows={3} 

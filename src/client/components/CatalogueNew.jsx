@@ -23,6 +23,7 @@ const CatalogueNew = () => {
         ownPhysical: true,
         ownDigital: false,
         ownScore: true,
+        publicDomain: true,
         condition: 1,
         missingParts: false,
         notes: ""
@@ -78,6 +79,7 @@ const CatalogueNew = () => {
                         ownPhysical: true,
                         ownDigital: false,
                         ownScore: true,
+                        publicDomain: true,
                         condition: 1,
                         missingParts: false,
                         notes: ""
@@ -110,7 +112,7 @@ const CatalogueNew = () => {
                     </div>
                     </div>
                 )}
-                <div>
+                <div className="mt-4">
                     <AdditionalInfo additionalInfo={additionalInfo} setAdditionalInfo={setAdditionalInfo} formErrors={formErrors} setFormErrors={setFormErrors} />
                 </div>
             </form>

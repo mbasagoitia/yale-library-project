@@ -118,6 +118,10 @@ body {
   position: relative;
 }
 
+.catalogueNew button, .form-control, .form-label, .form-check, .dropdown-item {
+  font-size: clamp(0.8rem, 4vw, 1rem);
+}
+
 .catalogueNew .dropdown-toggle {
   color: white;
   width: 100%;
@@ -159,10 +163,23 @@ body {
   font-weight: bold; 
 }
 
-/* some media queries can help spacing here */
+.additionalInfo {
+  border-top: 1px solid gray;
+}
+
 .additionalInfo .form-check {
   display: flex;
-  gap: 5rem;
+  text-align: left;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.additionalInfo .form-check label {
+  width: 90%;
+}
+
+.additionalInfo .form-label {
+  font-weight: bold;
 }
 
 .feedback {
@@ -217,12 +234,69 @@ body {
 }
 
 .additionalInfo .form-label {
-  text-align: left;
+  text-align: center;
   padding-top: 0;
 }
+
+.lg-border {
+  border-top: 1px solid lightgray;
+}
+
+.text-with-icon {
+  display: flex;
+  align-items: center; /* Center vertically within the line */
+}
+
+.icon-container {
+  position: relative;
+  display: inline-block;
+}
+
+#pd-tooltip-icon {
+  cursor: pointer;
+}
+
+.pd-tooltip {
+  width: 250px;
+  background-color: #555;
+  color: #fff;
+  text-align: left;
+  font-weight: normal;
+  border-radius: 6px;
+  padding: 8px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.icon-container:hover .pd-tooltip {
+  opacity: 1;
+}
+
+
 
 @media (min-width: 500px) {
   .modal-content {
     padding: 0 2rem 2rem 2rem;
+  }
+}
+
+@media (min-width: 576px) {
+  .additionalInfo .form-check {
+    gap: 4rem;
+  }
+
+  .additionalInfo .form-label {
+    text-align: left;
+  }
+}
+
+@media (min-width: 768px) {
+  .modal-content {
+    padding: 0 5rem 3rem 5rem;
   }
 }

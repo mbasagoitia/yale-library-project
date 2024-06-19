@@ -16,7 +16,7 @@ const MainInfo = ({ mainInfo, setMainInfo, formErrors }) => {
   return (
     <Container>
         <Row className="mt-4">
-          <Col md={8} className="mb-3">
+          <Col md={8}>
             <Form.Group controlId="titleInput">
               <Form.Label>Title:</Form.Label>
               <Form.Control 
@@ -42,7 +42,7 @@ const MainInfo = ({ mainInfo, setMainInfo, formErrors }) => {
             </div>
           </Col>
         </Row>
-        <Row className="mt-4">
+        <Row className="mt-xs-0 mt-md-4">
           <Col xs={12} md={6}>
             <div className="mb-3">
               <h3>Genre</h3>

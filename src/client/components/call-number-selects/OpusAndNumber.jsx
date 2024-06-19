@@ -12,7 +12,7 @@ const OpusAndNumber = ({ mainInfo, setMainInfo }) => {
 
   return (
     <>
-        <Col md={2}>
+        <Col md={2} className="my-2 my-md-0">
           <label htmlFor="opusInput" className="form-label">Opus:</label>
           <input
             type="number"
