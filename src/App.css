@@ -91,29 +91,6 @@ body {
   color: #222;
 }
 
-.btn-primary {
-  background-color: #00356b;
-  border-color: #00356b;
-}
-
-.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
-  background-color: #002b50;
-}
-
-.alert-success {
-  background-color: rgba(51, 102, 153, 0.5);
-  color: #00356b;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 .searchableList {
   position: relative;
 }
@@ -244,7 +221,7 @@ body {
 
 .text-with-icon {
   display: flex;
-  align-items: center; /* Center vertically within the line */
+  align-items: center;
 }
 
 .icon-container {
@@ -275,6 +252,21 @@ body {
 
 .icon-container:hover .pd-tooltip {
   opacity: 1;
+}
+
+.btn, .btn-primary {
+  background-color: #00356b;
+  border-color: #00356b;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+  background-color: #002b50;
+}
+
+.alert-success {
+  background-color: rgba(51, 102, 153, 0.5);
+  color: #00356b;
+  border: 1px solid #00356b;
 }
 
 

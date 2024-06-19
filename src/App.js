@@ -5,6 +5,7 @@ import Navigation from "./client/components/Navigation.jsx";
 import Home from "./client/pages/Home.jsx";
 import ClassificationGuide from './client/pages/ClassificationGuide.jsx';
 import ManageHoldings from './client/pages/ManageHoldings.jsx';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
 

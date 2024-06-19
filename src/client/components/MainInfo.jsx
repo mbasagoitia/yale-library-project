@@ -16,6 +16,7 @@ const MainInfo = ({ mainInfo, setMainInfo, formErrors }) => {
   return (
     <Container>
         <Row className="mt-4">
+        <div id="required-fields-warning" className={`${formErrors.requiredFieldsWarning ? "feedback my-2" : "d-none"}`}>{formErrors.requiredFieldsWarning}</div>
           <Col md={8}>
             <Form.Group controlId="titleInput">
               <Form.Label>Title:</Form.Label>
@@ -29,6 +30,7 @@ const MainInfo = ({ mainInfo, setMainInfo, formErrors }) => {
           <OpusAndNumber mainInfo={mainInfo} setMainInfo={setMainInfo} />
         </Row>
         <Row className="mt-4">
+        <div id="required-call-fields-warning" className={`${formErrors.requiredCallFieldsWarning ? "feedback my-2" : "d-none"}`}>{formErrors.requiredCallFieldsWarning}</div>
           <Col xs={12} md={6}>
             <div className="mb-3">
               <h3>Ensemble Type</h3>
@@ -56,7 +58,6 @@ const MainInfo = ({ mainInfo, setMainInfo, formErrors }) => {
             </div>
           </Col>
         </Row>
-        <div className={`${formErrors.notes ? "feedback" : "d-none"}`}>{formErrors.notes}</div>
     </Container>
   );
 };

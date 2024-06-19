@@ -130,9 +130,9 @@ const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setForm
                         rows={3} 
                         onChange={handleAdditionalNotes}
                         value={additionalInfo.notes}
-                        isInvalid={!!formErrors.notes}
+                        isInvalid={!!formErrors.missingPartsWarning}
                     />
-                    <FormControl.Feedback type="invalid">{formErrors.notes}</FormControl.Feedback>
+                    <FormControl.Feedback type="invalid">{formErrors.missingPartsWarning}</FormControl.Feedback>
                 </Col>
             </FormGroup>
 
