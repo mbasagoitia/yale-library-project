@@ -9,7 +9,7 @@ const Navigation = () => {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto d-flex justify-content-between align-items-center w-100">
                     <Nav.Link href="/">Home</Nav.Link>
-                    <Nav.Link href="/">Browse Collection</Nav.Link>
+                    <Nav.Link href="/browse-holdings">Browse Collection</Nav.Link>
                     <NavDropdown title="Reports" id="basic-nav-dropdown">
                         <NavDropdown.Item href="/">Missing Parts</NavDropdown.Item>
                         <NavDropdown.Item href="/">Poor Condition</NavDropdown.Item>

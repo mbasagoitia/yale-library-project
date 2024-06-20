@@ -12,6 +12,8 @@ const getAllPieces = (req, res, db) => {
 
 const getSinglePiece = (req, res, db) => {
     const { id } = req.params;
+    // You will need to perform several joins to make sure all the necessary information is returned in the correct format
+    // See PieceListItem.jsx
     const query = 'SELECT * FROM pieces WHERE ID = ?';
     db.query(query, [id], (err, result) => {
         if (err) {

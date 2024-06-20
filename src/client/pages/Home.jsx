@@ -6,7 +6,8 @@ const Home = () => {
     );
 };
 
-// Style popup menu
+// Piece table needs to have call number!!!
+// Change op. to "identifier" or something similar to account for K and BWV
 // Use dummy data to have some fake pieces and style how they will look on our holdings page
 // This will involve connecting to our own instance of mysql and changing .env variables instead of transferring data
 // Build filters by title, composer, genre, etc. of all holdings

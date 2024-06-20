@@ -254,7 +254,7 @@ body {
   opacity: 1;
 }
 
-.btn, .btn-primary {
+.btn-primary {
   background-color: #00356b;
   border-color: #00356b;
 }
@@ -269,7 +269,24 @@ body {
   border: 1px solid #00356b;
 }
 
+.holdings-list .card-body {
+  padding: 0.5rem;
+}
 
+.piece-list-item {
+  font-size: 0.8rem;
+}
+
+.op-col {
+  gap: 2rem;
+}
+
+.empty-tag {
+  background-color: #00356b;
+  height: 40px;
+  width: 10px;
+  border-radius: var(--bs-border-radius) 0 0 var(--bs-border-radius);
+}
 
 @media (min-width: 500px) {
   .modal-content {

@@ -58,9 +58,10 @@ const CatalogueNew = () => {
       } else {
         try {
           const allInfo = { ...mainInfo, ...additionalInfo };
+          
+          console.log('Attempting to catalogue');
+          
           await catalogueNew(allInfo);
-
-          console.log('Catalogue successful');
           setSubmitted(true);
 
           // Reset form
