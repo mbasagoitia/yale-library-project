@@ -2,10 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 
 function MediumSelect({ items, mainInfo, setMainInfo }) {
-  const [selectedItem, setSelectedItem] = useState(null);
-  console.log(items);
+  const [selectedItem, setSelectedItem] = useState(items[0]);
 
-  // Handle selection of an item
   const handleSelect = (item) => {
     setSelectedItem(item);
     setMainInfo(prevMainInfo => ({
@@ -14,11 +12,10 @@ function MediumSelect({ items, mainInfo, setMainInfo }) {
     }));
   };
 
-  // Render dropdown menu
   const renderDropdown = (options) => (
     <Dropdown>
       <Dropdown.Toggle variant="primary" id="dropdown-basic">
-        {selectedItem ? selectedItem.label : 'Select Option'}
+        {selectedItem.label}
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
@@ -31,14 +28,13 @@ function MediumSelect({ items, mainInfo, setMainInfo }) {
     </Dropdown>
   );
 
-  // Render nested MediumSelect component recursively
-  // if (selectedItem && (selectedItem.options || selectedItem.nested_options)  && (selectedItem.options.length > 0 || selectedItem.nested_options.length > 0))
+
   const renderNestedMediumSelect = () => {
     if (selectedItem && ((selectedItem.options && selectedItem.options.length > 0) || (selectedItem.nested_options && selectedItem.nested_options.length > 0))) {
       return (
         <div>
           <MediumSelect
-            key={selectedItem.label} // Ensure key is unique
+            key={selectedItem.label}
             items={selectedItem.options || selectedItem.nested_options}
             mainInfo={mainInfo}
             setMainInfo={setMainInfo}

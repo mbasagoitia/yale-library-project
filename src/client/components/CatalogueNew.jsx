@@ -79,7 +79,6 @@ const CatalogueNew = () => {
           setAdditionalInfo({
             ownPhysical: true,
             ownDigital: false,
-            ownScore: true,
             publicDomain: true,
             condition: 1,
             missingParts: false,

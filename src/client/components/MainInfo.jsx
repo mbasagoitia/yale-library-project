@@ -5,9 +5,8 @@ import ComposerSelect from "./call-number-selects/ComposerSelect";
 import SpeciesSelect from "./call-number-selects/SpeciesSelect";
 import PublisherSelect from "./call-number-selects/PublisherSelect";
 import OpusAndNumber from "./call-number-selects/OpusAndNumber";
-import medium from "../classifications/medium";
 import fetchResourceData from "../helpers/fetchResourceData";
-import organizeData from "../helpers/organizeData";
+import { organizeMediumData, organizePublisherData, organizeSpeciesData } from "../helpers/organizeData";
 
 const MainInfo = ({ mainInfo, setMainInfo, formErrors }) => {
 
@@ -17,16 +16,19 @@ const MainInfo = ({ mainInfo, setMainInfo, formErrors }) => {
     publisherData: [],
   });
 
-  const organizedItems = organizeData(resourceData.mediumData);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         const resources = await fetchResourceData();
+
+        const organizedMediumData = organizeMediumData(resources[0]);
+        const organizedSpeciesData = organizeSpeciesData(resources[1]);
+        const organizedPublisherData = organizePublisherData(resources[2]);
+
         setResourceData({ 
-          mediumData: resources[0],
-          speciesData: resources[1],
-          publisherData: resources[2]
+          mediumData: organizedMediumData,
+          speciesData: organizedSpeciesData,
+          publisherData: organizedPublisherData
          });
       } catch (error) {
         console.error("Error fetching resource data:", error);
@@ -34,7 +36,7 @@ const MainInfo = ({ mainInfo, setMainInfo, formErrors }) => {
     }
     fetchData();
   }, [])
-  
+
   return (
     <Container>
         <Row className="mt-4">
@@ -56,7 +58,7 @@ const MainInfo = ({ mainInfo, setMainInfo, formErrors }) => {
           <Col xs={12} md={6}>
             <div className="mb-3">
               <h3>Ensemble Type</h3>
-              {resourceData.mediumData.length > 0 && <MediumSelect items={organizedItems} mainInfo={mainInfo} setMainInfo={setMainInfo} />}
+              {resourceData.mediumData.length > 0 && <MediumSelect items={resourceData.mediumData} mainInfo={mainInfo} setMainInfo={setMainInfo} />}
             </div>
           </Col>
           <Col xs={12} md={6}>
@@ -70,13 +72,13 @@ const MainInfo = ({ mainInfo, setMainInfo, formErrors }) => {
           <Col xs={12} md={6}>
             <div className="mb-3">
               <h3>Genre</h3>
-              <SpeciesSelect mainInfo={mainInfo} setMainInfo={setMainInfo} />
+              {resourceData.speciesData.length > 0 && <SpeciesSelect items={resourceData.speciesData} mainInfo={mainInfo} setMainInfo={setMainInfo} />}
             </div>
           </Col>
           <Col xs={12} md={6}>
             <div className="mb-3">
               <h3>Publisher</h3>
-              <PublisherSelect mainInfo={mainInfo} setMainInfo={setMainInfo} />
+              {resourceData.publisherData.length > 0 && <PublisherSelect items={resourceData.publisherData} mainInfo={mainInfo} setMainInfo={setMainInfo} />}
             </div>
           </Col>
         </Row>

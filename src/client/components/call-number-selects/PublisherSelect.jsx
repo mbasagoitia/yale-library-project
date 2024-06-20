@@ -1,14 +1,14 @@
-import publishers from "../../classifications/publishers";
 import SearchFilter from "../SearchFilter";
 
-const PublisherSelect = ({ mainInfo, setMainInfo }) => {
+const PublisherSelect = ({ items, mainInfo, setMainInfo }) => {
+    console.log("publisher", items);
     const onItemClick = (item) => {
         setMainInfo({ ...mainInfo, publisher: item });
     }
 
     return (
         <>
-        <SearchFilter items={publishers} onItemClick={onItemClick} />
+        <SearchFilter items={items} onItemClick={onItemClick} />
         </>
     )
 }

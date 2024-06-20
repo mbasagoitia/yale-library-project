@@ -56,13 +56,6 @@ const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setForm
                         checked={additionalInfo.ownDigital}
                         onChange={() => handleMediaTypeChange('ownDigital')}
                     />
-                    <FormCheck 
-                        type="checkbox" 
-                        id="score" 
-                        label="Score" 
-                        checked={additionalInfo.ownScore}
-                        onChange={() => handleMediaTypeChange('ownScore')}
-                    />
                 </Col>
             </FormGroup>
 
