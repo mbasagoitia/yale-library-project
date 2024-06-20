@@ -2,58 +2,57 @@ import React, { useState, useEffect } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 
 function MediumSelect({ items, mainInfo, setMainInfo }) {
-  const [selectedItem, setSelectedItem] = useState(items.length > 0 ? items[0] : { label: 'Select Medium', value: '' });
+  const [selectedItem, setSelectedItem] = useState(null);
+  console.log(items);
 
-  useEffect(() => {
-    // Reset selectedItem to the first item whenever items change
-    if (items.length > 0) {
-      const initialItem = items[0];
-      setSelectedItem(initialItem);
-      const mediumObject = initialItem.value ? initialItem : (initialItem.options && initialItem.options[0]);
-      if (mediumObject !== mainInfo.medium) {
-        setMainInfo(prevMainInfo => ({
-          ...prevMainInfo,
-          medium: mediumObject
-        }));
-      }
-    } else {
-      setSelectedItem({ label: 'Select Medium', value: '' });
-    }
-  }, [items]); // Removed setMainInfo and mainInfo from dependency array
-
+  // Handle selection of an item
   const handleSelect = (item) => {
     setSelectedItem(item);
-    const mediumObject = item.value ? item : (item.options && item.options[0]);
     setMainInfo(prevMainInfo => ({
       ...prevMainInfo,
-      medium: mediumObject
+      medium: item
     }));
+  };
+
+  // Render dropdown menu
+  const renderDropdown = (options) => (
+    <Dropdown>
+      <Dropdown.Toggle variant="primary" id="dropdown-basic">
+        {selectedItem ? selectedItem.label : 'Select Option'}
+      </Dropdown.Toggle>
+
+      <Dropdown.Menu>
+        {options.map((item, index) => (
+          <Dropdown.Item key={index} onClick={() => handleSelect(item)}>
+            {item.label}
+          </Dropdown.Item>
+        ))}
+      </Dropdown.Menu>
+    </Dropdown>
+  );
+
+  // Render nested MediumSelect component recursively
+  // if (selectedItem && (selectedItem.options || selectedItem.nested_options)  && (selectedItem.options.length > 0 || selectedItem.nested_options.length > 0))
+  const renderNestedMediumSelect = () => {
+    if (selectedItem && ((selectedItem.options && selectedItem.options.length > 0) || (selectedItem.nested_options && selectedItem.nested_options.length > 0))) {
+      return (
+        <div>
+          <MediumSelect
+            key={selectedItem.label} // Ensure key is unique
+            items={selectedItem.options || selectedItem.nested_options}
+            mainInfo={mainInfo}
+            setMainInfo={setMainInfo}
+          />
+        </div>
+      );
+    }
+    return null;
   };
 
   return (
     <div className="my-2">
-      <Dropdown>
-        <Dropdown.Toggle variant="primary" id="dropdown-basic">
-          {selectedItem.label}
-        </Dropdown.Toggle>
-
-        <Dropdown.Menu>
-          {items.map((item, index) => (
-            <Dropdown.Item key={index} onClick={() => handleSelect(item)}>
-              {item.label}
-            </Dropdown.Item>
-          ))}
-        </Dropdown.Menu>
-      </Dropdown>
-
-      {selectedItem && selectedItem.options && (
-        <MediumSelect
-          key={selectedItem.value || selectedItem.label} // Ensure reset by changing the key
-          items={selectedItem.options}
-          mainInfo={mainInfo} // Pass down mainInfo as well
-          setMainInfo={setMainInfo}
-        />
-      )}
+      {renderDropdown(items)}
+      {renderNestedMediumSelect()}
     </div>
   );
 }

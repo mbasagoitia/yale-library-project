@@ -6,13 +6,35 @@ import SpeciesSelect from "./call-number-selects/SpeciesSelect";
 import PublisherSelect from "./call-number-selects/PublisherSelect";
 import OpusAndNumber from "./call-number-selects/OpusAndNumber";
 import medium from "../classifications/medium";
+import fetchResourceData from "../helpers/fetchResourceData";
+import organizeData from "../helpers/organizeData";
 
 const MainInfo = ({ mainInfo, setMainInfo, formErrors }) => {
 
-  useEffect(() => {
-    // Reset nested dropdowns whenever the first menu changes
-  }, [mainInfo.medium]);
+  const [resourceData, setResourceData] = useState({
+    mediumData: [],
+    speciesData: [],
+    publisherData: [],
+  });
 
+  const organizedItems = organizeData(resourceData.mediumData);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const resources = await fetchResourceData();
+        setResourceData({ 
+          mediumData: resources[0],
+          speciesData: resources[1],
+          publisherData: resources[2]
+         });
+      } catch (error) {
+        console.error("Error fetching resource data:", error);
+      }
+    }
+    fetchData();
+  }, [])
+  
   return (
     <Container>
         <Row className="mt-4">
@@ -34,7 +56,7 @@ const MainInfo = ({ mainInfo, setMainInfo, formErrors }) => {
           <Col xs={12} md={6}>
             <div className="mb-3">
               <h3>Ensemble Type</h3>
-              <MediumSelect items={medium} mainInfo={mainInfo} setMainInfo={setMainInfo} />
+              {resourceData.mediumData.length > 0 && <MediumSelect items={organizedItems} mainInfo={mainInfo} setMainInfo={setMainInfo} />}
             </div>
           </Col>
           <Col xs={12} md={6}>
