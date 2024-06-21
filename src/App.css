@@ -32,9 +32,13 @@ h2 {
 
 .site-header a {
   font-family: 'Yale Display Roman', serif;
-  font-size: 20px;
+  font-size: clamp(0.8rem, 2vw, 1.2rem);
   text-decoration: none;
   color: white;
+}
+
+.site-title {
+  font-size: clamp(1.2rem, 3vw, 2rem);
 }
 
 .App-link {
@@ -42,21 +46,28 @@ h2 {
 }
 
 .site-nav {
-  min-height: 20vh;
+  height: 15vh;
   display: flex;
   justify-content: center;
 }
 
 .nav-content {
   width: 100%;
+  background-color: #f8f9fa;
+  padding: 1rem;
   max-width: 1200px;
-  font-size: clamp(16px, 1.2vw, 20px);
+  font-size: clamp(0.8rem, 2vw, 1rem);
   font-family: 'Mallory Compact', sans-serif;
+  z-index: 100;
 }
 
 .search-wrapper {
   position: relative;
   display: inline-block;
+}
+
+.search-wrapper input {
+  font-size: clamp(0.8rem, 2vw, 1rem);
 }
 
 input[type="text"] {
@@ -87,7 +98,7 @@ body {
   max-width: 1000px;
   margin: 0 auto;
   text-align: left;
-  padding: 3rem;
+  padding: 1rem;
   color: #222;
 }
 
@@ -137,7 +148,7 @@ body {
 .custom-dropdown-menu .dropdown-header {
   background-color: #f8f9fa;
   padding: 0.5rem 1rem;
-  font-weight: bold; 
+  font-weight: bold;
 }
 
 .additionalInfo {
@@ -274,14 +285,23 @@ body {
 }
 
 .piece-list-item {
-  font-size: 0.8rem;
+  font-size: clamp(0.6rem, 2vw, 0.8rem);
+}
+
+.piece-list-item:hover {
+  background-color: #f8f9fa;
+}
+
+.piece-list-item-link {
+  text-decoration: none;
 }
 
 .op-col {
-  gap: 2rem;
+  gap: 0.5rem;
 }
 
 .empty-tag {
+  display: none;
   background-color: #00356b;
   height: 40px;
   width: 10px;
@@ -295,12 +315,29 @@ body {
 }
 
 @media (min-width: 576px) {
+
+  .page-content {
+    padding: 3rem;
+  }
+
+  .site-nav {
+    height: 20vh;
+  }
+
   .additionalInfo .form-check {
     gap: 4rem;
   }
 
+  .empty-tag {
+    display: block;
+  }
+
   .additionalInfo .form-label {
     text-align: left;
+  }
+
+  .op-col {
+    gap: 2rem;
   }
 }
 

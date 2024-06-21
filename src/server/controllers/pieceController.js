@@ -27,9 +27,16 @@ const getSinglePiece = (req, res, db) => {
 
 const addNewPiece = (req, res, db) => {
     // Double check how the object is passed down
-    const { title, opus, number, composer_id, species_id, medium_id, publisher_id, condition_id, public_domain, additional_notes, media_type_id, location_id } = req.data;
-    const query = 'INSERT INTO pieces (title, opus, number, composer_id, species_id, medium_id, publisher_id, condition_id, public_domain, additional_notes, media_type_id, location_id) VALUES (? ? ? ? ? ? ? ? ? ? ? ?)';
-    const values = [title, opus, number, composer_id, species_id, medium_id, publisher_id, condition_id, public_domain, additional_notes, media_type_id, location_id ];
+    console.log(req.body);
+    const { title, opus, number, composer, medium, genre, publisher, callNumber, condition, publicDomain, notes, ownPhysical, ownDigital, missingParts } = req.body;
+    const query = `
+    INSERT INTO pieces (
+        title, opus, number, composer_id, species_id, medium_id, publisher_id,
+        call_number, condition_id, public_domain, additional_notes,
+        own_physical, own_digital, missing_parts
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+     
+    const values = [title, opus, number, composer.id, genre.id, medium.id, publisher.id, callNumber.join(" "), condition, publicDomain, notes, ownPhysical, ownDigital, missingParts ];
     db.query(query, values, (err, result) => {
         if (err) {
           console.error('Error executing MySQL query:', err);

@@ -6,10 +6,8 @@ const Home = () => {
     );
 };
 
-// Piece table needs to have call number!!!
+// Medium does not have id when passed to server
 // Change op. to "identifier" or something similar to account for K and BWV
-// Use dummy data to have some fake pieces and style how they will look on our holdings page
-// This will involve connecting to our own instance of mysql and changing .env variables instead of transferring data
 // Build filters by title, composer, genre, etc. of all holdings
 // Ask about what kinds of reports to generate (automatically based on date?)
 // Have a season brochure or featured pieces for this season section ***

@@ -60,7 +60,8 @@ const CatalogueNew = () => {
           const allInfo = { ...mainInfo, ...additionalInfo };
           
           console.log('Attempting to catalogue');
-          
+          console.log("ll info", allInfo);
+
           await catalogueNew(allInfo);
           setSubmitted(true);
 

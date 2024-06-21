@@ -30,11 +30,12 @@ const PieceListItem = ({ data }) => {
     const { title, opus, number, composer, publisher } = data;
 
     return (
+        <a href="#" target='_blank' rel="noreferrer" className="piece-list-item-link">
         <Card className="mb-1 piece-list-item">
             <Card.Body>
                 <Row className="align-items-center">
-                    <Col xs={1} className="empty-col"><div className="empty-tag"></div></Col>
-                    <Col xs={4} className='d-flex op-col'>
+                    <Col xs={0} sm={1} className="empty-col"><div className="empty-tag"></div></Col>
+                    <Col xs={5} sm={4} className='d-flex op-col'>
                         <p className="mb-0">{title}</p>
                         {renderOpusAndNumber() && <>{renderOpusAndNumber()}</>}
                     </Col>
@@ -49,6 +50,7 @@ const PieceListItem = ({ data }) => {
                 </Row>
             </Card.Body>
         </Card>
+        </a>
     );
 }
 

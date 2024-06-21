@@ -1,7 +1,6 @@
 import SearchFilter from "../SearchFilter";
 
 const PublisherSelect = ({ items, mainInfo, setMainInfo }) => {
-    console.log("publisher", items);
     const onItemClick = (item) => {
         setMainInfo({ ...mainInfo, publisher: item });
     }
