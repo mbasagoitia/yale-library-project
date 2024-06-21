@@ -20,17 +20,18 @@ const PieceListItem = ({ data }) => {
 
     const renderOpusAndNumber = () => {
         if (opus && number) {
-            return <span>Op./No. {opus}/{number}</span>;
+            return <span>{opus}/{number}</span>;
         } else if (opus) {
             return <span>Op. {opus}</span>;
         }
         return null;
     };
 
-    const { title, opus, number, composer, publisher } = data;
+    const { id, title, opus, number, last_name, first_name, publisher } = data;
 
     return (
-        <a href="#" target='_blank' rel="noreferrer" className="piece-list-item-link">
+        // This url should eventually be something different
+        <a href={`/browse-holdings/${id}`} className="piece-list-item-link">
         <Card className="mb-1 piece-list-item">
             <Card.Body>
                 <Row className="align-items-center">
@@ -40,11 +41,11 @@ const PieceListItem = ({ data }) => {
                         {renderOpusAndNumber() && <>{renderOpusAndNumber()}</>}
                     </Col>
                     <Col xs={4}>
-                        <p className="mb-0 text-muted">{`${composer.last_name}, ${composer.first_name}`}</p>
+                        <p className="mb-0 text-muted">{`${last_name}, ${first_name}`}</p>
                     </Col>
                     <Col xs={3}>
                         <div>
-                            {publisher && <div>{publisher.label}</div>}
+                            {publisher && <div>{publisher}</div>}
                         </div>
                     </Col>
                 </Row>

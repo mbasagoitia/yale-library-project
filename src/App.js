@@ -6,6 +6,7 @@ import Home from "./client/pages/Home.jsx";
 import ClassificationGuide from './client/pages/ClassificationGuide.jsx';
 import ManageHoldings from './client/pages/ManageHoldings.jsx';
 import Browse from './client/pages/Browse.jsx';
+import PieceInfo from './client/pages/PieceInfo.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
@@ -23,6 +24,7 @@ function App() {
         <Route path="classification-guide" element={<ClassificationGuide />} />
         <Route path="/manage-holdings" element={<ManageHoldings />} />
         <Route path="/browse-holdings" element={<Browse />} />
+        <Route path="/browse-holdings/:id" element={<PieceInfo />} />
       </Routes>
       </div>
     </div>

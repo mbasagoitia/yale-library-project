@@ -22,15 +22,23 @@ function organizeMediumData(items) {
   return Object.values(tree);
 }
 
+const publisherCategoryLabels = {
+  1: 'Major Publishers',
+  2: 'Academic and Specialist',
+  3: 'Independent Publishers',
+  4: 'Historical and Early Music'
+};
+
 function organizePublisherData(items) {
   const categories = {};
 
   items.forEach(item => {
     const { publisher_category_id, label, abbr, id } = item;
+    const categoryLabel = publisherCategoryLabels[publisher_category_id] || `Publisher Category ${publisher_category_id}`;
 
     if (!categories[publisher_category_id]) {
       categories[publisher_category_id] = {
-        label: `Publisher Category ${publisher_category_id}`,
+        label: categoryLabel,
         options: []
       };
     }
@@ -45,16 +53,27 @@ function organizePublisherData(items) {
   return Object.values(categories);
 }
 
-function organizeSpeciesData(items) {
+const speciesCategoryLabels = {
+  1: 'Orchestral',
+  2: 'Concertos',
+  3: 'Chamber Music',
+  4: 'Opera',
+  5: 'Ballet',
+  6: 'Vocal and Choral',
+  7: 'Keyboard and Instrumental',
+  8: 'Other Forms',
+};
 
+function organizeSpeciesData(items) {
   const categories = {};
 
   items.forEach(item => {
     const { species_category_id, label, abbr, id } = item;
+    const categoryLabel = speciesCategoryLabels[species_category_id] || `Species Category ${species_category_id}`;
 
     if (!categories[species_category_id]) {
       categories[species_category_id] = {
-        label: `Species Category ${species_category_id}`,
+        label: categoryLabel,
         options: []
       };
     }
@@ -68,7 +87,6 @@ function organizeSpeciesData(items) {
 
   return Object.values(categories);
 }
-
 
 export {
   organizeMediumData,

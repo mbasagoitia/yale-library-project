@@ -10,6 +10,30 @@ const getMediumData = (req, res, db) => {
       });
 };
 
+const getComposerData = (req, res, db) => {
+  const query = 'SELECT * FROM composers';
+  db.query(query, (err, rows) => {
+      if (err) {
+        console.error('Error executing MySQL query:', err);
+        res.status(500).json({ error: 'Error retrieving composer list' });
+        return;
+      }
+      res.status(200).json(rows);
+    });
+};
+
+const getSpeciesData = (req, res, db) => {
+  const query = 'SELECT * FROM species_category sc JOIN species_options so ON sc.id = so.species_category_id;';
+  db.query(query, (err, rows) => {
+      if (err) {
+        console.error('Error executing MySQL query:', err);
+        res.status(500).json({ error: 'Error retrieving species list' });
+        return;
+      }
+      res.status(200).json(rows);
+    });
+};
+
 const getPublisherData = (req, res, db) => {
     const query = 'SELECT * FROM publisher_category pc JOIN publisher_options po ON pc.id = po.publisher_category_id;';
     db.query(query, (err, rows) => {
@@ -22,20 +46,9 @@ const getPublisherData = (req, res, db) => {
       });
 };
 
-const getSpeciesData = (req, res, db) => {
-    const query = 'SELECT * FROM species_category sc JOIN species_options so ON sc.id = so.species_category_id;';
-    db.query(query, (err, rows) => {
-        if (err) {
-          console.error('Error executing MySQL query:', err);
-          res.status(500).json({ error: 'Error retrieving species list' });
-          return;
-        }
-        res.status(200).json(rows);
-      });
-};
-
 module.exports = {
     getMediumData,
-    getPublisherData,
-    getSpeciesData
+    getComposerData,
+    getSpeciesData,
+    getPublisherData
 };

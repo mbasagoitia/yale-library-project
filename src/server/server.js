@@ -4,7 +4,6 @@ const cors = require('cors');
 const path = require('path');
 const morgan = require('morgan');
 const dotenv = require("dotenv");
-const composerRouter = require("./routes/composerRouter.js");
 const pieceRouter = require("./routes/pieceRouter.js");
 const resourceRouter = require("./routes/resourceRouter.js");
 // const nodemon = require("nodemon");
@@ -46,8 +45,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// Eventually add composers route to resource router?
-app.use("/api", composerRouter);
 app.use("/api", resourceRouter);
 app.use("/api", pieceRouter);
 

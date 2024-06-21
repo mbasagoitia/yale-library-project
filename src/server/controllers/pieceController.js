@@ -1,5 +1,5 @@
 const getAllPieces = (req, res, db) => {
-    const query = 'SELECT * FROM pieces';
+    const query = 'SELECT p.*, c.last_name AS last_name, c.first_name AS first_name, s.label AS genre, m.label AS medium, mc.label AS medium_category, pub.label AS publisher, con.label AS "condition" FROM pieces p JOIN composers c ON p.composer_id = c.id JOIN species_options s ON p.species_id = s.id JOIN medium_options m ON p.medium_id = m.id JOIN medium_category mc ON m.category_id = mc.id JOIN publisher_options pub ON p.publisher_id = pub.id JOIN conditions con ON p.condition_id = con.id;';
     db.query(query, (err, result) => {
         if (err) {
           console.error('Error executing MySQL query:', err);
@@ -12,9 +12,7 @@ const getAllPieces = (req, res, db) => {
 
 const getSinglePiece = (req, res, db) => {
     const { id } = req.params;
-    // You will need to perform several joins to make sure all the necessary information is returned in the correct format
-    // See PieceListItem.jsx
-    const query = 'SELECT * FROM pieces WHERE ID = ?';
+    const query = 'SELECT p.*, c.last_name AS last_name, c.first_name AS first_name, s.label AS genre, m.label AS medium, mc.label AS medium_category, pub.label AS publisher, con.label AS "condition" FROM pieces p JOIN composers c ON p.composer_id = c.id JOIN species_options s ON p.species_id = s.id JOIN medium_options m ON p.medium_id = m.id JOIN medium_category mc ON m.category_id = mc.id JOIN publisher_options pub ON p.publisher_id = pub.id JOIN conditions con ON p.condition_id = con.id WHERE p.id = ?;';
     db.query(query, [id], (err, result) => {
         if (err) {
           console.error('Error executing MySQL query:', err);
@@ -26,8 +24,6 @@ const getSinglePiece = (req, res, db) => {
 };
 
 const addNewPiece = (req, res, db) => {
-    // Double check how the object is passed down
-    console.log(req.body);
     const { title, opus, number, composer, medium, genre, publisher, callNumber, condition, publicDomain, notes, ownPhysical, ownDigital, missingParts } = req.body;
     const query = `
     INSERT INTO pieces (
@@ -35,7 +31,7 @@ const addNewPiece = (req, res, db) => {
         call_number, condition_id, public_domain, additional_notes,
         own_physical, own_digital, missing_parts
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-     
+
     const values = [title, opus, number, composer.id, genre.id, medium.id, publisher.id, callNumber.join(" "), condition, publicDomain, notes, ownPhysical, ownDigital, missingParts ];
     db.query(query, values, (err, result) => {
         if (err) {
