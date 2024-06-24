@@ -24,15 +24,16 @@ const getSinglePiece = (req, res, db) => {
 };
 
 const addNewPiece = (req, res, db) => {
-    const { title, opus, number, composer, medium, genre, publisher, callNumber, condition, publicDomain, notes, ownPhysical, ownDigital, missingParts } = req.body;
+    const { title, identifierLabel, identifierValue, number, composer, medium, genre, publisher, callNumber, condition, publicDomain, notes, ownPhysical, ownDigital, missingParts } = req.body;
+    const finalIdentifierValue = identifierValue === "" ? null : identifierValue;
     const query = `
     INSERT INTO pieces (
-        title, opus, number, composer_id, species_id, medium_id, publisher_id,
+        title, identifier_label, identifier_value, number, composer_id, species_id, medium_id, publisher_id,
         call_number, condition_id, public_domain, additional_notes,
         own_physical, own_digital, missing_parts
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
-    const values = [title, opus, number, composer.id, genre.id, medium.id, publisher.id, callNumber.join(" "), condition, publicDomain, notes, ownPhysical, ownDigital, missingParts ];
+    const values = [title, identifierLabel, finalIdentifierValue, number, composer.id, genre.id, medium.id, publisher.id, callNumber.join(" "), condition, publicDomain, notes, ownPhysical, ownDigital, missingParts ];
     db.query(query, values, (err, result) => {
         if (err) {
           console.error('Error executing MySQL query:', err);
@@ -45,16 +46,16 @@ const addNewPiece = (req, res, db) => {
 
 const editPiece = (req, res, db) => {
   const { id } = req.params;
-  const { title, opus, number, composer_id, species_id, medium_id, publisher_id, condition_id, public_domain, additional_notes, media_type_id, location_id } = req.body;
+  const { title, identifierLabel, identifierValue, number, composer_id, species_id, medium_id, publisher_id, condition_id, public_domain, additional_notes, media_type_id, location_id } = req.body;
 
   const query = `
       UPDATE pieces
-      SET title = ?, opus = ?, number = ?, composer_id = ?, species_id = ?, medium_id = ?,
+      SET title = ?, identifier_label = ?, identifier_value = ?, number = ?, composer_id = ?, species_id = ?, medium_id = ?,
           publisher_id = ?, condition_id = ?, public_domain = ?, additional_notes = ?,
           media_type_id = ?, location_id = ?
       WHERE ID = ?
   `;
-  const values = [title, opus, number, composer_id, species_id, medium_id, publisher_id, condition_id, public_domain, additional_notes, media_type_id, location_id, id];
+  const values = [title, identifierLabel, identifierValue, number, composer_id, species_id, medium_id, publisher_id, condition_id, public_domain, additional_notes, media_type_id, location_id, id];
 
   db.query(query, values, (err, result) => {
       if (err) {

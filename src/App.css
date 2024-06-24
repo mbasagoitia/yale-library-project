@@ -190,7 +190,8 @@ body {
 
 .popup {
   max-height: 80%;
-  max-width: 800px;
+  min-width: 250px;
+  max-width: 1000px;
   margin: 0 2rem;
   overflow-y: scroll;
   text-align: center;
@@ -274,6 +275,10 @@ body {
   background-color: #002b50;
 }
 
+.reopen-dropdown-btn {
+  border-radius: var(--bs-border-radius) 0 0 var(--bs-border-radius);
+}
+
 .alert-success {
   background-color: rgba(51, 102, 153, 0.5);
   color: #00356b;
@@ -343,6 +348,6 @@ body {
 
 @media (min-width: 768px) {
   .modal-content {
-    padding: 0 5rem 3rem 5rem;
+    padding: 0 3rem 3rem 3rem;
   }
 }

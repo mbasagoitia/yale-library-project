@@ -18,16 +18,16 @@ const PieceListItem = ({ data }) => {
 
     // Dummy data for testing and styling purposes
 
-    const renderOpusAndNumber = () => {
-        if (opus && number) {
-            return <span>{opus}/{number}</span>;
-        } else if (opus) {
-            return <span>Op. {opus}</span>;
+    const renderIdAndNumber = () => {
+        if (identifier_value && number) {
+            return <span>{identifier_value}/{number}</span>;
+        } else if (identifier_value) {
+            return <span>{identifier_label} {identifier_value}</span>;
         }
         return null;
     };
 
-    const { id, title, opus, number, last_name, first_name, publisher } = data;
+    const { id, title, identifier_label, identifier_value, number, last_name, first_name, publisher } = data;
 
     return (
         // This url should eventually be something different
@@ -38,7 +38,7 @@ const PieceListItem = ({ data }) => {
                     <Col xs={0} sm={1} className="empty-col"><div className="empty-tag"></div></Col>
                     <Col xs={5} sm={4} className='d-flex op-col'>
                         <p className="mb-0">{title}</p>
-                        {renderOpusAndNumber() && <>{renderOpusAndNumber()}</>}
+                        {renderIdAndNumber() && <>{renderIdAndNumber()}</>}
                     </Col>
                     <Col xs={4}>
                         <p className="mb-0 text-muted">{`${last_name}, ${first_name}`}</p>

@@ -4,6 +4,13 @@ import Dropdown from 'react-bootstrap/Dropdown';
 function MediumSelect({ items, mainInfo, setMainInfo }) {
   const [selectedItem, setSelectedItem] = useState(items[0]);
 
+  useEffect(() => {
+    setMainInfo(prevMainInfo => ({
+      ...prevMainInfo,
+      medium: selectedItem
+    }));
+  }, [selectedItem])
+
   const handleSelect = (item) => {
     setSelectedItem(item);
     setMainInfo(prevMainInfo => ({

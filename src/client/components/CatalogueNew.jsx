@@ -8,7 +8,8 @@ import catalogueNew from "../helpers/catalogueNew.js";
 const CatalogueNew = () => {
   const [mainInfo, setMainInfo] = useState({
     title: "",
-    opus: "",
+    identifierLabel: "Op.",
+    identifierValue: "",
     number: "",
     medium: {},
     composer: {},

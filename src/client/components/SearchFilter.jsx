@@ -73,12 +73,12 @@ const SearchFilter = ({ items, onItemClick }) => {
       </div>
       {isDropdownOpen && (
         <Dropdown.Menu className="custom-dropdown-menu" show>
-          {filteredItems.map((category) => (
-            <div key={category.label}>
+          {filteredItems.map((category, idx) => (
+            <div key={category.label + idx}>
               <Dropdown.Header>{category.label}</Dropdown.Header>
               {category.options.map((item, idx) => (
                 <Dropdown.Item
-                  key={`${idx + item.value}`}
+                  key={`${idx + item.label}`}
                   onClick={() => handleDropdownItemClick(item)}
                   active={isItemSelected(item)}
                 >

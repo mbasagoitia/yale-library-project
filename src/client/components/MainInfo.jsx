@@ -4,7 +4,7 @@ import MediumSelect from './call-number-selects/MediumSelect';
 import ComposerSelect from "./call-number-selects/ComposerSelect";
 import SpeciesSelect from "./call-number-selects/SpeciesSelect";
 import PublisherSelect from "./call-number-selects/PublisherSelect";
-import OpusAndNumber from "./call-number-selects/OpusAndNumber";
+import IdAndNumber from "./call-number-selects/IdAndNumber";
 import fetchResourceData from "../helpers/fetchResourceData";
 import { organizeMediumData, organizePublisherData, organizeSpeciesData } from "../helpers/organizeData";
 
@@ -41,7 +41,7 @@ const MainInfo = ({ mainInfo, setMainInfo, formErrors }) => {
     <Container>
         <Row className="mt-4">
         <div id="required-fields-warning" className={`${formErrors.requiredFieldsWarning ? "feedback my-2" : "d-none"}`}>{formErrors.requiredFieldsWarning}</div>
-          <Col md={8}>
+          <Col md={6}>
             <Form.Group controlId="titleInput">
               <Form.Label>Title:</Form.Label>
               <Form.Control 
@@ -51,7 +51,7 @@ const MainInfo = ({ mainInfo, setMainInfo, formErrors }) => {
               />
             </Form.Group>
           </Col>
-          <OpusAndNumber mainInfo={mainInfo} setMainInfo={setMainInfo} />
+          <IdAndNumber mainInfo={mainInfo} setMainInfo={setMainInfo} />
         </Row>
         <Row className="mt-4">
         <div id="required-call-fields-warning" className={`${formErrors.requiredCallFieldsWarning ? "feedback my-2" : "d-none"}`}>{formErrors.requiredCallFieldsWarning}</div>

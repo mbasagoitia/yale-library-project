@@ -6,8 +6,7 @@ const Home = () => {
     );
 };
 
-// Medium does not have id when passed to server
-// Change op. to "identifier" or something similar to account for K and BWV
+// Add option for custom composer and cutter number
 // Build filters by title, composer, genre, etc. of all holdings
 // Ask about what kinds of reports to generate (automatically based on date?)
 // Have a season brochure or featured pieces for this season section ***
