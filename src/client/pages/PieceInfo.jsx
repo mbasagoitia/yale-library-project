@@ -29,6 +29,15 @@ const PieceInfo = () => {
     return null;
   };
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = (`0${date.getMonth() + 1}`).slice(-2);
+    const day = (`0${date.getDate()}`).slice(-2);
+  
+    return `${year}-${month}-${day}`;
+  };
+
   return (
     <div>
       <Container>
@@ -41,7 +50,7 @@ const PieceInfo = () => {
               </Col>
               <Col sm={6}>
                 <p><strong>Publisher:</strong> <span className="text-muted">{data.publisher}</span></p>
-                <p><strong>Acquisition Date:</strong> <span className="text-muted">Unknown</span></p>
+                <p><strong>Acquisition Date:</strong> <span className="text-muted">{data.acquisition_date? formatDate(data.acquisition_date) : "Unknown"}</span></p>
                 <p><strong>Call Number:</strong> <span className="text-muted">{data.call_number}</span></p>
               </Col>
             </Row>

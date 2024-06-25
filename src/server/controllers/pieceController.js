@@ -26,14 +26,26 @@ const getSinglePiece = (req, res, db) => {
 const addNewPiece = (req, res, db) => {
     const { title, identifierLabel, identifierValue, number, composer, medium, genre, publisher, callNumber, condition, publicDomain, notes, ownPhysical, ownDigital, missingParts } = req.body;
     const finalIdentifierValue = identifierValue === "" ? null : identifierValue;
+
+    // This should probably be a separate middleware function
+    const getFormattedDate = () => {
+      const date = new Date();
+      const year = date.getFullYear();
+      const month = (`0${date.getMonth() + 1}`).slice(-2);
+      const day = (`0${date.getDate()}`).slice(-2);
+    
+      return `${year}-${month}-${day}`;
+    };
+
+    const acquisitionDate = getFormattedDate();
     const query = `
     INSERT INTO pieces (
         title, identifier_label, identifier_value, number, composer_id, species_id, medium_id, publisher_id,
         call_number, condition_id, public_domain, additional_notes,
-        own_physical, own_digital, missing_parts
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        own_physical, own_digital, missing_parts, acquisition_date
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
-    const values = [title, identifierLabel, finalIdentifierValue, number, composer.id, genre.id, medium.id, publisher.id, callNumber.join(" "), condition, publicDomain, notes, ownPhysical, ownDigital, missingParts ];
+    const values = [title, identifierLabel, finalIdentifierValue, number, composer.id, genre.id, medium.id, publisher.id, callNumber.join(" "), condition, publicDomain, notes, ownPhysical, ownDigital, missingParts, acquisitionDate ];
     db.query(query, values, (err, result) => {
         if (err) {
           console.error('Error executing MySQL query:', err);

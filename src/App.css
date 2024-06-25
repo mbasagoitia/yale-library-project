@@ -329,6 +329,16 @@ body {
   padding: 6px 12px;
 }
 
+.id-num-col {
+  width: 30%;
+}
+
+.open-advanced-filter {
+  font-size: 0.8rem;
+  text-align: right;
+  cursor: pointer;
+}
+
 @media (min-width: 500px) {
   .modal-content {
     padding: 0 2rem 2rem 2rem;

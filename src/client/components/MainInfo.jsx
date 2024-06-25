@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import MediumSelect from './call-number-selects/MediumSelect';
 import ComposerSelect from "./call-number-selects/ComposerSelect";
@@ -41,17 +41,20 @@ const MainInfo = ({ mainInfo, setMainInfo, formErrors }) => {
     <Container>
         <Row className="mt-4">
         <div id="required-fields-warning" className={`${formErrors.requiredFieldsWarning ? "feedback my-2" : "d-none"}`}>{formErrors.requiredFieldsWarning}</div>
-          <Col sm={6}>
+          <Col md={6}>
             <Form.Group controlId="titleInput">
               <Form.Label>Title:</Form.Label>
               <Form.Control 
                 type="text" 
                 value={mainInfo.title} 
-                onChange={(e) => setMainInfo({ ...mainInfo, title: e.target.value })} 
+                onChange={(e) => setMainInfo({ ...mainInfo, title: e.target.value })}
+                placeholder="e.g. Symphony no. 2 in D major" 
               />
             </Form.Group>
           </Col>
-          <IdAndNumber mainInfo={mainInfo} setMainInfo={setMainInfo} />
+          <Col md={6}>
+            <IdAndNumber mainInfo={mainInfo} setMainInfo={setMainInfo} />
+          </Col>
         </Row>
         <Row className="mt-4">
         <div id="required-call-fields-warning" className={`${formErrors.requiredCallFieldsWarning ? "feedback my-2" : "d-none"}`}>{formErrors.requiredCallFieldsWarning}</div>

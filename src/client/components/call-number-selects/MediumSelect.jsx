@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 
+// Pass in a handle setInfo function instead of setMainInfo to account for the filter
 function MediumSelect({ items, mainInfo, setMainInfo }) {
   const [selectedItem, setSelectedItem] = useState(items[0]);
 
   useEffect(() => {
-    setMainInfo(prevMainInfo => ({
-      ...prevMainInfo,
-      medium: selectedItem
-    }));
+    // This will need to be edited too
+    if (mainInfo) {
+      setMainInfo(prevMainInfo => ({
+        ...prevMainInfo,
+        medium: selectedItem
+      }));
+    }
   }, [selectedItem])
 
   const handleSelect = (item) => {

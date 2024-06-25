@@ -46,8 +46,8 @@ const IdAndNumber = ({ mainInfo, setMainInfo }) => {
   };
 
   return (
-    <>
-      <Col sm={2} className="my-2 my-md-0 d-flex flex-column justify-content-end">
+    <div className="d-flex justify-content-between mt-4 mt-md-0">
+      <div className="d-flex flex-column justify-content-end id-num-col">
         {otherIdInputRequired ? (
           <>
             <label htmlFor="identifierLabelInput" className="form-label">Identifier:</label>
@@ -84,8 +84,8 @@ const IdAndNumber = ({ mainInfo, setMainInfo }) => {
             </Dropdown.Menu>
           </Dropdown>
         )}
-      </Col>
-      <Col sm={2} className="mb-2 mb-md-0">
+      </div>
+      <div className="id-num-col">
         <label htmlFor="identifierValueInput" className="form-label">Value: <Tooltip content={<ValueTooltip />} /></label>
         <input
           type="number"
@@ -94,8 +94,8 @@ const IdAndNumber = ({ mainInfo, setMainInfo }) => {
           value={mainInfo.identifierValue}
           onChange={handleIdValueChange}
         />
-      </Col>
-      <Col sm={2}>
+      </div>
+      <div className="id-num-col">
         <label htmlFor="numberInput" className="form-label">No: <Tooltip content={<NumberTooltip />} /></label>
         <input
           type="number"
@@ -104,8 +104,8 @@ const IdAndNumber = ({ mainInfo, setMainInfo }) => {
           value={mainInfo.number}
           onChange={handleNumberChange}
         />
-      </Col>
-    </>
+      </div>
+    </div>
   );
 };
 
