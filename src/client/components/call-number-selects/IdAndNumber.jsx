@@ -1,5 +1,9 @@
 import { useState } from "react";
 import { Col, Dropdown, ButtonGroup, Button, InputGroup, FormControl } from "react-bootstrap";
+import Tooltip from "../Tooltip.jsx";
+import ValueTooltip from "../tooltip-contents/ValueTooltip";
+import NumberTooltip from "../tooltip-contents/NumberTooltip";
+
 
 const IdAndNumber = ({ mainInfo, setMainInfo }) => {
   const identifiers = ["Op.", "KV", "BWV", "Hob", "HWV", "D.", "Other"];
@@ -43,7 +47,7 @@ const IdAndNumber = ({ mainInfo, setMainInfo }) => {
 
   return (
     <>
-      <Col md={2} className="my-2 my-md-0 d-flex flex-column justify-content-end">
+      <Col sm={2} className="my-2 my-md-0 d-flex flex-column justify-content-end">
         {otherIdInputRequired ? (
           <>
             <label htmlFor="identifierLabelInput" className="form-label">Identifier:</label>
@@ -64,7 +68,7 @@ const IdAndNumber = ({ mainInfo, setMainInfo }) => {
           </>
         ) : (
           <Dropdown show={isDropdownOpen} onToggle={() => setIsDropdownOpen(!isDropdownOpen)}>
-            <Dropdown.Toggle id="dropdown-basic">
+            <Dropdown.Toggle id="dropdown-basic" className="identifier-dropdown">
               {selectedItem || identifiers[0]}
             </Dropdown.Toggle>
             <Dropdown.Menu className="identifier-dropdown-menu">
@@ -81,18 +85,18 @@ const IdAndNumber = ({ mainInfo, setMainInfo }) => {
           </Dropdown>
         )}
       </Col>
-      <Col md={2} className="mb-2 mb-md-0">
-        <label htmlFor="identifierValueInput" className="form-label">Value:</label>
+      <Col sm={2} className="mb-2 mb-md-0">
+        <label htmlFor="identifierValueInput" className="form-label">Value: <Tooltip content={<ValueTooltip />} /></label>
         <input
-          type="text"
+          type="number"
           className="form-control"
           id="identifierValueInput"
           value={mainInfo.identifierValue}
           onChange={handleIdValueChange}
         />
       </Col>
-      <Col md={2}>
-        <label htmlFor="numberInput" className="form-label">No:</label>
+      <Col sm={2}>
+        <label htmlFor="numberInput" className="form-label">No: <Tooltip content={<NumberTooltip />} /></label>
         <input
           type="number"
           className="form-control"

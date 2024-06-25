@@ -41,7 +41,7 @@ const MainInfo = ({ mainInfo, setMainInfo, formErrors }) => {
     <Container>
         <Row className="mt-4">
         <div id="required-fields-warning" className={`${formErrors.requiredFieldsWarning ? "feedback my-2" : "d-none"}`}>{formErrors.requiredFieldsWarning}</div>
-          <Col md={6}>
+          <Col sm={6}>
             <Form.Group controlId="titleInput">
               <Form.Label>Title:</Form.Label>
               <Form.Control 

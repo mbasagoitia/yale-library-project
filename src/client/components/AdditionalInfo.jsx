@@ -1,7 +1,8 @@
 import React from "react";
 import { FormGroup, FormCheck, FormLabel, FormControl, Button, Row, Col, Container } from "react-bootstrap";
 import conditions from "./conditions";
-import TooltipIcon from "./PDTooltipIcon";
+import Tooltip from "./Tooltip";
+import PDTooltip from "./tooltip-contents/PDTooltip";
 
 const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setFormErrors }) => {
 
@@ -60,7 +61,7 @@ const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setForm
             </FormGroup>
 
             <FormGroup as={Row} className="mt-2 lg-border">
-                <FormLabel as="legend" column sm={4} className="my-2 d-flex align-items-center justify-content-between">Is this piece in the public domain? <TooltipIcon /></FormLabel>
+                <FormLabel as="legend" column sm={4} className="my-2">Is this piece in the public domain? <Tooltip content={<PDTooltip />} /></FormLabel>
                 <Col sm={8} className="my-2">
                     <FormCheck 
                         type="radio" 
