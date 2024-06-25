@@ -7,6 +7,7 @@ const Home = () => {
 };
 
 // Add some placeholders on the catalogue new form
+// Add acquisition date to database when adding new piece, return with info for display
 // Build filters by title, composer, genre, etc. of all holdings
 // Ask about what kinds of reports to generate (automatically based on date?)
 // Have a season brochure or featured pieces for this season section ***
