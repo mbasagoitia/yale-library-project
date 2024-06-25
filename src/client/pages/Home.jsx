@@ -6,7 +6,7 @@ const Home = () => {
     );
 };
 
-// Add option for custom composer and cutter number
+// Add some placeholders on the catalogue new form
 // Build filters by title, composer, genre, etc. of all holdings
 // Ask about what kinds of reports to generate (automatically based on date?)
 // Have a season brochure or featured pieces for this season section ***

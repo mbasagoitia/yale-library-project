@@ -22,6 +22,22 @@ const getComposerData = (req, res, db) => {
     });
 };
 
+const addComposer = (req, res, db) => {
+  const { lastName, firstName, cutterNumber } = req.body;
+
+  const query = 'INSERT INTO composers (last_name, first_name, cutter_number) VALUES (?, ?, ?)';
+  const values = [lastName, firstName, cutterNumber];
+
+  db.query(query, values, (err, rows) => {
+    if (err) {
+      console.error('Error executing MySQL query:', err);
+      res.status(500).json({ error: 'Error inserting new composer' });
+      return;
+    }
+    res.status(200).json(rows);
+  })
+}
+
 const getSpeciesData = (req, res, db) => {
   const query = 'SELECT * FROM species_category sc JOIN species_options so ON sc.id = so.species_category_id;';
   db.query(query, (err, rows) => {
@@ -49,6 +65,7 @@ const getPublisherData = (req, res, db) => {
 module.exports = {
     getMediumData,
     getComposerData,
+    addComposer,
     getSpeciesData,
     getPublisherData
 };

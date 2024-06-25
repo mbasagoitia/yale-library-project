@@ -106,7 +106,7 @@ body {
   position: relative;
 }
 
-.catalogueNew button, .form-control, .form-label, .form-check, .dropdown-item {
+.catalogueNew button, .form-control, .form-label, .form-check, .dropdown-item, .new-composer-open {
   font-size: clamp(0.8rem, 4vw, 1rem);
 }
 
@@ -311,6 +311,13 @@ body {
   height: 40px;
   width: 10px;
   border-radius: var(--bs-border-radius) 0 0 var(--bs-border-radius);
+}
+
+.new-composer-open {
+  text-decoration: underline;
+  color: #002b50;
+  text-align: left;
+  cursor: pointer;
 }
 
 @media (min-width: 500px) {

@@ -1,5 +1,5 @@
 const express = require('express');
-const { getMediumData, getComposerData, getSpeciesData, getPublisherData } = require('../controllers/resourceController.js');
+const { getMediumData, getComposerData, addComposer, getSpeciesData, getPublisherData } = require('../controllers/resourceController.js');
 
 const router = express.Router();
 
@@ -21,6 +21,11 @@ router.get('/species-data', (req, res) => {
 router.get('/publisher-data', (req, res) => {
   const db = req.db;
   getPublisherData(req, res, db);
+});
+
+router.post('/composer-data', (req, res) => {
+  const db = req.db;
+  addComposer(req, res, db);
 });
 
 module.exports = router;
