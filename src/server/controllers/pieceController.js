@@ -24,7 +24,9 @@ const getSinglePiece = (req, res, db) => {
 };
 
 const addNewPiece = (req, res, db) => {
-    const { title, identifierLabel, identifierValue, number, composer, medium, genre, publisher, callNumber, condition, publicDomain, notes, ownPhysical, ownDigital, missingParts } = req.body;
+    const { title, identifierLabel, identifierValue, number, composer, medium, genre, publisher, callNumber, condition, publicDomain, notes, ownPhysical, ownDigital, missingParts } = req.body.info;
+    const mainInfo = req.body.mainInfo;
+    const additionalInfo = req.body.additionalInfo;
     const finalIdentifierValue = identifierValue === "" ? null : identifierValue;
 
     // This should probably be a separate middleware function
@@ -52,7 +54,8 @@ const addNewPiece = (req, res, db) => {
           res.status(500).json({ error: 'Error adding new piece' });
           return;
         }
-        res.status(200).json(result);
+        // Obviously this information needs to be available from getAllPieces.. refactor soon
+        res.status(200).json({result: result, mainInfo: mainInfo, additionalInfo: additionalInfo});
       });
 };
 

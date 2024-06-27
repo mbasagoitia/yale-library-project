@@ -11,6 +11,7 @@ const Home = () => {
 // Manually change acquisition date to unknown or whatever the date is for what we already own
 // On browse page add option to go back to basic filter
 // Organize browse page into components
+// Make holdings list scrollable
 // Make the search bar functional
 // Ask about what kinds of reports to generate (automatically based on date?)
 // Have a season brochure or featured pieces for this season section ***

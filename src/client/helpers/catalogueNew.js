@@ -1,4 +1,4 @@
-const catalogueNew = (info) => {
+const catalogueNew = (info, mainInfo, additionalInfo) => {
     const apiUrl = "http://localhost:5000/api/holdings-data";
     
     return fetch(apiUrl, {
@@ -7,7 +7,11 @@ const catalogueNew = (info) => {
             "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify(info)
+        body: JSON.stringify({
+            info: info,
+            mainInfo: mainInfo,
+            additionalInfo: additionalInfo
+        })
     })
     .then(res => {
         if (!res.ok) {

@@ -61,9 +61,11 @@ const CatalogueNew = () => {
           const allInfo = { ...mainInfo, ...additionalInfo };
           
           console.log('Attempting to catalogue');
-          console.log("ll info", allInfo);
+          console.log("all info", allInfo);
 
-          await catalogueNew(allInfo);
+          // Also passing state value of mainInfo and additionalInfo for later use in update/PUT requests
+          // May need to completely refactor...
+          await catalogueNew(allInfo, mainInfo, additionalInfo);
           setSubmitted(true);
 
           // Reset form
