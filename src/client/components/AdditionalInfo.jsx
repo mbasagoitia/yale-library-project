@@ -24,6 +24,11 @@ const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setForm
         setAdditionalInfo(prevState => ({ ...prevState, publicDomain: pd }));
     }
 
+    const handleScansUrl = (e) => {
+        const url = e.target.value;
+        setAdditionalInfo(prevState => ({ ...prevState, scansUrl: url }))
+    }
+
     const handleAdditionalNotes = (e) => {
         const notesValue = e.target.value;
         setAdditionalInfo(prevState => ({ ...prevState, notes: notesValue }));
@@ -57,6 +62,17 @@ const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setForm
                         checked={additionalInfo.ownDigital}
                         onChange={() => handleMediaTypeChange('ownDigital')}
                     />
+                            
+                    {additionalInfo.ownDigital && (
+                        <>
+                        <FormLabel className="mt-4 mb-2 w-100 text-left">Link to Digital Scans:</FormLabel>
+                        <FormControl 
+                            as="input" 
+                            onChange={(e) => handleScansUrl(e)}
+                            value={additionalInfo.scansUrl}
+                        />
+                        </>
+                    )}
                 </Col>
             </FormGroup>
 

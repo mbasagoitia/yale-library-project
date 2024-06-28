@@ -21,6 +21,7 @@ const CatalogueNew = () => {
   const [additionalInfo, setAdditionalInfo] = useState({
     ownPhysical: true,
     ownDigital: false,
+    scansUrl: "",
     ownScore: true,
     publicDomain: true,
     condition: 1,
@@ -65,7 +66,7 @@ const CatalogueNew = () => {
 
           // Also passing state value of mainInfo and additionalInfo for later use in update/PUT requests
           // May need to completely refactor...
-          await catalogueNew(allInfo, mainInfo, additionalInfo);
+          await catalogueNew(allInfo);
           setSubmitted(true);
 
           // Reset form
@@ -83,6 +84,7 @@ const CatalogueNew = () => {
           setAdditionalInfo({
             ownPhysical: true,
             ownDigital: false,
+            scansUrl: "",
             publicDomain: true,
             condition: 1,
             missingParts: false,

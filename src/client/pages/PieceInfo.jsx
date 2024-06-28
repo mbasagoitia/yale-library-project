@@ -11,7 +11,7 @@ const PieceInfo = () => {
       try {
         const res = await fetch(`http://localhost:5000/api/holdings-data/${id}`);
         const data = await res.json();
-        setData(data[0]); // Assuming data is an array and you want the first item
+        setData(data[0]);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -58,6 +58,7 @@ const PieceInfo = () => {
               <Col sm={6}>
                 <p><strong>Public Domain:</strong> <span className="text-muted">{data.public_domain ? "Yes" : "No"}</span></p>
                 <p><strong>String Scans:</strong> <span className="text-muted">{data.own_digital ? "Yes" : "No"}</span></p>
+                {data.own_digital && <a href={data.scans_url} target="_blank" rel="noreferrer">Link to digital scans</a>}
               </Col>
               <Col sm={6}>
                 <p><strong>Condition:</strong> <span className="text-muted">{data.condition}</span></p>
