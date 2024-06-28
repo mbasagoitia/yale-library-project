@@ -1,5 +1,5 @@
 const getMediumData = (req, res, db) => {
-    const query = 'SELECT mo.id, mc.label AS category_label, mo.label AS option_label, mo.value AS option_value, mo.parent_id AS parent_id, nested_mo.label AS nested_option_label, nested_mo.value AS nested_option_value FROM  medium_category mc JOIN  medium_options mo ON mc.id = mo.parent_id LEFT JOIN medium_options nested_mo ON mo.value = nested_mo.parent_id AND mo.parent_id = "6" ORDER BY mo.value, nested_mo.value;';
+    const query = 'SELECT mo.id, mc.label AS category_label, mo.label AS option_label, mo.value AS option_value, mo.parent_id AS parent_id, nested_mo.id AS nested_option_id, nested_mo.label AS nested_option_label, nested_mo.value AS nested_option_value FROM  medium_category mc JOIN  medium_options mo ON mc.id = mo.parent_id LEFT JOIN medium_options nested_mo ON mo.value = nested_mo.parent_id AND mo.parent_id = "6" ORDER BY mo.value, nested_mo.value;';
     db.query(query, (err, rows) => {
         if (err) {
           console.error('Error executing MySQL query:', err);

@@ -72,7 +72,8 @@ const CatalogueNew = () => {
           // Reset form
           setMainInfo({
             title: "",
-            opus: "",
+            identifierLabel: "Op.",
+            identifierValue: "",
             number: "",
             medium: {},
             composer: {},
@@ -85,6 +86,7 @@ const CatalogueNew = () => {
             ownPhysical: true,
             ownDigital: false,
             scansUrl: "",
+            ownScore: true,
             publicDomain: true,
             condition: 1,
             missingParts: false,
