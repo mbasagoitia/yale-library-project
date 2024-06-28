@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import HoldingsFilters from "./HoldingsFilters";
 import PieceListItem from "./PieceListItem";
 import fetchHoldings from "../helpers/fetchHoldings";
 

@@ -110,10 +110,14 @@ body {
   font-size: clamp(0.8rem, 4vw, 1rem);
 }
 
-.catalogueNew .dropdown-toggle {
+.catalogueNew .dropdown-toggle, .holdings-filter .dropdown-toggle {
   color: white;
   width: 100%;
   white-space: normal;
+}
+
+.holdings-filter .search-wrapper {
+  width: 100%;
 }
 
 .catalogueNew .dropdown-menu {
@@ -333,7 +337,7 @@ body {
   width: 30%;
 }
 
-.open-advanced-filter {
+.open-advanced-filter, .open-basic-filter {
   font-size: 0.8rem;
   text-align: right;
   cursor: pointer;
