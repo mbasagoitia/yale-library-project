@@ -4,11 +4,9 @@ import MainInfo from "./MainInfo";
 import AdditionalInfo from "./AdditionalInfo";
 import generateCallNum from "../helpers/generateCallNum.js";
 import splitString from "../helpers/splitString.js";
-import fetchSingleResourceData from "../helpers/fetchSingleResourceData.js";
-import {
-  organizeMediumData,
-  organizePublisherData,
-  organizeSpeciesData } from "../helpers/organizeData.js";
+import fetchResourceData from "../helpers/fetchResourceData";
+import findObjectById from "../helpers/filterMediumData.js";
+import { organizeMediumData, organizePublisherData, organizeSpeciesData } from "../helpers/organizeData";
 import { useParams } from 'react-router-dom';
 
 const CatalogueNew = ({ initialData, onSubmit }) => {
@@ -35,50 +33,13 @@ const CatalogueNew = ({ initialData, onSubmit }) => {
     notes: ""
   });
 
-  useEffect(() => {
-    // Honestly I think it might be easier to fetch all resource data as before on form, then use front end logic to filter out based on id...
-    const fetchData = async () => {
-        try {
-            const singleResourceData = await fetchSingleResourceData(initialData.medium_id, initialData.composer_id, initialData.species_id, initialData.publisher_id);
-            return singleResourceData;
-        } catch (error) {
-            console.error('Error fetching data:', error);
-            return null;
-        }
-    };
+  const [resourceData, setResourceData] = useState({
+    mediumData: [],
+    speciesData: [],
+    publisherData: [],
+  });
 
-    if (initialData) {
-        fetchData().then(singleResourceData => {
-            if (!singleResourceData) return;
-
-            setMainInfo({
-                title: initialData.title,
-                identifierLabel: initialData.identifier_label,
-                identifierValue: initialData.identifier_value,
-                number: initialData.number,
-                medium: organizeMediumData(singleResourceData.mediumData),
-                composer: singleResourceData.composerData,
-                genre: organizeSpeciesData(singleResourceData.speciesData),
-                publisher: organizePublisherData(singleResourceData.publisherData),
-                callNumber: splitString(initialData.call_number)
-            });
-
-            setAdditionalInfo({
-                ownPhysical: initialData.own_physical === 1,
-                ownDigital: initialData.own_digital === 1,
-                scansUrl: initialData.scans_url,
-                publicDomain: initialData.public_domain === 1,
-                condition: initialData.condition_id,
-                missingParts: initialData.missing_parts === 1,
-                notes: initialData.additional_notes
-            });
-        }).catch(error => {
-            console.error('Error processing data:', error);
-        });
-    }
-}, [initialData]);
-
-
+  const [dataReady, setDataReady] = useState(false);
   const [formErrors, setFormErrors] = useState({});
   const [showCall, setShowCall] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -86,6 +47,56 @@ const CatalogueNew = ({ initialData, onSubmit }) => {
   const isEmpty = (obj) => {
     return Object.keys(obj).length === 0;
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const resources = await fetchResourceData();
+
+        const organizedMediumData = organizeMediumData(resources[0]);
+        const organizedSpeciesData = organizeSpeciesData(resources[1]);
+        const organizedPublisherData = organizePublisherData(resources[2]);
+
+        setResourceData({ 
+          mediumData: organizedMediumData,
+          speciesData: organizedSpeciesData,
+          publisherData: organizedPublisherData
+         });
+      } catch (error) {
+        console.error("Error fetching resource data:", error);
+      }
+    }
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (initialData && resourceData.mediumData.length) {
+      console.log("initial data", initialData);
+      setMainInfo({
+        title: initialData.title,
+        identifierLabel: initialData.identifier_label,
+        identifierValue: initialData.identifier_value,
+        number: initialData.number,
+        medium: findObjectById(resourceData.mediumData, initialData.medium_id),
+        composer: "",
+        genre: "",
+        publisher: "",
+        callNumber: splitString(initialData.call_number)
+      });
+
+      setAdditionalInfo({
+        ownPhysical: initialData.own_physical === 1,
+        ownDigital: initialData.own_digital === 1,
+        scansUrl: initialData.scans_url,
+        publicDomain: initialData.public_domain === 1,
+        condition: initialData.condition_id,
+        missingParts: initialData.missing_parts === 1,
+        notes: initialData.additional_notes
+      });
+
+      setDataReady(true);
+    }
+  }, [initialData, resourceData]);
 
   const handleShowCall = () => {
     const { medium, composer, genre, publisher } = mainInfo;
@@ -157,7 +168,6 @@ const CatalogueNew = ({ initialData, onSubmit }) => {
   };
 
   useEffect(() => {
-
     if (formErrors.requiredFieldsWarning) {
       scrollToRequiredWarning();
     }
@@ -172,6 +182,7 @@ const CatalogueNew = ({ initialData, onSubmit }) => {
       warning.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
+
   const scrollToCallWarning = () => {
     const warning = document.querySelector("#required-call-fields-warning");
     if (warning) {
@@ -183,17 +194,21 @@ const CatalogueNew = ({ initialData, onSubmit }) => {
     <div className="catalogueNew">
       <h1>New Piece Information</h1>
       <form onSubmit={handleSubmit}>
-        <MainInfo mainInfo={mainInfo} setMainInfo={setMainInfo} formErrors={formErrors} />
-        <Button onClick={handleShowCall} className="btn btn-primary my-2">Generate Call Number</Button>
-        {showCall && (
-          <div className="alert alert-success d-flex flex-column align-items-center my-4" role="alert">
-            <h4>Call Number:</h4>
-            <div>
-              {mainInfo.callNumber?.map((line, index) => (
-                <div className="callNumLine" key={index}>{line}</div>
-              ))}
-            </div>
-          </div>
+        {initialData && dataReady && (
+          <>
+            <MainInfo resourceData={resourceData} mainInfo={mainInfo} setMainInfo={setMainInfo} formErrors={formErrors} />
+            <Button onClick={handleShowCall} className="btn btn-primary my-2">Generate Call Number</Button>
+            {showCall && (
+              <div className="alert alert-success d-flex flex-column align-items-center my-4" role="alert">
+                <h4>Call Number:</h4>
+                <div>
+                  {mainInfo.callNumber?.map((line, index) => (
+                    <div className="callNumLine" key={index}>{line}</div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </>
         )}
         <div className="mt-4">
           <AdditionalInfo additionalInfo={additionalInfo} setAdditionalInfo={setAdditionalInfo} formErrors={formErrors} setFormErrors={setFormErrors} />

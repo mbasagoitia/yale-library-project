@@ -1,26 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 
-// Pass in a handle setInfo function instead of setMainInfo to account for the filter
 function MediumSelect({ items, mainInfo, setMainInfo }) {
-  const [selectedItem, setSelectedItem] = useState(items[0]);
+  // Now the bug is that each nested dropdown defaults to mainInfo.medium... hmmm
+  // Also need to finish resetting composer, genre and publisher if there is intial data
+  const [selectedItem, setSelectedItem] = useState(mainInfo.medium || items[0]);
 
   useEffect(() => {
-    // This will need to be edited too
-    if (mainInfo) {
+    if (!mainInfo.medium) {
       setMainInfo(prevMainInfo => ({
         ...prevMainInfo,
         medium: selectedItem
       }));
     }
-  }, [selectedItem])
+  }, [selectedItem]);
 
   const handleSelect = (item) => {
     setSelectedItem(item);
-    setMainInfo(prevMainInfo => ({
-      ...prevMainInfo,
-      medium: item
-    }));
   };
 
   const renderDropdown = (options) => (
@@ -28,7 +24,6 @@ function MediumSelect({ items, mainInfo, setMainInfo }) {
       <Dropdown.Toggle variant="primary" id="dropdown-basic">
         {selectedItem.label}
       </Dropdown.Toggle>
-
       <Dropdown.Menu>
         {options.map((item, index) => (
           <Dropdown.Item key={index} onClick={() => handleSelect(item)}>
@@ -38,7 +33,6 @@ function MediumSelect({ items, mainInfo, setMainInfo }) {
       </Dropdown.Menu>
     </Dropdown>
   );
-
 
   const renderNestedMediumSelect = () => {
     if (selectedItem && ((selectedItem.options && selectedItem.options.length > 0) || (selectedItem.nested_options && selectedItem.nested_options.length > 0))) {

@@ -5,38 +5,8 @@ import ComposerSelect from "./call-number-selects/ComposerSelect";
 import SpeciesSelect from "./call-number-selects/SpeciesSelect";
 import PublisherSelect from "./call-number-selects/PublisherSelect";
 import IdAndNumber from "./call-number-selects/IdAndNumber";
-import fetchResourceData from "../helpers/fetchResourceData";
-import { organizeMediumData, organizePublisherData, organizeSpeciesData } from "../helpers/organizeData";
 
-const MainInfo = ({ mainInfo, setMainInfo, formErrors }) => {
-
-  const [resourceData, setResourceData] = useState({
-    mediumData: [],
-    speciesData: [],
-    publisherData: [],
-  });
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Here is where we can filter stuff out when updating... can we move this to the parent component so we only have to fetch once?
-        const resources = await fetchResourceData();
-
-        const organizedMediumData = organizeMediumData(resources[0]);
-        const organizedSpeciesData = organizeSpeciesData(resources[1]);
-        const organizedPublisherData = organizePublisherData(resources[2]);
-
-        setResourceData({ 
-          mediumData: organizedMediumData,
-          speciesData: organizedSpeciesData,
-          publisherData: organizedPublisherData
-         });
-      } catch (error) {
-        console.error("Error fetching resource data:", error);
-      }
-    }
-    fetchData();
-  }, [])
+const MainInfo = ({ resourceData, mainInfo, setMainInfo, formErrors }) => {
 
   return (
     <Container>
