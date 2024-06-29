@@ -55,7 +55,7 @@ const HoldingsFilter = () => {
                     <div className="holdings-filter mt-4">
                         <Row className="mb-4">
                             <Col md={6}>
-                                <p>Title</p>
+                                <Form.Label>Title</Form.Label>
                                 <Form className="mb-4">
                                     <div className="search-wrapper">
                                         <FormControl type="text" placeholder="Symphony no. 1" className="mr-sm-2 rounded-pill" />
@@ -66,7 +66,7 @@ const HoldingsFilter = () => {
                                 </Form>
                             </Col>
                             <Col md={6}>
-                                <p>Composer</p>
+                                <Form.Label>Composer</Form.Label>
                                 <Form>
                                     <div className="search-wrapper">
                                         <FormControl type="text" placeholder="Shostakovich" className="mr-sm-2 rounded-pill" />
@@ -78,20 +78,20 @@ const HoldingsFilter = () => {
                             </Col>
                             <Col md={6}>
                             <div className="mb-4 mt-4 mt-md-0">
-                                <p>Publisher</p>
+                                <Form.Label>Publisher</Form.Label>
                                 {resourceData.publisherData.length > 0 &&<PublisherSelect items={resourceData.publisherData} />}
                             </div>
                             </Col>
                             <Col md={6}>
                             <div>
-                                <p>Genre</p>
+                                <Form.Label>Genre</Form.Label>
                                 {resourceData.speciesData.length > 0 &&<SpeciesSelect items={resourceData.speciesData} />}    
                             </div>
                             </Col>
                         </Row>
                         <Row className="mb-4">
                             <Col md={6}>
-                                <p>Ensemble Type</p>
+                                <Form.Label>Ensemble Type</Form.Label>
                                 {resourceData.mediumData.length > 0 &&<MediumSelect items={resourceData.mediumData} />}
                             </Col>
                         </Row>

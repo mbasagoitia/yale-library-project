@@ -54,11 +54,15 @@ h2 {
 .nav-content {
   width: 100%;
   background-color: #f8f9fa;
-  padding: 1rem;
+  padding: 1rem 2rem;
   max-width: 1200px;
   font-size: clamp(0.8rem, 2vw, 1rem);
   font-family: 'Mallory Compact', sans-serif;
   z-index: 100;
+}
+
+.nav-content .navbar-toggler {
+  margin-right: calc(100% - 2rem);
 }
 
 .search-wrapper {
@@ -98,7 +102,7 @@ body {
   max-width: 1000px;
   margin: 0 auto;
   text-align: left;
-  padding: 1rem;
+  padding: 2rem 1rem;
   color: #222;
 }
 
@@ -114,6 +118,7 @@ body {
   color: white;
   width: 100%;
   white-space: normal;
+  font-size: clamp(0.8rem, 4vw, 1rem);
 }
 
 .holdings-filter .search-wrapper {
@@ -194,7 +199,7 @@ body {
 
 .popup {
   max-height: 80%;
-  min-width: 250px;
+  min-width: 280px;
   max-width: 1000px;
   margin: 0 2rem;
   overflow-y: scroll;
@@ -329,7 +334,7 @@ body {
   padding: 6px 6px;
 }
 
-#identifierValueInput {
+#identifierValueInput, #titleInput {
   padding: 6px 12px;
 }
 
@@ -339,7 +344,7 @@ body {
 
 .open-advanced-filter, .open-basic-filter {
   font-size: 0.8rem;
-  text-align: right;
+  text-align: left;
   cursor: pointer;
 }
 
@@ -373,6 +378,10 @@ body {
 
   .op-col {
     gap: 2rem;
+  }
+
+  .open-advanced-filter, .open-basic-filter {
+    text-align: right;
   }
 }
 
