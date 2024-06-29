@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import CatalogueNew from "../components/CatalogueNew";
+import catalogueNew from "../helpers/catalogueNew.js";
 
 
 const ManageHoldings = () => {
@@ -36,7 +37,7 @@ const ManageHoldings = () => {
                 <div className="popup">
                     <span className="close-button" onClick={handleCloseModal}>×</span>
                         <div className="modal-content">
-                        <CatalogueNew />
+                        <CatalogueNew onSubmit={catalogueNew} />
                     </div>
                 </div>
             </div>

@@ -3,9 +3,16 @@ import { Button } from "react-bootstrap";
 import MainInfo from "./MainInfo";
 import AdditionalInfo from "./AdditionalInfo";
 import generateCallNum from "../helpers/generateCallNum.js";
-import catalogueNew from "../helpers/catalogueNew.js";
+import splitString from "../helpers/splitString.js";
+import fetchSingleResourceData from "../helpers/fetchSingleResourceData.js";
+import {
+  organizeMediumData,
+  organizePublisherData,
+  organizeSpeciesData } from "../helpers/organizeData.js";
+import { useParams } from 'react-router-dom';
 
-const CatalogueNew = () => {
+const CatalogueNew = ({ initialData, onSubmit }) => {
+  const { id } = useParams();
   const [mainInfo, setMainInfo] = useState({
     title: "",
     identifierLabel: "Op.",
@@ -22,12 +29,55 @@ const CatalogueNew = () => {
     ownPhysical: true,
     ownDigital: false,
     scansUrl: "",
-    ownScore: true,
     publicDomain: true,
     condition: 1,
     missingParts: false,
     notes: ""
   });
+
+  useEffect(() => {
+    // Honestly I think it might be easier to fetch all resource data as before on form, then use front end logic to filter out based on id...
+    const fetchData = async () => {
+        try {
+            const singleResourceData = await fetchSingleResourceData(initialData.medium_id, initialData.composer_id, initialData.species_id, initialData.publisher_id);
+            return singleResourceData;
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            return null;
+        }
+    };
+
+    if (initialData) {
+        fetchData().then(singleResourceData => {
+            if (!singleResourceData) return;
+
+            setMainInfo({
+                title: initialData.title,
+                identifierLabel: initialData.identifier_label,
+                identifierValue: initialData.identifier_value,
+                number: initialData.number,
+                medium: organizeMediumData(singleResourceData.mediumData),
+                composer: singleResourceData.composerData,
+                genre: organizeSpeciesData(singleResourceData.speciesData),
+                publisher: organizePublisherData(singleResourceData.publisherData),
+                callNumber: splitString(initialData.call_number)
+            });
+
+            setAdditionalInfo({
+                ownPhysical: initialData.own_physical === 1,
+                ownDigital: initialData.own_digital === 1,
+                scansUrl: initialData.scans_url,
+                publicDomain: initialData.public_domain === 1,
+                condition: initialData.condition_id,
+                missingParts: initialData.missing_parts === 1,
+                notes: initialData.additional_notes
+            });
+        }).catch(error => {
+            console.error('Error processing data:', error);
+        });
+    }
+}, [initialData]);
+
 
   const [formErrors, setFormErrors] = useState({});
   const [showCall, setShowCall] = useState(false);
@@ -64,9 +114,12 @@ const CatalogueNew = () => {
           console.log('Attempting to catalogue');
           console.log("all info", allInfo);
 
-          // Also passing state value of mainInfo and additionalInfo for later use in update/PUT requests
-          // May need to completely refactor...
-          await catalogueNew(allInfo);
+          if (id) {
+            await onSubmit(allInfo, id);
+          } else {
+            await onSubmit(allInfo);
+          }
+
           setSubmitted(true);
 
           // Reset form

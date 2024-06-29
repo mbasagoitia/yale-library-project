@@ -16,8 +16,6 @@ const PieceListItem = ({ data }) => {
     // in the title, or are chamber music. Number alone won't be listed here, only opus alone if significant
     // If both are present, it is assumed that the piece is part of a collection and will be listed as op 18/1
 
-    // Dummy data for testing and styling purposes
-
     const renderIdAndNumber = () => {
         if (identifier_value && number) {
             return <span>{identifier_value}/{number}</span>;

@@ -323,7 +323,7 @@ body {
   border-radius: var(--bs-border-radius) 0 0 var(--bs-border-radius);
 }
 
-.new-composer-open {
+.new-composer-open, .edit-text {
   text-decoration: underline;
   color: #002b50;
   text-align: left;

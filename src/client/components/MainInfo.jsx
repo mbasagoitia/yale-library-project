@@ -19,6 +19,7 @@ const MainInfo = ({ mainInfo, setMainInfo, formErrors }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // Here is where we can filter stuff out when updating... can we move this to the parent component so we only have to fetch once?
         const resources = await fetchResourceData();
 
         const organizedMediumData = organizeMediumData(resources[0]);

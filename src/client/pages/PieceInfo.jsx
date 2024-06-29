@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Container, Row, Col } from 'react-bootstrap';
+import CatalogueNew from "../components/CatalogueNew";
+import updatePiece from "../helpers/updatePiece.js";
 
 const PieceInfo = () => {
   const { id } = useParams();
@@ -12,6 +14,7 @@ const PieceInfo = () => {
         const res = await fetch(`http://localhost:5000/api/holdings-data/${id}`);
         const data = await res.json();
         setData(data[0]);
+        console.log(data[0]);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -19,6 +22,29 @@ const PieceInfo = () => {
 
     fetchData();
   }, [id]);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    };
+
+    const handleOpenModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleEscKeyPress = (e) => {
+        if (e.key === "Escape") {
+            setIsModalOpen(false);
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener("keydown", handleEscKeyPress);
+        return () => {
+            document.removeEventListener("keydown", handleEscKeyPress);
+        };
+    }, []);
 
   const renderIdAndNumber = () => {
     if (data?.identifier_value && data?.number) {
@@ -44,6 +70,18 @@ const PieceInfo = () => {
         {data && (
           <>
             <h1 className="mb-4">{data.title} {renderIdAndNumber()}</h1>
+            {!isModalOpen ? (
+            <span onClick={handleOpenModal} className="edit-text">Edit</span>
+        ) : (
+            <div className="modal-overlay">
+                <div className="popup">
+                    <span className="close-button" onClick={handleCloseModal}>×</span>
+                        <div className="modal-content">
+                        <CatalogueNew initialData={data} onSubmit={updatePiece} />
+                    </div>
+                </div>
+            </div>
+        )}
             <Row className="mb-3">
               <Col sm={6}>
                 <p className="lead mb-0">{`${data.first_name} ${data.last_name}`}</p>
