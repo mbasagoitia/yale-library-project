@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 
-function MediumSelect({ items, mainInfo, setMainInfo }) {
-  // Now the bug is that each nested dropdown defaults to mainInfo.medium... hmmm
-  // Also need to finish resetting composer, genre and publisher if there is intial data
-  const [selectedItem, setSelectedItem] = useState(mainInfo.medium || items[0]);
+function MediumSelect({ items, mainInfo, setMainInfo, initialSelectionMade }) {
+  const [selectedItem, setSelectedItem] = useState(items[0]);
 
   useEffect(() => {
     if (!mainInfo.medium) {
@@ -13,7 +11,13 @@ function MediumSelect({ items, mainInfo, setMainInfo }) {
         medium: selectedItem
       }));
     }
-  }, [selectedItem]);
+  }, []);
+
+  useEffect(() => {
+    if (mainInfo.medium && !initialSelectionMade) {
+      setSelectedItem(mainInfo.medium);
+    }
+  }, []);
 
   const handleSelect = (item) => {
     setSelectedItem(item);
@@ -43,6 +47,7 @@ function MediumSelect({ items, mainInfo, setMainInfo }) {
             items={selectedItem.options || selectedItem.nested_options}
             mainInfo={mainInfo}
             setMainInfo={setMainInfo}
+            initialSelectionMade={true}
           />
         </div>
       );
