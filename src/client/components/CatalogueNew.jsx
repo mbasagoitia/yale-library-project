@@ -5,10 +5,7 @@ import AdditionalInfo from "./AdditionalInfo";
 import generateCallNum from "../helpers/generateCallNum.js";
 import splitString from "../helpers/splitString.js";
 import fetchResourceData from "../helpers/fetchResourceData";
-import findObjectById from "../helpers/filterMediumData.js";
-import findComposerById from "../helpers/filterComposerData.js";
-import findGenreById from "../helpers/filterSpeciesData.js";
-import findPublisherById from "../helpers/filterPublisherData.js";
+import { findMediumById, findComposerById, findGenreById, findPublisherById } from "../helpers/filterData.js";
 import { organizeMediumData, organizePublisherData, organizeSpeciesData } from "../helpers/organizeData";
 import { useParams } from 'react-router-dom';
 
@@ -21,7 +18,7 @@ const CatalogueNew = ({ initialData, onSubmit }) => {
     speciesData: [],
     publisherData: [],
   });
-  
+
   const [mainInfo, setMainInfo] = useState({
     title: "",
     identifierLabel: "Op.",
@@ -51,7 +48,7 @@ const CatalogueNew = ({ initialData, onSubmit }) => {
         identifierLabel: initialData.identifier_label,
         identifierValue: initialData.identifier_value,
         number: initialData.number,
-        medium: findObjectById(resourceData.mediumData, initialData.medium_id),
+        medium: findMediumById(resourceData.mediumData, initialData.medium_id),
         composer: findComposerById(resourceData.composerData, initialData.composer_id),
         genre: findGenreById(resourceData.speciesData, initialData.species_id),
         publisher: findPublisherById(resourceData.publisherData, initialData.publisher_id),
@@ -97,15 +94,12 @@ const CatalogueNew = ({ initialData, onSubmit }) => {
           speciesData: organizedSpeciesData,
           publisherData: organizedPublisherData
          });
-         console.log(organizedSpeciesData);
       } catch (error) {
         console.error("Error fetching resource data:", error);
       }
     }
     fetchData();
   }, []);
-
-  // Set these directly in mainInfo using || based on whether initial data is present or not
 
   const handleShowCall = () => {
     const { medium, composer, genre, publisher } = mainInfo;

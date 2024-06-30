@@ -21,6 +21,12 @@ function MediumSelect({ items, mainInfo, setMainInfo, initialSelectionMade }) {
 
   const handleSelect = (item) => {
     setSelectedItem(item);
+    setMainInfo({
+      ...mainInfo,
+      medium: (item.nested_options && item.nested_options.length > 0 ? item.nested_options[0]
+        : (item.options && item.options.length > 0 ? item.options[0]
+        : item))
+    });
   };
 
   const renderDropdown = (options) => (
