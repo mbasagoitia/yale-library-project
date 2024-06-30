@@ -1,20 +1,19 @@
 function splitString(inputString) {
-
     const parts = inputString.split(' ');
 
     if (parts.length < 4) {
         throw new Error('Input string does not have enough parts');
     }
 
-    if (parts.length > 3) {
-        parts[2] = parts.slice(2, 4).join(' ');
+    if (parts.length > 4) {
+        parts[2] = parts.slice(2, parts.length - 1).join(' ');
     }
 
     const resultArray = [
         parts[0],
         parts[1],
         parts[2],
-        parts[3]
+        parts[parts.length - 1]
     ];
 
     return resultArray;

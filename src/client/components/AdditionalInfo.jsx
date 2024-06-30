@@ -4,7 +4,7 @@ import conditions from "./conditions";
 import Tooltip from "./Tooltip";
 import PDTooltip from "./tooltip-contents/PDTooltip";
 
-const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setFormErrors }) => {
+const AdditionalInfo = ({ mode, additionalInfo, setAdditionalInfo, formErrors, setFormErrors }) => {
 
     const handleConditionSelect = (id) => {
         setAdditionalInfo(prevState => ({ ...prevState, condition: id }));
@@ -148,7 +148,7 @@ const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setForm
 
             <FormGroup as={Row} className="mt-4">
                 <Col sm={{ span: 10, offset: 1 }}>
-                    <Button type="submit">Catalogue</Button>
+                    <Button type="submit">{mode === "new" ? "Catalogue" : "Update"}</Button>
                 </Col>
             </FormGroup>
         </Container>

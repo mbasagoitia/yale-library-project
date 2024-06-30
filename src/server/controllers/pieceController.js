@@ -59,16 +59,18 @@ const addNewPiece = (req, res, db) => {
 
 const editPiece = (req, res, db) => {
   const { id } = req.params;
-  const { title, identifierLabel, identifierValue, number, composer_id, species_id, medium_id, publisher_id, condition_id, public_domain, additional_notes, media_type_id, location_id } = req.body;
+  const { title, identifierLabel, identifierValue, number, composer, medium, genre, publisher, callNumber, condition, publicDomain, notes, ownPhysical, ownDigital, missingParts, scansUrl } = req.body.info;
+  const finalIdentifierValue = identifierValue === "" ? null : identifierValue;
+  const mediumId = medium.id || medium.options[0].id;
 
   const query = `
       UPDATE pieces
       SET title = ?, identifier_label = ?, identifier_value = ?, number = ?, composer_id = ?, species_id = ?, medium_id = ?,
-          publisher_id = ?, condition_id = ?, public_domain = ?, additional_notes = ?,
-          media_type_id = ?, location_id = ?
+          publisher_id = ?, call_number = ?, condition_id = ?, public_domain = ?, additional_notes = ?, own_physical = ?, own_digital = ?,
+          missing_parts = ?, scans_url = ?
       WHERE ID = ?
   `;
-  const values = [title, identifierLabel, identifierValue, number, composer_id, species_id, medium_id, publisher_id, condition_id, public_domain, additional_notes, media_type_id, location_id, id];
+  const values = [title, identifierLabel, finalIdentifierValue, number, composer.id, genre.id, mediumId, publisher.id, callNumber.join(" "), condition, publicDomain, notes, ownPhysical, ownDigital, missingParts, scansUrl, id];
 
   db.query(query, values, (err, result) => {
       if (err) {

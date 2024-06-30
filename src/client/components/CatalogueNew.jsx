@@ -71,7 +71,7 @@ const CatalogueNew = ({ mode, initialData, onSubmit }) => {
 
   const [dataReady, setDataReady] = useState(false);
   const [formErrors, setFormErrors] = useState({});
-  const [showCall, setShowCall] = useState(false);
+  const [showCall, setShowCall] = useState(mode === "edit" ? true : false);
   const [submitted, setSubmitted] = useState(false);
 
   const isEmpty = (obj) => {
@@ -214,7 +214,7 @@ const CatalogueNew = ({ mode, initialData, onSubmit }) => {
           </>
         )}
         <div className="mt-4">
-          <AdditionalInfo additionalInfo={additionalInfo} setAdditionalInfo={setAdditionalInfo} formErrors={formErrors} setFormErrors={setFormErrors} />
+          <AdditionalInfo mode={mode} additionalInfo={additionalInfo} setAdditionalInfo={setAdditionalInfo} formErrors={formErrors} setFormErrors={setFormErrors} />
         </div>
       </form>
     </div>
