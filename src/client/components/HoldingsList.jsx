@@ -9,7 +9,6 @@ const HoldingsList = () => {
         const fetchData = async () => {
             try {
                 const data = await fetchHoldings();
-                console.log("holdings", data);
                 setItems(data);
             } catch (error) {
                 console.error("Failed to fetch holdings data:", error);

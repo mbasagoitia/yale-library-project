@@ -16,16 +16,13 @@ const PieceListItem = ({ data }) => {
     // in the title, or are chamber music. Number alone won't be listed here, only opus alone if significant
     // If both are present, it is assumed that the piece is part of a collection and will be listed as op 18/1
 
-    const renderIdAndNumber = () => {
-        if (identifier_value && number) {
-            return <span>{identifier_value}/{number}</span>;
-        } else if (identifier_value) {
-            return <span>{identifier_label} {identifier_value}</span>;
-        }
-        return null;
-    };
+    let { id, title, identifier_label, identifier_value, number, last_name, first_name, publisher } = data;
 
-    const { id, title, identifier_label, identifier_value, number, last_name, first_name, publisher } = data;
+    if (identifier_value && number) {
+        title += ` ${identifier_value}/${number}`;
+    } else if (identifier_value) {
+        title += ` ${identifier_label} ${identifier_value}`;
+    }
 
     return (
         // This url should eventually be something different
@@ -36,7 +33,6 @@ const PieceListItem = ({ data }) => {
                     <Col xs={0} sm={1} className="empty-col"><div className="empty-tag"></div></Col>
                     <Col xs={5} sm={4} className='d-flex op-col'>
                         <p className="mb-0">{title}</p>
-                        {renderIdAndNumber() && <>{renderIdAndNumber()}</>}
                     </Col>
                     <Col xs={4}>
                         <p className="mb-0 text-muted">{`${last_name}, ${first_name}`}</p>

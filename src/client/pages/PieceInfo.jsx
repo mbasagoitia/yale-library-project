@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { Container, Row, Col } from 'react-bootstrap';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import CatalogueNew from "../components/CatalogueNew";
 import updatePiece from "../helpers/updatePiece.js";
+import deletePiece from "../helpers/deletePiece.js";
 
 const PieceInfo = () => {
   const { id } = useParams();
   const [data, setData] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,28 +25,48 @@ const PieceInfo = () => {
     fetchData();
   }, [id]);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
-    };
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    try {
+      await deletePiece(id);
+      setIsDeleteModalOpen(false);
+      // Somewhere here you will need to display some kind of success message
+      navigate("/browse-holdings");
 
-    const handleOpenModal = () => {
-        setIsModalOpen(true);
-    };
+    } catch (error) {
+        console.error('Catalogue error:', error);
+    }
+  }
 
-    const handleEscKeyPress = (e) => {
-        if (e.key === "Escape") {
-            setIsModalOpen(false);
-        }
-    };
+  const handleCloseModal = () => {
+      setIsEditModalOpen(false);
+      setIsDeleteModalOpen(false);
+  };
 
-    useEffect(() => {
-        document.addEventListener("keydown", handleEscKeyPress);
-        return () => {
-            document.removeEventListener("keydown", handleEscKeyPress);
-        };
-    }, []);
+  const handleOpenEditModal = () => {
+      setIsEditModalOpen(true);
+  };
+
+  const handleOpenDeleteModal = () => {
+      setIsDeleteModalOpen(true);
+  };
+
+  const handleEscKeyPress = (e) => {
+      if (e.key === "Escape") {
+          setIsEditModalOpen(false);
+          setIsDeleteModalOpen(false);
+      }
+  };
+
+  useEffect(() => {
+      document.addEventListener("keydown", handleEscKeyPress);
+      return () => {
+          document.removeEventListener("keydown", handleEscKeyPress);
+      };
+  }, []);
 
   const renderIdAndNumber = () => {
     if (data?.identifier_value && data?.number) {
@@ -70,18 +92,31 @@ const PieceInfo = () => {
         {data && (
           <>
             <h1 className="mb-4">{data.title} {renderIdAndNumber()}</h1>
-            {!isModalOpen ? (
-            <span onClick={handleOpenModal} className="edit-text">Edit</span>
-        ) : (
-            <div className="modal-overlay">
-                <div className="popup">
-                    <span className="close-button" onClick={handleCloseModal}>×</span>
-                        <div className="modal-content">
-                        <CatalogueNew mode={"edit"} initialData={data} onSubmit={updatePiece} />
-                    </div>
-                </div>
-            </div>
-        )}
+              <div>
+                <span onClick={handleOpenEditModal} className="edit-text">Edit</span>
+                <span onClick={handleOpenDeleteModal} className="delete-text">Delete</span>
+              </div>
+              {isEditModalOpen && (
+              <div className="modal-overlay">
+                  <div className="popup">
+                      <span className="close-button" onClick={handleCloseModal}>×</span>
+                          <div className="modal-content">
+                          <CatalogueNew mode={"edit"} initialData={data} onSubmit={updatePiece} />
+                      </div>
+                  </div>
+              </div>
+              )}
+              {isDeleteModalOpen && (
+              <div className="modal-overlay">
+                  <div className="popup">
+                      <span className="close-button" onClick={handleCloseModal}>×</span>
+                          <div className="modal-content">
+                          <p>Are you sure you want to delete this item?</p>
+                          <Button className="btn btn-primary align-self-center" onClick={handleDelete}>Delete</Button>
+                      </div>
+                  </div>
+              </div>
+              )}
             <Row className="mb-3">
               <Col sm={6}>
                 <p className="lead mb-0">{`${data.first_name} ${data.last_name}`}</p>

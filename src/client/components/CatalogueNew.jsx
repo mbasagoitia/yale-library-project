@@ -124,9 +124,6 @@ const CatalogueNew = ({ mode, initialData, onSubmit }) => {
       } else {
         try {
           const allInfo = { ...mainInfo, ...additionalInfo };
-          
-          console.log('Attempting to catalogue');
-          console.log("all info", allInfo);
 
           if (id) {
             await onSubmit(allInfo, id);
