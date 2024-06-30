@@ -2,9 +2,8 @@ import { useState, useEffect } from "react";
 import ComposerFilter from "../ComposerFilter";
 import AddComposer from "../AddComposer";
 
-const ComposerSelect = ({ mainInfo, setMainInfo }) => {
+const ComposerSelect = ({ items, mainInfo, setMainInfo }) => {
 
-    const [composerList, setComposerList] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleCloseModal = () => {
@@ -28,26 +27,7 @@ const ComposerSelect = ({ mainInfo, setMainInfo }) => {
         return () => {
             document.removeEventListener("keydown", handleEscKeyPress);
         };
-    }, []);
-
-    useEffect(() => {
-        fetch("http://localhost:5000/api/composer-data", {
-            credentials: "include"
-        })
-        .then((res) => {
-            if (!res.ok) {
-                throw new Error("Network response error");
-            }
-            return res.json();
-        })
-        .then((data) => {
-            setComposerList(data);
-        })
-        .catch((error) => {
-            console.error("Fetch error:", error);
-        });
-    }, []);
-    
+    }, []);  
     
     const onItemClick = (item) => {
         setMainInfo({ ...mainInfo, composer: item });
@@ -57,7 +37,7 @@ const ComposerSelect = ({ mainInfo, setMainInfo }) => {
         <div className="composer-select-area d-flex flex-column">
         {!isModalOpen ? (
         <>
-        <ComposerFilter items={composerList} onItemClick={onItemClick} />
+        <ComposerFilter initialValue={mainInfo.composer ? `${mainInfo.composer.last_name}, ${mainInfo.composer.first_name}` : ""} items={items} onItemClick={onItemClick} />
         <span onClick={handleOpenModal} className="new-composer-open mt-2">Don't see composer?</span>
         </>
         ) : (

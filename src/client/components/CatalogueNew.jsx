@@ -6,11 +6,22 @@ import generateCallNum from "../helpers/generateCallNum.js";
 import splitString from "../helpers/splitString.js";
 import fetchResourceData from "../helpers/fetchResourceData";
 import findObjectById from "../helpers/filterMediumData.js";
+import findComposerById from "../helpers/filterComposerData.js";
+import findGenreById from "../helpers/filterSpeciesData.js";
+import findPublisherById from "../helpers/filterPublisherData.js";
 import { organizeMediumData, organizePublisherData, organizeSpeciesData } from "../helpers/organizeData";
 import { useParams } from 'react-router-dom';
 
 const CatalogueNew = ({ initialData, onSubmit }) => {
   const { id } = useParams();
+
+  const [resourceData, setResourceData] = useState({
+    mediumData: [],
+    composerData: [],
+    speciesData: [],
+    publisherData: [],
+  });
+  
   const [mainInfo, setMainInfo] = useState({
     title: "",
     identifierLabel: "Op.",
@@ -33,54 +44,17 @@ const CatalogueNew = ({ initialData, onSubmit }) => {
     notes: ""
   });
 
-  const [resourceData, setResourceData] = useState({
-    mediumData: [],
-    speciesData: [],
-    publisherData: [],
-  });
-
-  const [dataReady, setDataReady] = useState(false);
-  const [formErrors, setFormErrors] = useState({});
-  const [showCall, setShowCall] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-
-  const isEmpty = (obj) => {
-    return Object.keys(obj).length === 0;
-  };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const resources = await fetchResourceData();
-
-        const organizedMediumData = organizeMediumData(resources[0]);
-        const organizedSpeciesData = organizeSpeciesData(resources[1]);
-        const organizedPublisherData = organizePublisherData(resources[2]);
-
-        setResourceData({ 
-          mediumData: organizedMediumData,
-          speciesData: organizedSpeciesData,
-          publisherData: organizedPublisherData
-         });
-      } catch (error) {
-        console.error("Error fetching resource data:", error);
-      }
-    }
-    fetchData();
-  }, []);
-
   useEffect(() => {
     if (initialData && resourceData.mediumData.length) {
-      console.log("initial data", initialData);
       setMainInfo({
         title: initialData.title,
         identifierLabel: initialData.identifier_label,
         identifierValue: initialData.identifier_value,
         number: initialData.number,
         medium: findObjectById(resourceData.mediumData, initialData.medium_id),
-        composer: "",
-        genre: "",
-        publisher: "",
+        composer: findComposerById(resourceData.composerData, initialData.composer_id),
+        genre: findGenreById(resourceData.speciesData, initialData.species_id),
+        publisher: findPublisherById(resourceData.publisherData, initialData.publisher_id),
         callNumber: splitString(initialData.call_number)
       });
 
@@ -97,6 +71,41 @@ const CatalogueNew = ({ initialData, onSubmit }) => {
       setDataReady(true);
     }
   }, [initialData, resourceData]);
+
+  const [dataReady, setDataReady] = useState(false);
+  const [formErrors, setFormErrors] = useState({});
+  const [showCall, setShowCall] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  const isEmpty = (obj) => {
+    return Object.keys(obj).length === 0;
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const resources = await fetchResourceData();
+
+        const organizedMediumData = organizeMediumData(resources[0]);
+        const composerData = resources[1];
+        const organizedSpeciesData = organizeSpeciesData(resources[2]);
+        const organizedPublisherData = organizePublisherData(resources[3]);
+
+        setResourceData({ 
+          mediumData: organizedMediumData,
+          composerData: composerData,
+          speciesData: organizedSpeciesData,
+          publisherData: organizedPublisherData
+         });
+         console.log(organizedSpeciesData);
+      } catch (error) {
+        console.error("Error fetching resource data:", error);
+      }
+    }
+    fetchData();
+  }, []);
+
+  // Set these directly in mainInfo using || based on whether initial data is present or not
 
   const handleShowCall = () => {
     const { medium, composer, genre, publisher } = mainInfo;

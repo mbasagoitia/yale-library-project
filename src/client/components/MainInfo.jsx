@@ -38,7 +38,7 @@ const MainInfo = ({ resourceData, mainInfo, setMainInfo, formErrors }) => {
           <Col xs={12} md={6}>
             <div className="mb-3">
               <h3>Composer</h3>
-              <ComposerSelect mainInfo={mainInfo} setMainInfo={setMainInfo} />
+              <ComposerSelect items={resourceData.composerData} mainInfo={mainInfo} setMainInfo={setMainInfo} />
             </div>
           </Col>
         </Row>

@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { InputGroup, FormControl, Dropdown } from 'react-bootstrap';
 
-const ComposerFilter = ({ items, onItemClick }) => {
+const ComposerFilter = ({ initialValue, items, onItemClick }) => {
   const [filteredItems, setFilteredItems] = useState([]);
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState(initialValue || '');
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);

@@ -7,7 +7,7 @@ const PublisherSelect = ({ items, mainInfo, setMainInfo }) => {
 
     return (
         <>
-        <SearchFilter items={items} onItemClick={onItemClick} />
+        <SearchFilter initialValue={mainInfo.publisher ? mainInfo.publisher.label : ""} items={items} onItemClick={onItemClick} />
         </>
     )
 }
