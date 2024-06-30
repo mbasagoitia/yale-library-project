@@ -37,7 +37,7 @@ const ComposerSelect = ({ items, mainInfo, setMainInfo }) => {
         <div className="composer-select-area d-flex flex-column">
         {!isModalOpen ? (
         <>
-        <ComposerFilter initialValue={mainInfo.composer ? `${mainInfo.composer.last_name}, ${mainInfo.composer.first_name}` : ""} items={items} onItemClick={onItemClick} />
+        <ComposerFilter initialValue={mainInfo.composer.id ? `${mainInfo.composer.last_name}, ${mainInfo.composer.first_name}` : ''} items={items} onItemClick={onItemClick} />
         <span onClick={handleOpenModal} className="new-composer-open mt-2">Don't see composer?</span>
         </>
         ) : (

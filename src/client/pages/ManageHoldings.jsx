@@ -37,7 +37,7 @@ const ManageHoldings = () => {
                 <div className="popup">
                     <span className="close-button" onClick={handleCloseModal}>×</span>
                         <div className="modal-content">
-                        <CatalogueNew onSubmit={catalogueNew} />
+                        <CatalogueNew mode={"new"} onSubmit={catalogueNew} />
                     </div>
                 </div>
             </div>

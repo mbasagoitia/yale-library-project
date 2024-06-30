@@ -9,7 +9,7 @@ import { findMediumById, findComposerById, findGenreById, findPublisherById } fr
 import { organizeMediumData, organizePublisherData, organizeSpeciesData } from "../helpers/organizeData";
 import { useParams } from 'react-router-dom';
 
-const CatalogueNew = ({ initialData, onSubmit }) => {
+const CatalogueNew = ({ mode, initialData, onSubmit }) => {
   const { id } = useParams();
 
   const [resourceData, setResourceData] = useState({
@@ -195,9 +195,9 @@ const CatalogueNew = ({ initialData, onSubmit }) => {
 
   return (
     <div className="catalogueNew">
-      <h1>New Piece Information</h1>
+      <h1>{mode === "new" ? "New Piece Information" : "Update Piece"}</h1>
       <form onSubmit={handleSubmit}>
-        {initialData && dataReady && (
+        {((mode === "new") || (mode === "edit" && initialData && dataReady)) && (
           <>
             <MainInfo resourceData={resourceData} mainInfo={mainInfo} setMainInfo={setMainInfo} formErrors={formErrors} />
             <Button onClick={handleShowCall} className="btn btn-primary my-2">Generate Call Number</Button>

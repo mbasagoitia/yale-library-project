@@ -5,7 +5,7 @@ function MediumSelect({ items, mainInfo, setMainInfo, initialSelectionMade }) {
   const [selectedItem, setSelectedItem] = useState(items[0]);
 
   useEffect(() => {
-    if (!mainInfo.medium) {
+    if (!mainInfo.medium.id) {
       setMainInfo(prevMainInfo => ({
         ...prevMainInfo,
         medium: selectedItem
@@ -14,7 +14,7 @@ function MediumSelect({ items, mainInfo, setMainInfo, initialSelectionMade }) {
   }, []);
 
   useEffect(() => {
-    if (mainInfo.medium && !initialSelectionMade) {
+    if (mainInfo.medium.id && !initialSelectionMade) {
       setSelectedItem(mainInfo.medium);
     }
   }, []);
