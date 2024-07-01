@@ -1,11 +1,14 @@
 const getAllPieces = (req, res, db) => {
-    const query = 'SELECT p.*, c.last_name AS last_name, c.first_name AS first_name, s.label AS genre, m.label AS medium, mc.label AS medium_category, pub.label AS publisher, con.label AS "condition" FROM pieces p JOIN composers c ON p.composer_id = c.id JOIN species_options s ON p.species_id = s.id JOIN medium_options m ON p.medium_id = m.id JOIN medium_category mc ON m.category_id = mc.id JOIN publisher_options pub ON p.publisher_id = pub.id JOIN conditions con ON p.condition_id = con.id;';
-    db.query(query, (err, result) => {
+  const testQuery = 'SELECT * FROM pieces';
+  // There is an issue with the query here not returning all data... specifically 6 pieces.
+    const query = 'SELECT p.*, c.last_name AS last_name, c.first_name AS first_name, s.label AS genre, m.label AS medium, mc.label AS medium_category, pub.label AS publisher, con.label AS "condition" FROM pieces p JOIN composers c ON p.composer_id = c.id JOIN species_options s ON p.species_id = s.id JOIN medium_options m ON p.medium_id = m.id JOIN medium_category mc ON m.category_id = mc.id JOIN publisher_options pub ON p.publisher_id = pub.id JOIN conditions con ON p.condition_id = con.id';
+    db.query(testQuery, (err, result) => {
         if (err) {
           console.error('Error executing MySQL query:', err);
           res.status(500).json({ error: 'Error retrieving piece list' });
           return;
         }
+        console.log(result.length);
         res.status(200).json(result);
       });
 };

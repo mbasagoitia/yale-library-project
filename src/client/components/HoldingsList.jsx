@@ -10,6 +10,7 @@ const HoldingsList = () => {
             try {
                 const data = await fetchHoldings();
                 setItems(data);
+                console.log(data);
             } catch (error) {
                 console.error("Failed to fetch holdings data:", error);
             }
