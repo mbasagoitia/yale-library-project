@@ -1,8 +1,7 @@
 const getAllPieces = (req, res, db) => {
-  const testQuery = 'SELECT * FROM pieces';
-  // There is an issue with the query here not returning all data... specifically 6 pieces.
-    const query = 'SELECT p.*, c.last_name AS last_name, c.first_name AS first_name, s.label AS genre, m.label AS medium, mc.label AS medium_category, pub.label AS publisher, con.label AS "condition" FROM pieces p JOIN composers c ON p.composer_id = c.id JOIN species_options s ON p.species_id = s.id JOIN medium_options m ON p.medium_id = m.id JOIN medium_category mc ON m.category_id = mc.id JOIN publisher_options pub ON p.publisher_id = pub.id JOIN conditions con ON p.condition_id = con.id';
-    db.query(testQuery, (err, result) => {
+    // This is now returning all the data, but we want to make sure that the medium category is still working for those with category_id of 66. For example, medium category should be soloist with orchestra, not flute with orchestra.
+    const query = 'SELECT p.*, c.last_name AS last_name, c.first_name AS first_name, s.label AS genre, m.label AS medium, CASE WHEN m.category_id = 66 THEN m.label ELSE mc.label END AS medium_category, pub.label AS publisher, con.label AS "condition" FROM pieces p JOIN composers c ON p.composer_id = c.id JOIN species_options s ON p.species_id = s.id JOIN medium_options m ON p.medium_id = m.id LEFT JOIN medium_category mc ON m.category_id = mc.id JOIN publisher_options pub ON p.publisher_id = pub.id JOIN conditions con ON p.condition_id = con.id ORDER BY p.id';
+    db.query(query, (err, result) => {
         if (err) {
           console.error('Error executing MySQL query:', err);
           res.status(500).json({ error: 'Error retrieving piece list' });
@@ -15,7 +14,7 @@ const getAllPieces = (req, res, db) => {
 
 const getSinglePiece = (req, res, db) => {
     const { id } = req.params;
-    const query = 'SELECT p.*, c.last_name AS last_name, c.first_name AS first_name, s.label AS genre, m.label AS medium, mc.label AS medium_category, pub.label AS publisher, con.label AS "condition" FROM pieces p JOIN composers c ON p.composer_id = c.id JOIN species_options s ON p.species_id = s.id JOIN medium_options m ON p.medium_id = m.id JOIN medium_category mc ON m.category_id = mc.id JOIN publisher_options pub ON p.publisher_id = pub.id JOIN conditions con ON p.condition_id = con.id WHERE p.id = ?;';
+    const query = 'SELECT p.*, c.last_name AS last_name, c.first_name AS first_name, s.label AS genre, m.label AS medium, CASE WHEN m.category_id = 66 THEN m.label ELSE mc.label END AS medium_category, pub.label AS publisher, con.label AS "condition" FROM pieces p JOIN composers c ON p.composer_id = c.id JOIN species_options s ON p.species_id = s.id JOIN medium_options m ON p.medium_id = m.id LEFT JOIN medium_category mc ON m.category_id = mc.id JOIN publisher_options pub ON p.publisher_id = pub.id JOIN conditions con ON p.condition_id = con.id WHERE p.id = ?';
     db.query(query, [id], (err, result) => {
         if (err) {
           console.error('Error executing MySQL query:', err);
