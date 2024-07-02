@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import { Container, Row, Col, Form, FormControl, Button } from "react-bootstrap";
+import { Container, Row, Col, Form, FormControl, Button, InputGroup } from "react-bootstrap";
 import { BiFilter } from 'react-icons/bi';
 
 import MediumSelect from "./call-number-selects/MediumSelect";
 import SpeciesSelect from "./call-number-selects/SpeciesSelect";
 import PublisherSelect from "./call-number-selects/PublisherSelect";
+import Searchbar from "./Searchbar";
 import fetchResourceData from "../helpers/fetchResourceData";
 import { organizeMediumData, organizePublisherData, organizeSpeciesData } from "../helpers/organizeData";
 
@@ -56,25 +57,11 @@ const HoldingsFilter = () => {
                         <Row className="mb-4">
                             <Col md={6}>
                                 <Form.Label>Title</Form.Label>
-                                <Form className="mb-4">
-                                    <div className="search-wrapper">
-                                        <FormControl type="text" placeholder="Symphony no. 1" className="mr-sm-2 rounded-pill" />
-                                        <Button type="submit" variant="rounded-pill search-button">
-                                            <i className="fa fa-search"></i>
-                                        </Button>
-                                    </div>
-                                </Form>
+                                <Searchbar placeholder={"Symphony no. 1"} />
                             </Col>
                             <Col md={6}>
                                 <Form.Label>Composer</Form.Label>
-                                <Form>
-                                    <div className="search-wrapper">
-                                        <FormControl type="text" placeholder="Shostakovich" className="mr-sm-2 rounded-pill" />
-                                        <Button type="submit" variant="rounded-pill search-button">
-                                            <i className="fa fa-search"></i>
-                                        </Button>
-                                    </div>
-                                </Form>
+                                <Searchbar placeholder={"Shostakovich"} />
                             </Col>
                             <Col md={6}>
                             <div className="mb-4 mt-4 mt-md-0">
@@ -100,24 +87,10 @@ const HoldingsFilter = () => {
         ) : (
             <Row className="mb-4">
                 <Col xs={{ order: 2 }} sm={{ order: 1, span: 5 }}>
-                    <Form className="mb-4 d-inline">
-                        <div className="search-wrapper">
-                            <FormControl type="text" placeholder="Title" className="mr-sm-2 rounded-pill" />
-                            <Button type="submit" variant="rounded-pill search-button">
-                                <i className="fa fa-search"></i>
-                            </Button>
-                        </div>
-                    </Form>
+                    <Searchbar placeholder={"Title"} />
                 </Col>
                 <Col xs={{ order: 3 }} sm={{ order: 2, span: 5 }} className="mt-1 mt-sm-0">
-                    <Form className="mb-4 d-inline">
-                        <div className="search-wrapper">
-                            <FormControl type="text" placeholder="Composer" className="mr-sm-2 rounded-pill" />
-                            <Button type="submit" variant="rounded-pill search-button">
-                                <i className="fa fa-search"></i>
-                            </Button>
-                        </div>
-                    </Form>
+                    <Searchbar placeholder={"Composer"} />
                 </Col>
                 <Col xs={{ order: 1 }} sm={{ order: 3, span: 2 }} className="d-flex flex-column justify-content-center mb-4 mb-sm-0">
                 <div className="open-advanced-filter" onClick={() => setAdvancedFilter(true)}>

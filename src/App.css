@@ -65,28 +65,48 @@ h2 {
   margin-right: calc(100% - 2rem);
 }
 
-.search-wrapper {
+/* .search-wrapper {
   position: relative;
   display: inline-block;
-}
-
-.search-wrapper input {
-  font-size: clamp(0.8rem, 2vw, 1rem);
-}
-
-input[type="text"] {
-  padding-right: 35px;
-}
+} */
 
 .search-button {
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
   background: none;
   border: none;
   cursor: pointer;
 }
+
+.search-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.search-wrapper input, .search-button {
+  font-size: clamp(0.8rem, 2vw, 1rem);
+}
+
+.search-wrapper .input-group-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.input-group-text {
+  padding: 0;
+}
+
+.rounded-pill-left {
+  border-top-left-radius: 50px;
+  border-bottom-left-radius: 50px;
+}
+
+.rounded-pill-right {
+  border-top-right-radius: 50px;
+  border-bottom-right-radius: 50px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
 
 .fa {
   color: #000000A6;
@@ -293,6 +313,13 @@ body {
   background-color: rgba(51, 102, 153, 0.5);
   color: #00356b;
   border: 1px solid #00356b;
+}
+
+/* If i add pagination, this will go away */
+.holdings-list {
+  max-height: 90vh;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .holdings-list .card-body {

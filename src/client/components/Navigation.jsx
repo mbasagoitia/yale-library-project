@@ -1,5 +1,6 @@
 import React from 'react';
 import { Nav, Navbar, NavDropdown, Form, FormControl, Button } from 'react-bootstrap';
+import Searchbar from './Searchbar';
 
 const Navigation = () => {
   return (
@@ -24,14 +25,9 @@ const Navigation = () => {
                         <NavDropdown.Item href="/">Manage Users</NavDropdown.Item>
                         <NavDropdown.Item href="/">Settings</NavDropdown.Item>
                     </NavDropdown>
-                    <Form>
-                        <div className="search-wrapper">
-                            <FormControl type="text" placeholder="Search our collection" className="mr-sm-2 rounded-pill" />
-                            <Button type="submit" variant="rounded-pill search-button">
-                                <i className="fa fa-search"></i>
-                            </Button>
-                        </div>
-                    </Form>
+                    <div>
+                        <Searchbar placeholder={"Search our collection"} />
+                    </div>
                     </Nav>
                 </Navbar.Collapse>
             </div>
