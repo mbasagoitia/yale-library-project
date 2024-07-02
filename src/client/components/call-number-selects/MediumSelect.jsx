@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 
-function MediumSelect({ items, mainInfo, setMainInfo, initialSelectionMade }) {
+function MediumSelect({ items, mainInfo, setMainInfo, onItemClick, initialSelectionMade }) {
   const [selectedItem, setSelectedItem] = useState(items[0]);
 
   useEffect(() => {
-    if (!mainInfo.medium.id) {
+    if (mainInfo && !mainInfo.medium.id) {
       setMainInfo(prevMainInfo => ({
         ...prevMainInfo,
         medium: selectedItem
@@ -14,19 +14,14 @@ function MediumSelect({ items, mainInfo, setMainInfo, initialSelectionMade }) {
   }, []);
 
   useEffect(() => {
-    if (mainInfo.medium.id && !initialSelectionMade) {
+    if (mainInfo?.medium?.id && !initialSelectionMade) {
       setSelectedItem(mainInfo.medium);
     }
   }, []);
 
   const handleSelect = (item) => {
     setSelectedItem(item);
-    setMainInfo({
-      ...mainInfo,
-      medium: (item.nested_options && item.nested_options.length > 0 ? item.nested_options[0]
-        : (item.options && item.options.length > 0 ? item.options[0]
-        : item))
-    });
+    onItemClick(item);
   };
 
   const renderDropdown = (options) => (
@@ -53,6 +48,7 @@ function MediumSelect({ items, mainInfo, setMainInfo, initialSelectionMade }) {
             items={selectedItem.options || selectedItem.nested_options}
             mainInfo={mainInfo}
             setMainInfo={setMainInfo}
+            onItemClick={onItemClick}
             initialSelectionMade={true}
           />
         </div>

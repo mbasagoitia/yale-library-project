@@ -6,7 +6,6 @@ import generateCallNum from "../helpers/generateCallNum.js";
 import splitString from "../helpers/splitString.js";
 import fetchResourceData from "../helpers/fetchResourceData";
 import { findMediumById, findComposerById, findGenreById, findPublisherById } from "../helpers/filterData.js";
-import { organizeMediumData, organizePublisherData, organizeSpeciesData } from "../helpers/organizeData";
 import { useParams } from 'react-router-dom';
 
 const CatalogueNew = ({ mode, initialData, onSubmit, handleCloseModal }) => {
@@ -82,16 +81,11 @@ const CatalogueNew = ({ mode, initialData, onSubmit, handleCloseModal }) => {
       try {
         const resources = await fetchResourceData();
 
-        const organizedMediumData = organizeMediumData(resources[0]);
-        const composerData = resources[1];
-        const organizedSpeciesData = organizeSpeciesData(resources[2]);
-        const organizedPublisherData = organizePublisherData(resources[3]);
-
         setResourceData({ 
-          mediumData: organizedMediumData,
-          composerData: composerData,
-          speciesData: organizedSpeciesData,
-          publisherData: organizedPublisherData
+          mediumData: resources[0],
+          composerData: resources[1],
+          speciesData: resources[2],
+          publisherData: resources[3]
          });
       } catch (error) {
         console.error("Error fetching resource data:", error);

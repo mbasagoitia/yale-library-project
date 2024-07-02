@@ -1,13 +1,10 @@
 import SearchFilter from "../SearchFilter";
 
-const SpeciesSelect = ({ items, mainInfo, setMainInfo }) => {
-    const onItemClick = (item) => {
-        setMainInfo({ ...mainInfo, genre: item });
-    }
+const SpeciesSelect = ({ items, mainInfo, onItemClick }) => {
     // The dropdown list will be a searchable filter
     return (
         <>
-        <SearchFilter initialValue={mainInfo.genre.id ? mainInfo.genre.label : ""} items={items} onItemClick={onItemClick} />
+        <SearchFilter initialValue={mainInfo?.genre?.id ? mainInfo.genre.label : ""} items={items} onItemClick={onItemClick} />
         </>
     )
 }

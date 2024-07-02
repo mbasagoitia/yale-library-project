@@ -1,3 +1,5 @@
+import { organizeMediumData, organizePublisherData, organizeSpeciesData }  from "./organizeData";
+
 const mediumUrl = "http://localhost:5000/api/medium-data";
 const composerUrl = "http://localhost:5000/api/composer-data";
 const speciesUrl = "http://localhost:5000/api/species-data";
@@ -8,7 +10,7 @@ const fetchMediumData = async () => {
         const res = await fetch(mediumUrl);
         if (!res.ok) throw new Error('Network response was not ok');
         const data = await res.json();
-        return Array.isArray(data) ? data : [];
+        return Array.isArray(data) ? organizeMediumData(data) : [];
     } catch (error) {
         console.error("Error fetching medium data:", error);
         return [];
@@ -32,7 +34,7 @@ const fetchSpeciesData = async () => {
         const res = await fetch(speciesUrl);
         if (!res.ok) throw new Error('Network response was not ok');
         const data = await res.json();
-        return Array.isArray(data) ? data : [];
+        return Array.isArray(data) ? organizeSpeciesData(data) : [];
     } catch (error) {
         console.error("Error fetching species data:", error);
         return [];
@@ -44,7 +46,7 @@ const fetchPublisherData = async () => {
         const res = await fetch(publisherUrl);
         if (!res.ok) throw new Error('Network response was not ok');
         const data = await res.json();
-        return Array.isArray(data) ? data : [];
+        return Array.isArray(data) ? organizePublisherData(data) : [];
     } catch (error) {
         console.error("Error fetching publisher data:", error);
         return [];

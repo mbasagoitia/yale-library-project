@@ -6,12 +6,10 @@ const Home = () => {
     );
 };
 
-// PD Tooltip acting weird on hover
-// Issues opening advanced filter...check how data is passed in
+// Fix composer/search button on basic filter
 // Call number needs to be correctly reflected on submit even if the user doesn't generate it
 // Style the piece info page
 // Composer search initial click not rendering list
-// Manually change acquisition date to unknown or whatever the date is for what we already own
 // Add field to update acquisition date
 // Organize browse page into components
 // Pagination for holdings page?

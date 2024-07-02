@@ -26,6 +26,10 @@ h2 {
   color: #286dc0;
 }
 
+.fa {
+  color: white;
+}
+
 .header-content {
   width: 100%;
 }
@@ -106,12 +110,6 @@ h2 {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
-
-
-.fa {
-  color: #000000A6;
-}
-
 
 body {
   font-family: 'Mallory', sans-serif;
@@ -350,7 +348,7 @@ body {
   border-radius: var(--bs-border-radius) 0 0 var(--bs-border-radius);
 }
 
-.new-composer-open, .edit-text, .delete-text {
+.new-composer-open, .edit-text, .delete-text, .reset-text {
   text-decoration: underline;
   color: #002b50;
   text-align: left;
