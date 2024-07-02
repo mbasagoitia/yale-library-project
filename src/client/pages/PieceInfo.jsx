@@ -101,7 +101,7 @@ const PieceInfo = () => {
                   <div className="popup">
                       <span className="close-button" onClick={handleCloseModal}>×</span>
                           <div className="modal-content">
-                          <CatalogueNew mode={"edit"} initialData={data} onSubmit={updatePiece} />
+                          <CatalogueNew mode={"edit"} initialData={data} onSubmit={updatePiece} handleCloseModal={handleCloseModal} />
                       </div>
                   </div>
               </div>

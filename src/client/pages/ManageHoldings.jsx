@@ -5,6 +5,13 @@ import catalogueNew from "../helpers/catalogueNew.js";
 
 const ManageHoldings = () => {
 
+    useEffect(() => {
+        document.addEventListener("keydown", handleEscKeyPress);
+        return () => {
+            document.removeEventListener("keydown", handleEscKeyPress);
+        };
+    }, []);
+
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleCloseModal = () => {
@@ -21,13 +28,6 @@ const ManageHoldings = () => {
         }
     };
 
-    useEffect(() => {
-        document.addEventListener("keydown", handleEscKeyPress);
-        return () => {
-            document.removeEventListener("keydown", handleEscKeyPress);
-        };
-    }, []);
-
     return (
         <div className="addNew">
         {!isModalOpen ? (
@@ -37,7 +37,7 @@ const ManageHoldings = () => {
                 <div className="popup">
                     <span className="close-button" onClick={handleCloseModal}>×</span>
                         <div className="modal-content">
-                        <CatalogueNew mode={"new"} onSubmit={catalogueNew} />
+                        <CatalogueNew mode={"new"} onSubmit={catalogueNew} handleCloseModal={handleCloseModal} />
                     </div>
                 </div>
             </div>

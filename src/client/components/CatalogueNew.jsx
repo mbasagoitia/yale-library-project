@@ -9,7 +9,7 @@ import { findMediumById, findComposerById, findGenreById, findPublisherById } fr
 import { organizeMediumData, organizePublisherData, organizeSpeciesData } from "../helpers/organizeData";
 import { useParams } from 'react-router-dom';
 
-const CatalogueNew = ({ mode, initialData, onSubmit }) => {
+const CatalogueNew = ({ mode, initialData, onSubmit, handleCloseModal }) => {
   const { id } = useParams();
 
   const [resourceData, setResourceData] = useState({
@@ -72,7 +72,6 @@ const CatalogueNew = ({ mode, initialData, onSubmit }) => {
   const [dataReady, setDataReady] = useState(false);
   const [formErrors, setFormErrors] = useState({});
   const [showCall, setShowCall] = useState(mode === "edit" ? true : false);
-  const [submitted, setSubmitted] = useState(false);
 
   const isEmpty = (obj) => {
     return Object.keys(obj).length === 0;
@@ -131,7 +130,8 @@ const CatalogueNew = ({ mode, initialData, onSubmit }) => {
             await onSubmit(allInfo);
           }
 
-          setSubmitted(true);
+          handleCloseModal();
+
 
           // Reset form
           setMainInfo({
