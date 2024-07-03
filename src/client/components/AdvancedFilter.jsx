@@ -7,7 +7,7 @@ import fetchResourceData from "../helpers/fetchResourceData";
 import { BiFilter } from 'react-icons/bi';
 import FilterInput from "./FilterInput";
 
-const AdvancedFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria }) => {
+const AdvancedFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria, onSubmit }) => {
 
     const clearSearchCriteria = () => {
         setSearchCriteria({
@@ -37,6 +37,7 @@ const AdvancedFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria }
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        onSubmit();
     }
 
     const [resourceData, setResourceData] = useState({
@@ -97,13 +98,13 @@ const AdvancedFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria }
                         {resourceData.speciesData.length > 0 && <SpeciesSelect items={resourceData.speciesData} />}    
                     </Col>
                 </Row>
-                <Row className="my-0 my-md-4">
+                <Row className="my-0 my-md-3">
                     <Col md={6} className="my-2 my-md-0">
                         <Form.Label>Ensemble Type</Form.Label>
                         {resourceData.mediumData.length > 0 && <MediumSelect items={resourceData.mediumData} />}
                     </Col>
                 </Row>
-                <Row className="mt-1 mb-3">
+                <Row className="mb-4">
                     <Col className="d-flex justify-content-center">
                         <Button type="submit">Search</Button>
                     </Col>

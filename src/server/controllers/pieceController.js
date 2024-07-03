@@ -29,6 +29,7 @@ const addNewPiece = (req, res, db) => {
     const { title, identifierLabel, identifierValue, number, composer, medium, genre, publisher, callNumber, condition, publicDomain, notes, ownPhysical, ownDigital, missingParts, scansUrl } = req.body.info;
     const finalIdentifierValue = identifierValue === "" ? null : identifierValue;
     const mediumId = medium.id || medium.options[0].id;
+    const finalIdentifierLabel = !identifierValue ? null : identifierLabel;
 
     // This should probably be a separate middleware function
     const getFormattedDate = () => {
@@ -48,7 +49,7 @@ const addNewPiece = (req, res, db) => {
         own_physical, own_digital, missing_parts, scans_url, acquisition_date
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
-    const values = [title, identifierLabel, finalIdentifierValue, number, composer.id, genre.id, mediumId, publisher.id, callNumber.join(" "), condition, publicDomain, notes, ownPhysical, ownDigital, missingParts, scansUrl, acquisitionDate ];
+    const values = [title, finalIdentifierLabel, finalIdentifierValue, number, composer.id, genre.id, mediumId, publisher.id, callNumber.join(" "), condition, publicDomain, notes, ownPhysical, ownDigital, missingParts, scansUrl, acquisitionDate ];
     db.query(query, values, (err, result) => {
         if (err) {
           console.error('Error executing MySQL query:', err);

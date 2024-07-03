@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { InputGroup, FormControl, Dropdown } from 'react-bootstrap';
 
 const ComposerFilter = ({ initialValue, items, onItemClick }) => {
+  
   const [filteredItems, setFilteredItems] = useState(items);
   const [searchText, setSearchText] = useState(initialValue || '');
   const [selectedItemId, setSelectedItemId] = useState(null);

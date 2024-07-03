@@ -18,7 +18,6 @@ const Browse = () => {
                     setFilteredItems(data);
                     setIsInitialLoad(false);
                 }
-                console.log(data);
             } catch (error) {
                 console.error("Failed to fetch holdings data:", error);
             }
@@ -28,13 +27,15 @@ const Browse = () => {
     }, [isInitialLoad]);
 
     return (
-        <div className="browse">
+        holdingsData.length > 0 && (
+            <div className="browse">
             <h1>Browse Collection</h1>
             <div className="holdings-content mt-4">
                 <HoldingsFilter holdingsData={holdingsData} setFilteredItems={setFilteredItems} />
                 <HoldingsList filteredItems={filteredItems} />
             </div>
         </div>
+        )
     )
 }
 

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import BasicFilter from "./BasicFilter";
 import AdvancedFilter from "./AdvancedFilter";
+import filterSearch from "../helpers/filterSearch";
 
 const HoldingsFilter = ({ holdingsData, setFilteredItems }) => {
 
@@ -16,12 +17,17 @@ const HoldingsFilter = ({ holdingsData, setFilteredItems }) => {
         publisher: {}
     });
 
+    const onSubmit = (holdingsData, searchCriteria) => {
+        const filtered = filterSearch(holdingsData, searchCriteria);
+        setFilteredItems(filtered);
+    }
+
     return (
         <div className="holdings-filter">
         {advancedFilter ? (
-            <AdvancedFilter setAdvancedFilter={setAdvancedFilter} searchCriteria={searchCriteria} setSearchCriteria={setSearchCriteria} />
+            <AdvancedFilter setAdvancedFilter={setAdvancedFilter} searchCriteria={searchCriteria} setSearchCriteria={setSearchCriteria} onSubmit={() => onSubmit(holdingsData, searchCriteria)} />
         ) : (
-            <BasicFilter setAdvancedFilter={setAdvancedFilter} searchCriteria={searchCriteria} setSearchCriteria={setSearchCriteria} />
+            <BasicFilter setAdvancedFilter={setAdvancedFilter} searchCriteria={searchCriteria} setSearchCriteria={setSearchCriteria} onSubmit={() => onSubmit(holdingsData, searchCriteria)} />
         )}
         </div>
     )

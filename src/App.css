@@ -387,10 +387,14 @@ body {
 }
 
 .open-advanced-filter, .open-basic-filter {
-  font-size: 0.8rem;
+  font-size: clamp(0.8rem, 2vw, 1rem);
   text-align: left;
   cursor: pointer;
-  
+}
+
+.holdings-filter svg {
+  font-size: clamp(0.8rem, 2vw, 1rem);
+  margin-bottom: 4px;
 }
 
 @media (min-width: 500px) {
