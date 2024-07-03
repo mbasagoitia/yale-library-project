@@ -19,14 +19,25 @@ const BasicFilter = ({ setAdvancedFilter }) => {
     return (
         <Form className="basic-filter">
             <Row className="mb-4">
-                <Col>
+                <Col xs={{ order: 2 }} sm={{ order: 1, span: 5 }}>
                     <FilterInput placeholder={"Title"} value={title} onChange={onTitleChange} />
                 </Col>
-                <Col xs={{ order: 3 }} sm={{ order: 2, span: 5 }} className="mt-1 mt-sm-0 d-flex">
-                    <FilterInput placeholder={"Composer"} value={composer} onChange={onComposerChange} />
-                    <Button className="w-auto" type="submit"><i className="fa fa-search"></i></Button>
+                <Col xs={{ order: 3 }} sm={{ order: 2, span: 5 }} className="mt-1 mt-sm-0">
+                    <div className="d-flex w-100">
+                        <div className="flex-grow-1">
+                        <FilterInput
+                            placeholder="Composer"
+                            value={composer}
+                            onChange={onComposerChange}
+                            className={"rounded-corners-left"}
+                        />
+                        </div>
+                        <Button className="flex-shrink-0 rounded-corners-right basic-filter-search" type="submit">
+                            <i className="fa fa-search"></i>
+                        </Button>
+                    </div>
                 </Col>
-                <Col xs={{ order: 1 }} sm={{ order: 3, span: 2 }} className="d-flex flex-column justify-content-center mb-4 mb-sm-0">
+                <Col xs={{ order: 1 }} sm={{ order: 3, span: 2 }} className="d-flex flex-column mb-4 mb-sm-0">
                 <div className="open-advanced-filter" onClick={() => setAdvancedFilter(true)}>
                     <BiFilter size={20} />
                     <span className="advanced-filter-text">Advanced Filter</span>

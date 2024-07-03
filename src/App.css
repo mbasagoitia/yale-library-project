@@ -12,7 +12,7 @@
   display: flex;
   align-items: center;
   text-align: left;
-  padding: 1rem 2rem;
+  padding: 1rem;
   font-family: 'Yale New Bold', serif;
   font-size: calc(10px + 2vmin);
   color: white;
@@ -53,16 +53,21 @@ h2 {
   height: 15vh;
   display: flex;
   justify-content: center;
+  padding: 0;
 }
 
 .nav-content {
   width: 100%;
   background-color: #f8f9fa;
-  padding: 1rem 2rem;
+  padding: 1rem;
   max-width: 1200px;
   font-size: clamp(0.8rem, 2vw, 1rem);
   font-family: 'Mallory Compact', sans-serif;
   z-index: 100;
+}
+
+.nav-content i {
+  color: #222;
 }
 
 .nav-content .navbar-toggler {
@@ -85,7 +90,7 @@ h2 {
   align-items: center;
 }
 
-.search-wrapper input, .search-button {
+.search-wrapper input, .search-button, .filter-input, .basic-filter-search {
   font-size: clamp(0.8rem, 2vw, 1rem);
 }
 
@@ -107,6 +112,20 @@ h2 {
 .rounded-pill-right {
   border-top-right-radius: 50px;
   border-bottom-right-radius: 50px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.rounded-corners-left {
+  border-top-left-radius: var(--bs-border-radius);
+  border-bottom-left-radius: var(--bs-border-radius);
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.rounded-corners-right {
+  border-top-right-radius: var(--bs-border-radius);
+  border-bottom-right-radius: var(--bs-border-radius);
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
@@ -371,6 +390,7 @@ body {
   font-size: 0.8rem;
   text-align: left;
   cursor: pointer;
+  
 }
 
 @media (min-width: 500px) {
@@ -380,6 +400,10 @@ body {
 }
 
 @media (min-width: 576px) {
+
+  .App-header, .nav-content {
+    padding: 1rem 3rem;
+  }
 
   .page-content {
     padding: 3rem;

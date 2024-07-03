@@ -1,10 +1,10 @@
 import { Form, FormControl } from "react-bootstrap";
 
-const FilterInput = ({ placeholder, value, onChange }) => {
+const FilterInput = ({ placeholder, value, onChange, className }) => {
     return (
-        <Form className="d-inline">
-            <FormControl type="text" placeholder={placeholder} value={value} onChange={onChange} />
-        </Form>
+        <div className="d-inline">
+            <FormControl type="text" placeholder={placeholder} value={value} onChange={onChange} className={`filter-input ${className}`} />
+        </div>
     )
 }
 

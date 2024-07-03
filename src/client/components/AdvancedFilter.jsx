@@ -74,40 +74,36 @@ const AdvancedFilter = ({ setAdvancedFilter }) => {
             </Col>
             <span className="reset-text mt-2">Reset</span>
         </Row>
-        <Row className="mt-2 mb-3">
-            <Col>
-                <Button className="w-auto" type="submit"><i className="fa fa-search"></i></Button>
-            </Col>
-        </Row>
             <div className="holdings-filter mt-2">
-                <Row className="mb-4">
-                    <Col md={6}>
+                <Row className="mb-0 mb-md-4">
+                    <Col md={6} className="my-2 my-md-0">
                         <Form.Label>Title</Form.Label>
                         <FilterInput placeholder={"Symphony no. 1"} value={searchCriteria.title} onChange={onTitleChange} />
                     </Col>
-                    <Col md={6}>
+                    <Col md={6} className="my-2 my-md-0">
                         <Form.Label>Composer</Form.Label>
                         <FilterInput placeholder={"Shostakovich"} value={searchCriteria.composer} onChange={onComposerChange} />
                     </Col>
                 </Row>
                 <Row>
-                    <Col md={6}>
-                    <div className="mb-4 mt-4 mt-md-0">
+                    <Col md={6} className="my-2 my-md-0">
                         <Form.Label>Publisher</Form.Label>
                         {resourceData.publisherData.length > 0 && <PublisherSelect items={resourceData.publisherData} />}
-                    </div>
                     </Col>
-                    <Col md={6}>
-                    <div>
+                    <Col md={6} className="my-2 my-md-0">
                         <Form.Label>Genre</Form.Label>
                         {resourceData.speciesData.length > 0 && <SpeciesSelect items={resourceData.speciesData} />}    
-                    </div>
                     </Col>
                 </Row>
-                <Row>
-                    <Col md={6}>
+                <Row className="my-0 my-md-4">
+                    <Col md={6} className="my-2 my-md-0">
                         <Form.Label>Ensemble Type</Form.Label>
                         {resourceData.mediumData.length > 0 && <MediumSelect items={resourceData.mediumData} />}
+                    </Col>
+                </Row>
+                <Row className="mt-1 mb-3">
+                    <Col className="d-flex justify-content-center">
+                        <Button type="submit">Search</Button>
                     </Col>
                 </Row>
             </div>
