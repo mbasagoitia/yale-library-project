@@ -7,15 +7,17 @@ import fetchResourceData from "../helpers/fetchResourceData";
 import { BiFilter } from 'react-icons/bi';
 import FilterInput from "./FilterInput";
 
-const AdvancedFilter = ({ setAdvancedFilter }) => {
+const AdvancedFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria }) => {
 
-    const [searchCriteria, setSearchCriteria] = useState({
-        title: "",
-        composer: "",
-        medium: {},
-        genre: {},
-        publisher: {}
-    });
+    const clearSearchCriteria = () => {
+        setSearchCriteria({
+            title: "",
+            composer: "",
+            medium: {},
+            genre: {},
+            publisher: {}
+        });
+    }
 
     const onTitleChange = (e) => {
         setSearchCriteria({
@@ -69,7 +71,7 @@ const AdvancedFilter = ({ setAdvancedFilter }) => {
                 <span>Filter By:</span>
                 <div className="open-basic-filter" onClick={() => setAdvancedFilter(false)}>
                     <BiFilter size={20} />
-                    <span className="advanced-filter-text">Basic Filter</span>
+                    <span className="advanced-filter-text" onClick={clearSearchCriteria}>Basic Filter</span>
                 </div>
             </Col>
             <span className="reset-text mt-2">Reset</span>

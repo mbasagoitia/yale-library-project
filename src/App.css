@@ -236,7 +236,7 @@ body {
 
 .popup {
   max-height: 80%;
-  min-width: 280px;
+  min-width: 300px;
   max-width: 1000px;
   margin: 0 2rem;
   text-align: center;
@@ -250,7 +250,7 @@ body {
 }
 
 .modal-content {
-  padding: 0 1rem 1rem 1rem;
+  padding: 0 0.5rem 1rem 0.5rem;
 }
 
 .close-button {

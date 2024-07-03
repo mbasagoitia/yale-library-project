@@ -3,10 +3,20 @@ import { Row, Col, Button, Form } from "react-bootstrap";
 import { BiFilter } from 'react-icons/bi';
 import FilterInput from "./FilterInput";
 
-const BasicFilter = ({ setAdvancedFilter }) => {
+const BasicFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria }) => {
 
     const [title, setTitle] = useState("");
     const [composer, setComposer] = useState("");
+
+    const clearSearchCriteria = () => {
+        setSearchCriteria({
+            title: "",
+            composer: "",
+            medium: {},
+            genre: {},
+            publisher: {}
+        });
+    }
 
     const onTitleChange = (e) => {
         setTitle(e.target.value);
@@ -40,7 +50,7 @@ const BasicFilter = ({ setAdvancedFilter }) => {
                 <Col xs={{ order: 1 }} sm={{ order: 3, span: 2 }} className="d-flex flex-column mb-4 mb-sm-0">
                 <div className="open-advanced-filter" onClick={() => setAdvancedFilter(true)}>
                     <BiFilter size={20} />
-                    <span className="advanced-filter-text">Advanced Filter</span>
+                    <span className="advanced-filter-text" onClick={clearSearchCriteria}>Advanced Filter</span>
                 </div>
                 </Col>
             </Row>
