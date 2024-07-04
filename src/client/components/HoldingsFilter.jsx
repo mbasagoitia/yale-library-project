@@ -18,6 +18,7 @@ const HoldingsFilter = ({ holdingsData, setFilteredItems }) => {
     });
 
     const onSubmit = (holdingsData, searchCriteria) => {
+        console.log(searchCriteria);
         const filtered = filterSearch(holdingsData, searchCriteria);
         setFilteredItems(filtered);
     }

@@ -1,5 +1,4 @@
 const filterSearch = (holdingsData, searchCriteria) => {
-    console.log(holdingsData, searchCriteria);
     const { title, composer, medium, genre, publisher } = searchCriteria;
   
     // Helper function to normalize strings (e.g., "symphony no. 2" -> "symphony 2")

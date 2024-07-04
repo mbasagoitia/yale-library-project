@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 
-function MediumSelect({ items, mainInfo, setMainInfo, onItemClick, initialSelectionMade }) {
+function MediumSelect({ items, mainInfo, setMainInfo, handleItemSelect, initialSelectionMade }) {
   const [selectedItem, setSelectedItem] = useState(items[0]);
 
   useEffect(() => {
@@ -21,7 +21,10 @@ function MediumSelect({ items, mainInfo, setMainInfo, onItemClick, initialSelect
 
   const handleSelect = (item) => {
     setSelectedItem(item);
-    onItemClick(item);
+    handleItemSelect((item.options?.length > 0 || item.nested_options?.length > 0) ? 
+    (item.options && item.options.length > 0 ? item.options[0] : 
+    (item.nested_options && item.nested_options.length > 0 ? item.nested_options[0] : item)) : 
+    item);
   };
 
   const renderDropdown = (options) => (
@@ -48,7 +51,7 @@ function MediumSelect({ items, mainInfo, setMainInfo, onItemClick, initialSelect
             items={selectedItem.options || selectedItem.nested_options}
             mainInfo={mainInfo}
             setMainInfo={setMainInfo}
-            onItemClick={onItemClick}
+            handleItemSelect={handleItemSelect}
             initialSelectionMade={true}
           />
         </div>

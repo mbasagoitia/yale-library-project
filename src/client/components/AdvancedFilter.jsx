@@ -33,7 +33,28 @@ const AdvancedFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria, 
         });
     }
 
-    // Also add handlers for medium, genre, publisher
+    // Need to add an option to show medium selects, and if they are shown, set an inital state (first item)
+    // Because the user may not want to use that filter and it should not be included in some cases
+    const onMediumSelect = (item) => {
+        setSearchCriteria({
+            ...searchCriteria,
+            medium: item
+        });
+    }
+
+    const onGenreSelect = (item) => {
+        setSearchCriteria({
+            ...searchCriteria,
+            genre: item
+        });
+    }
+
+    const onPublisherSelect = (item) => {
+        setSearchCriteria({
+            ...searchCriteria,
+            publisher: item
+        });
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -91,17 +112,17 @@ const AdvancedFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria, 
                 <Row>
                     <Col md={6} className="my-2 my-md-0">
                         <Form.Label>Publisher</Form.Label>
-                        {resourceData.publisherData.length > 0 && <PublisherSelect items={resourceData.publisherData} />}
+                        {resourceData.publisherData.length > 0 && <PublisherSelect items={resourceData.publisherData} onItemClick={onPublisherSelect} />}
                     </Col>
                     <Col md={6} className="my-2 my-md-0">
                         <Form.Label>Genre</Form.Label>
-                        {resourceData.speciesData.length > 0 && <SpeciesSelect items={resourceData.speciesData} />}    
+                        {resourceData.speciesData.length > 0 && <SpeciesSelect items={resourceData.speciesData} onItemClick={onGenreSelect} />}    
                     </Col>
                 </Row>
                 <Row className="my-0 my-md-3">
                     <Col md={6} className="my-2 my-md-0">
                         <Form.Label>Ensemble Type</Form.Label>
-                        {resourceData.mediumData.length > 0 && <MediumSelect items={resourceData.mediumData} />}
+                        {resourceData.mediumData.length > 0 && <MediumSelect items={resourceData.mediumData} handleItemSelect={onMediumSelect} />}
                     </Col>
                 </Row>
                 <Row className="mb-4">
