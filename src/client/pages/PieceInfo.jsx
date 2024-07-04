@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Container, Row, Col, Button, Table } from 'react-bootstrap';
+import { Container, Button } from 'react-bootstrap';
 import CatalogueNew from "../components/CatalogueNew";
 import updatePiece from "../helpers/updatePiece.js";
 import deletePiece from "../helpers/deletePiece.js";
-import formatDate from '../helpers/formatDate.js';
 import renderIdAndNumber from '../helpers/renderIdAndNumber.js';
+import Modal from '../components/Modal.jsx';
+import InfoTable from '../components/InfoTable.jsx';
 
 const PieceInfo = () => {
   const { id } = useParams();
@@ -54,8 +55,6 @@ const PieceInfo = () => {
     setIsDeleteModalOpen(true);
   };
 
-  // Can this be put into separate helper function?
-
   const handleEscKeyPress = (e) => {
     if (e.key === "Escape") {
       setIsEditModalOpen(false);
@@ -81,68 +80,18 @@ const PieceInfo = () => {
               <div onClick={handleOpenEditModal} className="edit-text">Edit</div>
               <div onClick={handleOpenDeleteModal} className="delete-text mx-2">Delete</div>
             </div>
-            {/* These modals need to be in a separate modal component */}
             {isEditModalOpen && (
-              <div className="modal-overlay">
-                <div className="popup">
-                  <span className="close-button" onClick={handleCloseModal}>×</span>
-                  <div className="modal-content">
-                    <CatalogueNew mode={"edit"} initialData={data} onSubmit={updatePiece} handleCloseModal={handleCloseModal} />
-                  </div>
-                </div>
-              </div>
+              <Modal content={<CatalogueNew mode={"edit"} initialData={data} onSubmit={updatePiece} handleCloseModal={handleCloseModal} />} handleCloseModal={handleCloseModal} />
             )}
             {isDeleteModalOpen && (
-              <div className="modal-overlay">
-                <div className="popup">
-                  <span className="close-button" onClick={handleCloseModal}>×</span>
-                  <div className="modal-content">
-                    <p>Are you sure you want to delete this item?</p>
-                    <Button className="btn btn-primary align-self-center" onClick={handleDelete}>Delete</Button>
-                  </div>
-                </div>
-              </div>
+              <Modal content={
+                <>
+                <p>Are you sure you want to delete this item?</p>
+                  <Button className="btn btn-primary align-self-center" onClick={handleDelete}>Delete</Button>
+                </>
+            } handleCloseModal={handleCloseModal} />
             )}
-            <Table striped bordered className="mt-3">
-              <tbody>
-                <tr>
-                  <td><strong>Composer</strong></td>
-                  <td>{`${data.first_name} ${data.last_name}`}</td>
-                </tr>
-                <tr>
-                  <td><strong>Publisher</strong></td>
-                  <td>{data.publisher}</td>
-                </tr>
-                <tr>
-                  <td><strong>Acquisition Date</strong></td>
-                  <td>{data.acquisition_date ? formatDate(data.acquisition_date) : "Unknown"}</td>
-                </tr>
-                <tr>
-                  <td><strong>Call Number</strong></td>
-                  <td>{data.call_number}</td>
-                </tr>
-                <tr>
-                  <td><strong>Public Domain</strong></td>
-                  <td>{data.public_domain ? "Yes" : "No"}</td>
-                </tr>
-                <tr>
-                  <td><strong>Digital Scans</strong></td>
-                  <td>
-                    {data.own_digital ? <a href={data.scans_url} target="_blank" rel="noreferrer" className="ml-2">Yes</a> : "No"}
-                  </td>
-                </tr>
-                <tr>
-                  <td><strong>Condition</strong></td>
-                  <td>{data.condition}</td>
-                </tr>
-                {data.additional_notes && (
-                  <tr>
-                    <td><strong>Additional Notes</strong></td>
-                    <td>{data.additional_notes}</td>
-                  </tr>
-                )}
-              </tbody>
-            </Table>
+            {data && data.id && <InfoTable data={data} />}
           </>
         )}
       </Container>

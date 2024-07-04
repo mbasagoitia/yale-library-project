@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import CatalogueNew from "../components/CatalogueNew";
 import catalogueNew from "../helpers/catalogueNew.js";
+import Modal from "../components/Modal.jsx";
 
 
 const ManageHoldings = () => {
@@ -33,14 +34,7 @@ const ManageHoldings = () => {
         {!isModalOpen ? (
             <button className="btn btn-primary" onClick={handleOpenModal}>+</button>
         ) : (
-            <div className="modal-overlay">
-                <div className="popup">
-                    <span className="close-button" onClick={handleCloseModal}>×</span>
-                        <div className="modal-content">
-                        <CatalogueNew mode={"new"} onSubmit={catalogueNew} handleCloseModal={handleCloseModal} />
-                    </div>
-                </div>
-            </div>
+            <Modal content={<CatalogueNew mode={"new"} onSubmit={catalogueNew} handleCloseModal={handleCloseModal} />} handleCloseModal={handleCloseModal} />
         )}
     </div>
     )

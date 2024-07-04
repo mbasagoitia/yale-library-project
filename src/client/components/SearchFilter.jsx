@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { InputGroup, FormControl, Dropdown } from 'react-bootstrap';
+import filterItems from '../helpers/filterItems';
 
 const SearchFilter = ({ initialValue, items, onItemClick }) => {
   const [filteredItems, setFilteredItems] = useState(items);
@@ -28,18 +29,7 @@ const SearchFilter = ({ initialValue, items, onItemClick }) => {
 
   const handleInputChange = (value) => {
     setSearchText(value);
-    filterItems(value);
-  };
-
-  const filterItems = (value) => {
-    const lowerCaseValue = value.toLowerCase();
-    const filtered = items.map((category) => ({
-      ...category,
-      options: category.options.filter((option) =>
-        option.label.toLowerCase().includes(lowerCaseValue)
-      ),
-    })).filter((category) => category.options.length > 0);
-    setFilteredItems(filtered);
+    setFilteredItems(filterItems(value, items));
   };
 
   const toggleDropdown = () => {

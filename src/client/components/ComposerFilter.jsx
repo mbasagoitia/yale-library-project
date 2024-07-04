@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { InputGroup, FormControl, Dropdown } from 'react-bootstrap';
+import filterComposerItems from '../helpers/filterComposerItems';
 
 const ComposerFilter = ({ initialValue, items, onItemClick }) => {
   
@@ -29,20 +30,8 @@ const ComposerFilter = ({ initialValue, items, onItemClick }) => {
 
   const handleInputChange = (value) => {
     setSearchText(value);
-    filterItems(value);
+    setFilteredItems(filterComposerItems(value, items));
     setIsDropdownOpen(true);
-  };
-
-  // put into separate function
-
-  const filterItems = (value) => {
-    const lowerCaseValue = value.toLowerCase();
-    const filtered = items.filter((item) => (
-      item.last_name.toLowerCase().includes(lowerCaseValue) || 
-      item.first_name.toLowerCase().includes(lowerCaseValue)
-    )).slice(0, 10);
-
-    setFilteredItems(filtered);
   };
 
   const handleDropdownItemClick = (item) => {
