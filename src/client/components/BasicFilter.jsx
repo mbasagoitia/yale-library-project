@@ -3,10 +3,7 @@ import { Row, Col, Button, Form } from "react-bootstrap";
 import { BiFilter } from 'react-icons/bi';
 import FilterInput from "./FilterInput";
 
-const BasicFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria }) => {
-
-    const [title, setTitle] = useState("");
-    const [composer, setComposer] = useState("");
+const BasicFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria, onSubmit }) => {
 
     const clearSearchCriteria = () => {
         setSearchCriteria({
@@ -19,25 +16,40 @@ const BasicFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria }) =
     }
 
     const onTitleChange = (e) => {
-        setTitle(e.target.value);
+        setSearchCriteria({
+            ...searchCriteria,
+            title: e.target.value
+        });
     }
 
     const onComposerChange = (e) => {
-        setComposer(e.target.value);
+        setSearchCriteria({
+            ...searchCriteria,
+            composer: e.target.value
+        });
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        onSubmit();
     }
 
     return (
-        <Form className="basic-filter">
+        <Form className="basic-filter" onSubmit={handleSubmit}>
             <Row className="mb-4">
                 <Col xs={{ order: 2 }} sm={{ order: 1, span: 5 }}>
-                    <FilterInput placeholder={"Title"} value={title} onChange={onTitleChange} />
+                    <FilterInput 
+                        placeholder={"Title"}
+                        value={searchCriteria.title}
+                        onChange={onTitleChange}
+                    />
                 </Col>
                 <Col xs={{ order: 3 }} sm={{ order: 2, span: 5 }} className="mt-1 mt-sm-0">
                     <div className="d-flex w-100">
                         <div className="flex-grow-1">
                         <FilterInput
                             placeholder="Composer"
-                            value={composer}
+                            value={searchCriteria.composer}
                             onChange={onComposerChange}
                             className={"rounded-corners-left"}
                         />
