@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Container, Row, Col, Button, Table } from 'react-bootstrap';
 import CatalogueNew from "../components/CatalogueNew";
 import updatePiece from "../helpers/updatePiece.js";
 import deletePiece from "../helpers/deletePiece.js";
+import formatDate from '../helpers/formatDate.js';
+import renderIdAndNumber from '../helpers/renderIdAndNumber.js';
 
 const PieceInfo = () => {
   const { id } = useParams();
@@ -33,115 +35,114 @@ const PieceInfo = () => {
     try {
       await deletePiece(id);
       setIsDeleteModalOpen(false);
-      // Somewhere here you will need to display some kind of success message
       navigate("/browse-holdings");
-
     } catch (error) {
-        console.error('Catalogue error:', error);
+      console.error('Catalogue error:', error);
     }
-  }
+  };
 
   const handleCloseModal = () => {
-      setIsEditModalOpen(false);
-      setIsDeleteModalOpen(false);
+    setIsEditModalOpen(false);
+    setIsDeleteModalOpen(false);
   };
 
   const handleOpenEditModal = () => {
-      setIsEditModalOpen(true);
+    setIsEditModalOpen(true);
   };
 
   const handleOpenDeleteModal = () => {
-      setIsDeleteModalOpen(true);
+    setIsDeleteModalOpen(true);
   };
 
+  // Can this be put into separate helper function?
+
   const handleEscKeyPress = (e) => {
-      if (e.key === "Escape") {
-          setIsEditModalOpen(false);
-          setIsDeleteModalOpen(false);
-      }
+    if (e.key === "Escape") {
+      setIsEditModalOpen(false);
+      setIsDeleteModalOpen(false);
+    }
   };
 
   useEffect(() => {
-      document.addEventListener("keydown", handleEscKeyPress);
-      return () => {
-          document.removeEventListener("keydown", handleEscKeyPress);
-      };
+    document.addEventListener("keydown", handleEscKeyPress);
+    return () => {
+      document.removeEventListener("keydown", handleEscKeyPress);
+    };
   }, []);
-
-  const renderIdAndNumber = () => {
-    if (data?.identifier_value && data?.number) {
-      return <span>{data.identifier_value}/{data.number}</span>;
-    } else if (data?.identifier_value) {
-      return <span>{data.identifier_label} {data.identifier_value}</span>;
-    }
-    return null;
-  };
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = (`0${date.getMonth() + 1}`).slice(-2);
-    const day = (`0${date.getDate()}`).slice(-2);
-  
-    return `${year}-${month}-${day}`;
-  };
 
   return (
     <div>
       <Container>
         {data && (
           <>
-            <h1 className="mb-4">{data.title} {renderIdAndNumber()}</h1>
-              <div>
-                <span onClick={handleOpenEditModal} className="edit-text">Edit</span>
-                <span onClick={handleOpenDeleteModal} className="delete-text">Delete</span>
-              </div>
-              {isEditModalOpen && (
+            <h1 className="mb-4">{data.title} {renderIdAndNumber(data)}</h1>
+            {/* Only render these if the user has the correct permissions */}
+            <div className="d-flex">
+              <div onClick={handleOpenEditModal} className="edit-text">Edit</div>
+              <div onClick={handleOpenDeleteModal} className="delete-text mx-2">Delete</div>
+            </div>
+            {/* These modals need to be in a separate modal component */}
+            {isEditModalOpen && (
               <div className="modal-overlay">
-                  <div className="popup">
-                      <span className="close-button" onClick={handleCloseModal}>×</span>
-                          <div className="modal-content">
-                          <CatalogueNew mode={"edit"} initialData={data} onSubmit={updatePiece} handleCloseModal={handleCloseModal} />
-                      </div>
+                <div className="popup">
+                  <span className="close-button" onClick={handleCloseModal}>×</span>
+                  <div className="modal-content">
+                    <CatalogueNew mode={"edit"} initialData={data} onSubmit={updatePiece} handleCloseModal={handleCloseModal} />
                   </div>
-              </div>
-              )}
-              {isDeleteModalOpen && (
-              <div className="modal-overlay">
-                  <div className="popup">
-                      <span className="close-button" onClick={handleCloseModal}>×</span>
-                          <div className="modal-content">
-                          <p>Are you sure you want to delete this item?</p>
-                          <Button className="btn btn-primary align-self-center" onClick={handleDelete}>Delete</Button>
-                      </div>
-                  </div>
-              </div>
-              )}
-            <Row className="mb-3">
-              <Col sm={6}>
-                <p className="lead mb-0">{`${data.first_name} ${data.last_name}`}</p>
-              </Col>
-              <Col sm={6}>
-                <p><strong>Publisher:</strong> <span className="text-muted">{data.publisher}</span></p>
-                <p><strong>Acquisition Date:</strong> <span className="text-muted">{data.acquisition_date? formatDate(data.acquisition_date) : "Unknown"}</span></p>
-                <p><strong>Call Number:</strong> <span className="text-muted">{data.call_number}</span></p>
-              </Col>
-            </Row>
-            <Row className="mb-3">
-              <Col sm={6}>
-                <p><strong>Public Domain:</strong> <span className="text-muted">{data.public_domain ? "Yes" : "No"}</span></p>
-                <p><strong>String Scans:</strong> <span className="text-muted">{data.own_digital ? "Yes" : "No"}</span></p>
-                {data.own_digital && <a href={data.scans_url} target="_blank" rel="noreferrer">Link to digital scans</a>}
-              </Col>
-              <Col sm={6}>
-                <p><strong>Condition:</strong> <span className="text-muted">{data.condition}</span></p>
-              </Col>
-            </Row>
-            {data.additional_notes && (
-              <div className="mb-3">
-                <p><strong>Additional Notes:</strong> {data.additional_notes}</p>
+                </div>
               </div>
             )}
+            {isDeleteModalOpen && (
+              <div className="modal-overlay">
+                <div className="popup">
+                  <span className="close-button" onClick={handleCloseModal}>×</span>
+                  <div className="modal-content">
+                    <p>Are you sure you want to delete this item?</p>
+                    <Button className="btn btn-primary align-self-center" onClick={handleDelete}>Delete</Button>
+                  </div>
+                </div>
+              </div>
+            )}
+            <Table striped bordered className="mt-3">
+              <tbody>
+                <tr>
+                  <td><strong>Composer</strong></td>
+                  <td>{`${data.first_name} ${data.last_name}`}</td>
+                </tr>
+                <tr>
+                  <td><strong>Publisher</strong></td>
+                  <td>{data.publisher}</td>
+                </tr>
+                <tr>
+                  <td><strong>Acquisition Date</strong></td>
+                  <td>{data.acquisition_date ? formatDate(data.acquisition_date) : "Unknown"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Call Number</strong></td>
+                  <td>{data.call_number}</td>
+                </tr>
+                <tr>
+                  <td><strong>Public Domain</strong></td>
+                  <td>{data.public_domain ? "Yes" : "No"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Digital Scans</strong></td>
+                  <td>
+                    {data.own_digital ? <a href={data.scans_url} target="_blank" rel="noreferrer" className="ml-2">Yes</a> : "No"}
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Condition</strong></td>
+                  <td>{data.condition}</td>
+                </tr>
+                {data.additional_notes && (
+                  <tr>
+                    <td><strong>Additional Notes</strong></td>
+                    <td>{data.additional_notes}</td>
+                  </tr>
+                )}
+              </tbody>
+            </Table>
           </>
         )}
       </Container>

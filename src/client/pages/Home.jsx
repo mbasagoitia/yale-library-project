@@ -7,10 +7,9 @@ const Home = () => {
 };
 
 // Call number needs to be correctly reflected on submit even if the user doesn't generate it
-// Style the piece info page
 // The search filter function could be better (composers, etc.)
 // Add field to update acquisition date
-// Organize browse page into components
+// Organize piece info page into components
 // Pagination for holdings page
 // Make the search bar and filters functional
 

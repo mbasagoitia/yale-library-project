@@ -32,6 +32,8 @@ const ComposerFilter = ({ initialValue, items, onItemClick }) => {
     setIsDropdownOpen(true);
   };
 
+  // put into separate function
+
   const filterItems = (value) => {
     const lowerCaseValue = value.toLowerCase();
     const filtered = items.filter((item) => (
