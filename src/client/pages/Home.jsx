@@ -8,7 +8,7 @@ const Home = () => {
 
 // Call number needs to be correctly reflected on submit even if the user doesn't generate it
 // Add field to update acquisition date
-// Organize piece info page into components
+// Fix buttons and bootstrap default colors
 // Pagination for holdings page
 // Make the search bar and filters functional
 

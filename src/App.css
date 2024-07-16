@@ -322,6 +322,20 @@ body {
   background-color: #002b50;
 }
 
+/* Fix this without using important */
+
+.ensemble-toggle-btn {
+  background-color: transparent;
+  border-color: transparent;
+  color: #222 !important;
+}
+
+.ensemble-toggle-btn:hover, .ensemble-toggle-btn:focus, .ensemble-toggle-btn:active {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  color: #222 !important;
+}
+
 .reopen-dropdown-btn {
   border-radius: var(--bs-border-radius) 0 0 var(--bs-border-radius);
 }

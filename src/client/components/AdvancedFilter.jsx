@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Row, Col, Form, Button } from "react-bootstrap";
+import { Row, Col, Form, Button, Dropdown } from "react-bootstrap";
 import MediumSelect from "./call-number-selects/MediumSelect";
 import SpeciesSelect from "./call-number-selects/SpeciesSelect";
 import PublisherSelect from "./call-number-selects/PublisherSelect";
@@ -9,57 +9,7 @@ import FilterInput from "./FilterInput";
 
 const AdvancedFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria, onSubmit }) => {
 
-    const clearSearchCriteria = () => {
-        setSearchCriteria({
-            title: "",
-            composer: "",
-            medium: {},
-            genre: {},
-            publisher: {}
-        });
-    }
-
-    const onTitleChange = (e) => {
-        setSearchCriteria({
-            ...searchCriteria,
-            title: e.target.value
-        });
-    }
-
-    const onComposerChange = (e) => {
-        setSearchCriteria({
-            ...searchCriteria,
-            composer: e.target.value
-        });
-    }
-
-    // Need to add an option to show medium selects, and if they are shown, set an inital state (first item)
-    // Because the user may not want to use that filter and it should not be included in some cases
-    const onMediumSelect = (item) => {
-        setSearchCriteria({
-            ...searchCriteria,
-            medium: item
-        });
-    }
-
-    const onGenreSelect = (item) => {
-        setSearchCriteria({
-            ...searchCriteria,
-            genre: item
-        });
-    }
-
-    const onPublisherSelect = (item) => {
-        setSearchCriteria({
-            ...searchCriteria,
-            publisher: item
-        });
-    }
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        onSubmit();
-    }
+    const [mediumSelectShown, setMediumSelectShown] = useState(false);
 
     const [resourceData, setResourceData] = useState({
         mediumData: [],
@@ -85,6 +35,67 @@ const AdvancedFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria, 
           }
           fetchData();
       }, [])
+
+    const clearSearchCriteria = () => {
+        setSearchCriteria({
+            title: "",
+            composer: "",
+            medium: {},
+            genre: {},
+            publisher: {}
+        });
+    }
+
+    const onTitleChange = (e) => {
+        setSearchCriteria({
+            ...searchCriteria,
+            title: e.target.value
+        });
+    }
+
+    const onComposerChange = (e) => {
+        setSearchCriteria({
+            ...searchCriteria,
+            composer: e.target.value
+        });
+    }
+
+    const onMediumSelect = (item) => {
+        setSearchCriteria({
+            ...searchCriteria,
+            medium: item
+        });
+    }
+
+    const onGenreSelect = (item) => {
+        setSearchCriteria({
+            ...searchCriteria,
+            genre: item
+        });
+    }
+
+    const onPublisherSelect = (item) => {
+        setSearchCriteria({
+            ...searchCriteria,
+            publisher: item
+        });
+    }
+
+    const handleToggleMediumSelect = () => {
+        setMediumSelectShown(prevMediumSelectShown => !prevMediumSelectShown);
+    };
+
+    useEffect(() => {
+        setSearchCriteria(prevSearchCriteria => ({
+            ...prevSearchCriteria,
+            medium: mediumSelectShown ? resourceData.mediumData[0].options[0] : {}
+        }));
+    }, [mediumSelectShown, resourceData.mediumData, setSearchCriteria]);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        onSubmit();
+    }
     
     return (
         <Form className="advanced-filter" onSubmit={handleSubmit}>
@@ -121,8 +132,12 @@ const AdvancedFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria, 
                 </Row>
                 <Row className="my-0 my-md-3">
                     <Col md={6} className="my-2 my-md-0">
-                        <Form.Label>Ensemble Type</Form.Label>
-                        {resourceData.mediumData.length > 0 && <MediumSelect items={resourceData.mediumData} handleItemSelect={onMediumSelect} />}
+                        <Form.Label>
+                            <Dropdown.Toggle id="dropdown-basic" className="p-0 ensemble-toggle-btn" onClick={handleToggleMediumSelect}>Ensemble Type</Dropdown.Toggle>
+                        </Form.Label>
+                        {mediumSelectShown && (
+                            resourceData.mediumData.length > 0 && <MediumSelect items={resourceData.mediumData} handleItemSelect={onMediumSelect} />
+                        )}
                     </Col>
                 </Row>
                 <Row className="mb-4">
