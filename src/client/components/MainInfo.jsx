@@ -52,7 +52,7 @@ const MainInfo = ({ resourceData, mainInfo, setMainInfo, formErrors }) => {
           <Col xs={12} md={6}>
             <div className="mb-3">
               <h3>Ensemble Type</h3>
-              {resourceData.mediumData.length > 0 && <MediumSelect items={resourceData.mediumData} mainInfo={mainInfo} setMainInfo={setMainInfo} onItemClick={setMedium} />}
+              {resourceData.mediumData.length > 0 && <MediumSelect items={resourceData.mediumData} mainInfo={mainInfo} setMainInfo={setMainInfo} handleItemSelect={setMedium} />}
             </div>
           </Col>
           <Col xs={12} md={6}>
