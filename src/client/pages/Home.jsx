@@ -1,7 +1,20 @@
+import { useState, useEffect } from "react";
+import AuthButton from "../components/AuthButton";
+
 const Home = () => {
+
+    const [admin, setAdmin] = useState(false);
+
+    useEffect(() => {
+        window.electron?.ipcRenderer?.on('auth-success', (event, data) => {
+          const { netid, isAdmin } = data;
+          setAdmin(isAdmin)
+        });
+      }, []);
+      
     return (
         <div className="home">
-
+            {admin ? <div>Hello, Admin</div> : <AuthButton />}
         </div>
     );
 };
@@ -13,8 +26,5 @@ const Home = () => {
 // Make the search bar and filters functional
 
 // Ask about what kinds of reports to generate (automatically based on date?)
-// Have a season brochure or featured pieces for this season section ***
-// Write a function to request a piece which will send me an email or go to an admin requests section
-// CAS and authentication...what do we need? Admin, librarian, guest
 
 export default Home;
