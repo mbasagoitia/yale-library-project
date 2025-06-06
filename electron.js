@@ -6,9 +6,7 @@ const mysql = require('mysql2/promise');
 const isDev = !app.isPackaged;
 const dotenv = require("dotenv");
 
-dotenv.config({ path: path.resolve(__dirname, '../../.env') });
-// The issue is here, maybe dotenv.config() is not working as expected
-console.log(process.env.DB_USER)
+dotenv.config();
 
 if (!isDev) {
   require('./src/server/startServer');
@@ -21,8 +19,10 @@ const pool = mysql.createPool({
   database: process.env.DB_DATABASE
 });
 
+let mainWindow;
+
 function createWindow() {
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
     webPreferences: {
@@ -33,7 +33,7 @@ function createWindow() {
   });
 
   const url = isDev
-    ? 'http://localhost:3000'
+    ? 'https://yourapp.local:3000'
     : `file://${path.join(__dirname, 'build', 'index.html')}`;
 
   mainWindow.loadURL(url);
@@ -91,7 +91,7 @@ function validateTicket(ticket) {
               console.log(`${netid} is an admin`);
               mainWindow.webContents.send('auth-success', { netid, isAdmin: true });
             } else {
-              console.log(`${netid} is NOT an admin`);
+              // console.log(`${netid} is NOT an admin`);
               mainWindow.webContents.send('auth-success', { netid, isAdmin: false });
             }
           }

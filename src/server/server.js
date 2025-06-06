@@ -16,7 +16,7 @@ app.use(morgan("dev"));
 // app.use(nodemon);
 
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: 'https://yourapp.local:3000',
   credentials: true
 };
 app.use(cors(corsOptions));

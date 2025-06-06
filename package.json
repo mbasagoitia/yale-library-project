@@ -33,9 +33,9 @@
     "eject": "react-scripts eject",
     "dev": "concurrently \"npm run server\" \"npm run react\" \"npm run electron\"",
     "server": "node src/server/startServer.js",
-    "react": "cd src/client && npm start",
-    "electron": "wait-on http://localhost:3000 && electron .",
-    "electron-dev": "concurrently \"npm run dev\" \"npm start\" \"wait-on http://localhost:3000 && electron .\""
+    "react": "react-scripts start",
+    "electron": "wait-on https://yourapp.local:3000 && electron .",
+    "electron-dev": "concurrently \"npm run dev\" \"npm start\" \"wait-on https://yourapp.local:3000 && electron .\""
   },
   "eslintConfig": {
     "extends": [
