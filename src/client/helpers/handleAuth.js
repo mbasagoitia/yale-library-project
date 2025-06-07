@@ -1,5 +1,4 @@
 import { logout } from '../../redux/authSlice';
-import { useDispatch } from 'react-redux';
 import { persistor } from '../../redux/store';
 
 const openLoginWindow = () => {

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { Container, Button } from 'react-bootstrap';
 import CatalogueNew from "../components/CatalogueNew";
 import updatePiece from "../helpers/updatePiece.js";
@@ -12,6 +13,8 @@ const PieceInfo = () => {
   const { id } = useParams();
   const [data, setData] = useState(null);
   const navigate = useNavigate();
+
+  const { isAdmin } = useSelector((state) => state.auth);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -75,15 +78,17 @@ const PieceInfo = () => {
         {data && (
           <>
             <h1 className="mb-4">{data.title} {renderIdAndNumber(data)}</h1>
-            {/* Only render these if the user has the correct permissions */}
+            {isAdmin ? (
             <div className="d-flex">
               <div onClick={handleOpenEditModal} className="edit-text">Edit</div>
               <div onClick={handleOpenDeleteModal} className="delete-text mx-2">Delete</div>
             </div>
-            {isEditModalOpen && (
+            ): null}
+
+            {isAdmin && isEditModalOpen && (
               <Modal content={<CatalogueNew mode={"edit"} initialData={data} onSubmit={updatePiece} handleCloseModal={handleCloseModal} />} handleCloseModal={handleCloseModal} />
             )}
-            {isDeleteModalOpen && (
+            {isAdmin && isDeleteModalOpen && (
               <Modal content={
                 <>
                 <p>Are you sure you want to delete this item?</p>

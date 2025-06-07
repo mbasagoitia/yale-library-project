@@ -346,7 +346,30 @@ body {
   border: 1px solid #00356b;
 }
 
-/* If i add pagination, this will go away */
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.pagination-controls button {
+  padding: 0.4rem 0.75rem;
+  border: 1px solid #ccc;
+  background-color: white;
+  cursor: pointer;
+}
+
+.pagination-controls button.active {
+  font-weight: bold;
+  background-color: #eee;
+}
+
+.pagination-controls button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
 .holdings-list {
   max-height: 90vh;
   overflow-x: hidden;

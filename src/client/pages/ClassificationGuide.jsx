@@ -8,7 +8,7 @@ const ClassificationGuide = () => {
                 <p>While each library will require slightly different arrangements and categorizations of its materials, the Dickinson Classification Scheme employs numeric classifications and mnemonic notation to determine a call number, allowing various levels of specificity depending on the library's requirements.  </p>
             </section>
             <section>
-                <h2>Example Call Number</h2>
+                <h2>Call Numbers</h2>
                 <p>Let's consider a call number under the Dickinson Classification Scheme:</p>
                 <pre>
                     61
@@ -16,10 +16,10 @@ const ClassificationGuide = () => {
                     ovt
                     C
                 </pre>
-                <p><strong>Division Number (61 - Orchestra - Full):</strong><br></br> Indicates the medium (e.g., orchestral, vocal, etc.).</p>
-                <p><strong>Composer's Cutter Number (B813 - Brahms):</strong><br></br> Assigned to the composer according to a predetermined system. The Yale Philharmonia utilizes the composer cutter numbers defined by the cataloguing system at Yale's Irving S. Gilmore Music Library, found <a href="https://web.library.yale.edu/cataloging/music/cuttera" target="_blank" rel="noreferrer">here</a>.</p>
-                <p><strong>Species Title Indication (ovt - overture):</strong><br></br> Indicates the genre of the composition, such as an overture. May also be an opus/number designation if distinctive, such as 18/1 (in the case of Beethoven's string quartets).</p>
-                <p><strong>Publisher/Editor (C - Cranz edition):</strong><br></br> Letter(s) indicating the name of the editor or publisher, whichever is more appropriate to the volume in hand.</p>
+                <p><strong>Division Number:</strong><br></br> Indicates the medium (e.g., orchestral, vocal, etc.).</p><p><em>e. g. 61 (Orchestra - Full)</em></p>
+                <p><strong>Composer's Cutter Number:</strong><br></br> Assigned to the composer according to a predetermined system. The Yale Philharmonia Library utilizes the composer cutter numbers defined by the cataloguing system at Yale's Irving S. Gilmore Music Library, found <a href="https://web.library.yale.edu/cataloging/music/cuttera" target="_blank" rel="noreferrer">here</a>.</p><p><em>e. g. B813 (Brahms)</em></p>
+                <p><strong>Species Title Indication:</strong><br></br> Indicates the genre of the composition, such as an overture. May also be an opus/number designation if distinctive, such as 18/1 (in the case of Beethoven's string quartets).</p><p><em> e.g. ovt (overture)</em></p>
+                <p><strong>Publisher/Editor:</strong><br></br> Letter(s) indicating the name of the editor or publisher, whichever is more appropriate to the volume in hand.</p><p><em> e.g. C (Cranz edition)</em></p>
             </section>
             <section>
                 <h2>Arrangements</h2>
