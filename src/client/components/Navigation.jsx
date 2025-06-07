@@ -1,8 +1,15 @@
-import React from 'react';
-import { Nav, Navbar, NavDropdown, Form, FormControl, Button } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
+import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import Searchbar from './Searchbar';
+import { openLoginWindow, handleLogout } from '../helpers/handleAuth';
+import { useDispatch } from 'react-redux';
 
 const Navigation = () => {
+
+  const { netid, isAdmin, isLoggedIn } = useSelector((state) => state.auth);
+  
+  const dispatch = useDispatch();
+
   return (
         <Navbar expand="lg" bg="light" variant="light" className="site-nav">
             <div className="nav-content">
@@ -18,15 +25,17 @@ const Navigation = () => {
                     </NavDropdown>
                     <Nav.Link href="/">Digital Catalogue</Nav.Link>
                     <Nav.Link href="/classification-guide">Classification Guide</Nav.Link>
+                    {isAdmin ? (
                     <NavDropdown title="Librarian" id="basic-nav-dropdown">
-                        <NavDropdown.Item href="/">Log In</NavDropdown.Item>
-                        <NavDropdown.Item href="/">Log Out</NavDropdown.Item>
+                        <NavDropdown.Item href="/" onClick={() => handleLogout(dispatch)}>Log Out</NavDropdown.Item>
                         <NavDropdown.Item href="/manage-holdings">Manage Holdings</NavDropdown.Item>
                         <NavDropdown.Item href="/">Manage Users</NavDropdown.Item>
                         <NavDropdown.Item href="/">Settings</NavDropdown.Item>
                     </NavDropdown>
+                    ) : 
+                    <Nav.Link href="/" onClick={() => openLoginWindow}>Log In</Nav.Link>}
                     <div>
-                        <Searchbar placeholder={"Search our collection"} />
+                        <Searchbar placeholder={"Search the collection"} />
                     </div>
                     </Nav>
                 </Navbar.Collapse>

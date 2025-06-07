@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { login } from './redux/authSlice';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Header from "./client/components/Header.jsx";
 import Navigation from "./client/components/Navigation.jsx";
@@ -12,6 +14,14 @@ import './App.css';
 
 
 function App() {
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    window.electron?.ipcRenderer?.on('auth-success', (event, data) => {
+      dispatch(login({ netid: data.netid, isAdmin: data.isAdmin }));
+    });
+  }, [dispatch]);
 
   return (
     <BrowserRouter>
