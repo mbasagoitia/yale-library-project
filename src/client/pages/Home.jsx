@@ -1,10 +1,13 @@
-import { useState, useEffect } from "react";
+import HomeCards from '../components/HomeCards';
 
 const Home = () => {
       
     return (
         <div className="home">
-
+            <h1 className='text-center'>Yale Philharmonia Library Catalogue</h1>
+            <div className="mt-4">
+                <HomeCards />
+            </div>
         </div>
     );
 };
@@ -15,37 +18,12 @@ const Home = () => {
 // Make the search bar and filters functional
 
 // Add a global state of search criteria and a back button from piece info
-// Add admin
-
-// What kinds of reports to generate?
-
-// Home Page
-
-// Welcome message (e.g., “Welcome to the Yale Philharmonia Library Catalogue”)
-// Quick stats:
-// Total pieces in holdings
-// Number of digital scans available
-// Last piece added / last performance date
-// Quick search bar
-// “Recently Added” or “Featured Works”
-// Link buttons to:
-// Browse Holdings
-// Classification Guide
-// Reports (if logged in as admin)
-// Logo or photo (e.g., orchestral image, shelves of scores)
-// Maybe a quote about music or archiving if you want some human touch
 
 // Settings Page
 
 // Add / remove admin by NetID
-// Manage user permissions (if expanded in the future)
-// Default values or presets for:
-// Classification types
-// Editions
 // Default folder location for digital holdings
-// App appearance settings? (Light/dark mode toggle, if relevant)
 // Backup/export database (JSON/CSV download)
-// Manual re-sync button if you integrate APIs or digital scan syncing in the future
 
 // Digital Catalogue
 
@@ -63,15 +41,9 @@ const Home = () => {
 // Reports
 
 // Parts with Missing Material
-// E.g., “Missing 2nd Horn in [Piece X]”
 // Poor Condition
-// “Score in fair condition” / “Parts yellowed or torn”
-// Last Performed: Never
-// Could help conductors/librarians revive underused rep
+// Last Performed
 // Most Recently Performed
-// "Most active works"
-// Digital Holdings Missing
-// Flag pieces with no digital scan
 // Top 10 Most Performed
 // Good visual chart here — use bar chart!
 // Recently Added (last 30 days)
