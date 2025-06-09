@@ -27,16 +27,9 @@ const Home = () => {
 
 // Digital Catalogue
 
-// Use Google Drive's embed view or file previews
-// (e.g., embed a viewer for PDF previews if you can link directly)
-// For each piece:
-// Show piece info
-// Show “View Digital Score” button → opens scan in a modal or new tab
-// Add Google Drive icon next to link
-// If using thumbnails or icons:
-// Show a small icon (PDF, image, etc.) to indicate file type
-// Consider adding “Uploaded on” date or “Last accessed”
-// Bonus: If you want elegance — auto-fetch Drive preview thumbnails using Google Drive API (optional, needs setup).
+// Browse by composer/title
+// Have relative filepath stored in holdings, link to file folder
+// Style this page!
 
 // Reports
 
@@ -51,8 +44,6 @@ const Home = () => {
 // Use charts: Recharts (simple React chart lib) or Chart.js
 // For lists: Tables with filtering/sorting (e.g., DataTables, or React Table)
 // Export options: Let librarians export as PDF/CSV
-
-// History of Changes: log who edited what and when
 
 
 export default Home;
