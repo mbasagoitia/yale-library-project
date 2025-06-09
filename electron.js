@@ -1,4 +1,5 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const { getBasePath, setBasePath } = require('./src/settings');
 const https = require('https');
 const { parseStringPromise } = require('xml2js');
 const path = require('path');
@@ -116,6 +117,25 @@ async function isNetIDAdmin(netid) {
 
 ipcMain.handle("open-auth-window", () => {
   createAuthWindow();
+});
+
+ipcMain.handle('get-full-path', async (event, relativePath) => {
+  const base = getBasePath();
+  if (!base) return null;
+  return path.join(base, relativePath);
+});
+
+ipcMain.handle('select-base-path', async () => {
+  const result = await dialog.showOpenDialog({
+    properties: ['openDirectory']
+  });
+
+  if (!result.canceled && result.filePaths.length > 0) {
+    setBasePath(result.filePaths[0]);
+    return result.filePaths[0];
+  }
+
+  return null;
 });
 
 app.whenReady().then(() => {

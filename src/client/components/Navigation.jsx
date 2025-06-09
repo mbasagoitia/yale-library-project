@@ -24,7 +24,7 @@ const Navigation = () => {
                     {isAdmin ? (
                     <NavDropdown title="Librarian" id="basic-nav-dropdown">
                         <NavDropdown.Item href="/manage-holdings">Manage Holdings</NavDropdown.Item>
-                        <NavDropdown.Item href="/">Settings</NavDropdown.Item>
+                        <NavDropdown.Item href="/settings">Settings</NavDropdown.Item>
                         <Dropdown.Divider></Dropdown.Divider>
                         <NavDropdown.Item as="span" onClick={() => handleLogout(dispatch)}>Log Out</NavDropdown.Item>
                     </NavDropdown>
