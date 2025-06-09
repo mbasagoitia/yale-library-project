@@ -18,7 +18,7 @@ const Navigation = () => {
                     <Nav className="mr-auto d-flex justify-content-between align-items-center w-100">
                     <Nav.Link href="/">Home</Nav.Link>
                     <Nav.Link href="/browse-holdings">Browse Collection</Nav.Link>
-                    <Nav.Link href="/">Digital Catalogue</Nav.Link>
+                    <Nav.Link href="digital-catalogue">Digital Catalogue</Nav.Link>
                     <Nav.Link href="/classification-guide">Classification Guide</Nav.Link>
                     <Nav.Link href="/reports">Reports</Nav.Link>
                     {isAdmin ? (

@@ -3,6 +3,7 @@ const { getBasePath, setBasePath } = require('./src/settings');
 const https = require('https');
 const { parseStringPromise } = require('xml2js');
 const path = require('path');
+const fs = require('fs');
 const mysql = require('mysql2/promise');
 const isDev = !app.isPackaged;
 const dotenv = require("dotenv");
@@ -125,6 +126,10 @@ ipcMain.handle('get-full-path', async (event, relativePath) => {
   return path.join(base, relativePath);
 });
 
+ipcMain.handle('get-base-path', async () => {
+  return getBasePath();
+});
+
 ipcMain.handle('select-base-path', async () => {
   const result = await dialog.showOpenDialog({
     properties: ['openDirectory']
@@ -136,6 +141,19 @@ ipcMain.handle('select-base-path', async () => {
   }
 
   return null;
+});
+
+ipcMain.handle('digitalCatalogue:listDirectory', async (event, relativePath = '') => {
+  const basePath = getBasePath();
+  const targetPath = path.join(basePath, relativePath);
+
+  const entries = await fs.promises.readdir(targetPath, { withFileTypes: true });
+
+  return entries.map((entry) => ({
+    name: entry.name,
+    isDirectory: entry.isDirectory(),
+    relativePath: path.join(relativePath, entry.name)
+  }));
 });
 
 app.whenReady().then(() => {

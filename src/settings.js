@@ -6,7 +6,11 @@ function setBasePath(path) {
 }
 
 function getBasePath() {
-  return store.get('basePath');
+  const path = store.get('basePath');
+  if (!path) {
+    throw new Error("Base path is not set. Please select a Digital Catalogue root folder.");
+  }
+  return path;
 }
 
 module.exports = {

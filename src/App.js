@@ -6,6 +6,7 @@ import Header from "./client/components/Header.jsx";
 import Navigation from "./client/components/Navigation.jsx";
 import Home from "./client/pages/Home.jsx";
 import ClassificationGuide from './client/pages/ClassificationGuide.jsx';
+import DigitalCatalogue from './client/pages/DigitalCatalogue.jsx';
 import ManageHoldings from './client/pages/ManageHoldings.jsx';
 import Settings from './client/pages/Settings.jsx';
 import Browse from './client/pages/Browse.jsx';
@@ -38,6 +39,7 @@ function App() {
         <Route path="/browse-holdings" element={<Browse />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/browse-holdings/:id" element={<PieceInfo />} />
+        <Route path="digital-catalogue" element={<DigitalCatalogue />} />
       </Routes>
       </div>
     </div>

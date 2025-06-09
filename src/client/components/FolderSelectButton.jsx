@@ -1,10 +1,14 @@
 const handleSelectBasePath = async () => {
-    const selectedPath = await window.electronAPI.selectBasePath();
-    if (selectedPath) {
-      alert(`Base path set to: ${selectedPath}`);
-      // Optionally update some local React state to reflect this
-    }
-  };
+  if (!window.electronAPI?.selectBasePath) {
+    alert("selectBasePath not available");
+    return;
+  }
+
+  const selectedPath = await window.electronAPI.selectBasePath();
+  if (selectedPath) {
+    alert(`Base path set to: ${selectedPath}`);
+  }
+};
 
 const FolderSelectButton = () => {
 
