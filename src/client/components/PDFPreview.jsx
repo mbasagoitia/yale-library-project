@@ -1,21 +1,24 @@
-import { Document, Page } from 'react-pdf';
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Document, Page, pdfjs } from 'react-pdf';
 
-const PDFPreview = ({ filePath }) => {
-  const [numPages, setNumPages] = useState(null);
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+
+function PDFPreview({ filePath }) {
+  const [pdfData, setPdfData] = useState(null);
+
+  useEffect(() => {
+    window.electronAPI.readFile(filePath).then((buffer) => {
+      setPdfData(buffer);
+    });
+  }, [filePath]);
+
+  if (!pdfData) return <div>Loading...</div>;
 
   return (
-    <div className="pdf-preview">
-      <Document
-        file={`file://${filePath}`}
-        onLoadSuccess={({ numPages }) => setNumPages(numPages)}
-      >
-        {Array.from({ length: numPages }, (_, i) => (
-          <Page key={i + 1} pageNumber={i + 1} />
-        ))}
-      </Document>
-    </div>
+    <Document file={pdfData}>
+      <Page pageNumber={1} />
+    </Document>
   );
-};
+}
 
 export default PDFPreview;

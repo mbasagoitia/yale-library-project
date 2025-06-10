@@ -509,6 +509,21 @@ body {
   margin-bottom: 4px;
 }
 
+.folder-item {
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.folder-item:hover {
+  background-color: #f0f0f0;
+}
+
+.pdf-preview {
+  margin-top: 1rem;
+  border: 1px solid #ccc;
+  padding: 1rem;
+}
+
 @media (min-width: 500px) {
   .modal-content {
     padding: 0 2rem 2rem 2rem;

@@ -120,10 +120,9 @@ ipcMain.handle("open-auth-window", () => {
   createAuthWindow();
 });
 
-ipcMain.handle('get-full-path', async (event, relativePath) => {
-  const base = getBasePath();
-  if (!base) return null;
-  return path.join(base, relativePath);
+
+ipcMain.handle('get-full-path', (event, basePath, relativePath) => {
+  return path.join(basePath, relativePath);
 });
 
 ipcMain.handle('get-base-path', async () => {
@@ -143,6 +142,19 @@ ipcMain.handle('select-base-path', async () => {
   return null;
 });
 
+ipcMain.handle('read-file', (event, filePath) => {
+  return new Promise((resolve, reject) => {
+    fs.readFile(filePath, (err, data) => {
+      if (err) {
+        console.error('Error reading file:', err);
+        reject(err);
+      } else {
+        resolve(data.buffer);
+      }
+    });
+  });
+});
+
 ipcMain.handle('digitalCatalogue:listDirectory', async (event, relativePath = '') => {
   const basePath = getBasePath();
   const targetPath = path.join(basePath, relativePath);
@@ -153,6 +165,16 @@ ipcMain.handle('digitalCatalogue:listDirectory', async (event, relativePath = ''
     name: entry.name,
     isDirectory: entry.isDirectory(),
     relativePath: path.join(relativePath, entry.name)
+  }));
+});
+
+ipcMain.handle('read-folder', async (event, dirPath) => {
+  const entries = fs.readdirSync(dirPath, { withFileTypes: true });
+
+  return entries.map(entry => ({
+    name: entry.name,
+    isDirectory: entry.isDirectory(),
+    fullPath: path.join(dirPath, entry.name),
   }));
 });
 

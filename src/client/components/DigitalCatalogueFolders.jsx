@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useFolderContents } from '../hooks/useFolderContents';
 import { Document, Page } from 'react-pdf';
+import PDFPreview from './PDFPreview';
+import { pdfjs } from 'react-pdf';
+
+pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.12.313/pdf.worker.min.js`;
 
 const DigitalCatalogueFolders = () => {
 
@@ -20,11 +24,12 @@ const DigitalCatalogueFolders = () => {
     fetchBasePath();
   }, []);
 
-  const handleClick = (item) => {
+  const handleClick = async (item) => {
     if (item.isDirectory) {
       navigateTo(item.relativePath);
     } else if (item.name.endsWith('.pdf')) {
-      const fullPath = window.electronAPI.joinPath(basePath, item.relativePath);
+      const fullPath = await window.electronAPI.getFullPath(basePath, item.relativePath);
+      console.log('Full PDF path:', fullPath);
       setSelectedPDF(fullPath);
     }
   };
@@ -52,12 +57,7 @@ const DigitalCatalogueFolders = () => {
       {selectedPDF && (
         <div className="pdf-preview">
           <h3>Preview: {selectedPDF}</h3>
-          <Document
-            file={`file://${selectedPDF}`}
-            onLoadError={(err) => console.error('PDF load error', err)}
-          >
-            <Page pageNumber={1} />
-          </Document>
+          <PDFPreview filePath={selectedPDF} />
         </div>
       )}
     </div>

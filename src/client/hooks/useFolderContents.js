@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 export const useFolderContents = (initialPath = '') => {
-    
   const [contents, setContents] = useState([]);
   const [currentPath, setCurrentPath] = useState(initialPath);
   const [breadcrumbs, setBreadcrumbs] = useState([]);
@@ -10,7 +9,9 @@ export const useFolderContents = (initialPath = '') => {
     const result = await window.digitalCatalogueAPI.listDirectory(path);
     setContents(result);
     setCurrentPath(path);
-    setBreadcrumbs(path.split('/').filter(Boolean));
+
+    const normalizedPath = path.replace(/\\/g, '/');
+    setBreadcrumbs(normalizedPath.split('/').filter(Boolean));
   };
 
   useEffect(() => {
@@ -23,7 +24,8 @@ export const useFolderContents = (initialPath = '') => {
     breadcrumbs,
     navigateTo: fetchDirectory,
     goUp: () => {
-      const parts = currentPath.split('/').filter(Boolean);
+      const parts = currentPath.replace(/\\/g, '/').split('/').filter(Boolean);
+      if (parts.length === 0) return;
       parts.pop();
       fetchDirectory(parts.join('/'));
     },

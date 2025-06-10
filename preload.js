@@ -2,9 +2,11 @@ const { contextBridge, ipcRenderer } = require("electron");
 
 contextBridge.exposeInMainWorld("electronAPI", {
   openAuthWindow: () => ipcRenderer.invoke("open-auth-window"),
-  getFullPath: (relativePath) => ipcRenderer.invoke('get-full-path', relativePath),
+  getFullPath: (basePath, relativePath) => ipcRenderer.invoke('get-full-path', basePath, relativePath),
   selectBasePath: () => ipcRenderer.invoke('select-base-path'),
-  getBasePath: () => ipcRenderer.invoke('get-base-path')
+  getBasePath: () => ipcRenderer.invoke('get-base-path'),
+  readFolder: (path) => ipcRenderer.invoke("read-folder", path),
+  readFile: (filePath) => ipcRenderer.invoke('read-file', filePath)
 });
 
 contextBridge.exposeInMainWorld('electron', {
