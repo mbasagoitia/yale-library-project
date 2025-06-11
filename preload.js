@@ -6,7 +6,11 @@ contextBridge.exposeInMainWorld("electronAPI", {
   selectBasePath: () => ipcRenderer.invoke('select-base-path'),
   getBasePath: () => ipcRenderer.invoke('get-base-path'),
   readFolder: (path) => ipcRenderer.invoke("read-folder", path),
-  readFile: (filePath) => ipcRenderer.invoke('read-file', filePath)
+  readFile: (filePath) => ipcRenderer.invoke('read-file', filePath),
+  openFile: (fullPath) =>
+    ipcRenderer.invoke('open-file', fullPath),
+  openFolder: (folderPath) =>
+    ipcRenderer.invoke('open-folder', folderPath),
 });
 
 contextBridge.exposeInMainWorld('electron', {

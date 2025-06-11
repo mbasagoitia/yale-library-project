@@ -30,6 +30,7 @@ const Home = () => {
 // Browse by composer/title
 // Have relative filepath stored in holdings, link to file folder
 // Style this page!
+// Open full file on click
 
 // Reports
 

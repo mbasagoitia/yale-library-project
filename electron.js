@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron');
 const { getBasePath, setBasePath } = require('./src/settings');
 const https = require('https');
 const { parseStringPromise } = require('xml2js');
@@ -153,6 +153,34 @@ ipcMain.handle('read-file', (event, filePath) => {
       }
     });
   });
+});
+
+ipcMain.handle('open-file', async (event, fullPath) => {
+  try {
+    const result = await shell.openPath(fullPath);
+    if (result) {
+      console.error('Failed to open file:', result);
+      return { success: false, error: result };
+    }
+    return { success: true };
+  } catch (err) {
+    console.error('Error opening file:', err);
+    return { success: false, error: err.message };
+  }
+});
+
+ipcMain.handle('open-folder', async (event, folderPath) => {
+  try {
+    const result = await shell.openPath(folderPath);
+    if (result) {
+      console.error('Failed to open folder:', result);
+      return { success: false, error: result };
+    }
+    return { success: true };
+  } catch (err) {
+    console.error('Error opening folder:', err);
+    return { success: false, error: err.message };
+  }
 });
 
 ipcMain.handle('digitalCatalogue:listDirectory', async (event, relativePath = '') => {
