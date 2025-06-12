@@ -1,11 +1,12 @@
-const express = require("express");
-import { addNewAdmin } from "../controllers/adminController";
+const express = require('express');
+const { authenticateAdmin } = require("../middlewares/authenticateAdmin.js");
+const { addNewAdmin } = require("../controllers/adminController.js");
 
 const router = express.Router();
 
-router.post('/admin', (req, res) => {
+router.post('/admin', authenticateAdmin, (req, res) => {
     const db = req.db;
     addNewAdmin(req, res, db);
 })
 
-export default router;
+module.exports = router;

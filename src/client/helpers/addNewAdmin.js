@@ -1,10 +1,13 @@
 const addNewAdmin = (info) => {
     const apiUrl = "http://localhost:5000/api/admin";
+
+    const token = window.auth.getToken();
     
     return fetch(apiUrl, {
         method: "POST",
         headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`  
         },
         credentials: "include",
         body: JSON.stringify(info)

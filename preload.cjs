@@ -1,5 +1,11 @@
 const { contextBridge, ipcRenderer } = require("electron");
 
+contextBridge.exposeInMainWorld('auth', {
+  getToken: () => ipcRenderer.invoke('auth:getToken'),
+  getNetID: () => ipcRenderer.invoke('auth:getNetID'),
+  getIsAdmin: () => ipcRenderer.invoke('auth:getIsAdmin'),
+});
+
 contextBridge.exposeInMainWorld("electronAPI", {
   openAuthWindow: () => ipcRenderer.invoke("open-auth-window"),
   getFullPath: (basePath, relativePath) => ipcRenderer.invoke('get-full-path', basePath, relativePath),

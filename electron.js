@@ -1,4 +1,5 @@
 const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron');
+const Store = require('electron-store').default;
 const { getBasePath, setBasePath } = require('./src/settings');
 const https = require('https');
 const { parseStringPromise } = require('xml2js');
@@ -7,6 +8,12 @@ const fs = require('fs');
 const mysql = require('mysql2/promise');
 const isDev = !app.isPackaged;
 const dotenv = require("dotenv");
+const jwt = require('jsonwebtoken');
+
+const store = new Store();
+
+const JWT_SECRET = process.env.JWT_SECRET
+
 
 dotenv.config();
 
@@ -28,9 +35,9 @@ function createWindow() {
     width: 1200,
     height: 800,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, 'preload.cjs'),
       contextIsolation: true,
-      nodeIntegration: false,
+      nodeIntegration: false
     },
   });
 
@@ -39,7 +46,9 @@ function createWindow() {
     : `file://${path.join(__dirname, 'build', 'index.html')}`;
 
   mainWindow.loadURL(url);
+  
 }
+
 
 function createAuthWindow() {
   const authWindow = new BrowserWindow({
@@ -85,19 +94,19 @@ function validateTicket(ticket) {
         const success = parsed['cas:serviceResponse']['cas:authenticationSuccess'];
         if (success) {
           const netid = success[0]['cas:user'][0];
-          if (success) {
-            const netid = success[0]['cas:user'][0];
-            const isAdmin = await isNetIDAdmin(netid);
-            
-            if (isAdmin) {
-              console.log(`${netid} is an admin`);
-              mainWindow.webContents.send('auth-success', { netid, isAdmin: true });
-            } else {
-              // console.log(`${netid} is NOT an admin`);
-              mainWindow.webContents.send('auth-success', { netid, isAdmin: false });
-            }
-          }
+          const isAdmin = await isNetIDAdmin(netid);
 
+          const token = jwt.sign({ netid, isAdmin }, JWT_SECRET, { expiresIn: '1h' });
+
+          store.set('authToken', token);
+          store.set('netid', netid);
+          store.set('isAdmin', isAdmin);
+
+          mainWindow.webContents.send('auth-success', {
+            token,
+            netid,
+            isAdmin
+          });
         } else {
           console.error("Ticket validation failed", data);
         }
@@ -110,6 +119,7 @@ function validateTicket(ticket) {
   });
 }
 
+
 async function isNetIDAdmin(netid) {
   const [rows] = await pool.query('SELECT * FROM admins WHERE netid = ?', [netid]);
   return rows.length > 0;
@@ -118,6 +128,18 @@ async function isNetIDAdmin(netid) {
 
 ipcMain.handle("open-auth-window", () => {
   createAuthWindow();
+});
+
+ipcMain.handle('auth:getToken', () => {
+  return store.get('authToken');
+});
+
+ipcMain.handle('auth:getNetID', () => {
+  return store.get('netid');
+});
+
+ipcMain.handle('auth:getIsAdmin', () => {
+  return store.get('isAdmin');
 });
 
 
