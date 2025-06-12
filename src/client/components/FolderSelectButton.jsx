@@ -14,7 +14,7 @@ const FolderSelectButton = () => {
 
   return (
     <div>
-      <button onClick={handleSelectBasePath}>Set Digital Library Folder</button>
+      <button onClick={handleSelectBasePath}>Choose...</button>
     </div>
   );
 }

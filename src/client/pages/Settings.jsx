@@ -4,7 +4,12 @@ const Settings = () => {
    return (
     <div className="settings">
         <h1>Settings</h1>
-        <FolderSelectButton />
+        <div>
+            <h2>Set Digital Catalogue Folder</h2>
+            <FolderSelectButton />
+        </div>
+            <h2>Add New Admin</h2>
+            
     </div>
    )
 }
