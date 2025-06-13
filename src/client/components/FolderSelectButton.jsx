@@ -1,3 +1,5 @@
+import { Button } from "react-bootstrap";
+
 const handleSelectBasePath = async () => {
   if (!window.electronAPI?.selectBasePath) {
     alert("selectBasePath not available");
@@ -14,7 +16,9 @@ const FolderSelectButton = () => {
 
   return (
     <div>
-      <button onClick={handleSelectBasePath}>Choose...</button>
+      <Button variant="primary" type="button" onClick={handleSelectBasePath}>
+        Choose Folder
+      </Button>
     </div>
   );
 }

@@ -18,12 +18,12 @@ const Home = () => {
 // Make the search bar and filters functional
 
 // Add a global state of search criteria and a back button from piece info
+// Global permanent state of base path for digital catalogue
 
 // Settings Page
 
-// Add / remove admin by NetID
-// Default folder location for digital holdings
 // Backup/export database (JSON/CSV download)
+// Also backup the digital catalogue?
 
 // Digital Catalogue
 

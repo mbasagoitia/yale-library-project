@@ -10,12 +10,13 @@ const isDev = !app.isPackaged;
 const dotenv = require("dotenv");
 const jwt = require('jsonwebtoken');
 
+dotenv.config();
+
 const store = new Store();
 
 const JWT_SECRET = process.env.JWT_SECRET
 
 
-dotenv.config();
 
 if (!isDev) {
   require('./src/server/startServer');
