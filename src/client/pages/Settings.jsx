@@ -23,6 +23,28 @@ const Settings = () => {
     }
   };
 
+const handleCreateCSVBackup = async () => {
+    const result = await window.backupAPI.createReadableBackup();
+    alert(result.message);
+}
+
+
+const handleCreateMysqlDump = async () => {
+    const result = await window.backupAPI.createMySQLBackup();
+    alert(result.message);
+}
+
+const handleBackupScans = async () => {
+    try {
+      const zipPath = await window.backupAPI.zipCatalogueFolder();
+      alert(`Scans folder successfully backed up to:\n${zipPath}`);
+    } catch (err) {
+      alert(`Failed to back up scans folder:\n${err.message}`);
+      console.error(err);
+    }
+  };
+
+
   return (
     <Container className="mt-4">
       <h1 className="mb-4">Settings</h1>
@@ -74,8 +96,14 @@ const Settings = () => {
         <Card.Text>
             Create a backup of the current holdings database. This file can be stored externally to preserve data or transfer it to another system.
         </Card.Text>
-        <Button variant="primary" type="submit">
-            Export
+        <Button variant="primary" onClick={handleCreateCSVBackup}>
+            Export as CSV
+        </Button>
+        <Button variant="primary" className="mx-2" onClick={handleCreateMysqlDump}>
+            Export full Database
+        </Button>
+        <Button variant="primary" onClick={handleBackupScans}>
+            Export Digital Catalogue
         </Button>
         </Card.Body>
       </Card>

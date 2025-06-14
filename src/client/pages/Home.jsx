@@ -16,14 +16,15 @@ const Home = () => {
 // Add field to update acquisition date
 // Fix buttons and bootstrap default colors
 // Make the search bar and filters functional
+// Edit piece even if some info is empty (call number)
 
 // Add a global state of search criteria and a back button from piece info
 // Global permanent state of base path for digital catalogue
 
 // Settings Page
 
-// Backup/export database (JSON/CSV download)
-// Also backup the digital catalogue?
+// Show current catalogue folder location
+// Make all backups go to same folder
 
 // Digital Catalogue
 
@@ -45,6 +46,8 @@ const Home = () => {
 // Use charts: Recharts (simple React chart lib) or Chart.js
 // For lists: Tables with filtering/sorting (e.g., DataTables, or React Table)
 // Export options: Let librarians export as PDF/CSV
+
+// Server vs electron logic?
 
 
 export default Home;

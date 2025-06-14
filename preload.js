@@ -6,6 +6,12 @@ contextBridge.exposeInMainWorld('auth', {
   getIsAdmin: () => ipcRenderer.invoke('auth:getIsAdmin'),
 });
 
+contextBridge.exposeInMainWorld('backupAPI', {
+  createReadableBackup: () => ipcRenderer.invoke('backup:readable'),
+  createMySQLBackup: () => ipcRenderer.invoke('backup:mysqldump'),
+  zipCatalogueFolder: () => ipcRenderer.invoke('backup:zipCatalogueFolder')
+});
+
 contextBridge.exposeInMainWorld("electronAPI", {
   openAuthWindow: () => ipcRenderer.invoke("open-auth-window"),
   getFullPath: (basePath, relativePath) => ipcRenderer.invoke('get-full-path', basePath, relativePath),
