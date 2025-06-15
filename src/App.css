@@ -518,10 +518,24 @@ body {
   background-color: #f0f0f0;
 }
 
+.file-card {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.file-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+} 
+
 .pdf-preview {
   margin-top: 1rem;
   border: 1px solid #ccc;
   padding: 1rem;
+}
+
+.react-pdf__Page, .react-pdf__Document {
+  display: flex;
+  justify-content: center;
 }
 
 @media (min-width: 500px) {

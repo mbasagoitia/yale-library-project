@@ -19,17 +19,14 @@ const Home = () => {
 // Edit piece even if some info is empty (call number)
 
 // Add a global state of search criteria and a back button from piece info
-// Global permanent state of base path for digital catalogue
 
 // Settings Page
 
-// Show current catalogue folder location
 // Make all backups go to same folder
 
 // Digital Catalogue
 
 // Browse by composer/title
-// Have relative filepath stored in holdings, link to file folder
 // Style this page!
 // Open full file on click
 

@@ -28,7 +28,7 @@ let mainWindow;
 app.whenReady().then(() => {
   mainWindow = createWindow();
 
-  handleFileHandlers(ipcMain, store);
+  handleFileHandlers(ipcMain, store, mainWindow);
   handleAuthHandlers(ipcMain, mainWindow, store, pool);
   handleBackupHandlers(ipcMain, store, pool);
 

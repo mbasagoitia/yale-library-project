@@ -10,17 +10,17 @@ const {
   handleListDirectory
 } = require("../helpers/fileHelpers");
 
-const handleFileHandlers = (ipcMain, store) => {
+const handleFileHandlers = (ipcMain, store, mainWindow) => {
   ipcMain.handle('get-base-path', async () => {
     return getBasePath(store);
   });
 
   ipcMain.handle('set-base-path', async (event, newPath) => {
-    return setBasePath(store, newPath);
+    return setBasePath(store, newPath, mainWindow);
   });
 
   ipcMain.handle('select-base-path', async () => {
-    return await handleSelectBasePath(store);
+    return await handleSelectBasePath(store, mainWindow);
   });
 
   ipcMain.handle('get-full-path', (event, basePath, relativePath) => {

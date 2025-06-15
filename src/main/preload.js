@@ -23,6 +23,16 @@ contextBridge.exposeInMainWorld("electronAPI", {
     ipcRenderer.invoke('open-file', fullPath),
   openFolder: (folderPath) =>
     ipcRenderer.invoke('open-folder', folderPath),
+  on: (channel, callback) => {
+    const validChannels = ["basePath-updated"];
+    if (validChannels.includes(channel)) {
+      ipcRenderer.on(channel, callback);
+    }
+  },
+
+  removeListener: (channel, callback) => {
+    ipcRenderer.removeListener(channel, callback);
+  }
 });
 
 contextBridge.exposeInMainWorld('electron', {

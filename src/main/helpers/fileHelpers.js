@@ -2,9 +2,13 @@ const { dialog, shell } = require('electron');
 const path = require('path');
 const fs = require('fs-extra');
 
-const setBasePath = (store, newPath) => {
+const setBasePath = (store, newPath, mainWindow) => {
     store.set('basePath', newPath);
-};
+    if (mainWindow) {
+        mainWindow.webContents.send("basePath-updated", newPath);
+    }
+    return newPath;
+  };
 
 const getBasePath = (store) => {
     const basePath = store.get('basePath');
@@ -14,19 +18,19 @@ const getBasePath = (store) => {
     return basePath;
 };
 
-const handleSelectBasePath = async (store) => {
+const handleSelectBasePath = async (store, mainWindow) => {
     const result = await dialog.showOpenDialog({
-        properties: ['openDirectory']
+      properties: ['openDirectory'],
     });
-
+  
     if (!result.canceled && result.filePaths.length > 0) {
-        const selectedPath = result.filePaths[0];
-        setBasePath(store, selectedPath);
-        return selectedPath;
+      const selectedPath = result.filePaths[0];
+      setBasePath(store, selectedPath, mainWindow);
+      return selectedPath;
     }
-
+  
     return null;
-};
+  };
 
 const handleReadFile = async (filePath) => {
     const data = await fs.promises.readFile(filePath);

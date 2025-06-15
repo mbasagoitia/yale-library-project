@@ -15,9 +15,9 @@ function PDFPreview({ filePath }) {
   if (!pdfData) return <div>Loading...</div>;
 
   return (
-    <Document file={pdfData}>
-      <Page pageNumber={1} />
-    </Document>
+      <Document file={pdfData}>
+        <Page pageNumber={1} />
+      </Document>
   );
 }
 

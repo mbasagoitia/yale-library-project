@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Container, Form, Button, Card, Alert } from "react-bootstrap";
 import FolderSelectButton from "../components//digital-catalogue/FolderSelectButton";
 import addNewAdmin from "../helpers/auth/addNewAdmin";
@@ -6,6 +6,31 @@ import addNewAdmin from "../helpers/auth/addNewAdmin";
 const Settings = () => {
   const [adminInfo, setAdminInfo] = useState({ name: "", netid: "" });
   const [successMsg, setSuccessMsg] = useState("");
+  const [basePath, setBasePath] = useState("");
+
+  // This is used twice; make helper function
+
+  useEffect(() => {
+    const fetchBasePath = async () => {
+      if (window.electronAPI?.getBasePath) {
+        const result = await window.electronAPI.getBasePath();
+        if (result) {
+          setBasePath(result);
+        }
+      }
+    };
+
+    fetchBasePath();
+    
+
+    const handleBasePathUpdate = (event, newPath) => {
+      setBasePath(newPath);
+    };
+    
+
+    window.electronAPI?.on("basePath-updated", handleBasePathUpdate);
+
+  }, []);
 
   const handleAddAdmin = async (e) => {
     e.preventDefault();
@@ -51,8 +76,8 @@ const handleBackupScans = async () => {
       <h2>Set Digital Catalogue Folder</h2>
       <Card className="mb-4">
         <Card.Body>
-
           <FolderSelectButton />
+          <div className="mt-4">Current Path: {basePath}</div>
         </Card.Body>
       </Card>
       <h2>Add New Admin</h2>
