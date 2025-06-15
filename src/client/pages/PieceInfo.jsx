@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Container, Button } from 'react-bootstrap';
-import CatalogueNew from "../components/CatalogueNew";
-import updatePiece from "../helpers/updatePiece.js";
-import deletePiece from "../helpers/deletePiece.js";
-import renderIdAndNumber from '../helpers/renderIdAndNumber.js';
-import Modal from '../components/Modal.jsx';
-import InfoTable from '../components/InfoTable.jsx';
+import CatalogueNew from "../components/holdings/CatalogueNew.jsx";
+import updatePiece from "../helpers/holdings/updatePiece.js";
+import deletePiece from "../helpers/holdings/deletePiece.js";
+import renderIdAndNumber from '../helpers/holdings/renderIdAndNumber.js';
+import Modal from '../components/general/Modal.jsx';
+import InfoTable from '../components/holdings/InfoTable.jsx';
 
 const PieceInfo = () => {
   const { id } = useParams();

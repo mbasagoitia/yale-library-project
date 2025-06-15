@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import ComposerFilter from "../ComposerFilter";
-import AddComposer from "../AddComposer";
+import ComposerFilter from "../../search-filters/ComposerFilter";
+import AddComposer from "../../holdings/AddComposer";
 
 const ComposerSelect = ({ items, mainInfo, onItemClick }) => {
 

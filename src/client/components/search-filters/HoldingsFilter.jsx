@@ -1,7 +1,7 @@
 import { useState } from "react";
 import BasicFilter from "./BasicFilter";
 import AdvancedFilter from "./AdvancedFilter";
-import filterSearch from "../helpers/filterSearch";
+import filterSearch from "../../helpers/holdings/filterSearch";
 
 const HoldingsFilter = ({ holdingsData, setFilteredItems }) => {
 

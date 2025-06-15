@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import CatalogueNew from "../components/CatalogueNew";
-import catalogueNew from "../helpers/catalogueNew.js";
-import Modal from "../components/Modal.jsx";
+import CatalogueNew from "../components/holdings/CatalogueNew.jsx";
+import catalogueNew from "../helpers/holdings/catalogueNew.js";
+import Modal from "../components/general/Modal.jsx";
 
 
 const ManageHoldings = () => {

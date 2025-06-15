@@ -2,7 +2,7 @@
   "name": "library-project",
   "version": "0.1.0",
   "private": true,
-  "main": "electron.js",
+  "main": "src/main/electron.js",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.5.2",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",

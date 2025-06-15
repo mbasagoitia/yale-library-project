@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import DigitalCatalogueFolders from "../components/DigitalCatalogueFolders";
+import DigitalCatalogueFolders from "../components/digital-catalogue/DigitalCatalogueFolders";
 
 const DigitalCatalogue = () => {
     

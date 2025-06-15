@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Form, Button, InputGroup, FormControl } from "react-bootstrap";
-import addComposer from "../helpers/addComposer";
+import { Button, InputGroup, FormControl } from "react-bootstrap";
+import addComposer from "../../helpers/holdings/addComposer";
 
 const AddComposer = ({ handleCloseModal }) => {
     const [composer, setComposer] = useState({
@@ -19,7 +19,6 @@ const AddComposer = ({ handleCloseModal }) => {
                 handleCloseModal();
                 console.log("Composer added successfully");
 
-                // Reset form
                 setComposer({
                     lastName: "",
                     firstName: "",

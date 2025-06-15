@@ -1,5 +1,5 @@
-import normalizeString from "./normalizeString";
-import convertToDigits from "./convertToDigits";
+import normalizeString from "../general/normalizeString";
+import convertToDigits from "../general/convertToDigits";
 
 const filterSearch = (holdingsData, searchCriteria) => {
   // Finish logic for filtering holdings data based on additional info, if present

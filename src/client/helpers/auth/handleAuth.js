@@ -1,5 +1,5 @@
-import { logout } from '../../redux/authSlice';
-import { persistor } from '../../redux/store';
+import { logout } from '../../../redux/authSlice';
+import { persistor } from '../../../redux/store';
 
 const openLoginWindow = () => {
     if (window.electronAPI?.openAuthWindow) {

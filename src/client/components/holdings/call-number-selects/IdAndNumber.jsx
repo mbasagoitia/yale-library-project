@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Col, Dropdown, ButtonGroup, Button, InputGroup, FormControl } from "react-bootstrap";
-import Tooltip from "../Tooltip.jsx";
-import ValueTooltip from "../tooltip-contents/ValueTooltip";
-import NumberTooltip from "../tooltip-contents/NumberTooltip";
+import { Dropdown, ButtonGroup, Button, InputGroup, FormControl } from "react-bootstrap";
+import Tooltip from "../../holdings/Tooltip.jsx";
+import ValueTooltip from "../../holdings/tooltip-contents/ValueTooltip.jsx";
+import NumberTooltip from "../../holdings/tooltip-contents/NumberTooltip.jsx";
 
 
 const IdAndNumber = ({ mainInfo, setMainInfo }) => {

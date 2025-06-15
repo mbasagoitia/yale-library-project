@@ -1,8 +1,8 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import Dropdown from 'react-bootstrap/Dropdown';
-import Searchbar from './Searchbar';
-import { openLoginWindow, handleLogout } from '../helpers/handleAuth';
+import Searchbar from '../search-filters/Searchbar';
+import { openLoginWindow, handleLogout } from '../../helpers/auth/handleAuth';
 
 const Navigation = () => {
 

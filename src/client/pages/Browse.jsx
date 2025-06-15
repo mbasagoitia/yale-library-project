@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import fetchHoldings from "../helpers/fetchHoldings";
-import HoldingsList from "../components/HoldingsList";
-import HoldingsFilter from "../components/HoldingsFilter";
+import fetchHoldings from "../helpers/holdings/fetchHoldings";
+import HoldingsList from "../components/holdings/HoldingsList";
+import HoldingsFilter from "../components/search-filters/HoldingsFilter";
 
 const Browse = () => {
 

@@ -1,4 +1,4 @@
-import SearchFilter from "../SearchFilter";
+import SearchFilter from "../../search-filters/SearchFilter";
 
 const PublisherSelect = ({ items, mainInfo, onItemClick }) => {
 

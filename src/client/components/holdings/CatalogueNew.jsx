@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
-import MainInfo from "./MainInfo";
-import AdditionalInfo from "./AdditionalInfo";
-import generateCallNum from "../helpers/generateCallNum.js";
-import splitString from "../helpers/splitString.js";
-import fetchResourceData from "../helpers/fetchResourceData";
-import { findMediumById, findComposerById, findGenreById, findPublisherById } from "../helpers/filterData.js";
+import MainInfo from "./MainInfo.jsx";
+import AdditionalInfo from "./AdditionalInfo.jsx";
+import generateCallNum from "../../helpers/holdings/generateCallNum.js";
+import splitString from "../../helpers//general/splitString.js";
+import fetchResourceData from "../../helpers/holdings/fetchResourceData.js";
+import { findMediumById, findComposerById, findGenreById, findPublisherById } from "../../helpers/holdings/filterData.js";
 import { useParams } from 'react-router-dom';
 
 const CatalogueNew = ({ mode, initialData, onSubmit, handleCloseModal }) => {

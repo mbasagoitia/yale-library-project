@@ -1,5 +1,5 @@
 import { Table } from 'react-bootstrap';
-import formatDate from "../helpers/formatDate";
+import formatDate from "../../helpers/general/formatDate";
 
 const InfoTable = ({ data }) => {
     const { first_name, last_name, publisher,acquisition_date, call_number, public_domain, own_digital, scans_url, condition, additional_notes } = data;

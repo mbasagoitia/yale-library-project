@@ -1,9 +1,9 @@
 import { Container, Row, Col, Form } from "react-bootstrap";
-import MediumSelect from './call-number-selects/MediumSelect';
-import ComposerSelect from "./call-number-selects/ComposerSelect";
-import SpeciesSelect from "./call-number-selects/SpeciesSelect";
-import PublisherSelect from "./call-number-selects/PublisherSelect";
-import IdAndNumber from "./call-number-selects/IdAndNumber";
+import MediumSelect from '../holdings/call-number-selects/MediumSelect';
+import ComposerSelect from "../holdings/call-number-selects/ComposerSelect";
+import SpeciesSelect from "../holdings/call-number-selects/SpeciesSelect";
+import PublisherSelect from "../holdings/call-number-selects/PublisherSelect";
+import IdAndNumber from "../holdings/call-number-selects/IdAndNumber";
 
 const MainInfo = ({ resourceData, mainInfo, setMainInfo, formErrors }) => {
 

@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { Row, Col, Form, Button, Dropdown } from "react-bootstrap";
-import MediumSelect from "./call-number-selects/MediumSelect";
-import SpeciesSelect from "./call-number-selects/SpeciesSelect";
-import PublisherSelect from "./call-number-selects/PublisherSelect";
-import fetchResourceData from "../helpers/fetchResourceData";
+import MediumSelect from "../holdings/call-number-selects/MediumSelect";
+import SpeciesSelect from "../holdings/call-number-selects/SpeciesSelect";
+import PublisherSelect from "../holdings/call-number-selects/PublisherSelect";
+import fetchResourceData from "../../helpers/holdings/fetchResourceData";
 import { BiFilter } from 'react-icons/bi';
 import FilterInput from "./FilterInput";
 

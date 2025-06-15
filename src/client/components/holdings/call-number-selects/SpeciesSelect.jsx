@@ -1,4 +1,4 @@
-import SearchFilter from "../SearchFilter";
+import SearchFilter from "../../search-filters/SearchFilter";
 
 const SpeciesSelect = ({ items, mainInfo, onItemClick }) => {
     // The dropdown list will be a searchable filter

@@ -5,6 +5,8 @@ import FilterInput from "./FilterInput";
 
 const BasicFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria, onSubmit }) => {
 
+    // This needs to be a slice of redux state!
+
     const clearSearchCriteria = () => {
         setSearchCriteria({
             title: "",

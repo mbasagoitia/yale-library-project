@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Container, Form, Button, Card, Alert } from "react-bootstrap";
-import FolderSelectButton from "../components/FolderSelectButton";
-import addNewAdmin from "../helpers/addNewAdmin";
+import FolderSelectButton from "../components//digital-catalogue/FolderSelectButton";
+import addNewAdmin from "../helpers/auth/addNewAdmin";
 
 const Settings = () => {
   const [adminInfo, setAdminInfo] = useState({ name: "", netid: "" });

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useFolderContents } from '../hooks/useFolderContents';
+import { useFolderContents } from '../../hooks/useFolderContents';
 import PDFPreview from './PDFPreview';
 import { pdfjs } from 'react-pdf';
 

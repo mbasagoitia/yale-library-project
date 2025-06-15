@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { InputGroup, FormControl, Dropdown } from 'react-bootstrap';
-import filterComposerItems from '../helpers/filterComposerItems';
+import filterComposerItems from '../../helpers/holdings/filterComposerItems';
 
 const ComposerFilter = ({ initialValue, items, onItemClick }) => {
   
