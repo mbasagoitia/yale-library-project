@@ -23,9 +23,7 @@ const Home = () => {
 
 // Digital Catalogue
 
-// Browse by composer/title
 // Style this page!
-// Open full file on click
 // Pagination
 
 // Clean up preload.js and fix naming convention
@@ -43,7 +41,7 @@ const Home = () => {
 
 // Use charts: Recharts (simple React chart lib) or Chart.js
 // For lists: Tables with filtering/sorting (e.g., DataTables, or React Table)
-// Export options: Let librarians export as PDF/CSV
+// Export options: Let librarians export as PDF
 
 // Server vs electron logic?
 

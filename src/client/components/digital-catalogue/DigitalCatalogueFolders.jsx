@@ -16,7 +16,6 @@ const DigitalCatalogueFolders = ({ folderPath }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
 
-  // Update filtered list when contents or searchText change
   useEffect(() => {
     if (!searchText.trim()) {
       setFilteredFolders(contents);
@@ -34,7 +33,7 @@ const DigitalCatalogueFolders = ({ folderPath }) => {
   const handleNavigate = () => {
     if (selectedPDF) setSelectedPDF(null);
     goUp();
-    setSearchText(""); // optional: clear search when navigating up
+    setSearchText(""); 
   };
 
   const handleClick = async (item) => {
@@ -42,7 +41,7 @@ const DigitalCatalogueFolders = ({ folderPath }) => {
 
     if (item.isDirectory) {
       navigateTo(item.relativePath);
-      setSearchText(""); // optional: clear search when navigating into folders
+      setSearchText("");
     } else if (item.name.endsWith('.pdf')) {
       const fullPath = await window.electronAPI.getFullPath(folderPath, item.relativePath);
       setSelectedPDF(fullPath);
