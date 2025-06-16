@@ -2,12 +2,33 @@ const { dialog, shell } = require('electron');
 const path = require('path');
 const fs = require('fs-extra');
 
-const setBasePath = (store, newPath, mainWindow) => {
-    store.set('basePath', newPath);
-    if (mainWindow) {
-        mainWindow.webContents.send("basePath-updated", newPath);
+const getAllFolders = async (dir, type = "composer") => {
+    let results = [];
+  
+    const entries = await fs.promises.readdir(dir, { withFileTypes: true });
+  
+    for (let entry of entries) {
+      const fullPath = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        const folderType = type === "composer" ? "composer" : "piece";
+        results.push({ name: entry.name, path: fullPath, type: folderType });
+  
+        if (type === "composer") {
+          const subfolders = await getAllFolders(fullPath, "piece");
+          results = results.concat(subfolders);
+        }
+      }
     }
-    return newPath;
+  
+    return results;
+  };
+
+const setBasePath = async (store, path, window) => {
+    store.set("basePath", path);
+    window.webContents.send("base-path-updated", path);
+  
+    const folders = await getAllFolders(path);
+    return folders;
   };
 
 const getBasePath = (store) => {
@@ -25,12 +46,17 @@ const handleSelectBasePath = async (store, mainWindow) => {
   
     if (!result.canceled && result.filePaths.length > 0) {
       const selectedPath = result.filePaths[0];
-      setBasePath(store, selectedPath, mainWindow);
-      return selectedPath;
+      const folders = await setBasePath(store, selectedPath, mainWindow);
+  
+      return {
+        basePath: selectedPath,
+        allFolders: folders
+      };
     }
   
     return null;
   };
+  
 
 const handleReadFile = async (filePath) => {
     const data = await fs.promises.readFile(filePath);
@@ -96,5 +122,6 @@ module.exports = {
     handleReadFolder,
     handleOpenFile,
     handleOpenFolder,
-    handleListDirectory
+    handleListDirectory,
+    getAllFolders
 };

@@ -1,79 +1,88 @@
 import React, { useState, useEffect } from 'react';
 import { useFolderContents } from '../../hooks/useFolderContents';
+import { handleOpenFile, handleOpenCurrentFolder } from "../../helpers/digital-catalogue/openContents";
 import PDFPreview from './PDFPreview';
 import { pdfjs } from 'react-pdf';
 import { Container, Row, Col, Button, Card } from 'react-bootstrap';
 import Modal from '../general/Modal';
+import Searchbar from '../search-filters/Searchbar';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.12.313/pdf.worker.min.js`;
 
-const DigitalCatalogueFolders = () => {
+const DigitalCatalogueFolders = ({ folderPath }) => {
   const { contents, currentPath, navigateTo, goUp } = useFolderContents();
+  const [filteredFolders, setFilteredFolders] = useState([]);
   const [selectedPDF, setSelectedPDF] = useState(null);
-  const [basePath, setBasePath] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchText, setSearchText] = useState("");
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  }
-
+  // Update filtered list when contents or searchText change
   useEffect(() => {
-    const fetchBasePath = async () => {
-      if (window.electronAPI?.getBasePath) {
-        const result = await window.electronAPI.getBasePath();
-        setBasePath(result);
-      }
-    };
-    fetchBasePath();
-  }, []);
+    if (!searchText.trim()) {
+      setFilteredFolders(contents);
+    } else {
+      const lower = searchText.toLowerCase();
+      const matches = contents.filter(
+        folder => folder.isDirectory && folder.name.toLowerCase().includes(lower)
+      );
+      setFilteredFolders(matches);
+    }
+  }, [contents, searchText]);
+
+  const handleCloseModal = () => setIsModalOpen(false);
 
   const handleNavigate = () => {
     if (selectedPDF) setSelectedPDF(null);
     goUp();
+    setSearchText(""); // optional: clear search when navigating up
   };
 
   const handleClick = async (item) => {
     if (selectedPDF) setSelectedPDF(null);
+
     if (item.isDirectory) {
       navigateTo(item.relativePath);
+      setSearchText(""); // optional: clear search when navigating into folders
     } else if (item.name.endsWith('.pdf')) {
-      const fullPath = await window.electronAPI.getFullPath(basePath, item.relativePath);
+      const fullPath = await window.electronAPI.getFullPath(folderPath, item.relativePath);
       setSelectedPDF(fullPath);
       setIsModalOpen(true);
     }
   };
 
-  const handleOpenFile = async () => {
-    const result = await window.electronAPI.openFile(selectedPDF);
-    if (!result.success) alert(`Could not open file: ${result.error}`);
-  };
-
-  const handleOpenCurrentFolder = async () => {
-    const fullPath = await window.electronAPI.getFullPath(basePath, currentPath);
-    const result = await window.electronAPI.openFolder(fullPath);
-    if (!result.success) alert(`Could not open folder: ${result.error}`);
+  const handleSearch = (text) => {
+    setSearchText(text);
   };
 
   return (
     <Container fluid className="p-4">
+      <Searchbar
+        placeholder={"Search by composer..."}
+        onSearch={handleSearch}
+      />
+
       <div className="d-flex justify-content-between align-items-center mb-3">
         <div>
           <Button variant="outline-primary" onClick={handleNavigate} disabled={!currentPath}>
             ⬅️ Previous
           </Button>
           {currentPath && (
-            <Button variant="outline-primary" className="ms-2" onClick={handleOpenCurrentFolder}>
+            <Button
+              variant="outline-primary"
+              className="ms-2"
+              onClick={() => handleOpenCurrentFolder(folderPath, currentPath)}
+            >
               Open in Finder
             </Button>
           )}
         </div>
         <h5 className="mb-0 text-muted">
-          {currentPath ? `/${currentPath}` : basePath}
+          {currentPath ? `/${currentPath}` : folderPath}
         </h5>
       </div>
 
       <Row className="g-3">
-        {contents.map((item) => (
+        {filteredFolders.map((item) => (
           <Col key={item.relativePath} xs={6} sm={4} md={3} lg={2}>
             <Card
               className="text-center file-card h-100"
@@ -94,13 +103,18 @@ const DigitalCatalogueFolders = () => {
       </Row>
 
       {isModalOpen && (
-        <Modal content={<div>
-          <h4>Preview: {selectedPDF}</h4>
-          <PDFPreview filePath={selectedPDF} />
-          <Button variant="success" className="mt-2" onClick={handleOpenFile}>
-            Open File
-          </Button>
-        </div>} handleCloseModal={handleCloseModal} />
+        <Modal
+          content={
+            <div>
+              <h4>Preview: {selectedPDF}</h4>
+              <PDFPreview filePath={selectedPDF} />
+              <Button variant="success" className="mt-2" onClick={() => handleOpenFile(selectedPDF)}>
+                Open File
+              </Button>
+            </div>
+          }
+          handleCloseModal={handleCloseModal}
+        />
       )}
     </Container>
   );

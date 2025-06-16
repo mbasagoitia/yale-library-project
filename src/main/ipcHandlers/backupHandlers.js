@@ -1,6 +1,5 @@
 const fs = require('fs-extra');
 const path = require('path');
-const { BrowserWindow } = require('electron');
 
 const {
   exportReadableBackup,
@@ -24,13 +23,15 @@ const handleBackupHandlers = (ipcMain, store, pool) => {
   });
 
   ipcMain.handle('backup:readable', async () => {
-    const window = BrowserWindow.getFocusedWindow();
-    return await exportReadableBackup(window, pool);
+    const baseFolder = store.get("basePath");
+    if (!baseFolder) throw new Error("No base path set.");
+    return await exportReadableBackup(pool, baseFolder);
   });
-
+  
   ipcMain.handle('backup:mysqldump', async () => {
-    const window = BrowserWindow.getFocusedWindow();
-    return await exportMySQLDump(window);
+    const baseFolder = store.get("basePath");
+    if (!baseFolder) throw new Error("No base path set.");
+    return await exportMySQLDump(baseFolder);
   });
 };
 

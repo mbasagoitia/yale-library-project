@@ -1,4 +1,4 @@
-import { Form, FormControl } from "react-bootstrap";
+import { FormControl } from "react-bootstrap";
 
 const FilterInput = ({ placeholder, value, onChange, className }) => {
     return (

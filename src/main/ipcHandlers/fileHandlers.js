@@ -1,5 +1,6 @@
 const path = require('path');
 const {
+  getAllFolders,
   getBasePath,
   setBasePath,
   handleSelectBasePath,
@@ -11,6 +12,11 @@ const {
 } = require("../helpers/fileHelpers");
 
 const handleFileHandlers = (ipcMain, store, mainWindow) => {
+
+  ipcMain.handle('digitalCatalogue:getAllFolders', async (_, basePath) => {
+    return await getAllFolders(basePath);
+  });
+  
   ipcMain.handle('get-base-path', async () => {
     return getBasePath(store);
   });

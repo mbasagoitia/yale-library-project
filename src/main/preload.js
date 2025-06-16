@@ -45,4 +45,7 @@ contextBridge.exposeInMainWorld('electron', {
 contextBridge.exposeInMainWorld('digitalCatalogueAPI', {
   listDirectory: (relativePath) =>
     ipcRenderer.invoke('digitalCatalogue:listDirectory', relativePath),
+  getAllFolders: (basePath) =>
+    ipcRenderer.invoke('digitalCatalogue:getAllFolders', basePath),
+
 });

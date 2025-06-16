@@ -2,9 +2,9 @@ const fs = require('fs-extra');
 const { parse } = require('json2csv');
 const archiver = require('archiver');
 const mysqldump = require('mysqldump');
-const { dialog } = require('electron');
+const path = require('path');
 
-const exportReadableBackup = async (mainWindow, pool) => {
+const exportReadableBackup = async (pool, baseFolder) => {
   try {
     const [rows] = await pool.query(`
       SELECT 
@@ -25,36 +25,29 @@ const exportReadableBackup = async (mainWindow, pool) => {
 
     const csv = parse(rows);
 
-    const { filePath, canceled } = await dialog.showSaveDialog(mainWindow, {
-      title: 'Save Spreadsheet-Friendly Backup',
-      defaultPath: `holdings_backup_${new Date().toISOString().split('T')[0]}.csv`,
-      filters: [{ name: 'CSV Files', extensions: ['csv'] }]
-    });
+    const backupFolder = path.join(baseFolder, '..', 'backups');
+    await fs.ensureDir(backupFolder);
 
-    if (canceled || !filePath) {
-      return { success: false, message: 'Backup cancelled' };
-    }
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const filePath = path.join(backupFolder, `holdings_backup_${timestamp}.csv`);
 
     fs.writeFileSync(filePath, csv, 'utf8');
-    return { success: true, message: `Backup saved to ${filePath}` };
 
+    return { success: true, message: `Backup saved to ${filePath}` };
   } catch (error) {
     console.error('CSV export failed:', error);
     return { success: false, message: 'Failed to export CSV backup.' };
   }
 };
 
-const exportMySQLDump = async (mainWindow) => {
-  try {
-    const { filePath, canceled } = await dialog.showSaveDialog(mainWindow, {
-      title: 'Save Full MySQL Backup',
-      defaultPath: `full_db_backup_${new Date().toISOString().split('T')[0]}.sql`,
-      filters: [{ name: 'SQL Files', extensions: ['sql'] }]
-    });
 
-    if (canceled || !filePath) {
-      return { success: false, message: 'Backup cancelled' };
-    }
+const exportMySQLDump = async (baseFolder) => {
+  try {
+    const backupFolder = path.join(baseFolder, '..', 'backups');
+    await fs.ensureDir(backupFolder);
+
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const filePath = path.join(backupFolder, `full_db_backup_${timestamp}.sql`);
 
     await mysqldump({
       connection: {
@@ -67,12 +60,12 @@ const exportMySQLDump = async (mainWindow) => {
     });
 
     return { success: true, message: `Full database backup saved to ${filePath}` };
-
   } catch (error) {
     console.error('MySQL dump failed:', error);
     return { success: false, message: 'Failed to export full database backup.' };
   }
 };
+
 
 const zipFolder = (sourceFolderPath, outputZipPath) => {
   return new Promise((resolve, reject) => {

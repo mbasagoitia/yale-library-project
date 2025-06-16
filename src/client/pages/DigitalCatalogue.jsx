@@ -6,13 +6,16 @@ const DigitalCatalogue = () => {
     const [basePath, setBasePath] = useState(null);
 
     useEffect(() => {
-        const fetchPath = async () => {
-          const bp = await window.electronAPI.getBasePath();
-          setBasePath(bp);
-        };
+      const fetchData = async () => {
+        const bp = await window.electronAPI.getBasePath();
+        if (!bp) return;
     
-        fetchPath();
-      }, []);
+        setBasePath(bp);
+      };
+    
+      fetchData();
+    }, [basePath]);
+    
 
     return (
         <div className="digital-catalogue">

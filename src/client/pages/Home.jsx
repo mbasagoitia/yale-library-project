@@ -19,16 +19,17 @@ const Home = () => {
 // Edit piece even if some info is empty (call number)
 
 // Add a global state of search criteria and a back button from piece info
-
-// Settings Page
-
-// Make all backups go to same folder
+// Style the navbar
 
 // Digital Catalogue
 
 // Browse by composer/title
 // Style this page!
 // Open full file on click
+// Pagination
+
+// Clean up preload.js and fix naming convention
+// Search filters are very tightly coupled!
 
 // Reports
 
