@@ -35,15 +35,10 @@ const Home = () => {
 // Poor Condition
 // Last Performed
 // Most Recently Performed
-// Top 10 Most Performed
-// Good visual chart here — use bar chart!
-// Recently Added (last 30 days)
-
-// Use charts: Recharts (simple React chart lib) or Chart.js
-// For lists: Tables with filtering/sorting (e.g., DataTables, or React Table)
-// Export options: Let librarians export as PDF
+// Most Performed
 
 // Server vs electron logic?
+// Auth middleware, make sure to make all protected routes have this
 
 
 export default Home;

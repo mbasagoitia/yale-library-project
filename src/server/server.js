@@ -6,7 +6,8 @@ const morgan = require('morgan');
 const dotenv = require("dotenv");
 const pieceRouter = require("./routes/pieceRouter.js");
 const resourceRouter = require("./routes/resourceRouter.js");
-const adminRouter = require("./routes/adminRouter.js")
+const adminRouter = require("./routes/adminRouter.js");
+const reportRouter = require("./routes/reportRouter.js");
 // const nodemon = require("nodemon");
 
 const app = express();
@@ -49,6 +50,7 @@ app.use((req, res, next) => {
 app.use("/api", resourceRouter);
 app.use("/api", pieceRouter);
 app.use("/api", adminRouter);
+app.use("/api/report-data", reportRouter);
 
 
 module.exports = app;
