@@ -37,7 +37,7 @@ const ReportForm = () => {
           >
             <option value="">-- Select --</option>
             <option value="all">All Holdings</option>
-            <option value="missing-and-condition">Needs Attention</option>
+            <option value="missing-and-condition">Poor Condition/Missing Parts</option>
             <option value="condition-summary">Condition Summary</option>
             <option value="music-by-composer">Music by Composer</option>
             <option value="performance-history">Performance History</option>

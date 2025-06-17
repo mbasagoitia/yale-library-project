@@ -1,6 +1,5 @@
 import pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
-
 pdfMake.vfs = pdfFonts.vfs;
 
 const formatValue = (value) => {
@@ -18,39 +17,79 @@ const generateReport = (data) => {
     return;
   }
 
-  const headings = Object.keys(holdings[0]);
+  const grouped = {};
+  holdings.forEach(item => {
+    const composer = item.Composer || 'Unknown Composer';
+    if (!grouped[composer]) grouped[composer] = [];
+    grouped[composer].push(item);
+  });
 
-  const tableBody = [
-    headings,
-    ...holdings.map(item => headings.map(key => formatValue(item[key])))
+  // These aren't right, double check 
+  // For music by composer, just generate the number once next to their name
+  const reportTitles = {
+    all: 'All Holdings',
+    missingAndCondition: 'Poor Condition/Missing Parts',
+    conditionSummary: 'Conditions Summary',
+    musicByComposer: 'Music by Composer',
+    performanceHistory: 'Performance History'
+  };
+  
+  const subHeadingText = reportTitles[reportType] || reportType;
+  
+  const content = [
+    { text: 'Philharmonia Library Report', style: 'header' },
+    { text: subHeadingText, style: 'subHeading' }
   ];
 
+  Object.entries(grouped).forEach(([composer, pieces]) => {
+    const headings = Object.keys(pieces[0]).filter(key => key !== 'Composer');
+
+    const body = [
+      headings.map(h => ({ text: h, style: 'tableHeader' }))
+    ];
+
+    pieces.forEach(row => {
+      body.push(headings.map(key => formatValue(row[key])));
+    });
+
+    content.push({ text: composer, style: 'composerHeader', margin: [0, 10, 0, 4] });
+    content.push({
+      table: {
+        headerRows: 1,
+        widths: Array(headings.length).fill('*'),
+        body
+      },
+      layout: 'lightHorizontalLines',
+      margin: [0, 0, 0, 10]
+    });
+  });
+
   const docDefinition = {
-    content: [
-      { text: 'Library Report', style: 'header' },
-      { text: reportType, style: 'subHeading' },
-      {
-        table: {
-          headerRows: 1,
-          widths: Array(headings.length).fill('*'),
-          body: tableBody
-        }
-      }
-    ],
+    pageOrientation: reportType === "all" ? 'landscape' : 'portrait',
+    content,
     styles: {
       header: {
-        fontSize: 18,
+        fontSize: 14,
         bold: true,
         margin: [0, 0, 0, 10]
       },
       subHeading: {
-        fontSize: 14,
+        fontSize: 10,
         bold: true,
         margin: [0, 0, 0, 10]
+      },
+      composerHeader: {
+        fontSize: 10,
+        bold: true,
+        margin: [0, 10, 0, 4]
+      },
+      tableHeader: {
+        bold: true,
+        fillColor: '#eeeeee'
       }
     },
     defaultStyle: {
-      fontSize: 10
+      fontSize: 8
     }
   };
 
