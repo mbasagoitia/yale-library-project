@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Form, Button, Spinner, Container } from 'react-bootstrap';
+import { Form, Button, Container } from 'react-bootstrap';
 import fetchReportData from '../../helpers/reports/fetchReportData';
 import generateReport from '../../helpers/reports/generateReports';
 

@@ -55,13 +55,14 @@ const DigitalCatalogueFolders = ({ folderPath }) => {
 
   return (
     <Container fluid className="p-4">
-      <Searchbar
-        placeholder={"Search by composer..."}
-        onSearch={handleSearch}
-      />
-
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        <div>
+      {!currentPath ? (
+        <Searchbar
+          placeholder={"Search by composer..."}
+          onSearch={handleSearch}
+        />
+      ) : null}
+      <div className="d-flex justify-content-between align-items-center my-3">
+        <div className="d-flex">
           <Button variant="outline-primary" onClick={handleNavigate} disabled={!currentPath}>
             ⬅️ Previous
           </Button>
@@ -82,17 +83,17 @@ const DigitalCatalogueFolders = ({ folderPath }) => {
 
       <Row className="g-3">
         {filteredFolders.map((item) => (
-          <Col key={item.relativePath} xs={6} sm={4} md={3} lg={2}>
+          <Col key={item.relativePath} xs={6} sm={4} md={3}>
             <Card
               className="text-center file-card h-100"
               onClick={() => handleClick(item)}
               style={{ cursor: 'pointer' }}
             >
               <Card.Body>
-                <div style={{ fontSize: '2rem' }}>
+                <div style={{ fontSize: '3rem' }}>
                   {item.isDirectory ? '📁' : '📄'}
                 </div>
-                <Card.Text className="mt-2 small text-truncate" title={item.name}>
+                <Card.Text className="mt-2 small" title={item.name}>
                   {item.name}
                 </Card.Text>
               </Card.Body>

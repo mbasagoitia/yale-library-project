@@ -160,6 +160,10 @@ h2 {
   cursor: pointer;
 }
 
+.search-button i {
+  color: #222;
+}
+
 .search-wrapper {
   display: flex;
   align-items: center;
@@ -212,6 +216,7 @@ body {
 
 .page-content {
   max-width: 1000px;
+  min-height: 80vh;
   margin: 0 auto;
   text-align: left;
   padding: 1rem;
@@ -220,6 +225,12 @@ body {
 
 .searchableList {
   position: relative;
+}
+
+/* make this transparent and have navbar itself open down? */
+
+.dropdown-menu {
+  background-color: red !important;
 }
 
 .catalogueNew button, .form-control, .form-label, .form-check, .dropdown-item, .new-composer-open {
@@ -520,12 +531,19 @@ body {
 
 .file-card {
   transition: transform 0.2s, box-shadow 0.2s;
+  min-height: 125px;
 }
 
 .file-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 } 
+
+.file-card .card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
 .pdf-preview {
   margin-top: 1rem;
