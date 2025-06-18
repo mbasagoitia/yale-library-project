@@ -19,19 +19,18 @@ const generateReport = (data) => {
 
   const grouped = {};
   holdings.forEach(item => {
-    const composer = item.Composer || 'Unknown Composer';
+    const composer = item.Composer || '';
     if (!grouped[composer]) grouped[composer] = [];
     grouped[composer].push(item);
   });
 
-  // These aren't right, double check 
-  // For music by composer, just generate the number once next to their name
   const reportTitles = {
-    all: 'All Holdings',
-    missingAndCondition: 'Poor Condition/Missing Parts',
-    conditionSummary: 'Conditions Summary',
-    musicByComposer: 'Music by Composer',
-    performanceHistory: 'Performance History'
+    'all': 'All Holdings',
+    'missing': 'Missing Parts',
+    'poor-condition': 'Poor Condition',
+    'condition-summary': 'Condition Summary',
+    'music-by-composer': 'Music by Composer',
+    'performance-history': 'Performance History'
   };
   
   const subHeadingText = reportTitles[reportType] || reportType;
@@ -42,17 +41,22 @@ const generateReport = (data) => {
   ];
 
   Object.entries(grouped).forEach(([composer, pieces]) => {
-    const headings = Object.keys(pieces[0]).filter(key => key !== 'Composer');
-
+    const headings = Object.keys(pieces[0]).filter(key => key !== 'Composer' && key !== 'TotalPiecesByComposer');
+  
     const body = [
       headings.map(h => ({ text: h, style: 'tableHeader' }))
     ];
-
+  
     pieces.forEach(row => {
       body.push(headings.map(key => formatValue(row[key])));
     });
-
-    content.push({ text: composer, style: 'composerHeader', margin: [0, 10, 0, 4] });
+  
+    let composerLabel = composer;
+    if (reportType === 'music-by-composer' && pieces[0].TotalPiecesByComposer) {
+      composerLabel += ` (${pieces[0].TotalPiecesByComposer})`;
+    }
+  
+    content.push({ text: composerLabel, style: 'composerHeader', margin: [0, 10, 0, 4] });
     content.push({
       table: {
         headerRows: 1,
@@ -63,6 +67,7 @@ const generateReport = (data) => {
       margin: [0, 0, 0, 10]
     });
   });
+  
 
   const docDefinition = {
     pageOrientation: reportType === "all" ? 'landscape' : 'portrait',

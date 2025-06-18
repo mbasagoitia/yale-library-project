@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAllPieces, getMissingAndCondition, getConditionSummary, getMusicByComposer, getPerformanceHistory } = require('../controllers/reportController.js');
+const { getAllPieces, getMissing, getPoorCondition, getConditionSummary, getMusicByComposer, getPerformanceHistory } = require('../controllers/reportController.js');
 
 const router = express.Router();
 
@@ -8,9 +8,14 @@ router.get('/all', (req, res) => {
     getAllPieces(req, res, db);
 })
 
-router.get('/missing-and-condition', (req, res) => {
+router.get('/missing', (req, res) => {
     const db = req.db;
-    getMissingAndCondition(req, res, db);
+    getMissing(req, res, db);
+})
+
+router.get('/poor-condition', (req, res) => {
+    const db = req.db;
+    getPoorCondition(req, res, db);
 })
 
 router.get('/condition-summary', (req, res) => {
