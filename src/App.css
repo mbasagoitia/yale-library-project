@@ -50,7 +50,6 @@ h2 {
 }
 
 .site-nav {
-  height: 15vh;
   display: flex;
   justify-content: center;
   padding: 0;
@@ -216,7 +215,8 @@ body {
 
 .page-content {
   max-width: 1000px;
-  min-height: 80vh;
+  /* since height of navbar is 17vh */
+  min-height: 83vh;
   margin: 0 auto;
   text-align: left;
   padding: 1rem;
@@ -230,7 +230,9 @@ body {
 /* make this transparent and have navbar itself open down? */
 
 .dropdown-menu {
-  background-color: red !important;
+  background-color: transparent;
+  border: transparent;
+  text-align: center;
 }
 
 .catalogueNew button, .form-control, .form-label, .form-check, .dropdown-item, .new-composer-open {
@@ -568,12 +570,41 @@ body {
     padding: 1rem 3rem;
   }
 
-  .page-content {
-    padding: 3rem;
+  .site-nav {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    transition: height 0.3s ease;
+    height: 17vh;
+    width: 100vw;
+    z-index: 100;
+    overflow: visible;
   }
 
-  .site-nav {
-    height: 20vh;
+  .site-nav.hovered {
+    height: 25vh;
+  }
+  
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1050;
+  }  
+
+  .nav-content {
+    display: flex;
+    flex: 0 0 auto;
+    position: relative;
+    padding: 3rem 2rem;
+    z-index: 101;
+    align-items: center;
+    width: 100vw;
+  }
+
+  .page-content {
+    padding: 3rem;
   }
 
   .additionalInfo .form-check {

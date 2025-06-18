@@ -7,12 +7,16 @@ import { openLoginWindow, handleLogout } from '../../helpers/auth/handleAuth';
 
 const Navigation = () => {
   const [isHovered, setIsHovered] = useState(false);
-
   const { isAdmin } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   return (
-    <Navbar expand="lg" bg="light" variant="light" className="site-nav">
+    <Navbar
+      expand="lg"
+      bg="light"
+      variant="light"
+      className={`site-nav ${isHovered ? "hovered" : ""}`}
+    >
       <div className="nav-content">
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -24,18 +28,21 @@ const Navigation = () => {
             <Nav.Link href="/reports">Reports</Nav.Link>
 
             {isAdmin ? (
-              <NavDropdown
-                title="Librarian"
-                id="basic-nav-dropdown"
-                show={isHovered}
+              <div
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
               >
-                <NavDropdown.Item href="/manage-holdings">Manage Holdings</NavDropdown.Item>
-                <NavDropdown.Item href="/settings">Settings</NavDropdown.Item>
-                <Dropdown.Divider />
-                <NavDropdown.Item as="span" onClick={() => handleLogout(dispatch)}>Log Out</NavDropdown.Item>
-              </NavDropdown>
+                <NavDropdown
+                  title="Librarian"
+                  id="basic-nav-dropdown"
+                  show={isHovered}
+                >
+                  <NavDropdown.Item href="/manage-holdings">Manage Holdings</NavDropdown.Item>
+                  <NavDropdown.Item href="/settings">Settings</NavDropdown.Item>
+                  <Dropdown.Divider />
+                  <NavDropdown.Item as="span" onClick={() => handleLogout(dispatch)}>Log Out</NavDropdown.Item>
+                </NavDropdown>
+              </div>
             ) : (
               <Nav.Link as="span" onClick={() => openLoginWindow()}>Log In</Nav.Link>
             )}
@@ -48,6 +55,6 @@ const Navigation = () => {
       </div>
     </Navbar>
   );
-}
+};
 
 export default Navigation;
