@@ -64,7 +64,7 @@ const DigitalCatalogueFolders = ({ folderPath }) => {
       <div className="d-flex justify-content-between align-items-center my-3">
         <div className="d-flex">
           <Button variant="outline-primary" onClick={handleNavigate} disabled={!currentPath}>
-            ⬅️ Previous
+          ← Previous
           </Button>
           {currentPath && (
             <Button

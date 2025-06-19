@@ -215,8 +215,8 @@ body {
 
 .page-content {
   max-width: 1000px;
-  /* since height of navbar is 17vh */
-  min-height: 83vh;
+  /* since height of navbar is 15vh */
+  min-height: 85vh;
   margin: 0 auto;
   text-align: left;
   padding: 1rem;
@@ -227,12 +227,19 @@ body {
   position: relative;
 }
 
-/* make this transparent and have navbar itself open down? */
-
 .dropdown-menu {
   background-color: transparent;
   border: transparent;
   text-align: center;
+}
+
+.dropdown-menu span, .dropdown-menu a {
+  color: var(--bs-navbar-color);
+  padding: 0.25rem 0.5rem;
+}
+
+.dropdown-toggle {
+  padding: 0 0.5rem;
 }
 
 .catalogueNew button, .form-control, .form-label, .form-check, .dropdown-item, .new-composer-open {
@@ -558,6 +565,10 @@ body {
   justify-content: center;
 }
 
+.logout-text {
+  cursor: pointer;
+}
+
 @media (min-width: 500px) {
   .modal-content {
     padding: 0 2rem 2rem 2rem;
@@ -568,39 +579,6 @@ body {
 
   .App-header, .nav-content {
     padding: 1rem 3rem;
-  }
-
-  .site-nav {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    transition: height 0.3s ease;
-    height: 17vh;
-    width: 100vw;
-    z-index: 100;
-    overflow: visible;
-  }
-
-  .site-nav.hovered {
-    height: 25vh;
-  }
-  
-  .dropdown-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    z-index: 1050;
-  }  
-
-  .nav-content {
-    display: flex;
-    flex: 0 0 auto;
-    position: relative;
-    padding: 3rem 2rem;
-    z-index: 101;
-    align-items: center;
-    width: 100vw;
   }
 
   .page-content {
@@ -631,5 +609,42 @@ body {
 @media (min-width: 768px) {
   .modal-content {
     padding: 0 3rem 3rem 3rem;
+  }
+}
+
+@media (min-width: 992px) {
+  .site-nav {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    transition: height 0.3s ease;
+    height: 140px;
+    width: 100vw;
+    z-index: 100;
+    overflow: visible;
+  }
+
+  .site-nav.hovered {
+    height: 225px;
+  }
+  
+  .dropdown-menu {
+    position: absolute;
+    left: 0;
+    top: 100%;
+    z-index: 1050;
+    text-align: left;
+    --bs-dropdown-spacer: 0;
+  }  
+
+  .nav-content {
+    display: flex;
+    flex: 0 0 auto;
+    position: relative;
+    padding: 3rem 2rem;
+    z-index: 101;
+    align-items: center;
+    width: 100vw;
   }
 }

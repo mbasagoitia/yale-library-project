@@ -19,7 +19,7 @@ const HomeCards = () => {
         disabled: false,
       },
       {
-        title: 'View/Generate Reports',
+        title: 'Reports',
         icon: <BarChart3 size={40} strokeWidth={1.5} />,
         link: '/reports',
         disabled: !isAdmin,

@@ -40,7 +40,7 @@ const Navigation = () => {
                   <NavDropdown.Item href="/manage-holdings">Manage Holdings</NavDropdown.Item>
                   <NavDropdown.Item href="/settings">Settings</NavDropdown.Item>
                   <Dropdown.Divider />
-                  <NavDropdown.Item as="span" onClick={() => handleLogout(dispatch)}>Log Out</NavDropdown.Item>
+                  <NavDropdown.Item as="span" className="logout-text" onClick={() => handleLogout(dispatch)}>Log Out</NavDropdown.Item>
                 </NavDropdown>
               </div>
             ) : (

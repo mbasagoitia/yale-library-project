@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Button } from 'react-bootstrap';
 import PieceListItem from "./PieceListItem";
 
 const itemsPerPage = 10;
@@ -32,23 +33,23 @@ const HoldingsList = ({ filteredItems }) => {
       </div>
 
       <div className="pagination-controls">
-        <button onClick={handlePrev} disabled={currentPage === 1}>
+        <Button variant="outline-primary" onClick={handlePrev} disabled={currentPage === 1}>
           ← Prev
-        </button>
+        </Button>
 
         {Array.from({ length: totalPages }, (_, idx) => (
-          <button
+          <Button variant="outline-primary"
             key={idx + 1}
             onClick={() => handlePageClick(idx + 1)}
             className={currentPage === idx + 1 ? "active" : ""}
           >
             {idx + 1}
-          </button>
+          </Button>
         ))}
 
-        <button onClick={handleNext} disabled={currentPage === totalPages}>
+        <Button variant="outline-primary" onClick={handleNext} disabled={currentPage === totalPages}>
           Next →
-        </button>
+        </Button>
       </div>
     </div>
   );

@@ -27,15 +27,12 @@ const Home = () => {
 // Pagination
 
 // Clean up preload.js and fix naming convention
+// Same with css file
 // Search filters are very tightly coupled!
 
-// Reports
-
-// Parts with Missing Material
-// Poor Condition
-// Last Performed
-// Most Recently Performed
-// Most Performed
+// Style the modals
+// Style the manage holdings page
+// Something more enticing for home page? Reports?
 
 // Server vs electron logic?
 // Auth middleware, make sure to make all protected routes have this
