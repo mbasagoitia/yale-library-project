@@ -29,7 +29,7 @@ function MediumSelect({ items, mainInfo, setMainInfo, handleItemSelect, initialS
 
   const renderDropdown = (options) => (
     <Dropdown>
-      <Dropdown.Toggle variant="primary" id="dropdown-basic">
+      <Dropdown.Toggle variant="primary" id="dropdown-basic" className="p-2">
         {selectedItem.label}
       </Dropdown.Toggle>
       <Dropdown.Menu>

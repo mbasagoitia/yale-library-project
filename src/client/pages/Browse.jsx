@@ -5,6 +5,8 @@ import HoldingsFilter from "../components/search-filters/HoldingsFilter";
 
 const Browse = () => {
 
+    // Fetch once and store as global state?
+
     const [holdingsData, setHoldingsData] = useState([]);
     const [filteredItems, setFilteredItems] = useState([]);
     const [isInitialLoad, setIsInitialLoad] = useState(true);

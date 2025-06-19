@@ -104,7 +104,7 @@ const AdvancedFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria, 
                 <span>Filter By:</span>
                 <div className="open-basic-filter" onClick={() => setAdvancedFilter(false)}>
                     <BiFilter size={20} />
-                    <span className="advanced-filter-text" onClick={clearSearchCriteria}>Basic Filter</span>
+                    <div className="advanced-filter-text" onClick={clearSearchCriteria}>Basic Filter</div>
                 </div>
             </Col>
             <span className="reset-text mt-2">Reset</span>

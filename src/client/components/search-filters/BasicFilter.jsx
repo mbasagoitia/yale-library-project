@@ -39,14 +39,17 @@ const BasicFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria, onS
     return (
         <Form className="basic-filter" onSubmit={handleSubmit}>
             <Row className="mb-4">
-                <Col xs={{ order: 2 }} sm={{ order: 1, span: 5 }}>
+                <Col xs={12}>
                     <FilterInput 
                         placeholder={"Title"}
                         value={searchCriteria.title}
                         onChange={onTitleChange}
                     />
                 </Col>
-                <Col xs={{ order: 3 }} sm={{ order: 2, span: 5 }} className="mt-1 mt-sm-0">
+                </Row>
+                <Row>
+                    <Col xs={9}>
+
                     <div className="d-flex w-100">
                         <div className="flex-grow-1">
                         <FilterInput
@@ -60,8 +63,9 @@ const BasicFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria, onS
                             <i className="fa fa-search"></i>
                         </Button>
                     </div>
-                </Col>
-                <Col xs={{ order: 1 }} sm={{ order: 3, span: 2 }} className="d-flex flex-column mb-4 mb-sm-0">
+                    </Col>
+
+                <Col xs={3} className="d-flex flex-column mb-4 mb-sm-0">
                 <div className="open-advanced-filter" onClick={() => setAdvancedFilter(true)}>
                     <BiFilter size={20} />
                     <span className="advanced-filter-text" onClick={clearSearchCriteria}>Advanced Filter</span>

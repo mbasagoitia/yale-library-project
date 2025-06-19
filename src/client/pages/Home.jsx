@@ -13,8 +13,7 @@ const Home = () => {
 };
 
 // Call number needs to be correctly reflected on submit even if the user doesn't generate it
-// Add field to update acquisition date
-// Fix buttons and bootstrap default colors
+// Add fields to update acquisition date and date last performed
 // Make the search bar and filters functional
 // Edit piece even if some info is empty (call number)
 
@@ -33,6 +32,7 @@ const Home = () => {
 // Style the modals
 // Style the manage holdings page
 // Something more enticing for home page? Reports?
+// Fix buttons and bootstrap default colors
 
 // Server vs electron logic?
 // Auth middleware, make sure to make all protected routes have this

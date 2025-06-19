@@ -134,7 +134,7 @@ const AdditionalInfo = ({ mode, additionalInfo, setAdditionalInfo, formErrors, s
 
             <FormGroup as={Row} className="mt-4 lg-border">
                 <FormLabel column sm={4} className="my-2">Additional Notes</FormLabel>
-                <Col sm={8} className="my-2">
+                <Col xs={12} className="my-2">
                     <FormControl 
                         as="textarea" 
                         rows={3} 
@@ -146,10 +146,8 @@ const AdditionalInfo = ({ mode, additionalInfo, setAdditionalInfo, formErrors, s
                 </Col>
             </FormGroup>
 
-            <FormGroup as={Row} className="mt-4">
-                <Col sm={{ span: 10, offset: 1 }}>
-                    <Button type="submit">{mode === "new" ? "Catalogue" : "Update"}</Button>
-                </Col>
+            <FormGroup as={Row} className="mt-2 d-flex justify-content-center">
+                    <Button type="submit" className="w-auto">{mode === "new" ? "Catalogue" : "Update"}</Button>
             </FormGroup>
         </Container>
     );

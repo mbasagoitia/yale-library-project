@@ -214,10 +214,11 @@ body {
 }
 
 .page-content {
-  max-width: 1000px;
+  max-width: 1500px;
+  width: 100%;
   /* since height of navbar is 15vh */
   min-height: 85vh;
-  margin: 0 auto;
+  margin: 0;
   text-align: left;
   padding: 1rem;
   color: #222;
@@ -524,6 +525,10 @@ body {
   cursor: pointer;
 }
 
+.advanced-filter-text {
+  font-size: 0.8rem;
+}
+
 .holdings-filter svg {
   font-size: clamp(0.8rem, 2vw, 1rem);
   margin-bottom: 4px;
@@ -582,7 +587,7 @@ body {
   }
 
   .page-content {
-    padding: 3rem;
+    padding: 2rem;
   }
 
   .additionalInfo .form-check {

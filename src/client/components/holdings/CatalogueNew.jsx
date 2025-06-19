@@ -126,8 +126,6 @@ const CatalogueNew = ({ mode, initialData, onSubmit, handleCloseModal }) => {
 
           handleCloseModal();
 
-
-          // Reset form
           setMainInfo({
             title: "",
             identifierLabel: "Op.",
@@ -186,12 +184,13 @@ const CatalogueNew = ({ mode, initialData, onSubmit, handleCloseModal }) => {
 
   return (
     <div className="catalogueNew">
-      <h1>{mode === "new" ? "New Piece Information" : "Update Piece"}</h1>
       <form onSubmit={handleSubmit}>
         {((mode === "new") || (mode === "edit" && initialData && dataReady)) && (
           <>
             <MainInfo resourceData={resourceData} mainInfo={mainInfo} setMainInfo={setMainInfo} formErrors={formErrors} />
-            <Button onClick={handleShowCall} className="btn btn-primary my-2">Generate Call Number</Button>
+            <div className="d-flex justify-content-center">
+              <Button onClick={handleShowCall} className="btn btn-primary my-2">Generate Call Number</Button>
+            </div>
             {showCall && (
               <div className="alert alert-success d-flex flex-column align-items-center my-4" role="alert">
                 <h4>Call Number:</h4>

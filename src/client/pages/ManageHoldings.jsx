@@ -1,43 +1,67 @@
 import { useState, useEffect } from "react";
+import { Container, Row, Col, Card } from "react-bootstrap";
 import CatalogueNew from "../components/holdings/CatalogueNew.jsx";
 import catalogueNew from "../helpers/holdings/catalogueNew.js";
-import Modal from "../components/general/Modal.jsx";
-
+import fetchHoldings from "../helpers/holdings/fetchHoldings";
+import HoldingsList from "../components/holdings/HoldingsList";
+import HoldingsFilter from "../components/search-filters/HoldingsFilter";
 
 const ManageHoldings = () => {
+    const [holdingsData, setHoldingsData] = useState([]);
+    const [filteredItems, setFilteredItems] = useState([]);
+    const [isInitialLoad, setIsInitialLoad] = useState(true);
 
     useEffect(() => {
-        document.addEventListener("keydown", handleEscKeyPress);
-        return () => {
-            document.removeEventListener("keydown", handleEscKeyPress);
+        const fetchData = async () => {
+            try {
+                const data = await fetchHoldings();
+                setHoldingsData(data);
+                if (isInitialLoad) {
+                    setFilteredItems(data);
+                    setIsInitialLoad(false);
+                }
+            } catch (error) {
+                console.error("Failed to fetch holdings data:", error);
+            }
         };
-    }, []);
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
-    };
-
-    const handleOpenModal = () => {
-        setIsModalOpen(true);
-    };
-
-    const handleEscKeyPress = (e) => {
-        if (e.key === "Escape") {
-            setIsModalOpen(false);
-        }
-    };
+        fetchData();
+    }, [isInitialLoad]);
 
     return (
-        <div className="addNew">
-        {!isModalOpen ? (
-            <button className="btn btn-primary" onClick={handleOpenModal}>+</button>
-        ) : (
-            <Modal content={<CatalogueNew mode={"new"} onSubmit={catalogueNew} handleCloseModal={handleCloseModal} />} handleCloseModal={handleCloseModal} />
-        )}
-    </div>
-    )
-}
+        <div className="manage-holdings">
+            <h1>Manage Holdings</h1>
+            <Container fluid className="mt-4 m-0 p-0">
+                <Row className="d-flex justify-content-evenly">
+                    <Col xl={7} className="mb-4 mb-xl-0">
+                        <Card>
+                            <Card.Header>
+                                <h5 className="mb-0">Add New Piece</h5>
+                            </Card.Header>
+                            <Card.Body>
+                                <CatalogueNew mode="new" onSubmit={catalogueNew} />
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                    <Col xl={5}>
+                        <Card>
+                            <Card.Header>
+                                <h5 className="mb-0">Search Collection</h5>
+                            </Card.Header>
+                            <Card.Body>
+                                <HoldingsFilter
+                                    holdingsData={holdingsData}
+                                    setFilteredItems={setFilteredItems}
+                                />
+                                <hr />
+                                <HoldingsList filteredItems={filteredItems} />
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                </Row>
+            </Container>
+        </div>
+    );
+};
 
 export default ManageHoldings;

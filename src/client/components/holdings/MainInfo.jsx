@@ -30,9 +30,9 @@ const MainInfo = ({ resourceData, mainInfo, setMainInfo, formErrors }) => {
 
   return (
     <Container>
-        <Row className="mt-4">
+        <Row className="my-4">
         <div id="required-fields-warning" className={`${formErrors.requiredFieldsWarning ? "feedback my-2" : "d-none"}`}>{formErrors.requiredFieldsWarning}</div>
-          <Col md={6}>
+
             <Form.Group controlId="titleInput">
               <Form.Label>Title:</Form.Label>
               <Form.Control 
@@ -42,39 +42,40 @@ const MainInfo = ({ resourceData, mainInfo, setMainInfo, formErrors }) => {
                 placeholder="e.g. Symphony no. 2 in D major" 
               />
             </Form.Group>
-          </Col>
-          <Col md={6}>
+          </Row>
+          <Row className="my-4">
+
             <IdAndNumber mainInfo={mainInfo} setMainInfo={setMainInfo} />
-          </Col>
+
         </Row>
-        <Row className="mt-4">
+        <Row className="my-4">
         <div id="required-call-fields-warning" className={`${formErrors.requiredCallFieldsWarning ? "feedback my-2" : "d-none"}`}>{formErrors.requiredCallFieldsWarning}</div>
-          <Col xs={12} md={6}>
-            <div className="mb-3">
+
+            <div>
               <h3>Ensemble Type</h3>
               {resourceData.mediumData.length > 0 && <MediumSelect items={resourceData.mediumData} mainInfo={mainInfo} setMainInfo={setMainInfo} handleItemSelect={setMedium} />}
             </div>
-          </Col>
-          <Col xs={12} md={6}>
-            <div className="mb-3">
+        </Row>
+        <Row className="my-4">
+            <div>
               <h3>Composer</h3>
               {resourceData.composerData.length > 0 && <ComposerSelect items={resourceData.composerData} mainInfo={mainInfo} onItemClick={setComposer} />}
             </div>
-          </Col>
+
         </Row>
-        <Row className="mt-xs-0 mt-md-4">
-          <Col xs={12} md={6}>
-            <div className="mb-3">
+        <Row className="my-4">
+
+            <div>
               <h3>Genre</h3>
               {resourceData.speciesData.length > 0 && <SpeciesSelect items={resourceData.speciesData} mainInfo={mainInfo} onItemClick={setSpecies} />}
             </div>
-          </Col>
-          <Col xs={12} md={6}>
-            <div className="mb-3">
+        </Row>
+        <Row className="my-4">
+            <div>
               <h3>Publisher</h3>
               {resourceData.publisherData.length > 0 && <PublisherSelect items={resourceData.publisherData} mainInfo={mainInfo} onItemClick={setPublisher} />}
             </div>
-          </Col>
+
         </Row>
     </Container>
   );
