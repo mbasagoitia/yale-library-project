@@ -39,16 +39,22 @@ const BasicFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria, onS
     return (
         <Form className="basic-filter" onSubmit={handleSubmit}>
             <Row className="mb-4">
-                <Col xs={12}>
+                <Col xs={10}>
                     <FilterInput 
                         placeholder={"Title"}
                         value={searchCriteria.title}
                         onChange={onTitleChange}
                     />
                 </Col>
+                <Col xs={2} className="d-flex flex-column mb-4 mb-sm-0">
+                <div className="open-advanced-filter" onClick={() => setAdvancedFilter(true)}>
+                    <BiFilter size={20} />
+                    <span className="filter-text ms-2" onClick={clearSearchCriteria}>Advanced Filter</span>
+                </div>
+                </Col>
                 </Row>
                 <Row>
-                    <Col xs={9}>
+                    <Col xs={10}>
 
                     <div className="d-flex w-100">
                         <div className="flex-grow-1">
@@ -65,12 +71,7 @@ const BasicFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria, onS
                     </div>
                     </Col>
 
-                <Col xs={3} className="d-flex flex-column mb-4 mb-sm-0">
-                <div className="open-advanced-filter" onClick={() => setAdvancedFilter(true)}>
-                    <BiFilter size={20} />
-                    <span className="advanced-filter-text" onClick={clearSearchCriteria}>Advanced Filter</span>
-                </div>
-                </Col>
+
             </Row>
         </Form>
     )

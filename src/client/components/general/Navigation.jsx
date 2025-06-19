@@ -47,7 +47,7 @@ const Navigation = () => {
               <Nav.Link as="span" onClick={() => openLoginWindow()}>Log In</Nav.Link>
             )}
 
-            <div>
+            <div className="nav-searchbar">
               <Searchbar placeholder={"Search the collection"} />
             </div>
           </Nav>

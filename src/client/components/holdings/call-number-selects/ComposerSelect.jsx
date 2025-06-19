@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import ComposerFilter from "../../search-filters/ComposerFilter";
 import AddComposer from "../../holdings/AddComposer";
+import Modal from "../../general/Modal";
 
 const ComposerSelect = ({ items, mainInfo, onItemClick }) => {
 
@@ -31,21 +32,9 @@ const ComposerSelect = ({ items, mainInfo, onItemClick }) => {
 
     return (
         <div className="composer-select-area d-flex flex-column">
-        {!isModalOpen ? (
-        <>
         <ComposerFilter initialValue={mainInfo?.composer?.id ? `${mainInfo.composer.last_name}, ${mainInfo.composer.first_name}` : ''} items={items} onItemClick={onItemClick} />
         <span onClick={handleOpenModal} className="new-composer-open mt-2">Don't see composer?</span>
-        </>
-        ) : (
-            <div className="modal-overlay">
-                <div className="popup">
-                    <span className="close-button" onClick={handleCloseModal}>×</span>
-                    <div className="modal-content">
-                        <AddComposer handleCloseModal={handleCloseModal} />
-                    </div>
-                </div>
-            </div>
-        )}
+        <Modal show={isModalOpen} header={"Add Composer"} handleCloseModal={handleCloseModal} content={<AddComposer handleCloseModal={handleCloseModal} />}/>
         </div>
     )
 }

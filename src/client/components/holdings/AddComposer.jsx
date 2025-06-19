@@ -36,7 +36,6 @@ const AddComposer = ({ handleCloseModal }) => {
 
     return (
         <div className="add-composer">
-        <h1>Add Composer</h1>
         <div className={`${formErrors.notes ? "feedback my-2" : "d-none"}`}>{formErrors.notes}</div>
             <label htmlFor="composerLastName" className="form-label">Last Name:</label>
             <InputGroup>
@@ -70,8 +69,10 @@ const AddComposer = ({ handleCloseModal }) => {
                     onChange={(e) => setComposer({ ...composer, cutterNumber: e.target.value })}
                 />
             </InputGroup>
-            <div className="form-label">Please visit <a href="https://web.library.yale.edu/cataloging/music/cuttera" target="_blank" rel="noreferrer">here</a> to choose an appropriate cutter number.</div>
-            <Button onClick={handleSubmit} className="btn btn-primary mt-4" type="button">Add Composer</Button>
+            <div className="form-label mt-2">Please visit <a href="https://web.library.yale.edu/cataloging/music/cuttera" target="_blank" rel="noreferrer">here</a> to choose an appropriate cutter number.</div>
+            <div className="d-flex justify-content-center">
+                <Button onClick={handleSubmit} className="btn btn-primary mt-4" type="button">Add Composer</Button>
+            </div>
         </div>
     )
 }

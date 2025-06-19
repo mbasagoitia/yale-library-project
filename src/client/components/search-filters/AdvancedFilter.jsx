@@ -101,10 +101,10 @@ const AdvancedFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria, 
         <Form className="advanced-filter" onSubmit={handleSubmit}>
         <Row>
             <Col className="d-flex justify-content-between">
-                <span>Filter By:</span>
+                <p className="filter-by-text">Filter By:</p>
                 <div className="open-basic-filter" onClick={() => setAdvancedFilter(false)}>
                     <BiFilter size={20} />
-                    <div className="advanced-filter-text" onClick={clearSearchCriteria}>Basic Filter</div>
+                    <span className="filter-text ms-2" onClick={clearSearchCriteria}>Basic Filter</span>
                 </div>
             </Col>
             <span className="reset-text mt-2">Reset</span>
@@ -131,7 +131,7 @@ const AdvancedFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria, 
                     </Col>
                 </Row>
                 <Row className="my-0 my-md-3">
-                    <Col md={6} className="my-2 my-md-0">
+                    <Col lg={6} className="my-2 my-md-0">
                         <Form.Label>
                             <Dropdown.Toggle id="dropdown-basic" className="p-0 ensemble-toggle-btn" onClick={handleToggleMediumSelect}>Ensemble Type</Dropdown.Toggle>
                         </Form.Label>

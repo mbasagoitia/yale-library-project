@@ -101,21 +101,21 @@ const DigitalCatalogueFolders = ({ folderPath }) => {
           </Col>
         ))}
       </Row>
-
-      {isModalOpen && (
         <Modal
+          show={isModalOpen}
+          header={"Preview PDF"}
           content={
             <div>
-              <h4>Preview: {selectedPDF}</h4>
+              <div className="d-flex justify-content-center mb-4">
+                <Button variant="primary" className="mt-2" onClick={() => handleOpenFile(selectedPDF)}>
+                  Open File
+                </Button>
+              </div>
               <PDFPreview filePath={selectedPDF} />
-              <Button variant="success" className="mt-2" onClick={() => handleOpenFile(selectedPDF)}>
-                Open File
-              </Button>
             </div>
           }
           handleCloseModal={handleCloseModal}
         />
-      )}
     </Container>
   );
 };

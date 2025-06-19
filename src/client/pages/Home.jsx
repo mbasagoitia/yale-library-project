@@ -15,10 +15,10 @@ const Home = () => {
 // Call number needs to be correctly reflected on submit even if the user doesn't generate it
 // Add fields to update acquisition date and date last performed
 // Make the search bar and filters functional
+// Make sure "no results found" text is shown when appropriate
 // Edit piece even if some info is empty (call number)
 
-// Add a global state of search criteria and a back button from piece info
-// Style the navbar
+// Add a global state of search criteria and a back button from piece info, global state of holdings?
 
 // Digital Catalogue
 
@@ -30,7 +30,6 @@ const Home = () => {
 // Search filters are very tightly coupled!
 
 // Style the modals
-// Style the manage holdings page
 // Something more enticing for home page? Reports?
 // Fix buttons and bootstrap default colors
 

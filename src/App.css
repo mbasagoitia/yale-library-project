@@ -2,6 +2,14 @@
   text-align: center;
 }
 
+:root {
+  --yale-blue: #00356B;
+  --modal-bg: #ffffff;
+  --text-dark: #1a1a1a;
+  --gray-light: #f5f5f5;
+}
+
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -152,6 +160,9 @@ h2 {
   font-size: 0.9rem;
 }
 
+.nav-searchbar {
+  margin-top: 10px;
+}
 
 .search-button {
   background: none;
@@ -330,7 +341,33 @@ body {
   z-index: 100;
 }
 
-.popup {
+.modal-width {
+  --bs-modal-width: fit-content;
+}
+
+.modal-header {
+  background-color: var(--yale-blue);
+  color: white;
+  border-bottom: none;
+}
+
+.modal-header .btn-close {
+  filter: invert(1);
+}
+
+.modal-body {
+  background-color: var(--modal-bg);
+  color: var(--text-dark);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  width: fit-content;
+}
+
+.modal-content {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* .popup {
   max-height: 80%;
   min-width: 300px;
   max-width: 1000px;
@@ -338,15 +375,21 @@ body {
   text-align: center;
   display: flex;
   flex-direction: column;
-  background:  #dddddd;
+  background:  #F9FAFB;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   border-radius: 10px;
   overflow-y: auto;
 }
 
+.modal-header {
+  background: #00356B;
+  color: #FFFFFF;
+}
+
 .modal-content {
   padding: 0 0.5rem 1rem 0.5rem;
+  color: #1A1A1A;
 }
 
 .close-button {
@@ -357,7 +400,7 @@ body {
   left: 10px;
   bottom: 5px;
   cursor: pointer;
-}
+} */
 
 .callNumLine {
   font-size: 2rem;
@@ -507,6 +550,10 @@ body {
   cursor: pointer;
 }
 
+.reset-text, .filter-by-text {
+  font-size: 1rem;
+}
+
 .identifier-dropdown {
   padding: 6px 6px;
 }
@@ -525,7 +572,7 @@ body {
   cursor: pointer;
 }
 
-.advanced-filter-text {
+.filter-text {
   font-size: 0.8rem;
 }
 
@@ -570,14 +617,16 @@ body {
   justify-content: center;
 }
 
+.react-pdf__Page__canvas {
+  width: 100% !important;
+}
+
 .logout-text {
   cursor: pointer;
 }
 
-@media (min-width: 500px) {
-  .modal-content {
-    padding: 0 2rem 2rem 2rem;
-  }
+.classification-guide, .browse-collection {
+  padding: 2rem;
 }
 
 @media (min-width: 576px) {
@@ -612,12 +661,18 @@ body {
 }
 
 @media (min-width: 768px) {
-  .modal-content {
-    padding: 0 3rem 3rem 3rem;
+  .classification-guide, .browse-collection {
+    padding: 4rem;
   }
+  
 }
 
 @media (min-width: 992px) {
+
+  .nav-searchbar {
+    margin-top: 0;
+  }
+
   .site-nav {
     position: relative;
     display: flex;

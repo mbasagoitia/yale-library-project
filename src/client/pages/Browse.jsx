@@ -30,10 +30,12 @@ const Browse = () => {
 
     return (
         holdingsData.length > 0 && (
-            <div className="browse">
+            <div className="browse-collection">
             <h1>Browse Collection</h1>
             <div className="holdings-content mt-4">
-                <HoldingsFilter holdingsData={holdingsData} setFilteredItems={setFilteredItems} />
+                <div className="mb-4">
+                    <HoldingsFilter holdingsData={holdingsData} setFilteredItems={setFilteredItems} />
+                </div>
                 <HoldingsList filteredItems={filteredItems} />
             </div>
         </div>
