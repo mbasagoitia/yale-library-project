@@ -629,6 +629,20 @@ body {
   padding: 2rem;
 }
 
+.dc-nav-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.dc-nav-info p {
+  font-size: 0.8rem;
+  margin-top: 1rem;
+}
+
+.dc-nav-buttons {
+  flex-basis: 50%;
+}
+
 @media (min-width: 576px) {
 
   .App-header, .nav-content {
@@ -663,6 +677,16 @@ body {
 @media (min-width: 768px) {
   .classification-guide, .browse-collection {
     padding: 4rem;
+  }
+
+  .dc-nav-info {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .dc-nav-info p {
+    margin-top: 0;
+    font-size: 1rem;
   }
   
 }

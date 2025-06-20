@@ -22,14 +22,12 @@ const Home = () => {
 
 // Digital Catalogue
 
-// Style this page!
 // Pagination
 
 // Clean up preload.js and fix naming convention
 // Same with css file
 // Search filters are very tightly coupled!
 
-// Style the modals
 // Something more enticing for home page? Reports?
 // Fix buttons and bootstrap default colors
 

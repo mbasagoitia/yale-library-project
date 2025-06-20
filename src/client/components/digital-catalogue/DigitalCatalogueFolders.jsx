@@ -5,6 +5,7 @@ import PDFPreview from './PDFPreview';
 import { pdfjs } from 'react-pdf';
 import { Container, Row, Col, Button, Card } from 'react-bootstrap';
 import Modal from '../general/Modal';
+import PaginationControls from '../general/PaginationControls';
 import Searchbar from '../search-filters/Searchbar';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.12.313/pdf.worker.min.js`;
@@ -15,6 +16,12 @@ const DigitalCatalogueFolders = ({ folderPath }) => {
   const [selectedPDF, setSelectedPDF] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentItems = filteredFolders.slice(startIndex, startIndex + itemsPerPage);
 
   useEffect(() => {
     if (!searchText.trim()) {
@@ -61,8 +68,8 @@ const DigitalCatalogueFolders = ({ folderPath }) => {
           onSearch={handleSearch}
         />
       ) : null}
-      <div className="d-flex justify-content-between align-items-center my-3">
-        <div className="d-flex">
+      <div className="dc-nav-info my-4">
+        <div className="dc-nav-buttons">
           <Button variant="outline-primary" onClick={handleNavigate} disabled={!currentPath}>
           ← Previous
           </Button>
@@ -76,13 +83,13 @@ const DigitalCatalogueFolders = ({ folderPath }) => {
             </Button>
           )}
         </div>
-        <h5 className="mb-0 text-muted">
+        <p className="mb-0 text-muted">
           {currentPath ? `/${currentPath}` : folderPath}
-        </h5>
+        </p>
       </div>
 
       <Row className="g-3">
-        {filteredFolders.map((item) => (
+        {currentItems.map((item) => (
           <Col key={item.relativePath} xs={6} sm={4} md={3}>
             <Card
               className="text-center file-card h-100"
@@ -100,6 +107,14 @@ const DigitalCatalogueFolders = ({ folderPath }) => {
             </Card>
           </Col>
         ))}
+      </Row>
+      <Row>
+      <PaginationControls
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        totalItems={filteredFolders.length}
+        itemsPerPage={itemsPerPage}
+      />
       </Row>
         <Modal
           show={isModalOpen}

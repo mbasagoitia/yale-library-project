@@ -19,7 +19,8 @@ const DigitalCatalogue = () => {
 
     return (
         <div className="digital-catalogue">
-            <DigitalCatalogueFolders folderPath={basePath} />
+          <h1>Digital Catalogue</h1>
+          <DigitalCatalogueFolders folderPath={basePath} />
         </div>
     )
 }
