@@ -568,8 +568,8 @@ body {
 
 .open-advanced-filter, .open-basic-filter {
   font-size: clamp(0.8rem, 2vw, 1rem);
-  text-align: left;
   cursor: pointer;
+  text-align: center;
 }
 
 .filter-text {
@@ -643,6 +643,15 @@ body {
   flex-basis: 50%;
 }
 
+.basic-filter-input {
+  width: 75%;
+}
+
+.open-advanced-filter {
+  width: 25%;
+  padding: 0;
+}
+
 @media (min-width: 576px) {
 
   .App-header, .nav-content {
@@ -669,9 +678,6 @@ body {
     gap: 2rem;
   }
 
-  .open-advanced-filter, .open-basic-filter {
-    text-align: right;
-  }
 }
 
 @media (min-width: 768px) {

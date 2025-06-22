@@ -38,40 +38,35 @@ const BasicFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria, onS
 
     return (
         <Form className="basic-filter" onSubmit={handleSubmit}>
-            <Row className="mb-4">
-                <Col xs={10}>
+            <Row className="mb-2 d-flex justify-content-between">
+                <div className="basic-filter-input">
                     <FilterInput 
-                        placeholder={"Title"}
-                        value={searchCriteria.title}
-                        onChange={onTitleChange}
-                    />
-                </Col>
-                <Col xs={2} className="d-flex flex-column mb-4 mb-sm-0">
+                            placeholder={"Title"}
+                            value={searchCriteria.title}
+                            onChange={onTitleChange}
+                        />
+                </div>
                 <div className="open-advanced-filter" onClick={() => setAdvancedFilter(true)}>
                     <BiFilter size={20} />
-                    <span className="filter-text ms-2" onClick={clearSearchCriteria}>Advanced Filter</span>
+                    <div className="filter-text ms-2" onClick={clearSearchCriteria}>Advanced Filter</div>
+                </div>
+            </Row>
+            <Row>
+                <Col xs={9}>
+                <div className="d-flex w-100">
+                    <div className="flex-grow-1">
+                    <FilterInput
+                        placeholder="Composer"
+                        value={searchCriteria.composer}
+                        onChange={onComposerChange}
+                        className={"rounded-corners-left"}
+                    />
+                    </div>
+                    <Button className="flex-shrink-0 rounded-corners-right basic-filter-search" type="submit">
+                        <i className="fa fa-search"></i>
+                    </Button>
                 </div>
                 </Col>
-                </Row>
-                <Row>
-                    <Col xs={10}>
-
-                    <div className="d-flex w-100">
-                        <div className="flex-grow-1">
-                        <FilterInput
-                            placeholder="Composer"
-                            value={searchCriteria.composer}
-                            onChange={onComposerChange}
-                            className={"rounded-corners-left"}
-                        />
-                        </div>
-                        <Button className="flex-shrink-0 rounded-corners-right basic-filter-search" type="submit">
-                            <i className="fa fa-search"></i>
-                        </Button>
-                    </div>
-                    </Col>
-
-
             </Row>
         </Form>
     )
