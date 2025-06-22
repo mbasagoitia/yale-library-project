@@ -1,12 +1,12 @@
 import { Button } from "react-bootstrap";
 
 const handleSelectBasePath = async () => {
-  if (!window.electronAPI?.selectBasePath) {
+  if (!window.api?.filesystem.selectBasePath) {
     alert("selectBasePath not available");
     return;
   }
 
-  const selectedPath = await window.electronAPI.selectBasePath();
+  const selectedPath = await window.api.filesystem.selectBasePath();
   if (selectedPath) {
     alert(`Base path set to: ${selectedPath}`);
   }

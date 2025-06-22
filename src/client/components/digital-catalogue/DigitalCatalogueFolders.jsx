@@ -50,7 +50,7 @@ const DigitalCatalogueFolders = ({ folderPath }) => {
       navigateTo(item.relativePath);
       setSearchText("");
     } else if (item.name.endsWith('.pdf')) {
-      const fullPath = await window.electronAPI.getFullPath(folderPath, item.relativePath);
+      const fullPath = await window.api.filesystem.getFullPath(folderPath, item.relativePath);
       setSelectedPDF(fullPath);
       setIsModalOpen(true);
     }

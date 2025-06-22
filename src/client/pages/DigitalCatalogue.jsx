@@ -7,7 +7,7 @@ const DigitalCatalogue = () => {
 
     useEffect(() => {
       const fetchData = async () => {
-        const bp = await window.electronAPI.getBasePath();
+        const bp = await window.api.filesystem.getBasePath();
         if (!bp) return;
     
         setBasePath(bp);

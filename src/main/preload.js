@@ -1,51 +1,47 @@
 const { contextBridge, ipcRenderer } = require("electron");
 
-contextBridge.exposeInMainWorld('auth', {
-  getToken: () => ipcRenderer.invoke('auth:getToken'),
-  getNetID: () => ipcRenderer.invoke('auth:getNetID'),
-  getIsAdmin: () => ipcRenderer.invoke('auth:getIsAdmin'),
-});
-
-contextBridge.exposeInMainWorld('backupAPI', {
-  createReadableBackup: () => ipcRenderer.invoke('backup:readable'),
-  createMySQLBackup: () => ipcRenderer.invoke('backup:mysqldump'),
-  zipCatalogueFolder: () => ipcRenderer.invoke('backup:zipCatalogueFolder')
-});
-
-contextBridge.exposeInMainWorld("electronAPI", {
-  openAuthWindow: () => ipcRenderer.invoke("open-auth-window"),
-  getFullPath: (basePath, relativePath) => ipcRenderer.invoke('get-full-path', basePath, relativePath),
-  selectBasePath: () => ipcRenderer.invoke('select-base-path'),
-  getBasePath: () => ipcRenderer.invoke('get-base-path'),
-  readFolder: (path) => ipcRenderer.invoke("read-folder", path),
-  readFile: (filePath) => ipcRenderer.invoke('read-file', filePath),
-  openFile: (fullPath) =>
-    ipcRenderer.invoke('open-file', fullPath),
-  openFolder: (folderPath) =>
-    ipcRenderer.invoke('open-folder', folderPath),
-  on: (channel, callback) => {
-    const validChannels = ["basePath-updated"];
-    if (validChannels.includes(channel)) {
-      ipcRenderer.on(channel, callback);
-    }
+contextBridge.exposeInMainWorld("api", {
+  auth: {
+    getToken: () => ipcRenderer.invoke("auth:getToken"),
+    getNetID: () => ipcRenderer.invoke("auth:getNetID"),
+    getIsAdmin: () => ipcRenderer.invoke("auth:getIsAdmin"),
+    clear: () => ipcRenderer.invoke("auth:clear"),
+    openLoginWindow: () => ipcRenderer.invoke("auth:openWindow"),
   },
 
-  removeListener: (channel, callback) => {
-    ipcRenderer.removeListener(channel, callback);
-  }
-});
+  backup: {
+    createReadable: () => ipcRenderer.invoke("backup:createReadable"),
+    createMySQL: () => ipcRenderer.invoke("backup:createMySQL"),
+    zipCatalogue: () => ipcRenderer.invoke("backup:zipCatalogue"),
+  },
 
-contextBridge.exposeInMainWorld('electron', {
-  ipcRenderer: {
-    on: (channel, listener) => ipcRenderer.on(channel, listener),
-    send: (channel, data) => ipcRenderer.send(channel, data),
-  }
-});
+  filesystem: {
+    getFullPath: (basePath, relativePath) =>
+      ipcRenderer.invoke("fs:getFullPath", basePath, relativePath),
+    selectBasePath: () => ipcRenderer.invoke("fs:selectBasePath"),
+    getBasePath: () => ipcRenderer.invoke("fs:getBasePath"),
+    readFolder: (path) => ipcRenderer.invoke("fs:readFolder", path),
+    readFile: (filePath) => ipcRenderer.invoke("fs:readFile", filePath),
+    openFile: (fullPath) => ipcRenderer.invoke("fs:openFile", fullPath),
+    openFolder: (folderPath) => ipcRenderer.invoke("fs:openFolder", folderPath),
+  },
 
-contextBridge.exposeInMainWorld('digitalCatalogueAPI', {
-  listDirectory: (relativePath) =>
-    ipcRenderer.invoke('digitalCatalogue:listDirectory', relativePath),
-  getAllFolders: (basePath) =>
-    ipcRenderer.invoke('digitalCatalogue:getAllFolders', basePath),
+  digitalCatalogue: {
+    listDirectory: (relativePath) =>
+      ipcRenderer.invoke("catalogue:listDirectory", relativePath),
+    getAllFolders: (basePath) =>
+      ipcRenderer.invoke("catalogue:getAllFolders", basePath),
+  },
 
+  events: {
+    on: (channel, callback) => {
+      const validChannels = ["basePath-updated"];
+      if (validChannels.includes(channel)) {
+        ipcRenderer.on(channel, callback);
+      }
+    },
+    remove: (channel, callback) => {
+      ipcRenderer.removeListener(channel, callback);
+    },
+  },
 });

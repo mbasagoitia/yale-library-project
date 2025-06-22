@@ -6,7 +6,7 @@ export const useFolderContents = (initialPath = '') => {
   const [breadcrumbs, setBreadcrumbs] = useState([]);
 
   const fetchDirectory = async (path) => {
-    const result = await window.digitalCatalogueAPI.listDirectory(path);
+    const result = await window.api.digitalCatalogue.listDirectory(path);
     setContents(result);
     setCurrentPath(path);
 

@@ -7,15 +7,15 @@ const dotenv = require("dotenv");
 const pieceRouter = require("./routes/pieceRouter.js");
 const resourceRouter = require("./routes/resourceRouter.js");
 const adminRouter = require("./routes/adminRouter.js");
+const authRouter = require('./routes/authRouter');
 const reportRouter = require("./routes/reportRouter.js");
-// const nodemon = require("nodemon");
+const backupRouter = require("./routes/backupRouter.js");
 
 const app = express();
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
 app.use(express.json());
 app.use(morgan("dev"));
-// app.use(nodemon);
 
 const corsOptions = {
   origin: 'https://yourapp.local:3000',
@@ -51,6 +51,8 @@ app.use("/api", resourceRouter);
 app.use("/api", pieceRouter);
 app.use("/api", adminRouter);
 app.use("/api/report-data", reportRouter);
+app.use("/api/backup", backupRouter);
+app.use('/api/auth', authRouter);
 
 
 module.exports = app;

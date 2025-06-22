@@ -1,88 +1,66 @@
 const fs = require('fs-extra');
-const { parse } = require('json2csv');
-const archiver = require('archiver');
-const mysqldump = require('mysqldump');
 const path = require('path');
+const { pipeline } = require('stream');
+const { promisify } = require('util');
+const streamPipeline = promisify(pipeline);
 
-const exportReadableBackup = async (pool, baseFolder) => {
-  try {
-    const [rows] = await pool.query(`
-      SELECT 
-        p.title AS Title,
-        c.last_name AS composer_lastname,
-        c.first_name AS composer_firstname,
-        pub.label AS publisher,
-        p.additional_notes AS additional_notes,
-        con.label AS condition_description,
-        p.call_number,
-        p.acquisition_date
-      FROM pieces p
-        INNER JOIN composers c ON p.composer_id = c.id 
-        INNER JOIN publisher_options pub ON p.publisher_id = pub.id
-        INNER JOIN conditions con ON p.condition_id = con.id
-      ORDER BY c.last_name ASC, p.title ASC;
-    `);
+const createMysqlDump = async (store) => {
+  const basePath = store.get("basePath");
+  const backupUrl = `http://localhost:5000/api/backup/mysqldump?basePath=${encodeURIComponent(basePath)}`;
+  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+  const filePath = path.join(basePath, `mysqldump_${timestamp}.sql`);
 
-    const csv = parse(rows);
+  const res = await fetch(backupUrl);
+  if (!res.ok) throw new Error(`Fetch failed with status ${res.status}`);
 
-    const backupFolder = path.join(baseFolder, '..', 'backups');
-    await fs.ensureDir(backupFolder);
+  await fs.ensureDir(basePath);
+  await streamPipeline(res.body, fs.createWriteStream(filePath));
 
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const filePath = path.join(backupFolder, `holdings_backup_${timestamp}.csv`);
-
-    fs.writeFileSync(filePath, csv, 'utf8');
-
-    return { success: true, message: `Backup saved to ${filePath}` };
-  } catch (error) {
-    console.error('CSV export failed:', error);
-    return { success: false, message: 'Failed to export CSV backup.' };
-  }
+  return filePath;
 };
 
+const createReadableBackup = async (store) => {
+  const basePath = store.get("basePath");
+  if (!basePath) throw new Error("No base path set.");
 
-const exportMySQLDump = async (baseFolder) => {
-  try {
-    const backupFolder = path.join(baseFolder, '..', 'backups');
-    await fs.ensureDir(backupFolder);
+  const backupUrl = `http://localhost:5000/api/backup/readable?basePath=${encodeURIComponent(basePath)}`;
+  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+  const filePath = path.join(basePath, `readable_backup_${timestamp}.csv`);
 
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const filePath = path.join(backupFolder, `full_db_backup_${timestamp}.sql`);
+  const res = await fetch(backupUrl);
+  if (!res.ok) throw new Error(`Fetch failed with status ${res.status}`);
 
-    await mysqldump({
-      connection: {
-        host: process.env.DB_HOST,
-        user: process.env.DB_USER,
-        password: process.env.DB_PW,
-        database: process.env.DB_DATABASE
-      },
-      dumpToFile: filePath
-    });
+  await fs.ensureDir(basePath);
+  await streamPipeline(res.body, fs.createWriteStream(filePath));
 
-    return { success: true, message: `Full database backup saved to ${filePath}` };
-  } catch (error) {
-    console.error('MySQL dump failed:', error);
-    return { success: false, message: 'Failed to export full database backup.' };
-  }
+  return filePath;
 };
 
+const zipFolder = async (store) => {
+  const baseFolder = store.get("basePath");
+  if (!baseFolder) throw new Error("No base path set.");
 
-const zipFolder = (sourceFolderPath, outputZipPath) => {
+  const backupFolder = path.join(baseFolder, '..', 'backups');
+  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+  const zipPath = path.join(backupFolder, `digital_catalogue_backup_${timestamp}.zip`);
+
+  await fs.ensureDir(backupFolder);
+
   return new Promise((resolve, reject) => {
-    const output = fs.createWriteStream(outputZipPath);
+    const output = fs.createWriteStream(zipPath);
     const archive = archiver('zip', { zlib: { level: 9 } });
 
-    output.on('close', () => resolve(outputZipPath));
-    archive.on('error', (err) => reject(err));
+    output.on('close', () => resolve(zipPath));
+    archive.on('error', reject);
 
     archive.pipe(output);
-    archive.directory(sourceFolderPath, false);
+    archive.directory(baseFolder, false);
     archive.finalize();
   });
 };
 
 module.exports = {
-  exportReadableBackup,
-  exportMySQLDump,
+  createMysqlDump,
+  createReadableBackup,
   zipFolder
 };

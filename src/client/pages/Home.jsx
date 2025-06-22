@@ -20,19 +20,21 @@ const Home = () => {
 
 // Add a global state of search criteria and a back button from piece info, global state of holdings?
 
-// Digital Catalogue
-
-// Pagination
-
-// Clean up preload.js and fix naming convention
 // Same with css file
 // Search filters are very tightly coupled!
 
 // Something more enticing for home page? Reports?
 // Fix buttons and bootstrap default colors
 
-// Server vs electron logic?
 // Auth middleware, make sure to make all protected routes have this
+// Alerts on success for cataloguing, logging in, etc.
+// when editing a piece from the manage holdings page, it should not redirect you away but open an edit mode
+
+// weird spacing on search collection in manage holdings page
+// Error setting base path
+// issue with auth while adding admin
+// issues with creating backups
+// style settings page better?
 
 
 export default Home;

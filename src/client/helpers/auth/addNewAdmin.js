@@ -1,6 +1,6 @@
 const addNewAdmin = async (info) => {
     const apiUrl = "http://localhost:5000/api/admin";
-    const token = await window.auth.getToken();
+    const token = await window.api.auth.getToken();
   
     try {
       const res = await fetch(apiUrl, {

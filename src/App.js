@@ -21,11 +21,17 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    window.electron?.ipcRenderer?.on('auth-success', (event, data) => {
+    const handler = (_event, data) => {
       dispatch(login({ netid: data.netid, isAdmin: data.isAdmin }));
-    });
+    };
+  
+    window.api?.events.on('auth-success', handler);
+  
+    return () => {
+      window.api?.events.remove('auth-success', handler);
+    };
   }, [dispatch]);
-
+  
   return (
     <BrowserRouter>
     <div className="App">

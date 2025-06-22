@@ -1,21 +1,27 @@
 const { createAuthWindow } = require("../helpers/createAuthWindow");
 
-const handleAuthHandlers = (ipcMain, mainWindow, store, pool) => {
-  ipcMain.handle("open-auth-window", () => {
-    createAuthWindow(mainWindow, store, pool);
+const handleAuthHandlers = (ipcMain, mainWindow, store) => {
+  ipcMain.handle("auth:openWindow", () => {
+    return createAuthWindow(mainWindow, store);
   });
 
   ipcMain.handle("auth:getToken", () => {
-    return store.get("authToken");
+    return Promise.resolve(store.get("authToken"));
   });
 
   ipcMain.handle("auth:getNetID", () => {
-    return store.get("netid");
+    return Promise.resolve(store.get("netid"));
   });
 
   ipcMain.handle("auth:getIsAdmin", () => {
-    return store.get("isAdmin");
+    return Promise.resolve(store.get("isAdmin"));
+  });
+
+  ipcMain.handle("auth:clear", () => {
+    store.clear();
+    return Promise.resolve();
   });
 };
 
 module.exports = handleAuthHandlers;
+

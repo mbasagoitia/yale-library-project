@@ -12,45 +12,46 @@ const {
 } = require("../helpers/fileHelpers");
 
 const handleFileHandlers = (ipcMain, store, mainWindow) => {
-
-  ipcMain.handle('digitalCatalogue:getAllFolders', async (_, basePath) => {
-    return await getAllFolders(basePath);
+  // Namespace: digitalCatalogue
+  ipcMain.handle('catalogue:getAllFolders', (_, basePath) => {
+    return getAllFolders(basePath);
   });
-  
-  ipcMain.handle('get-base-path', async () => {
+
+  ipcMain.handle('catalogue:listDirectory', (_, relativePath) => {
+    return handleListDirectory(store, relativePath);
+  });
+
+  // Namespace: filesystem
+  ipcMain.handle('fs:getBasePath', () => {
     return getBasePath(store);
   });
 
-  ipcMain.handle('set-base-path', async (event, newPath) => {
+  ipcMain.handle('fs:setBasePath', (_, newPath) => {
     return setBasePath(store, newPath, mainWindow);
   });
 
-  ipcMain.handle('select-base-path', async () => {
-    return await handleSelectBasePath(store, mainWindow);
+  ipcMain.handle('fs:selectBasePath', () => {
+    return handleSelectBasePath(store, mainWindow);
   });
 
-  ipcMain.handle('get-full-path', (event, basePath, relativePath) => {
+  ipcMain.handle('fs:getFullPath', (_, basePath, relativePath) => {
     return path.join(basePath, relativePath);
   });
 
-  ipcMain.handle('read-file', async (event, filePath) => {
-    return await handleReadFile(filePath);
+  ipcMain.handle('fs:readFile', (_, filePath) => {
+    return handleReadFile(filePath);
   });
 
-  ipcMain.handle('read-folder', async (event, folderPath) => {
-    return await handleReadFolder(folderPath);
+  ipcMain.handle('fs:readFolder', (_, folderPath) => {
+    return handleReadFolder(folderPath);
   });
 
-  ipcMain.handle('open-file', async (event, filePath) => {
-    return await handleOpenFile(filePath);
+  ipcMain.handle('fs:openFile', (_, filePath) => {
+    return handleOpenFile(filePath);
   });
 
-  ipcMain.handle('open-folder', async (event, folderPath) => {
-    return await handleOpenFolder(folderPath);
-  });
-
-  ipcMain.handle('digitalCatalogue:listDirectory', async (event, relativePath) => {
-    return await handleListDirectory(store, relativePath);
+  ipcMain.handle('fs:openFolder', (_, folderPath) => {
+    return handleOpenFolder(folderPath);
   });
 };
 

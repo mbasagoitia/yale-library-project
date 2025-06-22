@@ -7,7 +7,7 @@ function PDFPreview({ filePath }) {
   const [pdfData, setPdfData] = useState(null);
 
   useEffect(() => {
-    window.electronAPI.readFile(filePath).then((buffer) => {
+    window.api.filesystem.readFile(filePath).then((buffer) => {
       setPdfData(buffer);
     });
   }, [filePath]);
