@@ -18,9 +18,8 @@ contextBridge.exposeInMainWorld("api", {
   filesystem: {
     getFullPath: (basePath, relativePath) =>
       ipcRenderer.invoke("fs:getFullPath", basePath, relativePath),
-    selectBasePath: () => ipcRenderer.invoke("fs:selectBasePath"),
+    setBasePath: () => ipcRenderer.invoke("fs:setBasePath"),
     getBasePath: () => ipcRenderer.invoke("fs:getBasePath"),
-    readFolder: (path) => ipcRenderer.invoke("fs:readFolder", path),
     readFile: (filePath) => ipcRenderer.invoke("fs:readFile", filePath),
     openFile: (fullPath) => ipcRenderer.invoke("fs:openFile", fullPath),
     openFolder: (folderPath) => ipcRenderer.invoke("fs:openFolder", folderPath),
@@ -28,14 +27,12 @@ contextBridge.exposeInMainWorld("api", {
 
   digitalCatalogue: {
     listDirectory: (relativePath) =>
-      ipcRenderer.invoke("catalogue:listDirectory", relativePath),
-    getAllFolders: (basePath) =>
-      ipcRenderer.invoke("catalogue:getAllFolders", basePath),
+      ipcRenderer.invoke("catalogue:listDirectory", relativePath)
   },
 
   events: {
     on: (channel, callback) => {
-      const validChannels = ["basePath-updated"];
+      const validChannels = ["base-path-updated"];
       if (validChannels.includes(channel)) {
         ipcRenderer.on(channel, callback);
       }

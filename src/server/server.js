@@ -11,6 +11,8 @@ const authRouter = require('./routes/authRouter');
 const reportRouter = require("./routes/reportRouter.js");
 const backupRouter = require("./routes/backupRouter.js");
 
+const { authenticateAdmin } = require("./middlewares/authenticateAdmin.js");
+
 const app = express();
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
@@ -47,12 +49,12 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/api", resourceRouter);
-app.use("/api", pieceRouter);
-app.use("/api", adminRouter);
-app.use("/api/report-data", reportRouter);
-app.use("/api/backup", backupRouter);
+app.use("/api/resources", resourceRouter);
+app.use("/api/holdings-data", pieceRouter);
 app.use('/api/auth', authRouter);
+app.use("/api/admin", authenticateAdmin, adminRouter);
+app.use("/api/report-data", authenticateAdmin, reportRouter);
+app.use("/api/backup", authenticateAdmin, backupRouter);
 
 
 module.exports = app;

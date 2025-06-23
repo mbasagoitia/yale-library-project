@@ -19,11 +19,6 @@ router.get('/composer-data', (req, res) => {
   getComposerData(req, res, db);
 });
 
-router.get('/composer-data/:id', (req, res) => {
-  const db = req.db;
-  getSingleComposerData(req, res, db);
-});
-
 router.get('/species-data', (req, res) => {
   const db = req.db;
   getSpeciesData(req, res, db);

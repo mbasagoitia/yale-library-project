@@ -1,12 +1,12 @@
 import { Button } from "react-bootstrap";
 
 const handleSelectBasePath = async () => {
-  if (!window.api?.filesystem.selectBasePath) {
-    alert("selectBasePath not available");
+  if (!window.api?.filesystem.setBasePath) {
+    alert("setPath not available");
     return;
   }
 
-  const basePath = await window.api.filesystem.selectBasePath();
+  const basePath = await window.api.filesystem.setBasePath();
   if (basePath) {
     alert(`Base path set to: ${basePath}`);
   }

@@ -1,5 +1,5 @@
 const addComposer = (info) => {
-    const apiUrl = "http://localhost:5000/api/composer-data";
+    const apiUrl = "http://localhost:5000/api/resources/composer-data";
     
     return fetch(apiUrl, {
         method: "POST",

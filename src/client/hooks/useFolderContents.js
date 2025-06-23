@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
 export const useFolderContents = (initialPath = '') => {
+  
   const [contents, setContents] = useState([]);
   const [currentPath, setCurrentPath] = useState(initialPath);
   const [breadcrumbs, setBreadcrumbs] = useState([]);

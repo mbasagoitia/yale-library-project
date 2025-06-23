@@ -30,10 +30,10 @@ const Settings = () => {
     };
     
 
-    window.api?.events.on("basePath-updated", handleBasePathUpdate);
+    window.api?.events.on("base-path-updated", handleBasePathUpdate);
 
     return () => {
-      window.api?.events.remove("basePath-updated", handleBasePathUpdate);
+      window.api?.events.remove("base-path-updated", handleBasePathUpdate);
     };
 
   }, []);
@@ -127,7 +127,7 @@ const handleBackupScans = async () => {
         <Card.Text>
             Create a backup of the current holdings database. This file can be stored externally to preserve data or transfer it to another system.
         </Card.Text>
-        <div className="d-flex holdings-buttons-container">
+        <div className="holdings-buttons-container">
           <Button variant="primary" onClick={handleCreateCSVBackup}>
               Export as CSV
           </Button>
