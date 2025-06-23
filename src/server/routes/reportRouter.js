@@ -4,6 +4,7 @@ const { getAllPieces, getMissing, getPoorCondition, getConditionSummary, getMusi
 const router = express.Router();
 
 router.get('/all', (req, res) => {
+    console.log("inside get route")
     const db = req.db;
     getAllPieces(req, res, db);
 })

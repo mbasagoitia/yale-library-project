@@ -16,8 +16,6 @@ const ReportForm = () => {
 
     if (data) {
       generateReport({ reportType, holdings: data });
-    } else {
-      alert('Failed to fetch report data.');
     }
   };
 

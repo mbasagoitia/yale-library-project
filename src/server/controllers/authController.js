@@ -1,6 +1,9 @@
 const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
 const { parseStringPromise } = require('xml2js');
 const { httpsRequest, isNetIDAdmin } = require('../helpers/authHelpers.js');
+
+dotenv.config()
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -24,7 +27,14 @@ const validateTicket = async (req, res) => {
     }
 
     const netid = success[0]?.['cas:user']?.[0];
-    const isAdmin = await isNetIDAdmin(req.db, netid);
+    
+    const isAdmin = await new Promise((resolve, reject) => {
+      isNetIDAdmin(req.db, netid, (err, result) => {
+        if (err) return reject(err);
+        resolve(result);
+      });
+    });
+    
 
     const token = jwt.sign({ netid, isAdmin }, JWT_SECRET, { expiresIn: '1h' });
 

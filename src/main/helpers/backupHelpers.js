@@ -5,12 +5,19 @@ const { promisify } = require('util');
 const streamPipeline = promisify(pipeline);
 
 const createMysqlDump = async (store) => {
+
   const basePath = store.get("basePath");
+  const token = store.get("authToken");
+
   const backupUrl = `http://localhost:5000/api/backup/mysqldump?basePath=${encodeURIComponent(basePath)}`;
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
   const filePath = path.join(basePath, `mysqldump_${timestamp}.sql`);
 
-  const res = await fetch(backupUrl);
+  const res = await fetch(backupUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    }});
+
   if (!res.ok) throw new Error(`Fetch failed with status ${res.status}`);
 
   await fs.ensureDir(basePath);
@@ -20,14 +27,20 @@ const createMysqlDump = async (store) => {
 };
 
 const createReadableBackup = async (store) => {
+  // Why do I need a base path for this?
   const basePath = store.get("basePath");
   if (!basePath) throw new Error("No base path set.");
+  const token = store.get("authToken");
 
   const backupUrl = `http://localhost:5000/api/backup/readable?basePath=${encodeURIComponent(basePath)}`;
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
   const filePath = path.join(basePath, `readable_backup_${timestamp}.csv`);
 
-  const res = await fetch(backupUrl);
+  const res = await fetch(backupUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    }});
+
   if (!res.ok) throw new Error(`Fetch failed with status ${res.status}`);
 
   await fs.ensureDir(basePath);

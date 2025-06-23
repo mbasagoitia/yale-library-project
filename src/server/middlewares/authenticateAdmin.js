@@ -17,7 +17,8 @@ const authenticateAdmin = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (err) {
-    return res.status(401).json({ error: 'Invalid or expired token' });
+    console.error("JWT verification failed:", err.message)
+    return res.status(401).json({ error: 'Invalid or expired token. Please login again.' });
   }
 }
 

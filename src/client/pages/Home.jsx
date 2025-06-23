@@ -28,10 +28,12 @@ const Home = () => {
 // Alerts on success for cataloguing, logging in, etc.
 // when editing a piece from the manage holdings page, it should not redirect you away but open an edit mode
 
-// issue with auth while adding admin
+// Need to dispatch an iniital folder being set from digital catalogue page
+// What if someone tries to backup digital catalogue and no base path is set?
 // issues with creating backups
 // style settings page better?
 // font size on mobile navbar for dropdown
+// navbar style weird when you logout
 
 
 export default Home;

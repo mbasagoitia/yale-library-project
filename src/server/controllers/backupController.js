@@ -4,7 +4,17 @@ const readableBackup = async (req, res) => {
     try {
       const db = req.db;
       const basePath = req.query.basePath;
-      const filePath = await exportReadableBackup(db, basePath);
+
+      const filePath = await new Promise((resolve, reject) => {
+        exportReadableBackup(db, basePath, (result) => {
+          if (result.success) {
+            resolve(result.message);
+          } else {
+            reject(new Error(result.message));
+          }
+        });
+      });
+
       res.download(filePath);
     } catch (err) {
       console.error('Readable backup failed:', err);

@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import { Container, Form, Button, Card, Alert } from "react-bootstrap";
+import { Container, Form, Button, Card } from "react-bootstrap";
 import FolderSelectButton from "../components//digital-catalogue/FolderSelectButton";
 import addNewAdmin from "../helpers/auth/addNewAdmin";
+import { handleCreateCSVBackup, handleCreateMysqlDump, handleBackupScans } from "../helpers/backups/createBackups";
 
 const Settings = () => {
   const [adminInfo, setAdminInfo] = useState({ name: "", netid: "" });
-  const [successMsg, setSuccessMsg] = useState("");
   const [basePath, setBasePath] = useState("");
 
   // This is used twice; make helper function
@@ -48,30 +48,8 @@ const Settings = () => {
 
     const result = await addNewAdmin(adminInfo);
     if (result?.message) {
-      setSuccessMsg(result.message);
+      alert(result.message);
       setAdminInfo({ name: "", netid: "" });
-      setTimeout(() => setSuccessMsg(""), 5000);
-    }
-  };
-
-const handleCreateCSVBackup = async () => {
-    const result = await window.api.backup.createReadable();
-    alert(result.message);
-}
-
-
-const handleCreateMysqlDump = async () => {
-    const result = await window.api.backup.createMySQL();
-    alert(result.message);
-}
-
-const handleBackupScans = async () => {
-    try {
-      const zipPath = await window.api.backup.zipCatalogue();
-      alert(`Scans folder successfully backed up to:\n${zipPath}`);
-    } catch (err) {
-      alert(`Failed to back up scans folder:\n${err.message}`);
-      console.error(err);
     }
   };
 
@@ -89,7 +67,6 @@ const handleBackupScans = async () => {
       <h2>Add New Admin</h2>
       <Card className="mb-4">
         <Card.Body>
-          {successMsg && <Alert variant="success">{successMsg}</Alert>}
           <Form onSubmit={handleAddAdmin}>
             <Form.Group className="mb-3" controlId="nameInput">
               <Form.Label>Name</Form.Label>

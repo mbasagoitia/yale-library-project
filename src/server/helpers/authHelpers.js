@@ -10,10 +10,14 @@ const httpsRequest = (url) => {
     });
   };
 
-const isNetIDAdmin = async (db, netid) => {
-    const [rows] = await db.query('SELECT * FROM admins WHERE netid = ?', [netid]);
-    return rows.length > 0;
-};
+  const isNetIDAdmin = (db, netid, callback) => {
+    db.query('SELECT * FROM admins WHERE netid = ?', [netid], (err, results) => {
+      if (err) return callback(err);
+      const isAdmin = results.length > 0;
+      callback(null, isAdmin);
+    });
+  };
+  
 
 module.exports = {
     httpsRequest,

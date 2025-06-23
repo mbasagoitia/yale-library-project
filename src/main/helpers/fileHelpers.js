@@ -4,10 +4,7 @@ const fs = require('fs-extra');
 
 const getBasePath = (store) => {
     const basePath = store.get('basePath');
-    if (!basePath) {
-        throw new Error("Base path is not set. Please select a Digital Catalogue root folder.");
-    }
-    return basePath;
+    return basePath || null;
 };
 
 const setBasePath = async (store, window) => {
