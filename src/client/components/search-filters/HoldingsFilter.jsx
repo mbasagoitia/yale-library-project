@@ -3,10 +3,7 @@ import BasicFilter from "./BasicFilter";
 import AdvancedFilter from "./AdvancedFilter";
 import filterSearch from "../../helpers/holdings/filterSearch";
 
-const HoldingsFilter = ({ holdingsData, setFilteredItems }) => {
-
-    // You will pass holdingsData and searchCriteria into the function that changes the filter
-    // And update the items to display with setFilteredItems
+const HoldingsFilter = ({ holdingsData, setFilteredItems, setShowResults }) => {
 
     const [advancedFilter, setAdvancedFilter] = useState(false);
     const [searchCriteria, setSearchCriteria] = useState({
@@ -20,6 +17,7 @@ const HoldingsFilter = ({ holdingsData, setFilteredItems }) => {
     const onSubmit = (holdingsData, searchCriteria) => {
         const filtered = filterSearch(holdingsData, searchCriteria);
         setFilteredItems(filtered);
+        setShowResults(true);
     }
 
     return (

@@ -7,9 +7,11 @@ import HoldingsList from "../components/holdings/HoldingsList";
 import HoldingsFilter from "../components/search-filters/HoldingsFilter";
 
 const ManageHoldings = () => {
+
     const [holdingsData, setHoldingsData] = useState([]);
     const [filteredItems, setFilteredItems] = useState([]);
     const [isInitialLoad, setIsInitialLoad] = useState(true);
+    const [showResults, setShowResults] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -52,8 +54,10 @@ const ManageHoldings = () => {
                                 <HoldingsFilter
                                     holdingsData={holdingsData}
                                     setFilteredItems={setFilteredItems}
+                                    setShowResults={setShowResults}
                                 />
                                 <hr />
+                                {showResults ? <h2 className="mt-2 mb-3">Results: {filteredItems.length}</h2> : null}
                                 <HoldingsList filteredItems={filteredItems} />
                             </Card.Body>
                         </Card>

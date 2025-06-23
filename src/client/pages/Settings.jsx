@@ -10,6 +10,8 @@ const Settings = () => {
 
   // This is used twice; make helper function
 
+  // This whole page needs to be broken into different components
+
   useEffect(() => {
     const fetchBasePath = async () => {
       if (window.api?.filesystem.getBasePath) {
@@ -105,7 +107,7 @@ const handleBackupScans = async () => {
               <Form.Label>NetID</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Enter NetID"
+                placeholder="Enter Yale NetID"
                 value={adminInfo.netid}
                 onChange={(e) =>
                   setAdminInfo({ ...adminInfo, netid: e.target.value })
@@ -125,15 +127,17 @@ const handleBackupScans = async () => {
         <Card.Text>
             Create a backup of the current holdings database. This file can be stored externally to preserve data or transfer it to another system.
         </Card.Text>
-        <Button variant="primary" onClick={handleCreateCSVBackup}>
-            Export as CSV
-        </Button>
-        <Button variant="primary" className="mx-2" onClick={handleCreateMysqlDump}>
-            Export full Database
-        </Button>
-        <Button variant="primary" onClick={handleBackupScans}>
-            Export Digital Catalogue
-        </Button>
+        <div className="d-flex holdings-buttons-container">
+          <Button variant="primary" onClick={handleCreateCSVBackup}>
+              Export as CSV
+          </Button>
+          <Button variant="primary" onClick={handleCreateMysqlDump}>
+              Export full Database
+          </Button>
+          <Button variant="primary" onClick={handleBackupScans}>
+              Export Digital Catalogue
+          </Button>
+        </div>
         </Card.Body>
       </Card>
     </Container>

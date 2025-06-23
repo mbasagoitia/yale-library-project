@@ -131,7 +131,7 @@ const AdvancedFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria, 
                     </Col>
                 </Row>
                 <Row className="my-0 my-md-3">
-                    <Col lg={6} className="my-2 my-md-0">
+                    <Col xs={12} className="my-2 my-md-0">
                         <Form.Label>
                             <Dropdown.Toggle id="dropdown-basic" className="p-0 ensemble-toggle-btn" onClick={handleToggleMediumSelect}>Ensemble Type</Dropdown.Toggle>
                         </Form.Label>

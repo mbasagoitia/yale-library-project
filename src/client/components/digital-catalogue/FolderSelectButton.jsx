@@ -6,9 +6,9 @@ const handleSelectBasePath = async () => {
     return;
   }
 
-  const selectedPath = await window.api.filesystem.selectBasePath();
-  if (selectedPath) {
-    alert(`Base path set to: ${selectedPath}`);
+  const basePath = await window.api.filesystem.selectBasePath();
+  if (basePath) {
+    alert(`Base path set to: ${basePath}`);
   }
 };
 

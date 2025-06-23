@@ -9,6 +9,7 @@ const Browse = () => {
 
     const [holdingsData, setHoldingsData] = useState([]);
     const [filteredItems, setFilteredItems] = useState([]);
+    const [showResults, setShowResults] = useState(false);
     const [isInitialLoad, setIsInitialLoad] = useState(true);
 
     useEffect(() => {
@@ -34,8 +35,9 @@ const Browse = () => {
             <h1>Browse Collection</h1>
             <div className="holdings-content mt-4">
                 <div className="mb-4">
-                    <HoldingsFilter holdingsData={holdingsData} setFilteredItems={setFilteredItems} />
+                    <HoldingsFilter holdingsData={holdingsData} setFilteredItems={setFilteredItems} setShowResults={setShowResults} />
                 </div>
+                {showResults ? <h2>Results: {filteredItems.length}</h2> : null}
                 <HoldingsList filteredItems={filteredItems} />
             </div>
         </div>
