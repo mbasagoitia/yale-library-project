@@ -22,8 +22,9 @@ const handleAuthHandlers = (ipcMain, store, mainWindow) => {
   });
 
   ipcMain.handle("auth:clear", () => {
-    // This should only clear auth!!! Not basePath
-    store.clear();
+    store.delete('authToken');
+    store.delete('netid');
+    store.delete('isAdmin');
     return Promise.resolve();
   });
 };

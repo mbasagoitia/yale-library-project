@@ -9,14 +9,20 @@ const openLoginWindow = () => {
     }
 }
 
-const handleLogout = async (dispatch) => {
+const handleLogout = async (dispatch, navigate) => {
+
   try {
+    // Remove all auth related state from redux store
     dispatch(logout());
     persistor.purge();
 
     if (window.api?.auth.clear) {
+      // Clear electron store of auth state
       await window.api.auth.clear();
     }
+    // Redirect to home page
+    navigate('/');
+
   } catch (err) {
     console.error('Failed to clear auth state:', err);
   }

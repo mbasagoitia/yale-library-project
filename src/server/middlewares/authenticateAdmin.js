@@ -18,7 +18,7 @@ const authenticateAdmin = (req, res, next) => {
     next();
   } catch (err) {
     console.error("JWT verification failed:", err.message)
-    return res.status(401).json({ error: 'Invalid or expired token. Please login again.' });
+    return res.status(401).json({ error: 'You do not have permission to perform this action. Please login again.' });
   }
 }
 

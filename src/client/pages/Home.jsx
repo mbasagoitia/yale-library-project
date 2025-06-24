@@ -22,18 +22,17 @@ const Home = () => {
 // css file
 // Search filters are very tightly coupled!
 
-// Something more enticing for home page? Reports?
+// How to fetch and store entire holdings initially? Composer alphabetically?
+// Remove all the ds stores from the catalogue page
+
+// Something more enticing for home page? Photos of Woolsey, rehearsals?
+// Style reports page
+
 // Fix buttons and bootstrap default colors
 
 // Alerts on success for cataloguing, logging in, etc.
 // when editing a piece from the manage holdings page, it should not redirect you away but open an edit mode
 
 // Need to dispatch an iniital folder being set from digital catalogue page
-// only clear isAdmin and netId from electron store on logout, NOT basePath
-
-// style settings page better?
-// font size on mobile navbar for dropdown
-// navbar style weird when you logout
-
 
 export default Home;

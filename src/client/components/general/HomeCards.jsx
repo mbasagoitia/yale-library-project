@@ -34,7 +34,6 @@ const HomeCards = () => {
               <div className="card-icon text-center">{icon}</div>
               <div className="card-content text-center">
                 <h3>{title}</h3>
-                {disabled && <p className="card-disabled-text">Admin only</p>}
               </div>
             </div>
           );

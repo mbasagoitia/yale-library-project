@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Container, Form, Button, Card } from "react-bootstrap";
+import { Container, Form, Button, Card, Row, Col } from "react-bootstrap";
 import FolderSelectButton from "../components//digital-catalogue/FolderSelectButton";
 import addNewAdmin from "../helpers/auth/addNewAdmin";
 import { handleCreateCSVBackup, handleCreateMysqlDump, handleBackupScans } from "../helpers/backups/createBackups";
@@ -57,66 +57,83 @@ const Settings = () => {
   return (
     <Container className="mt-4">
       <h1 className="mb-4">Settings</h1>
-      <h2>Set Digital Catalogue Folder</h2>
-      <Card className="mb-4">
-        <Card.Body>
-          <FolderSelectButton />
-          <div className="mt-4">{basePath ? `Current Path: ${basePath}` : "No base path set"}</div>
-        </Card.Body>
-      </Card>
-      <h2>Add New Admin</h2>
-      <Card className="mb-4">
-        <Card.Body>
-          <Form onSubmit={handleAddAdmin}>
-            <Form.Group className="mb-3" controlId="nameInput">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter full name"
-                value={adminInfo.name}
-                onChange={(e) =>
-                  setAdminInfo({ ...adminInfo, name: e.target.value })
-                }
-              />
-            </Form.Group>
+      <Row>
+        <h2>Set Digital Catalogue Folder</h2>
+        <Card className="mb-4">
+          <Card.Body className="choose-catalogue-folder-container">
+            <FolderSelectButton />
+            <div className="mt-2">{basePath ? `Current Path: ${basePath}` : "No base path set"}</div>
+          </Card.Body>
+        </Card>
+      </Row>
+      <Row>
+        <Col lg={6}>
+          <h2>Add New Admin</h2>
+          <Card className="mb-4">
+            <Card.Body>
+              <Form onSubmit={handleAddAdmin}>
+                <Form.Group className="mb-3" controlId="nameInput">
+                  <Form.Label>Name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter full name"
+                    value={adminInfo.name}
+                    onChange={(e) =>
+                      setAdminInfo({ ...adminInfo, name: e.target.value })
+                    }
+                  />
+                </Form.Group>
 
-            <Form.Group className="mb-3" controlId="netidInput">
-              <Form.Label>NetID</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter Yale NetID"
-                value={adminInfo.netid}
-                onChange={(e) =>
-                  setAdminInfo({ ...adminInfo, netid: e.target.value })
-                }
-              />
-            </Form.Group>
+                <Form.Group className="mb-3" controlId="netidInput">
+                  <Form.Label>NetID</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter Yale NetID"
+                    value={adminInfo.netid}
+                    onChange={(e) =>
+                      setAdminInfo({ ...adminInfo, netid: e.target.value })
+                    }
+                  />
+                </Form.Group>
 
-            <Button variant="primary" type="submit">
-              Add New Admin
-            </Button>
-          </Form>
-        </Card.Body>
-      </Card>
-      <h2>Export Holdings Data</h2>
-      <Card className="mb-4">
-        <Card.Body>
-        <Card.Text>
-            Create a backup of the current holdings database. This file can be stored externally to preserve data or transfer it to another system.
-        </Card.Text>
-        <div className="holdings-buttons-container">
-          <Button variant="primary" onClick={handleCreateCSVBackup}>
-              Export as CSV
-          </Button>
-          <Button variant="primary" onClick={handleCreateMysqlDump}>
-              Export full Database
-          </Button>
-          <Button variant="primary" onClick={handleBackupScans} disabled={!basePath}>
-              Export Digital Catalogue
-          </Button>
-        </div>
-        </Card.Body>
-      </Card>
+                <Button variant="primary" type="submit">
+                  Add New Admin
+                </Button>
+              </Form>
+            </Card.Body>
+          </Card>
+          </Col>
+          <Col lg={6}>
+          <h2>Export Holdings Data</h2>
+          <Card className="mb-4">
+            <Card.Body>
+              <Card.Body>
+                <p><strong>Export as CSV</strong></p>
+                <Card.Text>
+                  Download your library data in a simple spreadsheet format. Do this if you want to view or edit your collection in Excel, Google Sheets, or another program. Great for long-term access or migrating to a different system.
+                </Card.Text>
+                <Button variant="primary" onClick={handleCreateCSVBackup}>
+                  Export as CSV
+                </Button>
+              </Card.Body>
+              <Card.Body>
+                <p><strong>Full Backup (Database and Digital Catalogue)</strong></p>
+                <Card.Text>
+                Create a complete backup of this application, including all data, settings, and the digital catalogue. Use this if you plan to reinstall this application later (or on another computer) and want everything restored exactly as it is.
+                </Card.Text>
+                <div className="holdings-buttons-container">
+                  <Button variant="primary" onClick={handleCreateMysqlDump}>
+                    Export full Database
+                  </Button>
+                  <Button variant="primary" onClick={handleBackupScans} disabled={!basePath}>
+                      Export Digital Catalogue
+                  </Button>
+                </div>
+              </Card.Body>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
     </Container>
   );
 };

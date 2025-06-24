@@ -1,5 +1,5 @@
 const { dialog } = require('electron');
-const { path } = require("path");
+const path = require("path");
 const fs = require('fs-extra');
 const { pipeline } = require('stream');
 const { promisify } = require('util');
@@ -87,7 +87,7 @@ const zipFolder = async (store) => {
   try {
     const backupFolder = path.join(baseFolder, '..', 'backups');
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const zipPath = path.join(backupFolder, digital_catalogue_backup_`${timestamp}`.zip);
+    const zipPath = path.join(backupFolder, `digital_catalogue_backup_${timestamp}.zip`);
 
     await fs.ensureDir(backupFolder);
 
@@ -107,7 +107,7 @@ const zipFolder = async (store) => {
     });
   } catch (err) {
     console.error("Zipping failed:", err);
-    return { success: false, message: "Unexpected error during zipping." };
+    return { success: false, message: "Unexpected error during backup. Please try logging in again." };
   }
 };
 

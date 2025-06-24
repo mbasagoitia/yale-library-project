@@ -1,12 +1,17 @@
 import { useEffect, useState, useRef } from 'react';
-import jwtDecode from 'jwt-decode';
-import { logout } from '../../../redux/authSlice';
+import { jwtDecode } from 'jwt-decode';
+import { handleLogout } from '../../helpers/auth/handleAuth';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
+// Break this up into helper functions
 
 const TokenExpiryHandler = ({ renewToken }) => {
   const [secondsLeft, setSecondsLeft] = useState(null);
   const countdownInterval = useRef(null);
+
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     let timeoutId;
@@ -24,7 +29,7 @@ const TokenExpiryHandler = ({ renewToken }) => {
         const msUntilExpiry = expiryTimeMs - currentTimeMs;
 
         if (msUntilExpiry <= 0) {
-          handleLogout();
+          handleLogout(dispatch, navigate);
           return;
         }
 
@@ -61,17 +66,12 @@ const TokenExpiryHandler = ({ renewToken }) => {
         if (prev <= 1) {
           clearInterval(countdownInterval.current);
           alert('Your session has expired. You will be logged out.');
-          handleLogout();
+          handleLogout(dispatch, navigate);
           return 0;
         }
         return prev - 1;
       });
     }, 1000);
-  };
-
-  const handleLogout = () => {
-    dispatch(logout());
-    window.api.auth.clear?.();
   };
 
   const handleRenew = async () => {
@@ -94,11 +94,11 @@ const TokenExpiryHandler = ({ renewToken }) => {
         }
       } else {
         alert('Failed to renew session, please log in again.');
-        handleLogout();
+        handleLogout(dispatch, navigate);
       }
     } catch (err) {
       alert('Error renewing session, please log in again.');
-      handleLogout();
+      handleLogout(dispatch, navigate);
     }
   };
 
