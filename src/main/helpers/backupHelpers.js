@@ -1,79 +1,118 @@
+const { dialog } = require('electron');
+const { path } = require("path");
 const fs = require('fs-extra');
-const path = require('path');
 const { pipeline } = require('stream');
 const { promisify } = require('util');
 const streamPipeline = promisify(pipeline);
+const archiver = require("archiver");
 
-const createMysqlDump = async (store) => {
-
-  const basePath = store.get("basePath");
+const createReadableBackup = async (mainWindow, store) => {
   const token = store.get("authToken");
+  if (!token) {
+    return { success: false, message: "You must be logged in to create a CSV backup." };
+  }
 
-  const backupUrl = `http://localhost:5000/api/backup/mysqldump?basePath=${encodeURIComponent(basePath)}`;
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-  const filePath = path.join(basePath, `mysqldump_${timestamp}.sql`);
+  const { filePath, canceled } = await dialog.showSaveDialog(mainWindow, {
+    title: "Save CSV Backup",
+    defaultPath: `readable_backup_${timestamp}.csv`,
+    filters: [{ name: "CSV File", extensions: ["csv"] }],
+  });
 
-  const res = await fetch(backupUrl, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    }});
+  if (canceled || !filePath) {
+    return { success: false, message: "Backup cancelled by user." };
+  }
 
-  if (!res.ok) throw new Error(`Fetch failed with status ${res.status}`);
+  try {
+    const backupUrl = `http://localhost:5000/api/backup/readable?filePath=${encodeURIComponent(filePath)}`;
+    const res = await fetch(backupUrl, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
-  await fs.ensureDir(basePath);
-  await streamPipeline(res.body, fs.createWriteStream(filePath));
+    if (!res.ok) {
+      return { success: false, message: `Backup failed: ${res.statusText}` };
+    }
 
-  return filePath;
+    await streamPipeline(res.body, fs.createWriteStream(filePath));
+
+    return { success: true, filePath };
+  } catch (err) {
+    console.error("Readable backup failed:", err);
+    return { success: false, message: "Unexpected error during CSV backup." };
+  }
 };
 
-const createReadableBackup = async (store) => {
-  // Why do I need a base path for this?
-  const basePath = store.get("basePath");
-  if (!basePath) throw new Error("No base path set.");
+const createMysqlDump = async (mainWindow, store) => {
   const token = store.get("authToken");
+  if (!token) {
+    return { success: false, message: "You must be logged in to create a MySQL backup." };
+  }
 
-  const backupUrl = `http://localhost:5000/api/backup/readable?basePath=${encodeURIComponent(basePath)}`;
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-  const filePath = path.join(basePath, `readable_backup_${timestamp}.csv`);
+  const { filePath, canceled } = await dialog.showSaveDialog(mainWindow, {
+    title: "Save MySQL Dump",
+    defaultPath: `mysqldump_${timestamp}.sql`,
+    filters: [{ name: "SQL File", extensions: ["sql"] }],
+  });
 
-  const res = await fetch(backupUrl, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    }});
+  if (canceled || !filePath) {
+    return { success: false, message: "Backup cancelled by user." };
+  }
 
-  if (!res.ok) throw new Error(`Fetch failed with status ${res.status}`);
+  try {
+    const backupUrl = `http://localhost:5000/api/backup/mysqldump?filePath=${encodeURIComponent(filePath)}`;
+    const res = await fetch(backupUrl, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
-  await fs.ensureDir(basePath);
-  await streamPipeline(res.body, fs.createWriteStream(filePath));
+    if (!res.ok) {
+      return { success: false, message: `Backup failed: ${res.statusText}` };
+    }
 
-  return filePath;
+    await streamPipeline(res.body, fs.createWriteStream(filePath));
+
+    return { success: true, filePath };
+  } catch (err) {
+    console.error("MySQL dump failed:", err);
+    return { success: false, message: "Unexpected error during MySQL backup." };
+  }
 };
 
 const zipFolder = async (store) => {
   const baseFolder = store.get("basePath");
-  if (!baseFolder) throw new Error("No base path set.");
+  if (!baseFolder) {
+    return { success: false, message: "No base path set in settings." };
+  }
 
-  const backupFolder = path.join(baseFolder, '..', 'backups');
-  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-  const zipPath = path.join(backupFolder, `digital_catalogue_backup_${timestamp}.zip`);
+  try {
+    const backupFolder = path.join(baseFolder, '..', 'backups');
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const zipPath = path.join(backupFolder, digital_catalogue_backup_`${timestamp}`.zip);
 
-  await fs.ensureDir(backupFolder);
+    await fs.ensureDir(backupFolder);
 
-  return new Promise((resolve, reject) => {
-    const output = fs.createWriteStream(zipPath);
-    const archive = archiver('zip', { zlib: { level: 9 } });
+    return await new Promise((resolve, reject) => {
+      const output = fs.createWriteStream(zipPath);
+      const archive = archiver('zip', { zlib: { level: 9 } });
 
-    output.on('close', () => resolve(zipPath));
-    archive.on('error', reject);
+      output.on('close', () => resolve({ success: true, filePath: zipPath }));
+      archive.on('error', (err) => {
+        console.error("Zip archive error:", err);
+        reject({ success: false, message: "Failed to zip catalogue." });
+      });
 
-    archive.pipe(output);
-    archive.directory(baseFolder, false);
-    archive.finalize();
-  });
+      archive.pipe(output);
+      archive.directory(baseFolder, false);
+      archive.finalize();
+    });
+  } catch (err) {
+    console.error("Zipping failed:", err);
+    return { success: false, message: "Unexpected error during zipping." };
+  }
 };
 
 module.exports = {
   createMysqlDump,
   createReadableBackup,
-  zipFolder
+  zipFolder,
 };

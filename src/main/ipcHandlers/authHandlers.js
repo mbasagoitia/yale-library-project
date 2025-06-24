@@ -1,6 +1,6 @@
 const { createAuthWindow } = require("../helpers/createAuthWindow");
 
-const handleAuthHandlers = (ipcMain, mainWindow, store) => {
+const handleAuthHandlers = (ipcMain, store, mainWindow) => {
   ipcMain.handle("auth:openWindow", () => {
     return createAuthWindow(mainWindow, store);
   });

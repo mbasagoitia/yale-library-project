@@ -23,8 +23,8 @@ app.whenReady().then(() => {
   mainWindow = createWindow();
 
   handleFileHandlers(ipcMain, store, mainWindow);
-  handleAuthHandlers(ipcMain, mainWindow, store);
-  handleBackupHandlers(ipcMain, store);
+  handleAuthHandlers(ipcMain, store, mainWindow);
+  handleBackupHandlers(ipcMain, store, mainWindow);
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {

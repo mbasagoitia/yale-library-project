@@ -61,7 +61,7 @@ const Settings = () => {
       <Card className="mb-4">
         <Card.Body>
           <FolderSelectButton />
-          <div className="mt-4">Current Path: {basePath}</div>
+          <div className="mt-4">{basePath ? `Current Path: ${basePath}` : "No base path set"}</div>
         </Card.Body>
       </Card>
       <h2>Add New Admin</h2>
@@ -111,7 +111,7 @@ const Settings = () => {
           <Button variant="primary" onClick={handleCreateMysqlDump}>
               Export full Database
           </Button>
-          <Button variant="primary" onClick={handleBackupScans}>
+          <Button variant="primary" onClick={handleBackupScans} disabled={!basePath}>
               Export Digital Catalogue
           </Button>
         </div>

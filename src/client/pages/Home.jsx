@@ -30,10 +30,14 @@ const Home = () => {
 
 // Need to dispatch an iniital folder being set from digital catalogue page
 // What if someone tries to backup digital catalogue and no base path is set?
+
 // issues with creating backups
 // style settings page better?
 // font size on mobile navbar for dropdown
 // navbar style weird when you logout
+
+// If auth token has expired, handle the error and let the user know
+// If token has expired, log out automatically
 
 
 export default Home;
