@@ -3,6 +3,7 @@ const { contextBridge, ipcRenderer } = require("electron");
 contextBridge.exposeInMainWorld("api", {
   auth: {
     getToken: () => ipcRenderer.invoke("auth:getToken"),
+    renewToken: () => ipcRenderer.invoke('auth:renewToken'),
     getNetID: () => ipcRenderer.invoke("auth:getNetID"),
     getIsAdmin: () => ipcRenderer.invoke("auth:getIsAdmin"),
     clear: () => ipcRenderer.invoke("auth:clear"),

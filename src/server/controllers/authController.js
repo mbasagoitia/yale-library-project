@@ -51,6 +51,19 @@ const validateTicket = async (req, res) => {
   }
 };
 
+const renewToken = (req, res) => {
+  try {
+    const { netid, isAdmin } = req.user;
+    const newToken = jwt.sign({ netid, isAdmin }, JWT_SECRET, { expiresIn: JWT_EXPIRATION });
+
+    res.json({ success: true, token: newToken });
+  } catch (err) {
+    console.error('Token renewal failed:', err);
+    res.status(500).json({ success: false, error: 'Failed to renew token' });
+  }
+};
+
 module.exports = {
-  validateTicket
+  validateTicket,
+  renewToken
 };

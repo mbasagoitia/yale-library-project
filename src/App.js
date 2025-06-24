@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { login } from './redux/authSlice';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -12,6 +12,8 @@ import Settings from './client/pages/Settings.jsx';
 import Browse from './client/pages/Browse.jsx';
 import PieceInfo from './client/pages/PieceInfo.jsx';
 import Reports from './client/pages/Reports.jsx';
+import TokenExpiryHandler from './client/components/general/TokenExpiryHandler.jsx';
+import handleRenewToken from './client/helpers/auth/handleRenewToken.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
@@ -19,6 +21,7 @@ import './App.css';
 function App() {
 
   const dispatch = useDispatch();
+  const [authToken, setAuthToken] = useState(null);
 
   useEffect(() => {
     const handler = (_event, data) => {
@@ -31,6 +34,19 @@ function App() {
       window.api?.events.remove('auth-success', handler);
     };
   }, [dispatch]);
+
+  useEffect(() => {
+    const fetchToken = async () => {
+      try {
+        const token = await window.api.auth.getToken();
+        setAuthToken(token);
+      } catch (err) {
+        console.error("Failed to fetch token:", err);
+      }
+    };
+
+    fetchToken();
+  }, []);
   
   return (
     <BrowserRouter>
@@ -39,6 +55,8 @@ function App() {
       <div className="hero"></div>
       <Navigation />
       <div className="page-content">
+        {/* put this in a modal or something */}
+      <TokenExpiryHandler token={authToken} dispatch={dispatch} renewToken={handleRenewToken} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="classification-guide" element={<ClassificationGuide />} />

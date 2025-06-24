@@ -17,7 +17,12 @@ const handleAuthHandlers = (ipcMain, store, mainWindow) => {
     return Promise.resolve(store.get("isAdmin"));
   });
 
+  ipcMain.handle('auth:renewToken', async () => {
+    return await renewToken(store);
+  });
+
   ipcMain.handle("auth:clear", () => {
+    // This should only clear auth!!! Not basePath
     store.clear();
     return Promise.resolve();
   });
