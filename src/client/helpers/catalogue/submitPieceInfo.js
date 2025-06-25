@@ -1,4 +1,4 @@
-const handleSubmit = async (e, mainInfo, setMainInfo, additionalInfo, setAdditionalInfo, setFormErrors, setShowCall, id, onSubmit) => {
+const handleSubmit = async (e, mainInfo, setMainInfo, additionalInfo, setAdditionalInfo, setFormErrors, setShowCall, id, setMediumResetKey, onSubmit) => {
     e.preventDefault();
 
     const { title, medium, composer, genre, publisher, callNumber } = mainInfo;
@@ -23,12 +23,14 @@ const handleSubmit = async (e, mainInfo, setMainInfo, additionalInfo, setAdditio
             identifierLabel: "Op.",
             identifierValue: "",
             number: "",
-            medium: {},
-            composer: {},
-            genre: {},
-            publisher: {},
+            medium: null,
+            composer: null,
+            genre: null,
+            publisher: null,
             callNumber: []
           });
+
+          setMediumResetKey(prev => prev + 1);
 
           setAdditionalInfo({
             ownPhysical: true,
@@ -50,3 +52,5 @@ const handleSubmit = async (e, mainInfo, setMainInfo, additionalInfo, setAdditio
       setFormErrors({ requiredFieldsWarning: "Please fill in all required fields." });
     }
   };
+
+export default handleSubmit;

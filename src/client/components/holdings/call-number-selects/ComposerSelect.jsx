@@ -23,7 +23,6 @@ const ComposerSelect = ({ items, mainInfo, onItemClick }) => {
     };
 
     useEffect(() => {
-        // Add listener to something other than the document to prevent propagation?
         document.addEventListener("keydown", handleEscKeyPress);
         return () => {
             document.removeEventListener("keydown", handleEscKeyPress);

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import MediumSelect from '../holdings/call-number-selects/MediumSelect';
 import ComposerSelect from "../holdings/call-number-selects/ComposerSelect";
@@ -5,7 +6,7 @@ import SpeciesSelect from "../holdings/call-number-selects/SpeciesSelect";
 import PublisherSelect from "../holdings/call-number-selects/PublisherSelect";
 import IdAndNumber from "../holdings/call-number-selects/IdAndNumber";
 
-const MainInfo = ({ resourceData, mainInfo, setMainInfo, formErrors }) => {
+const MainInfo = ({ resourceData, mainInfo, setMainInfo, formErrors, mediumResetKey }) => {
 
   // The onItemClick methods passed to each select/filter to set main info.
   // The behavior should be different when they are accessed from the browse holdings filter.
@@ -18,6 +19,7 @@ const MainInfo = ({ resourceData, mainInfo, setMainInfo, formErrors }) => {
         : item))
     });
   }
+
   const setComposer = (item) => {
     setMainInfo({ ...mainInfo, composer: item });
   }
@@ -53,7 +55,7 @@ const MainInfo = ({ resourceData, mainInfo, setMainInfo, formErrors }) => {
 
             <div>
               <h3>Ensemble Type</h3>
-              {resourceData.mediumData.length > 0 && <MediumSelect items={resourceData.mediumData} mainInfo={mainInfo} setMainInfo={setMainInfo} handleItemSelect={setMedium} />}
+              {resourceData.mediumData.length > 0 && <MediumSelect items={resourceData.mediumData} mainInfo={mainInfo} setMainInfo={setMainInfo} handleItemSelect={setMedium}   resetKey={mediumResetKey} />}
             </div>
         </Row>
         <Row className="my-4">

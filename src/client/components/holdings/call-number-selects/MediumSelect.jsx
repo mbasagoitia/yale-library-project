@@ -1,39 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 
-function MediumSelect({ items, mainInfo, setMainInfo, handleItemSelect, initialSelectionMade }) {
-  const [selectedItem, setSelectedItem] = useState(items[0]);
+function MediumSelect({ items, handleItemSelect, depth = 0, resetKey }) {
+  const [selectedItem, setSelectedItem] = useState(null);
 
   useEffect(() => {
-    if (mainInfo && !mainInfo.medium.id) {
-      setMainInfo(prevMainInfo => ({
-        ...prevMainInfo,
-        medium: selectedItem
-      }));
-    }
-  }, []);
+    setSelectedItem(null);
+  }, [resetKey]);
 
   useEffect(() => {
-    if (mainInfo?.medium?.id && !initialSelectionMade) {
-      setSelectedItem(mainInfo.medium);
+    if (!selectedItem && items.length > 0) {
+      setSelectedItem(items[0])
     }
-  }, []);
+  }, [items]);
 
   const handleSelect = (item) => {
     setSelectedItem(item);
-    handleItemSelect((item.options?.length > 0 || item.nested_options?.length > 0) ? 
-    (item.options && item.options.length > 0 ? item.options[0] : 
-    (item.nested_options && item.nested_options.length > 0 ? item.nested_options[0] : item)) : 
-    item);
+
+    if (!item.options?.length && !item.nested_options?.length) {
+      handleItemSelect(item);
+    }
   };
 
-  const renderDropdown = (options) => (
-    <Dropdown>
-      <Dropdown.Toggle variant="primary" id="dropdown-basic" className="p-2">
-        {selectedItem.label}
+  const renderDropdown = () => (
+    <Dropdown className="my-2">
+      <Dropdown.Toggle variant="primary" id={`dropdown-${depth}`} className="p-2">
+        {selectedItem?.label || 'Select Medium'}
       </Dropdown.Toggle>
       <Dropdown.Menu>
-        {options.map((item, index) => (
+        {items.map((item, index) => (
           <Dropdown.Item key={index} onClick={() => handleSelect(item)}>
             {item.label}
           </Dropdown.Item>
@@ -43,26 +38,23 @@ function MediumSelect({ items, mainInfo, setMainInfo, handleItemSelect, initialS
   );
 
   const renderNestedMediumSelect = () => {
-    if (selectedItem && ((selectedItem.options && selectedItem.options.length > 0) || (selectedItem.nested_options && selectedItem.nested_options.length > 0))) {
+    const nestedItems = selectedItem?.options || selectedItem?.nested_options;
+    if (nestedItems?.length) {
       return (
-        <div>
-          <MediumSelect
-            key={selectedItem.label}
-            items={selectedItem.options || selectedItem.nested_options}
-            mainInfo={mainInfo}
-            setMainInfo={setMainInfo}
-            handleItemSelect={handleItemSelect}
-            initialSelectionMade={true}
-          />
-        </div>
+        <MediumSelect
+          key={selectedItem.label}
+          items={nestedItems}
+          handleItemSelect={handleItemSelect}
+          depth={depth + 1}
+        />
       );
     }
     return null;
   };
 
   return (
-    <div className="my-2">
-      {renderDropdown(items)}
+    <div>
+      {renderDropdown()}
       {renderNestedMediumSelect()}
     </div>
   );

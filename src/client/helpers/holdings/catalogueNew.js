@@ -14,6 +14,7 @@ const catalogueNew = (info) => {
             throw new Error('Network response was not ok');
         }
         res.json();
+        alert("Successfully catalogued new piece.")
     })
     .catch(error => {
         console.error('Catalogue error:', error);

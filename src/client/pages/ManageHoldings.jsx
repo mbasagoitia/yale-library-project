@@ -41,7 +41,7 @@ const ManageHoldings = () => {
                                 <h5 className="mb-0">Add New Piece</h5>
                             </Card.Header>
                             <Card.Body>
-                                <CatalogueNew mode="new" onSubmit={catalogueNew} />
+                                <CatalogueNew mode="new" submit={catalogueNew} />
                             </Card.Body>
                         </Card>
                     </Col>

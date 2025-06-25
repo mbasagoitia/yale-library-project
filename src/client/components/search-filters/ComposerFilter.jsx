@@ -28,6 +28,13 @@ const ComposerFilter = ({ initialValue, items, onItemClick }) => {
     }
   };
 
+  useEffect(() => {
+    if (!initialValue) {
+      setSearchText('');
+      setSelectedItemId(null);
+    }
+  }, [initialValue]);
+
   const handleInputChange = (value) => {
     setSearchText(value);
     setFilteredItems(filterComposerItems(value, items));

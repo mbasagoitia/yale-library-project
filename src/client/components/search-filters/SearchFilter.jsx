@@ -21,6 +21,13 @@ const SearchFilter = ({ initialValue, items, onItemClick }) => {
     };
   }, [isDropdownOpen]);
 
+  useEffect(() => {
+    if (!initialValue) {
+      setSearchText('');
+      setSelectedItemId(null);
+    }
+  }, [initialValue]);
+
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setIsDropdownOpen(false);

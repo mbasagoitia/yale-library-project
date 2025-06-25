@@ -3,22 +3,27 @@ import { Button } from "react-bootstrap";
 import MainInfo from "./MainInfo.jsx";
 import AdditionalInfo from "./AdditionalInfo.jsx";
 import handleShowCall from "../../helpers/catalogue/handleShowCall.js";
+import CallNumberDisplay from "./CallNumberDisplay.jsx";
 import handleSubmit from "../../helpers/catalogue/submitPieceInfo.js";
-import { scrollToCallWarning, scrollToRequiredWarning } from "../../helpers/catalogue/scrollBehavior.js";
 import splitString from "../../helpers//general/splitString.js";
-import fetchResourceData from "../../helpers/holdings/fetchResourceData.js";
 import { findMediumById, findComposerById, findGenreById, findPublisherById } from "../../helpers/holdings/filterData.js";
+import initializePieceState from "../../helpers/catalogue/initializePieceState.js";
 import { useParams } from 'react-router-dom';
+import useFetchResourceData from "../../hooks/useFetchResourceData.js";
+import useScrollOnFormErrors from "../../hooks/useScrollOnFormErrors.js";
 
-const CatalogueNew = ({ mode, initialData, onSubmit }) => {
+const CatalogueNew = ({ mode, initialData, submit }) => {
+
   const { id } = useParams();
 
-  const [resourceData, setResourceData] = useState({
-    mediumData: [],
-    composerData: [],
-    speciesData: [],
-    publisherData: [],
-  });
+  const [dataReady, setDataReady] = useState(false);
+  const [formErrors, setFormErrors] = useState({});
+  const [showCall, setShowCall] = useState(mode === "edit" ? true : false);
+
+  const [mediumResetKey, setMediumResetKey] = useState(0);
+
+  const resourceData = useFetchResourceData();
+  useScrollOnFormErrors(formErrors);
 
   const [mainInfo, setMainInfo] = useState({
     title: "",
@@ -43,83 +48,27 @@ const CatalogueNew = ({ mode, initialData, onSubmit }) => {
   });
 
   useEffect(() => {
-    if (initialData && resourceData.mediumData.length) {
-      setMainInfo({
-        title: initialData.title,
-        identifierLabel: initialData.identifier_label,
-        identifierValue: initialData.identifier_value,
-        number: initialData.number,
-        medium: findMediumById(resourceData.mediumData, initialData.medium_id),
-        composer: findComposerById(resourceData.composerData, initialData.composer_id),
-        genre: findGenreById(resourceData.speciesData, initialData.species_id),
-        publisher: findPublisherById(resourceData.publisherData, initialData.publisher_id),
-        callNumber: splitString(initialData.call_number)
-      });
-
-      setAdditionalInfo({
-        ownPhysical: initialData.own_physical === 1,
-        ownDigital: initialData.own_digital === 1,
-        scansUrl: initialData.scans_url,
-        publicDomain: initialData.public_domain === 1,
-        condition: initialData.condition_id,
-        missingParts: initialData.missing_parts === 1,
-        notes: initialData.additional_notes
-      });
-
-      setDataReady(true);
-    }
-  }, [initialData, resourceData]);
-
-  const [dataReady, setDataReady] = useState(false);
-  const [formErrors, setFormErrors] = useState({});
-  const [showCall, setShowCall] = useState(mode === "edit" ? true : false);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const resources = await fetchResourceData();
-
-        setResourceData({ 
-          mediumData: resources[0],
-          composerData: resources[1],
-          speciesData: resources[2],
-          publisherData: resources[3]
-         });
-      } catch (error) {
-        console.error("Error fetching resource data:", error);
+    initializePieceState({ initialData, resourceData, setMainInfo, setAdditionalInfo, setDataReady,
+      helpers: {
+        findMediumById,
+        findComposerById,
+        findGenreById,
+        findPublisherById,
+        splitString
       }
-    }
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    if (formErrors.requiredFieldsWarning) {
-      scrollToRequiredWarning();
-    }
-    if (formErrors.requiredCallFieldsWarning) {
-      scrollToCallWarning();
-    }
-  }, [formErrors]);
+    });
+  }, [initialData, resourceData]);
 
   return (
     <div className="catalogueNew">
-      <form onSubmit={(e) => handleSubmit(e, mainInfo, setMainInfo, additionalInfo, setAdditionalInfo, setFormErrors, setShowCall, id, onSubmit)}>
+      <form onSubmit={(e) => handleSubmit(e, mainInfo, setMainInfo, additionalInfo, setAdditionalInfo, setFormErrors, setShowCall, id, setMediumResetKey, submit)}>
         {((mode === "new") || (mode === "edit" && initialData && dataReady)) && (
           <>
-            <MainInfo resourceData={resourceData} mainInfo={mainInfo} setMainInfo={setMainInfo} formErrors={formErrors} />
+            <MainInfo resourceData={resourceData} mainInfo={mainInfo} setMainInfo={setMainInfo} formErrors={formErrors} mediumResetKey={mediumResetKey} />
             <div className="d-flex justify-content-center">
               <Button onClick={(e) => handleShowCall(mainInfo, setMainInfo, setShowCall, setFormErrors)} className="btn btn-primary my-2">Generate Call Number</Button>
             </div>
-            {showCall && (
-              <div className="alert alert-success d-flex flex-column align-items-center my-4" role="alert">
-                <h4>Call Number:</h4>
-                <div>
-                  {mainInfo.callNumber?.map((line, index) => (
-                    <div className="callNumLine" key={index}>{line}</div>
-                  ))}
-                </div>
-              </div>
-            )}
+            {showCall && <CallNumberDisplay callNumber={mainInfo.callNumber} />}
           </>
         )}
         <div className="mt-4">
