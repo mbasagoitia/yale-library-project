@@ -32,7 +32,7 @@ const Home = () => {
 
 // Alerts on success for cataloguing, logging in, etc.
 // when editing a piece from the manage holdings page, it should not redirect you away but open an edit mode
-
-// Need to dispatch an iniital folder being set from digital catalogue page
+// Weird behavior with genre and publisher when you click away and choose another one
+// Immediately update state of holdings when you add a new piece
 
 export default Home;

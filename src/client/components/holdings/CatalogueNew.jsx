@@ -2,13 +2,15 @@ import React, { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import MainInfo from "./MainInfo.jsx";
 import AdditionalInfo from "./AdditionalInfo.jsx";
-import generateCallNum from "../../helpers/holdings/generateCallNum.js";
+import handleShowCall from "../../helpers/catalogue/handleShowCall.js";
+import handleSubmit from "../../helpers/catalogue/submitPieceInfo.js";
+import { scrollToCallWarning, scrollToRequiredWarning } from "../../helpers/catalogue/scrollBehavior.js";
 import splitString from "../../helpers//general/splitString.js";
 import fetchResourceData from "../../helpers/holdings/fetchResourceData.js";
 import { findMediumById, findComposerById, findGenreById, findPublisherById } from "../../helpers/holdings/filterData.js";
 import { useParams } from 'react-router-dom';
 
-const CatalogueNew = ({ mode, initialData, onSubmit, handleCloseModal }) => {
+const CatalogueNew = ({ mode, initialData, onSubmit }) => {
   const { id } = useParams();
 
   const [resourceData, setResourceData] = useState({
@@ -72,10 +74,6 @@ const CatalogueNew = ({ mode, initialData, onSubmit, handleCloseModal }) => {
   const [formErrors, setFormErrors] = useState({});
   const [showCall, setShowCall] = useState(mode === "edit" ? true : false);
 
-  const isEmpty = (obj) => {
-    return Object.keys(obj).length === 0;
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -94,71 +92,6 @@ const CatalogueNew = ({ mode, initialData, onSubmit, handleCloseModal }) => {
     fetchData();
   }, []);
 
-  const handleShowCall = () => {
-    const { medium, composer, genre, publisher } = mainInfo;
-
-    if (!isEmpty(medium) && !isEmpty(composer) && !isEmpty(genre) && !isEmpty(publisher)) {
-      const call = generateCallNum(mainInfo);
-      setMainInfo({ ...mainInfo, callNumber: call });
-      setShowCall(true);
-    } else {
-      setFormErrors({ requiredCallFieldsWarning: "Please fill in all required fields." });
-    }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const { title, medium, composer, genre, publisher, callNumber } = mainInfo;
-
-    if (title && medium && composer && genre && publisher && callNumber) {
-      if (additionalInfo.missingParts && !additionalInfo.notes.trim()) {
-        setFormErrors({ missingPartsWarning: "Please specify which parts are missing." });
-      } else {
-        try {
-          const allInfo = { ...mainInfo, ...additionalInfo };
-
-          if (id) {
-            await onSubmit(allInfo, id);
-          } else {
-            await onSubmit(allInfo);
-          }
-
-          handleCloseModal();
-
-          setMainInfo({
-            title: "",
-            identifierLabel: "Op.",
-            identifierValue: "",
-            number: "",
-            medium: {},
-            composer: {},
-            genre: {},
-            publisher: {},
-            callNumber: []
-          });
-
-          setAdditionalInfo({
-            ownPhysical: true,
-            ownDigital: false,
-            scansUrl: "",
-            ownScore: true,
-            publicDomain: true,
-            condition: 1,
-            missingParts: false,
-            notes: ""
-          });
-
-          setFormErrors({});
-        } catch (error) {
-          console.error('Catalogue error:', error);
-        }
-      }
-    } else {
-      setFormErrors({ requiredFieldsWarning: "Please fill in all required fields." });
-    }
-  };
-
   useEffect(() => {
     if (formErrors.requiredFieldsWarning) {
       scrollToRequiredWarning();
@@ -168,28 +101,14 @@ const CatalogueNew = ({ mode, initialData, onSubmit, handleCloseModal }) => {
     }
   }, [formErrors]);
 
-  const scrollToRequiredWarning = () => {
-    const warning = document.querySelector("#required-fields-warning");
-    if (warning) {
-      warning.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  };
-
-  const scrollToCallWarning = () => {
-    const warning = document.querySelector("#required-call-fields-warning");
-    if (warning) {
-      warning.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  };
-
   return (
     <div className="catalogueNew">
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={(e) => handleSubmit(e, mainInfo, setMainInfo, additionalInfo, setAdditionalInfo, setFormErrors, setShowCall, id, onSubmit)}>
         {((mode === "new") || (mode === "edit" && initialData && dataReady)) && (
           <>
             <MainInfo resourceData={resourceData} mainInfo={mainInfo} setMainInfo={setMainInfo} formErrors={formErrors} />
             <div className="d-flex justify-content-center">
-              <Button onClick={handleShowCall} className="btn btn-primary my-2">Generate Call Number</Button>
+              <Button onClick={(e) => handleShowCall(mainInfo, setMainInfo, setShowCall, setFormErrors)} className="btn btn-primary my-2">Generate Call Number</Button>
             </div>
             {showCall && (
               <div className="alert alert-success d-flex flex-column align-items-center my-4" role="alert">
