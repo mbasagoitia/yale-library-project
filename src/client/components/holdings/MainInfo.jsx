@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Container, Row, Col, Form } from "react-bootstrap";
+import { Container, Row, Form } from "react-bootstrap";
+import generateCallNum from "../../helpers/holdings/generateCallNum.js";
 import MediumSelect from '../holdings/call-number-selects/MediumSelect';
 import ComposerSelect from "../holdings/call-number-selects/ComposerSelect";
 import SpeciesSelect from "../holdings/call-number-selects/SpeciesSelect";
@@ -12,22 +12,43 @@ const MainInfo = ({ resourceData, mainInfo, setMainInfo, formErrors, mediumReset
   // The behavior should be different when they are accessed from the browse holdings filter.
 
   const setMedium = (item) => {
-    setMainInfo({
-      ...mainInfo,
-      medium: (item.nested_options && item.nested_options.length > 0 ? item.nested_options[0]
-        : (item.options && item.options.length > 0 ? item.options[0]
-        : item))
+    const selected =
+      item.nested_options && item.nested_options.length > 0
+        ? item.nested_options[0]
+        : item.options && item.options.length > 0
+        ? item.options[0]
+        : item;
+  
+    setMainInfo(prev => {
+      const updated = { ...prev, medium: selected };
+      const call = generateCallNum(updated);
+      return { ...updated, callNumber: call };
+    });
+  };
+  
+
+  const setComposer = (item) => {
+    setMainInfo(prev => {
+      const updated = { ...prev, composer: item };
+      const call = generateCallNum(updated);
+      return { ...updated, callNumber: call };
+    });
+  };
+
+  const setSpecies = (item) => {
+    setMainInfo(prev => {
+      const updated = { ...prev, genre: item };
+      const call = generateCallNum(updated);
+      return { ...updated, callNumber: call };
     });
   }
 
-  const setComposer = (item) => {
-    setMainInfo({ ...mainInfo, composer: item });
-  }
-  const setSpecies = (item) => {
-    setMainInfo({ ...mainInfo, genre: item });
-  }
   const setPublisher = (item) => {
-    setMainInfo({ ...mainInfo, publisher: item });
+    setMainInfo(prev => {
+      const updated = { ...prev, publisher: item };
+      const call = generateCallNum(updated);
+      return { ...updated, callNumber: call };
+    });
   }
 
   return (

@@ -3,7 +3,7 @@ import { Form, FormControl, Button, InputGroup } from "react-bootstrap";
 
 const Searchbar = ({ placeholder, onSearch }) => {
   const [searchText, setSearchText] = useState("");
-
+  // Start here; see where I've imported this (navbar is one) and define onSearch
   const handleSubmit = (e) => {
     e.preventDefault();
     onSearch(searchText);

@@ -1,7 +1,9 @@
 const generateCallNum = (info) => {
     const { medium, identifierLabel, identifierValue, number, composer, genre, publisher } = info;
-    console.log(info);
-      let speciesTitle = genre.abbr;
+      let speciesTitle = ""
+      if (genre) {
+        speciesTitle = genre.abbr
+      }
       if (identifierValue && number) {
         speciesTitle += ` ${identifierValue}/${number}`;
       } else if (identifierValue) {
@@ -9,7 +11,9 @@ const generateCallNum = (info) => {
       } else if (number) {
         speciesTitle += ` no.${number}`;
       }
-      let call = [medium.value, composer.cutter_number, speciesTitle, publisher.abbr];
+      let call = [medium?.value, composer?.cutter_number, speciesTitle, publisher?.abbr];
+      // console.log(call);
+      // Will return as an array; this allows us easy formatting on the showCallNum component and will join as a string to send to database
       return call;
 }
 

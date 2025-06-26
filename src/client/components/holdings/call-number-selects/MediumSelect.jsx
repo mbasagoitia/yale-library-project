@@ -16,10 +16,15 @@ function MediumSelect({ items, handleItemSelect, depth = 0, resetKey }) {
 
   const handleSelect = (item) => {
     setSelectedItem(item);
-
-    if (!item.options?.length && !item.nested_options?.length) {
-      handleItemSelect(item);
-    }
+  
+    const getFirstLeaf = (node) => {
+      if (node.options?.length) return getFirstLeaf(node.options[0]);
+      if (node.nested_options?.length) return getFirstLeaf(node.nested_options[0]);
+      return node;
+    };
+  
+    const leaf = getFirstLeaf(item);
+    handleItemSelect(leaf);
   };
 
   const renderDropdown = () => (
