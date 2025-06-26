@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Form, Button, Container } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 import fetchReportData from '../../helpers/reports/fetchReportData';
 import generateReport from '../../helpers/reports/generateReports';
 
@@ -20,7 +20,7 @@ const ReportForm = () => {
   };
 
   return (
-    <Container className="my-4">
+    <div className="my-4">
       <h3 className="mb-4">Generate Report</h3>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="reportType" className="mb-3">
@@ -55,7 +55,7 @@ const ReportForm = () => {
 
         <Button variant="primary" type="submit">Generate Report</Button>
       </Form>
-    </Container>
+    </div>
   );
 };
 

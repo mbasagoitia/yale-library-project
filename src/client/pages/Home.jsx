@@ -13,17 +13,17 @@ const Home = () => {
 };
 
 // Call number needs to be correctly reflected on submit even if the user doesn't generate it
-// Add fields to update acquisition date and date last performed
 // Make the search bar and filters functional
 // Edit piece even if some info is empty (call number)
+
+// How to fetch and store entire holdings initially? Composer alphabetically?
+// Remove all the ds stores from the catalogue page
+
+// Add fields to update acquisition date and date last performed
 
 // Add a global state of search criteria and a back button from piece info, global state of holdings?
 
 // css file
-// Search filters are very tightly coupled!
-
-// How to fetch and store entire holdings initially? Composer alphabetically?
-// Remove all the ds stores from the catalogue page
 
 // Something more enticing for home page? Photos of Woolsey, rehearsals?
 // Style reports page
@@ -32,7 +32,6 @@ const Home = () => {
 
 // Alerts on success for cataloguing, logging in, etc.
 // when editing a piece from the manage holdings page, it should not redirect you away but open an edit mode
-// Weird behavior with genre and publisher when you click away and choose another one
 // Immediately update state of holdings when you add a new piece
 
 export default Home;

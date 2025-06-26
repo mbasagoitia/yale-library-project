@@ -62,7 +62,7 @@ const DigitalCatalogueFolders = ({ folderPath }) => {
   };
 
   return (
-    <Container fluid className="p-4">
+    <Container fluid className="p-0 mt-4">
       {!currentPath ? (
         <Searchbar
           placeholder={"Search by composer..."}

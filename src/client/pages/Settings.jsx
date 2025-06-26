@@ -55,16 +55,18 @@ const Settings = () => {
 
 
   return (
-    <Container className="mt-4">
-      <h1 className="mb-4">Settings</h1>
+    <Container className="settings">
       <Row>
-        <h2>Set Digital Catalogue Folder</h2>
-        <Card className="mb-4">
-          <Card.Body className="choose-catalogue-folder-container">
-            <FolderSelectButton />
-            <div className="mt-2">{basePath ? `Current Path: ${basePath}` : "No base path set"}</div>
-          </Card.Body>
-        </Card>
+        <Col>
+          <h1 className="mb-4">Settings</h1>
+          <h2>Set Digital Catalogue Folder</h2>
+          <Card className="mb-4">
+            <Card.Body className="choose-catalogue-folder-container">
+              <FolderSelectButton />
+              <div className="mt-2">{basePath ? `Current Path: ${basePath}` : "No base path set"}</div>
+            </Card.Body>
+          </Card>
+        </Col>
       </Row>
       <Row>
         <Col lg={6}>

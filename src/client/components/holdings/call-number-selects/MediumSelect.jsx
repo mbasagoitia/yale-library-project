@@ -25,7 +25,7 @@ function MediumSelect({ items, handleItemSelect, depth = 0, resetKey }) {
   const renderDropdown = () => (
     <Dropdown className="my-2">
       <Dropdown.Toggle variant="primary" id={`dropdown-${depth}`} className="p-2">
-        {selectedItem?.label || 'Select Medium'}
+        {selectedItem?.label || 'Select Ensemble Type'}
       </Dropdown.Toggle>
       <Dropdown.Menu>
         {items.map((item, index) => (

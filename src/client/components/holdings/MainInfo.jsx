@@ -32,7 +32,7 @@ const MainInfo = ({ resourceData, mainInfo, setMainInfo, formErrors, mediumReset
 
   return (
     <Container>
-        <Row className="my-4">
+        <Row className="mb-4">
         <div id="required-fields-warning" className={`${formErrors.requiredFieldsWarning ? "feedback my-2" : "d-none"}`}>{formErrors.requiredFieldsWarning}</div>
 
             <Form.Group controlId="titleInput">

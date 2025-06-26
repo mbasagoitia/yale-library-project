@@ -68,7 +68,7 @@ const CatalogueNew = ({ mode, initialData, submit }) => {
             <div className="d-flex justify-content-center">
               <Button onClick={(e) => handleShowCall(mainInfo, setMainInfo, setShowCall, setFormErrors)} className="btn btn-primary my-2">Generate Call Number</Button>
             </div>
-            {showCall && <CallNumberDisplay callNumber={mainInfo.callNumber} />}
+            {showCall && <CallNumberDisplay callNumber={mainInfo.callNumber || []} />}
           </>
         )}
         <div className="mt-4">

@@ -49,11 +49,7 @@ const SearchFilter = ({ initialValue, items, onItemClick }) => {
     onItemClick(item);
     setIsDropdownOpen(false);
   };
-
-  const isItemSelected = (item) => {
-    return item.value === selectedItemId;
-  };
-
+  
   return (
     <div className="searchableList" ref={dropdownRef}>
       <div className="searchBar">
@@ -77,7 +73,6 @@ const SearchFilter = ({ initialValue, items, onItemClick }) => {
                 <Dropdown.Item
                   key={`${idx + item.label}`}
                   onClick={() => handleDropdownItemClick(item)}
-                  active={isItemSelected(item)}
                 >
                   {item.label}
                 </Dropdown.Item>

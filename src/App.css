@@ -239,8 +239,12 @@ body {
   min-height: 85vh;
   margin: 0;
   text-align: left;
-  padding: 1rem;
+  padding: 2rem 1rem;
   color: #222;
+}
+
+.page-content h1 {
+  text-align: center;
 }
 
 .searchableList {
@@ -633,10 +637,6 @@ body {
   cursor: pointer;
 }
 
-.classification-guide, .browse-collection {
-  padding: 2rem;
-}
-
 .dc-nav-info {
   display: flex;
   flex-direction: column;
@@ -660,6 +660,12 @@ body {
   padding: 0;
 }
 
+.holdings-buttons-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
 .holdings-buttons-container button {
   width: auto;
   margin-bottom: 1rem;
@@ -672,6 +678,10 @@ body {
 .choose-catalogue-folder-container {
   display: flex;
   flex-direction: column;
+}
+
+.settings .row>* {
+  padding-left: 0;
 }
 
 @media (min-width: 491px) {
@@ -692,7 +702,11 @@ body {
   }
 
   .page-content {
-    padding: 2rem;
+    padding: 3rem 2rem;
+  }
+
+  .page-content h1 {
+    text-align: left;
   }
 
   .additionalInfo .form-check {
@@ -714,13 +728,14 @@ body {
 }
 
 @media (min-width: 768px) {
+
+  .page-content {
+    padding: 3rem 4rem;
+  }
+
   .choose-catalogue-folder-container {
     flex-direction: row;
     justify-content: space-between;
-  }
-
-  .classification-guide, .browse-collection {
-    padding: 4rem;
   }
 
   .dc-nav-info {
