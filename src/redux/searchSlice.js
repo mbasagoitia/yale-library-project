@@ -1,29 +1,58 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  title: null,
-  composer: null,
-  publisher: null,
-  genre: null,
-  medium: null
+  // shared metadata
+  searchType: null, // 'general' | 'basic' | 'advanced'
+
+  // general search (from navbar)
+  generalQuery: null,
+
+  // basic & advanced filters
+  filters: {
+    title: null,
+    composer: null,
+    publisher: null,
+    genre: null,
+    medium: null,
+  },
 };
 
 const searchSlice = createSlice({
   name: 'search',
   initialState,
   reducers: {
+    generalSearch: (state, action) => {
+      state.searchType = 'general';
+      state.generalQuery = action.payload.query;
+    },
     basicSearch: (state, action) => {
-      state.title = action.payload.netid;
-      state.composer = action.payload.isAdmin;
+      state.searchType = 'basic';
+      state.generalQuery = null;
+      state.filters.title = action.payload.title || null;
+      state.filters.composer = action.payload.composer || null;
+      // optional: clear unrelated filters
+      state.filters.publisher = null;
+      state.filters.genre = null;
+      state.filters.medium = null;
     },
     advancedSearch: (state, action) => {
-      state.title = action.payload.title;
-      state.composer = action.payload.composer;
-      state.publisher = action.payload.publisher;
-      state.genre = action.payload.genre;
-    }
+      state.searchType = 'advanced';
+      state.generalQuery = null;
+      state.filters.title = action.payload.title || null;
+      state.filters.composer = action.payload.composer || null;
+      state.filters.publisher = action.payload.publisher || null;
+      state.filters.genre = action.payload.genre || null;
+      state.filters.medium = action.payload.medium || null;
+    },
+    clearSearch: () => initialState,
   },
 });
 
-export const { basicSearch, advancedSearch } = searchSlice.actions;
+export const {
+  generalSearch,
+  basicSearch,
+  advancedSearch,
+  clearSearch,
+} = searchSlice.actions;
+
 export default searchSlice.reducer;
