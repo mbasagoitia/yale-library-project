@@ -21,6 +21,11 @@ const Navigation = () => {
     await handleLogout(dispatch, navigate);
   };
 
+  const handleSearch = {
+    // set global search state
+    // navigate to browse page
+  }
+
   return (
     <Navbar
       expand="lg"
