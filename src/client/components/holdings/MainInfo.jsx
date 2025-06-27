@@ -5,11 +5,14 @@ import ComposerSelect from "../holdings/call-number-selects/ComposerSelect";
 import SpeciesSelect from "../holdings/call-number-selects/SpeciesSelect";
 import PublisherSelect from "../holdings/call-number-selects/PublisherSelect";
 import IdAndNumber from "../holdings/call-number-selects/IdAndNumber";
+import useFetchResourceData from "../../hooks/useFetchResourceData.js";
 
-const MainInfo = ({ resourceData, mainInfo, setMainInfo, formErrors, mediumResetKey }) => {
+const MainInfo = ({ mainInfo, setMainInfo, formErrors, mediumResetKey }) => {
 
   // The onItemClick methods passed to each select/filter to set main info.
   // The behavior should be different when they are accessed from the browse holdings filter.
+
+  const resourceData = useFetchResourceData();
 
   const setMedium = (item) => {
     const selected =

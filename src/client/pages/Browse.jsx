@@ -1,33 +1,19 @@
 import { useState, useEffect } from "react";
-import fetchHoldings from "../helpers/holdings/fetchHoldings";
+import { useSelector } from 'react-redux';
 import HoldingsList from "../components/holdings/HoldingsList";
 import HoldingsFilter from "../components/search-filters/HoldingsFilter";
 
 const Browse = () => {
+    const holdingsData = useSelector(state => state.library.holdings);
 
-    // Fetch once and store as global state?
-
-    const [holdingsData, setHoldingsData] = useState([]);
     const [filteredItems, setFilteredItems] = useState([]);
     const [showResults, setShowResults] = useState(false);
-    const [isInitialLoad, setIsInitialLoad] = useState(true);
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const data = await fetchHoldings();
-                setHoldingsData(data);
-                if (isInitialLoad) {
-                    setFilteredItems(data);
-                    setIsInitialLoad(false);
-                }
-            } catch (error) {
-                console.error("Failed to fetch holdings data:", error);
-            }
-        };
-        
-        fetchData();
-    }, [isInitialLoad]);
+        if (holdingsData && holdingsData.length > 0) {
+          setFilteredItems(holdingsData);
+        }
+      }, [holdingsData]);
 
     return (
         holdingsData.length > 0 && (
@@ -35,7 +21,7 @@ const Browse = () => {
             <h1>Browse Collection</h1>
             <div className="holdings-content mt-4">
                 <div className="mb-4">
-                    <HoldingsFilter holdingsData={holdingsData} setFilteredItems={setFilteredItems} setShowResults={setShowResults} />
+                    <HoldingsFilter setShowResults={setShowResults} setFilteredItems={setFilteredItems} />
                 </div>
                 {showResults ? <h2>Results: {filteredItems.length}</h2> : null}
                 <HoldingsList filteredItems={filteredItems} />

@@ -16,13 +16,14 @@ const CatalogueNew = ({ mode, initialData, submit }) => {
 
   const { id } = useParams();
 
+  const resourceData = useFetchResourceData();
+
   const [dataReady, setDataReady] = useState(false);
   const [formErrors, setFormErrors] = useState({});
   const [showCall, setShowCall] = useState(mode === "edit" ? true : false);
 
   const [mediumResetKey, setMediumResetKey] = useState(0);
 
-  const resourceData = useFetchResourceData();
   useScrollOnFormErrors(formErrors);
 
   const [mainInfo, setMainInfo] = useState({
@@ -64,7 +65,7 @@ const CatalogueNew = ({ mode, initialData, submit }) => {
       <form onSubmit={(e) => handleSubmit(e, mainInfo, setMainInfo, additionalInfo, setAdditionalInfo, setFormErrors, setShowCall, id, setMediumResetKey, submit)}>
         {((mode === "new") || (mode === "edit" && initialData && dataReady)) && (
           <>
-            <MainInfo resourceData={resourceData} mainInfo={mainInfo} setMainInfo={setMainInfo} formErrors={formErrors} mediumResetKey={mediumResetKey} />
+            <MainInfo mainInfo={mainInfo} setMainInfo={setMainInfo} formErrors={formErrors} mediumResetKey={mediumResetKey} />
             <div className="d-flex justify-content-center">
               <Button onClick={(e) => handleShowCall(mainInfo, setMainInfo, setShowCall, setFormErrors)} className="btn btn-primary my-2">Generate Call Number</Button>
             </div>

@@ -14,10 +14,9 @@ const Home = () => {
 
 
 // Make the search bar and filters functional
+// Add a global state of search criteria and a back button from piece info, global state of holdings?
 
 // Add fields to update acquisition date and date last performed
-
-// Add a global state of search criteria and a back button from piece info, global state of holdings?
 
 // css file
 

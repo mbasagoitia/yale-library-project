@@ -3,7 +3,6 @@ import convertToDigits from "../general/convertToDigits";
 
 const filterSearch = (holdingsData, searchCriteria) => {
   // Finish logic for filtering holdings data based on additional info, if present
-  console.log(holdingsData, searchCriteria);
     const { title, composer, medium, genre, publisher } = searchCriteria;
   
     const lowerCaseTitle = title ? normalizeString(convertToDigits(title)).trim() : '';

@@ -1,21 +1,8 @@
-import { useState } from "react";
-import { Row, Col, Button, Form } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import { BiFilter } from 'react-icons/bi';
 import FilterInput from "./FilterInput";
 
-const BasicFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria, onSubmit }) => {
-
-    // This needs to be a slice of redux state!
-
-    const clearSearchCriteria = () => {
-        setSearchCriteria({
-            title: "",
-            composer: "",
-            medium: {},
-            genre: {},
-            publisher: {}
-        });
-    }
+const BasicFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria }) => {
 
     const onTitleChange = (e) => {
         setSearchCriteria({
@@ -31,13 +18,8 @@ const BasicFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria, onS
         });
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        onSubmit();
-    }
-
     return (
-        <Form className="basic-filter" onSubmit={handleSubmit}>
+        <div className="basic-filter">
             <Row className="mb-2 d-flex justify-content-between">
                 <div className="basic-filter-input">
                     <FilterInput 
@@ -48,7 +30,7 @@ const BasicFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria, onS
                 </div>
                 <div className="open-advanced-filter" onClick={() => setAdvancedFilter(true)}>
                     <BiFilter size={20} />
-                    <div className="filter-text ms-2" onClick={clearSearchCriteria}>Advanced Filter</div>
+                    <div className="filter-text ms-2">Advanced Filter</div>
                 </div>
             </Row>
             <Row>
@@ -62,13 +44,10 @@ const BasicFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria, onS
                         className={"rounded-corners-left"}
                     />
                     </div>
-                    <Button className="flex-shrink-0 rounded-corners-right basic-filter-search" type="submit">
-                        <i className="fa fa-search"></i>
-                    </Button>
                 </div>
                 </Col>
             </Row>
-        </Form>
+        </div>
     )
 }
 

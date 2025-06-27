@@ -14,6 +14,7 @@ import PieceInfo from './client/pages/PieceInfo.jsx';
 import Reports from './client/pages/Reports.jsx';
 import TokenExpiryHandler from './client/components/general/TokenExpiryHandler.jsx';
 import handleRenewToken from './client/helpers/auth/handleRenewToken.js';
+import { fetchHoldings } from '../src/redux/librarySlice';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
@@ -21,6 +22,7 @@ import './App.css';
 function App() {
 
   const dispatch = useDispatch();
+  
   const [authToken, setAuthToken] = useState(null);
 
   useEffect(() => {
@@ -47,6 +49,10 @@ function App() {
 
     fetchToken();
   }, []);
+
+  useEffect(() => {
+    dispatch(fetchHoldings());
+  }, [dispatch]);
   
   return (
     <BrowserRouter>

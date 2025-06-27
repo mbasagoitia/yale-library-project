@@ -1,13 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  // shared metadata
   searchType: null, // 'general' | 'basic' | 'advanced'
 
   // general search (from navbar)
   generalQuery: null,
 
-  // basic & advanced filters
+  // basic & advanced filters from Browse Page
   filters: {
     title: null,
     composer: null,
@@ -30,7 +29,7 @@ const searchSlice = createSlice({
       state.generalQuery = null;
       state.filters.title = action.payload.title || null;
       state.filters.composer = action.payload.composer || null;
-      // optional: clear unrelated filters
+
       state.filters.publisher = null;
       state.filters.genre = null;
       state.filters.medium = null;

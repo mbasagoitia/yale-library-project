@@ -37,6 +37,12 @@ const SearchFilter = ({ initialValue, items, onItemClick }) => {
   const handleInputChange = (value) => {
     setSearchText(value);
     setFilteredItems(filterItems(value, items));
+  
+    if (value === '') {
+      setSelectedItemId(null);
+      setSearchText('');
+      onItemClick(null);
+    }
   };
 
   const toggleDropdown = () => {
@@ -58,7 +64,7 @@ const SearchFilter = ({ initialValue, items, onItemClick }) => {
             placeholder="Search..."
             aria-label="Search"
             aria-describedby="searchBar"
-            value={searchText}
+            value={searchText || ''}
             onChange={(e) => handleInputChange(e.target.value)}
             onClick={toggleDropdown}
           />

@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Searchbar from '../search-filters/Searchbar';
+import { generalSearch } from "../../../redux/searchSlice";
 import { openLoginWindow, handleLogout } from '../../helpers/auth/handleAuth';
 import { useNavigate } from 'react-router-dom';
 
@@ -21,9 +22,9 @@ const Navigation = () => {
     await handleLogout(dispatch, navigate);
   };
 
-  const handleSearch = {
-    // set global search state
-    // navigate to browse page
+  const handleSearch = (searchText) => {
+    dispatch(generalSearch({ query: searchText }));
+    navigate("/browse-holdings");
   }
 
   return (
@@ -75,7 +76,7 @@ const Navigation = () => {
             )}
 
             <div className="nav-searchbar">
-              <Searchbar placeholder={"Search the collection"} />
+              <Searchbar placeholder={"Search the collection"} onSearch={handleSearch} />
             </div>
           </Nav>
         </Navbar.Collapse>
