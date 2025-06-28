@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 
-function MediumSelect({ items, handleItemSelect, depth = 0, resetKey }) {
-  const [selectedItem, setSelectedItem] = useState(null);
+const MediumSelect = ({ items, handleItemSelect, selectedItem, depth = 0, resetKey }) => {
+  const [currentItem, setCurrentItem] = useState(null);
 
   useEffect(() => {
-    setSelectedItem(null);
+    setCurrentItem(null);
   }, [resetKey]);
 
   useEffect(() => {
-    if (!selectedItem && items.length > 0) {
-      setSelectedItem(items[0])
+    if (!currentItem && items.length > 0) {
+      setCurrentItem(items[0])
     }
   }, [items]);
 
   const handleSelect = (item) => {
-    setSelectedItem(item);
+    setCurrentItem(item);
   
     const getFirstLeaf = (node) => {
       if (node.options?.length) return getFirstLeaf(node.options[0]);
@@ -30,7 +30,7 @@ function MediumSelect({ items, handleItemSelect, depth = 0, resetKey }) {
   const renderDropdown = () => (
     <Dropdown className="my-2">
       <Dropdown.Toggle variant="primary" id={`dropdown-${depth}`} className="p-2">
-        {selectedItem?.label || 'Select Ensemble Type'}
+        {currentItem?.label || 'Select Ensemble Type'}
       </Dropdown.Toggle>
       <Dropdown.Menu>
         {items.map((item, index) => (
@@ -43,11 +43,11 @@ function MediumSelect({ items, handleItemSelect, depth = 0, resetKey }) {
   );
 
   const renderNestedMediumSelect = () => {
-    const nestedItems = selectedItem?.options || selectedItem?.nested_options;
+    const nestedItems = currentItem?.options || currentItem?.nested_options;
     if (nestedItems?.length) {
       return (
         <MediumSelect
-          key={selectedItem.label}
+          key={currentItem.label}
           items={nestedItems}
           handleItemSelect={handleItemSelect}
           depth={depth + 1}

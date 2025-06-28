@@ -1,10 +1,11 @@
 import SearchFilter from "../../search-filters/SearchFilter";
 
-const PublisherSelect = ({ items, mainInfo, onItemClick }) => {
+const PublisherSelect = ({ items, selectedItem, onItemClick }) => {
 
     return (
         <>
-        <SearchFilter initialValue={mainInfo?.publisher?.id ? mainInfo.publisher.label : ""} items={items} onItemClick={onItemClick} />
+        {/* initial value should be passed in from search state */}
+        <SearchFilter initialValue={""} items={items} onItemClick={onItemClick} selectedItem={selectedItem} />
         </>
     )
 }

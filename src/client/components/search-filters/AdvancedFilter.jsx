@@ -135,11 +135,18 @@ const AdvancedFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria }
                 <Row>
                     <Col md={6} className="my-2 my-md-0">
                         <Form.Label>Publisher</Form.Label>
-                        {resourceData.publisherData.length > 0 && <PublisherSelect items={resourceData.publisherData} onItemClick={onPublisherSelect} />}
+                        {resourceData.publisherData.length > 0 && <PublisherSelect
+                                                                    items={resourceData.publisherData}
+                                                                    selectedItem={searchCriteria.publisher}
+                                                                    onItemClick={onPublisherSelect}
+                                                                    />}
                     </Col>
                     <Col md={6} className="my-2 my-md-0">
                         <Form.Label>Genre</Form.Label>
-                        {resourceData.speciesData.length > 0 && <SpeciesSelect items={resourceData.speciesData} onItemClick={onGenreSelect} />}    
+                        {resourceData.speciesData.length > 0 && <SpeciesSelect items={resourceData.speciesData}
+                                                                    selectedItem={searchCriteria.genre}
+                                                                    onItemClick={onGenreSelect} 
+                                                                    />}    
                     </Col>
                 </Row>
                 <Row className="my-0 my-md-3">
@@ -148,8 +155,10 @@ const AdvancedFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria }
                             <Dropdown.Toggle id="dropdown-basic" className="p-0 ensemble-toggle-btn" onClick={handleToggleMediumSelect}>Ensemble Type</Dropdown.Toggle>
                         </Form.Label>
                         {mediumSelectShown && (
-                            resourceData.mediumData.length > 0 && <MediumSelect items={resourceData.mediumData} handleItemSelect={onMediumSelect} />
-                        )}
+                            resourceData.mediumData.length > 0 && <MediumSelect items={resourceData.mediumData}
+                                                                    selectedItem={searchCriteria.medium}
+                                                                    handleItemSelect={onMediumSelect} 
+                                                                    />)}
                     </Col>
                 </Row>
             </div>
