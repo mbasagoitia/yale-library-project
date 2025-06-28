@@ -2,7 +2,6 @@ import normalizeString from "../general/normalizeString";
 import convertToDigits from "../general/convertToDigits";
 
 const filterSearch = (search, holdings) => {
-  console.log(search)
   if (!search || !Array.isArray(holdings)) return holdings;
 
   // General search

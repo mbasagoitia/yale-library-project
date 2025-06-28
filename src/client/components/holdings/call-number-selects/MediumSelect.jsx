@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 
-const MediumSelect = ({ items, handleItemSelect, selectedItem, depth = 0, resetKey }) => {
+const MediumSelect = ({ items, handleItemSelect, depth = 0, resetKey }) => {
   const [currentItem, setCurrentItem] = useState(null);
 
   useEffect(() => {

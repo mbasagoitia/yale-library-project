@@ -7,7 +7,7 @@ import useFetchResourceData from "../../hooks/useFetchResourceData";
 import { BiFilter } from 'react-icons/bi';
 import FilterInput from "./FilterInput";
 import { useDispatch } from "react-redux";
-import { clearSearch } from "../../../redux/searchSlice";
+import { advancedSearch, basicSearch, clearSearch } from "../../../redux/searchSlice";
 
 const AdvancedFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria }) => {
 
@@ -89,7 +89,19 @@ const AdvancedFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria }
     };
 
     const clearSearchCriteria = () => {
+
         dispatch(clearSearch());
+
+        // also reset holdings list to all items, this isn't working
+        dispatch(advancedSearch({
+            composer: null,
+            title: null,
+            medium: null,
+            publisher: null,
+            genre: null
+        }))
+
+        setMediumSelectShown(false);
 
         setSearchCriteria({
             composer: null,
@@ -135,18 +147,11 @@ const AdvancedFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria }
                 <Row>
                     <Col md={6} className="my-2 my-md-0">
                         <Form.Label>Publisher</Form.Label>
-                        {resourceData.publisherData.length > 0 && <PublisherSelect
-                                                                    items={resourceData.publisherData}
-                                                                    selectedItem={searchCriteria.publisher}
-                                                                    onItemClick={onPublisherSelect}
-                                                                    />}
+                        {resourceData.publisherData.length > 0 && <PublisherSelect items={resourceData.publisherData} selectedItem={searchCriteria.publisher} onItemClick={onPublisherSelect} />}
                     </Col>
                     <Col md={6} className="my-2 my-md-0">
                         <Form.Label>Genre</Form.Label>
-                        {resourceData.speciesData.length > 0 && <SpeciesSelect items={resourceData.speciesData}
-                                                                    selectedItem={searchCriteria.genre}
-                                                                    onItemClick={onGenreSelect} 
-                                                                    />}    
+                            <SpeciesSelect items={resourceData.speciesData} selectedItem={searchCriteria.genre} onItemClick={onGenreSelect}  />    
                     </Col>
                 </Row>
                 <Row className="my-0 my-md-3">
@@ -154,11 +159,7 @@ const AdvancedFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria }
                         <Form.Label>
                             <Dropdown.Toggle id="dropdown-basic" className="p-0 ensemble-toggle-btn" onClick={handleToggleMediumSelect}>Ensemble Type</Dropdown.Toggle>
                         </Form.Label>
-                        {mediumSelectShown && (
-                            resourceData.mediumData.length > 0 && <MediumSelect items={resourceData.mediumData}
-                                                                    selectedItem={searchCriteria.medium}
-                                                                    handleItemSelect={onMediumSelect} 
-                                                                    />)}
+                        {mediumSelectShown && <MediumSelect items={resourceData.mediumData} handleItemSelect={onMediumSelect} />}
                     </Col>
                 </Row>
             </div>

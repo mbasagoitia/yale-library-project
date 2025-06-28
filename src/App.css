@@ -252,7 +252,7 @@ body {
 }
 
 .dropdown-menu {
-  background-color: transparent;
+  width: 100%;
   border: transparent;
   text-align: center;
 }

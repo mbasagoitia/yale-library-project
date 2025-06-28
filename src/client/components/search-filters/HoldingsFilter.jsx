@@ -27,7 +27,6 @@ const HoldingsFilter = ({ setShowResults, setFilteredItems }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(searchCriteria);
         if (!advancedFilter) {
             dispatch(basicSearch({ composer: searchCriteria.composer, title: searchCriteria.title }));
         } else {

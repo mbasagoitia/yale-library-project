@@ -1,8 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PieceListItem from "./PieceListItem";
 import PaginationControls from "../general/PaginationControls";
 
 const HoldingsList = ({ filteredItems }) => {
+
+  // useEffect(() => {
+  //   console.log(filteredItems)
+  // }, [])
   
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
