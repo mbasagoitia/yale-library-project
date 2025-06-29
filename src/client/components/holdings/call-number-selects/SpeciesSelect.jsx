@@ -3,7 +3,7 @@ import SearchFilter from "../../search-filters/SearchFilter";
 const SpeciesSelect = ({ items, selectedItem, onItemClick }) => {
     return (
         <>
-        <SearchFilter initialValue={""} selectedItem={selectedItem} items={items} onItemClick={onItemClick} />
+        <SearchFilter placeholder={"Genre"} initialValue={""} selectedItem={selectedItem} items={items} onItemClick={onItemClick} />
         </>
     )
 }

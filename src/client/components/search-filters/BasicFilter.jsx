@@ -1,5 +1,4 @@
 import { Row, Col } from "react-bootstrap";
-import { BiFilter } from 'react-icons/bi';
 import FilterInput from "./FilterInput";
 
 const BasicFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria }) => {
@@ -19,29 +18,23 @@ const BasicFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria }) =
     }
 
     return (
-        <div className="basic-filter">
+        <div className="basic-filter mb-4">
             <Row className="mb-2 d-flex justify-content-between">
-                <div className="basic-filter-input">
+                <Col>
+                <div className="basic-filter-input mb-2">
                     <FilterInput 
                             placeholder={"Title"}
                             value={searchCriteria.title}
                             onChange={onTitleChange}
                         />
                 </div>
-                <div className="open-advanced-filter" onClick={() => setAdvancedFilter(true)}>
-                    <BiFilter size={20} />
-                    <div className="filter-text ms-2">Advanced Filter</div>
-                </div>
-            </Row>
-            <Row>
-                <Col xs={9}>
                 <div className="d-flex w-100">
                     <div className="flex-grow-1">
                     <FilterInput
                         placeholder="Composer"
                         value={searchCriteria.composer}
                         onChange={onComposerChange}
-                        className={"rounded-corners-left"}
+                        className={"rounded-corners"}
                     />
                     </div>
                 </div>

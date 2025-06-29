@@ -16,6 +16,20 @@ const librarySlice = createSlice({
   reducers: {
     clearHoldings: (state) => {
       state.holdings = [];
+    },
+    addHolding: (state, action) => {
+      state.holdings.push(action.payload);
+    },
+    updateHolding: (state, action) => {
+      const updated = action.payload;
+      const index = state.holdings.findIndex(piece => piece.id === updated.id);
+      if (index !== -1) {
+        state.holdings[index] = updated;
+      }
+    },
+    deleteHolding: (state, action) => {
+      const idToDelete = action.payload;
+      state.holdings = state.holdings.filter(piece => piece.id !== idToDelete);
     }
   },
   extraReducers: (builder) => {
@@ -34,5 +48,11 @@ const librarySlice = createSlice({
   },
 });
 
-export const { clearHoldings } = librarySlice.actions;
+export const {
+  clearHoldings,
+  addHolding,
+  updateHolding,
+  deleteHolding
+} = librarySlice.actions;
+
 export default librarySlice.reducer;

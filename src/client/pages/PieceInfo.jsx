@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { ArrowLeft } from 'react-bootstrap-icons';
 import { useSelector } from 'react-redux';
 import { Container, Button } from 'react-bootstrap';
 import CatalogueNew from "../components/holdings/CatalogueNew.jsx";
@@ -20,14 +21,14 @@ const PieceInfo = () => {
     const fetchData = async () => {
       try {
         const res = await fetch(`http://localhost:5000/api/holdings-data/${id}`);
+        if (!res.ok) throw new Error('Network response was not ok');
         const data = await res.json();
-        setData(data[0]);
-        console.log(data[0]);
+        setData(data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
-
+  
     fetchData();
   }, [id]);
 
@@ -77,6 +78,9 @@ const PieceInfo = () => {
       <Container>
         {data && (
           <>
+            <button onClick={() => navigate(-1)} className="back-arrow-btn mb-4">
+              <ArrowLeft size={20} />
+            </button>
             <h1 className="mb-4">{data.title} {renderIdAndNumber(data)}</h1>
             {isAdmin ? (
             <div className="d-flex">

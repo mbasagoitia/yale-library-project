@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "react-bootstrap";
 import BasicFilter from "./BasicFilter";
 import AdvancedFilter from "./AdvancedFilter";
+import { BiFilter } from 'react-icons/bi';
 import filterSearch from "../../helpers/search/filterSearch";
 import { basicSearch, advancedSearch } from "../../../redux/searchSlice";
 
@@ -13,17 +14,47 @@ const HoldingsFilter = ({ setShowResults, setFilteredItems }) => {
 
     const search = useSelector((state) => state.search);
 
-    const [searchCriteria, setSearchCriteria] = useState(() => ({
-        title: search.filters?.title || '',
-        composer: search.filters?.composer || '',
-        publisher: search.filters?.publisher || '',
-        genre: search.filters?.genre || '',
-        medium: search.filters?.medium || '',
-      }));
+    const [searchCriteria, setSearchCriteria] = useState({
+        title: '',
+        composer: '',
+        publisher: '',
+        genre: '',
+        medium: '',
+      });
+      
+      useEffect(() => {
+        setSearchCriteria({
+          title: search.filters?.title || '',
+          composer: search.filters?.composer || '',
+          publisher: search.filters?.publisher || '',
+          genre: search.filters?.genre || '',
+          medium: search.filters?.medium || '',
+        });
+      }, [search.filters]);
 
     const holdings = useSelector((state) => state.library.holdings);
 
+    const resetHoldings = () => {
+        setFilteredItems(holdings);
+    }
+
     const dispatch = useDispatch();
+
+    const clearAdvancedSearch = () => {
+        setSearchCriteria((prev) => ({
+            ...prev,
+            medium: null,
+            publisher: null,
+            genre: null
+        }))
+    }
+
+    const handleFilterSwitch = () => {
+        if (advancedFilter) {
+            clearAdvancedSearch();
+        }
+        setAdvancedFilter(!advancedFilter);
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -44,15 +75,18 @@ const HoldingsFilter = ({ setShowResults, setFilteredItems }) => {
     }
 
     return (
-        // How does this affect the styling?
         <div className="holdings-filter">
             <Form onSubmit={handleSubmit}>
+                <div className="open-basic-filter d-flex justify-content-end mb-1" onClick={handleFilterSwitch}>
+                    <BiFilter size={20} />
+                    <span className="filter-text ms-2">{`${advancedFilter ? "Basic" : "Advanced"} Filter`}</span>
+                </div>
             {advancedFilter ? (
-                <AdvancedFilter setAdvancedFilter={setAdvancedFilter} searchCriteria={searchCriteria} setSearchCriteria={setSearchCriteria} />
+                <AdvancedFilter searchCriteria={searchCriteria} setSearchCriteria={setSearchCriteria} resetHoldings={resetHoldings} />
             ) : (
-                <BasicFilter setAdvancedFilter={setAdvancedFilter} searchCriteria={searchCriteria} setSearchCriteria={setSearchCriteria} />
+                <BasicFilter searchCriteria={searchCriteria} setSearchCriteria={setSearchCriteria} />
             )}
-            <Button type="submit">Search</Button>
+                <Button type="submit">Search</Button>
             </Form>
         </div>
         

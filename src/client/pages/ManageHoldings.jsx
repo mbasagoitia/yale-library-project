@@ -1,34 +1,30 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useSelector } from 'react-redux';
+import { addHolding } from "../../redux/librarySlice.js";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import CatalogueNew from "../components/holdings/CatalogueNew.jsx";
 import catalogueNew from "../helpers/holdings/catalogueNew.js";
-import fetchHoldings from "../helpers/holdings/fetchHoldings";
 import HoldingsList from "../components/holdings/HoldingsList";
 import HoldingsFilter from "../components/search-filters/HoldingsFilter";
 
 const ManageHoldings = () => {
 
-    const [holdingsData, setHoldingsData] = useState([]);
     const [filteredItems, setFilteredItems] = useState([]);
-    const [isInitialLoad, setIsInitialLoad] = useState(true);
     const [showResults, setShowResults] = useState(false);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const data = await fetchHoldings();
-                setHoldingsData(data);
-                if (isInitialLoad) {
-                    setFilteredItems(data);
-                    setIsInitialLoad(false);
-                }
-            } catch (error) {
-                console.error("Failed to fetch holdings data:", error);
-            }
-        };
+    const holdingsData = useSelector(state => state.library.holdings);
 
-        fetchData();
-    }, [isInitialLoad]);
+    const dispatch = useDispatch();
+
+    const handleSubmit = async (formData) => {
+        try {
+          const newPiece = await catalogueNew(formData);
+          dispatch(addHolding(newPiece));
+        } catch (err) {
+          console.error("Error adding holding:", err);
+        }
+      };
 
     return (
         <div className="manage-holdings">
@@ -41,7 +37,7 @@ const ManageHoldings = () => {
                                 <h5 className="mb-0">Add New Piece</h5>
                             </Card.Header>
                             <Card.Body>
-                                <CatalogueNew mode="new" submit={catalogueNew} />
+                                <CatalogueNew mode="new" submit={handleSubmit} />
                             </Card.Body>
                         </Card>
                     </Col>

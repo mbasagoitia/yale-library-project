@@ -4,12 +4,11 @@ import MediumSelect from "../holdings/call-number-selects/MediumSelect";
 import SpeciesSelect from "../holdings/call-number-selects/SpeciesSelect";
 import PublisherSelect from "../holdings/call-number-selects/PublisherSelect";
 import useFetchResourceData from "../../hooks/useFetchResourceData";
-import { BiFilter } from 'react-icons/bi';
 import FilterInput from "./FilterInput";
 import { useDispatch } from "react-redux";
-import { advancedSearch, basicSearch, clearSearch } from "../../../redux/searchSlice";
+import { clearSearch } from "../../../redux/searchSlice";
 
-const AdvancedFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria }) => {
+const AdvancedFilter = ({ searchCriteria, setSearchCriteria, resetHoldings }) => {
 
     const [mediumSelectShown, setMediumSelectShown] = useState(false);
 
@@ -92,14 +91,7 @@ const AdvancedFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria }
 
         dispatch(clearSearch());
 
-        // also reset holdings list to all items, this isn't working
-        dispatch(advancedSearch({
-            composer: null,
-            title: null,
-            medium: null,
-            publisher: null,
-            genre: null
-        }))
+        resetHoldings();
 
         setMediumSelectShown(false);
 
@@ -111,46 +103,24 @@ const AdvancedFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria }
             genre: null
         })
     }
-
-    const clearAdvancedSearch = () => {
-        setSearchCriteria((prev) => ({
-            ...prev,
-            medium: null,
-            publisher: null,
-            genre: null
-        }))
-    }
     
     return (
         <div className="advanced-filter">
-        <Row>
-            <Col className="d-flex justify-content-between">
-                <p className="filter-by-text">Filter By:</p>
-                <div className="open-basic-filter" onClick={() => setAdvancedFilter(false)}>
-                    <BiFilter size={20} />
-                    <span className="filter-text ms-2" onClick={clearAdvancedSearch}>Basic Filter</span>
-                </div>
-            </Col>
-            <span className="reset-text mt-2" onClick={clearSearchCriteria}>Reset</span>
-        </Row>
-            <div className="holdings-filter mt-4">
+            <div className="mt-4">
+            <div className="reset-text mb-2" onClick={clearSearchCriteria}>Reset</div>
                 <Row className="mb-0 mb-md-4">
                     <Col md={6} className="my-2 my-md-0">
-                        <Form.Label>Title</Form.Label>
-                        <FilterInput placeholder={"Symphony no. 1"} value={searchCriteria.title || ''} onChange={onTitleChange} />
+                        <FilterInput placeholder={"Title"} value={searchCriteria.title || ''} onChange={onTitleChange} />
                     </Col>
                     <Col md={6} className="my-2 my-md-0">
-                        <Form.Label>Composer</Form.Label>
-                        <FilterInput placeholder={"Shostakovich"} value={searchCriteria.composer || ''} onChange={onComposerChange} />
+                        <FilterInput placeholder={"Composer"} value={searchCriteria.composer || ''} onChange={onComposerChange} />
                     </Col>
                 </Row>
                 <Row>
                     <Col md={6} className="my-2 my-md-0">
-                        <Form.Label>Publisher</Form.Label>
                         {resourceData.publisherData.length > 0 && <PublisherSelect items={resourceData.publisherData} selectedItem={searchCriteria.publisher} onItemClick={onPublisherSelect} />}
                     </Col>
                     <Col md={6} className="my-2 my-md-0">
-                        <Form.Label>Genre</Form.Label>
                             <SpeciesSelect items={resourceData.speciesData} selectedItem={searchCriteria.genre} onItemClick={onGenreSelect}  />    
                     </Col>
                 </Row>

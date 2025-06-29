@@ -34,7 +34,7 @@ const searchSlice = createSlice({
       state.filters.genre = null;
       state.filters.medium = null;
     },
-    advancedSearch: (state, action) => {
+    advancedSearch: (state, action) => {  
       state.searchType = 'advanced';
       state.generalQuery = null;
       state.filters.title = action.payload.title || null;

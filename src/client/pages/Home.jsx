@@ -13,10 +13,12 @@ const Home = () => {
 };
 
 
-// Make the search bar and filters functional
-// Add a global state of search criteria and a back button from piece info, global state of holdings?
-
 // Add fields to update acquisition date and date last performed
+// when editing a piece from the manage holdings page, it should not redirect you away but open an edit mode
+// Immediately update state of holdings when you add a new piece
+
+// Navbar: login/logout should be far right (accessible by profile icon), move reports to before search bar
+// Make sure general search works
 
 // css file
 
@@ -25,9 +27,9 @@ const Home = () => {
 
 // Fix buttons and bootstrap default colors
 
-// Alerts on success for cataloguing, logging in, etc.
-// when editing a piece from the manage holdings page, it should not redirect you away but open an edit mode
-// Immediately update state of holdings when you add a new piece
+// Alerts on success for cataloguing, logging in, etc. What happens if login fails?
+
+// Weird styling of pagination buttons on small screen
 
 // Renew authToken logic
 

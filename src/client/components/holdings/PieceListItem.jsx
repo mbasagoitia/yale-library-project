@@ -1,4 +1,5 @@
 import { Card, Row, Col } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 const PieceListItem = ({ data }) => {
     // Data comes in as a single piece with the following properties,
@@ -25,8 +26,7 @@ const PieceListItem = ({ data }) => {
     }
 
     return (
-        // This url should eventually be something different
-        <a href={`/browse-holdings/${id}`} className="piece-list-item-link">
+        <Link to={`/browse-holdings/${id}`} className="piece-list-item-link">
         <Card className="mb-1 piece-list-item">
             <Card.Body>
                 <Row className="align-items-center">
@@ -45,7 +45,7 @@ const PieceListItem = ({ data }) => {
                 </Row>
             </Card.Body>
         </Card>
-        </a>
+        </Link>
     );
 }
 

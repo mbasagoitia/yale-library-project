@@ -39,12 +39,17 @@ const Navigation = () => {
       <div className="nav-content">
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="mr-auto d-flex justify-content-between align-items-center w-100">
+          <Nav className="mr-auto d-flex justify-content-evenly align-items-center w-100">
             <Nav.Link href="/" onClick={() => setNavExpanded(false)}>Home</Nav.Link>
             <Nav.Link href="/browse-holdings" onClick={() => setNavExpanded(false)}>Browse Collection</Nav.Link>
             <Nav.Link href="digital-catalogue" onClick={() => setNavExpanded(false)}>Digital Catalogue</Nav.Link>
             <Nav.Link href="/classification-guide" onClick={() => setNavExpanded(false)}>Classification Guide</Nav.Link>
 
+
+
+            <div className="nav-searchbar">
+              <Searchbar placeholder={"Search the collection"} onSearch={handleSearch} />
+            </div>
             {isAdmin ? (
               <>
               <Nav.Link href="/reports" onClick={() => setNavExpanded(false)}>Reports</Nav.Link>
@@ -74,10 +79,6 @@ const Navigation = () => {
             ) : (
               <Nav.Link as="span" onClick={() => openLoginWindow()}>Log In</Nav.Link>
             )}
-
-            <div className="nav-searchbar">
-              <Searchbar placeholder={"Search the collection"} onSearch={handleSearch} />
-            </div>
           </Nav>
         </Navbar.Collapse>
       </div>

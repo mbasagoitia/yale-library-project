@@ -651,12 +651,8 @@ body {
   flex-basis: 50%;
 }
 
-.basic-filter-input {
-  width: 75%;
-}
-
 .open-advanced-filter {
-  width: 25%;
+  width: 20%;
   padding: 0;
 }
 
@@ -673,6 +669,12 @@ body {
 
 .nav-nav-dropdown {
   padding: 8px 0 8px 0;
+}
+
+.back-arrow-btn {
+  cursor: pointer;
+  background: transparent;
+  border: transparent;
 }
 
 .choose-catalogue-folder-container {
