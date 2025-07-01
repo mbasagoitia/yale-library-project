@@ -46,7 +46,6 @@ const mysqlDump = async (req, res) => {
         console.error("Download error:", err);
         return res.status(500).send("Failed to send MySQL dump.");
       }
-      // Again, delete if temp, but likely user path so maybe don't
     });
   } catch (err) {
     console.error("MySQL dump error:", err);

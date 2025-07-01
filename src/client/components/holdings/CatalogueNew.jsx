@@ -48,6 +48,8 @@ const CatalogueNew = ({ mode, initialData, submit }) => {
     notes: ""
   });
 
+  // Is this necessary?
+
   useEffect(() => {
     initializePieceState({ initialData, resourceData, setMainInfo, setAdditionalInfo, setDataReady,
       helpers: {

@@ -3,10 +3,6 @@ import PieceListItem from "./PieceListItem";
 import PaginationControls from "../general/PaginationControls";
 
 const HoldingsList = ({ filteredItems }) => {
-
-  // useEffect(() => {
-  //   console.log(filteredItems)
-  // }, [])
   
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -21,13 +17,13 @@ const HoldingsList = ({ filteredItems }) => {
           <PieceListItem key={item.id} data={item} />
         ))}
       </div>
-
+      {filteredItems.length > 0 &&
       <PaginationControls
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         totalItems={filteredItems.length}
         itemsPerPage={itemsPerPage}
-      />
+      />}
     </div>
   );
 };
