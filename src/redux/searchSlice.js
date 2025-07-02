@@ -23,6 +23,7 @@ const searchSlice = createSlice({
     generalSearch: (state, action) => {
       state.searchType = 'general';
       state.generalQuery = action.payload.query;
+      console.log(action.payload.query);
     },
     basicSearch: (state, action) => {
       state.searchType = 'basic';

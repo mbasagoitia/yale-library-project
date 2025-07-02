@@ -1,7 +1,7 @@
 import { Row, Col } from "react-bootstrap";
 import FilterInput from "./FilterInput";
 
-const BasicFilter = ({ setAdvancedFilter, searchCriteria, setSearchCriteria }) => {
+const BasicFilter = ({ searchCriteria, setSearchCriteria }) => {
 
     const onTitleChange = (e) => {
         setSearchCriteria({

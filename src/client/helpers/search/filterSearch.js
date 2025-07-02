@@ -2,17 +2,29 @@ import normalizeString from "../general/normalizeString";
 import convertToDigits from "../general/convertToDigits";
 
 const filterSearch = (search, holdings) => {
+  console.log("search", search)
   if (!search || !Array.isArray(holdings)) return holdings;
 
-  // General search
+  // General search from navbar
   if (search.searchType === "general") {
-    const tokens = search.generalQuery?.toLowerCase().split(/\s+/) || [];
-    return holdings.filter(piece =>
-      tokens.every(token =>
-        normalizeString(piece.title).includes(token) ||
-        normalizeString(piece.composer).includes(token)
-      )
-    );
+    console.log("in general")
+    const tokens = search.generalQuery?.toLowerCase().split(/\s+/).map(token => normalizeString(token)) || [];
+  
+    const filteredHoldings = holdings.filter(piece => {
+      const normalizedTitle = normalizeString(convertToDigits(piece.title || ''));
+      const normalizedFirstName = normalizeString(piece.first_name || '');
+      const normalizedLastName = normalizeString(piece.last_name || '');
+      const normalizedPublisher = normalizeString(piece.publisher || '');
+  
+      return tokens.every(token =>
+        normalizedTitle.includes(token) ||
+        normalizedFirstName.includes(token) ||
+        normalizedLastName.includes(token) ||
+        normalizedPublisher.includes(token)
+      );
+    });
+    console.log(filteredHoldings);
+    return filteredHoldings;
   }
 
   // Basic or Advanced search

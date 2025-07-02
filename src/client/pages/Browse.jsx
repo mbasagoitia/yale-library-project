@@ -5,6 +5,8 @@ import HoldingsFilter from "../components/search-filters/HoldingsFilter";
 
 const Browse = () => {
     const holdingsData = useSelector(state => state.library.holdings);
+    const initialSearch = useSelector(state => state.search.generalQuery);
+    // Maybe filteredItems should be its own state
 
     const [filteredItems, setFilteredItems] = useState([]);
     const [showResults, setShowResults] = useState(false);
