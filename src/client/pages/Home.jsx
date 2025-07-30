@@ -13,11 +13,9 @@ const Home = () => {
 };
 
 
-// Add fields to update acquisition date and date last performed (also add to mysql)
-    // Also display date last performed
+// Check that date last performed reports work
 
 // when editing a piece from the manage holdings page, it should not redirect you away but open an edit mode
-// set initial state of 00 to call number if nothing is selected
 
 // Navbar: login/logout should be far right (accessible by profile icon), move reports to before search bar
 // Make sure general search works*** memoized selector

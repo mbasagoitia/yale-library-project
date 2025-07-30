@@ -70,7 +70,7 @@ const insertNewPiece = (pieceInfo, db, callback) => {
 
     const finalIdentifierValue = identifierValue === "" ? null : identifierValue;
     const finalIdentifierLabel = !identifierValue ? null : identifierLabel;
-    const mediumId = medium.id || medium.options?.[0]?.id;
+    const mediumId = medium.id || medium.options?.[0]?.id || 1
     const acquisitionDate = getFormattedDate();
     
     lastPerformedFormatted = lastPerformed ? getFormattedLastPerformedDate(lastPerformed) : null;
