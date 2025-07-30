@@ -74,19 +74,21 @@ const DigitalCatalogueFolders = ({ folderPath }) => {
           <Button variant="outline-primary" onClick={handleNavigate} disabled={!currentPath}>
           ← Previous
           </Button>
-          {currentPath && (
-            <Button
-              variant="outline-primary"
-              className="ms-2"
-              onClick={() => handleOpenCurrentFolder(folderPath, currentPath)}
-            >
-              Open in Finder
-            </Button>
-          )}
         </div>
-        <p className="mb-0 text-muted">
-          {currentPath ? `/${currentPath}` : folderPath}
-        </p>
+        <div className="d-flex justify-content-between mb-4">
+          <div className="w-50">
+            <p className="mb-0 text-muted">{currentPath ? `/${currentPath}` : folderPath}</p>
+          </div>
+            <div className="w-50">
+              <Button
+                variant="outline-primary" 
+                onClick={() => handleOpenCurrentFolder(folderPath, currentPath)}
+                className="open-folder-btn w-auto"
+              >
+                Open in Finder
+              </Button>
+            </div>
+        </div>
       </div>
 
       <Row className="g-3">

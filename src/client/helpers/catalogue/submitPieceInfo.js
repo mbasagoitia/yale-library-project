@@ -40,6 +40,7 @@ const handleSubmit = async (e, mainInfo, setMainInfo, additionalInfo, setAdditio
             publicDomain: true,
             condition: 1,
             missingParts: false,
+            lastPerformed: null,
             notes: ""
           });
 

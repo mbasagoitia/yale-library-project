@@ -45,6 +45,7 @@ const CatalogueNew = ({ mode, initialData, submit }) => {
     publicDomain: true,
     condition: 1,
     missingParts: false,
+    lastPerformed: null,
     notes: ""
   });
 

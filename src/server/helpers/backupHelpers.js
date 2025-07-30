@@ -14,7 +14,8 @@ const exportReadableBackup = (pool, filePath) => {
         p.additional_notes AS additional_notes,
         con.label AS condition_description,
         p.call_number,
-        p.acquisition_date
+        p.acquisition_date,
+        p.date_last_performed
       FROM pieces p
         INNER JOIN composers c ON p.composer_id = c.id 
         INNER JOIN publisher_options pub ON p.publisher_id = pub.id

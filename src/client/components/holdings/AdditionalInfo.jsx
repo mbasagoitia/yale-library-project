@@ -3,6 +3,8 @@ import { FormGroup, FormCheck, FormLabel, FormControl, Button, Row, Col, Contain
 import conditions from "./conditions";
 import Tooltip from "./Tooltip";
 import PDTooltip from "./tooltip-contents/PDTooltip";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const AdditionalInfo = ({ mode, additionalInfo, setAdditionalInfo, formErrors, setFormErrors }) => {
 
@@ -38,6 +40,13 @@ const AdditionalInfo = ({ mode, additionalInfo, setAdditionalInfo, formErrors, s
             setFormErrors({});
         }
     }
+
+    const handleLastPerformedSelect = (date) => {
+        setAdditionalInfo((prev) => ({
+            ...prev,
+            lastPerformed: date ? date.toISOString() : null,
+          }))
+      };
 
     const handleMediaTypeChange = (key) => {
         setAdditionalInfo(prevState => ({ ...prevState, [key]: !prevState[key] }));
@@ -128,6 +137,22 @@ const AdditionalInfo = ({ mode, additionalInfo, setAdditionalInfo, formErrors, s
                         label="No" 
                         checked={!additionalInfo.missingParts}
                         onChange={handleMissingPartsSelect}
+                    />
+                </Col>
+            </FormGroup>
+
+            <FormGroup as={Row} className="mt-2 lg-border">
+                <FormLabel as="legend" column sm={4} className="my-2">
+                    Date last performed (if known)
+                </FormLabel>
+                <Col sm={8} className="my-2">
+                    <DatePicker
+                    selected={additionalInfo.lastPerformed || null}
+                    onChange={handleLastPerformedSelect}
+                    className="form-control"
+                    dateFormat="MM-dd-yyyy"
+                    isClearable
+                    placeholderText="Select date"
                     />
                 </Col>
             </FormGroup>

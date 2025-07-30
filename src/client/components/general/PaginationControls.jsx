@@ -31,7 +31,7 @@ const PaginationControls = ({
           key={idx + 1}
           variant="outline-primary"
           onClick={() => handlePageClick(idx + 1)}
-          className={currentPage === idx + 1 ? "active" : ""}
+          className={`${currentPage === idx + 1 ? "active" : ""} current-page-btn`}
         >
           {idx + 1}
         </Button>

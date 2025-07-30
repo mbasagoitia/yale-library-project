@@ -1,13 +1,13 @@
 const getAllPiecesQuery = (db, callback) => {
     const query = `
       SELECT p.*, 
-             c.last_name AS last_name, 
-             c.first_name AS first_name, 
-             s.label AS genre, 
-             m.label AS medium, 
-             COALESCE(mc.label, mo_parent.label) AS medium_category, 
-             pub.label AS publisher, 
-             con.label AS \`condition\`
+        c.last_name AS last_name, 
+        c.first_name AS first_name, 
+        s.label AS genre, 
+        m.label AS medium, 
+        COALESCE(mc.label, mo_parent.label) AS medium_category, 
+        pub.label AS publisher, 
+        con.label AS \`condition\`
       FROM pieces p
       JOIN composers c ON p.composer_id = c.id
       JOIN species_options s ON p.species_id = s.id
@@ -55,31 +55,38 @@ const getFormattedDate = () => {
     const d = new Date();
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
   };
+
+const getFormattedLastPerformedDate = (datestring) => {
+    const d = new Date(datestring);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
   
 const insertNewPiece = (pieceInfo, db, callback) => {
     const {
         title, identifierLabel, identifierValue, number, composer, medium,
         genre, publisher, callNumber, condition, publicDomain, notes,
-        ownPhysical, ownDigital, missingParts, scansUrl
+        ownPhysical, ownDigital, missingParts, scansUrl, lastPerformed
     } = pieceInfo;
 
     const finalIdentifierValue = identifierValue === "" ? null : identifierValue;
     const finalIdentifierLabel = !identifierValue ? null : identifierLabel;
     const mediumId = medium.id || medium.options?.[0]?.id;
     const acquisitionDate = getFormattedDate();
+    
+    lastPerformedFormatted = lastPerformed ? getFormattedLastPerformedDate(lastPerformed) : null;
 
     const insertQuery = `
         INSERT INTO pieces (
         title, identifier_label, identifier_value, number, composer_id, species_id, medium_id, publisher_id,
         call_number, condition_id, public_domain, additional_notes,
-        own_physical, own_digital, missing_parts, scans_url, acquisition_date
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        own_physical, own_digital, missing_parts, scans_url, acquisition_date, date_last_performed
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
     const values = [
         title, finalIdentifierLabel, finalIdentifierValue, number,
         composer.id, genre.id, mediumId, publisher.id,
         callNumber.join(" "), condition, publicDomain, notes,
-        ownPhysical, ownDigital, missingParts, scansUrl, acquisitionDate
+        ownPhysical, ownDigital, missingParts, scansUrl, acquisitionDate, lastPerformedFormatted
     ];
 
     db.query(insertQuery, values, callback);
@@ -102,7 +109,8 @@ const insertNewPiece = (pieceInfo, db, callback) => {
       ownPhysical,
       ownDigital,
       missingParts,
-      scansUrl
+      scansUrl, 
+      lastPerformed
     } = pieceInfo;
   
     const finalIdentifierValue = identifierValue === "" ? null : identifierValue;
@@ -112,7 +120,7 @@ const insertNewPiece = (pieceInfo, db, callback) => {
       UPDATE pieces
       SET title = ?, identifier_label = ?, identifier_value = ?, number = ?, composer_id = ?, species_id = ?, medium_id = ?,
           publisher_id = ?, call_number = ?, condition_id = ?, public_domain = ?, additional_notes = ?, own_physical = ?, own_digital = ?,
-          missing_parts = ?, scans_url = ?
+          missing_parts = ?, scans_url = ?, date_last_performed = ?
       WHERE id = ?
     `;
   
@@ -133,6 +141,7 @@ const insertNewPiece = (pieceInfo, db, callback) => {
       ownDigital,
       missingParts,
       scansUrl,
+      lastPerformed,
       id
     ];
   

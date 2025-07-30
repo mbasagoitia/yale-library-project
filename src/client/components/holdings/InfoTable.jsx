@@ -2,7 +2,7 @@ import { Table } from 'react-bootstrap';
 import formatDate from "../../helpers/general/formatDate";
 
 const InfoTable = ({ data }) => {
-    const { first_name, last_name, publisher,acquisition_date, call_number, public_domain, own_digital, scans_url, condition, additional_notes } = data;
+    const { first_name, last_name, publisher, acquisition_date, call_number, public_domain, own_digital, scans_url, condition, date_last_performed, additional_notes } = data;
         return (
             <Table striped bordered className="mt-3">
                 <tbody>
@@ -17,6 +17,10 @@ const InfoTable = ({ data }) => {
                 <tr>
                     <td><strong>Acquisition Date</strong></td>
                     <td>{acquisition_date ? formatDate(acquisition_date) : "Unknown"}</td>
+                </tr>
+                <tr>
+                    <td><strong>Date Last Performed</strong></td>
+                    <td>{date_last_performed ? formatDate(date_last_performed) : "Unknown"}</td>
                 </tr>
                 <tr>
                     <td><strong>Call Number</strong></td>

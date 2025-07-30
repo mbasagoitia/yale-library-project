@@ -168,10 +168,6 @@ h2 {
   font-size: 0.9rem;
 }
 
-.nav-searchbar {
-  margin-top: 10px;
-}
-
 .search-button {
   background: none;
   border: none;
@@ -245,6 +241,7 @@ body {
 
 .page-content h1 {
   text-align: center;
+  text-wrap: balance;
 }
 
 .searchableList {
@@ -511,6 +508,10 @@ body {
   cursor: pointer;
 }
 
+.current-page-btn {
+  display: none;
+}
+
 .pagination-controls button.active {
   font-weight: bold;
   background-color: #eee;
@@ -627,9 +628,19 @@ body {
 .react-pdf__Page, .react-pdf__Document {
   display: flex;
   justify-content: center;
+  width: 100%;
+  min-width: 300px;
 }
 
 .react-pdf__Page__canvas {
+  width: 100% !important;
+}
+
+.react-pdf__Page__annotations.annotationLayer  {
+  display: none;
+}
+
+.react-pdf__Page__textContent {
   width: 100% !important;
 }
 
@@ -649,6 +660,12 @@ body {
 
 .dc-nav-buttons {
   flex-basis: 50%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.open-folder-btn {
+  font-size: 0.8rem;
 }
 
 .open-advanced-filter {
@@ -698,6 +715,11 @@ body {
   .pagination-controls button {
     padding: 0.5rem 0.75rem;
   }
+
+  .current-page-btn {
+  display: block;
+}
+
 }
 
 

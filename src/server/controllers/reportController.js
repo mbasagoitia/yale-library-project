@@ -7,7 +7,8 @@ const getAllPieces = (req, res, db) => {
       p.additional_notes AS Notes,
       con.label AS 'Condition',
       p.call_number AS 'Call Number',
-      DATE_FORMAT(p.acquisition_date, '%b %e, %Y') AS 'Acquisition Date'
+      DATE_FORMAT(p.acquisition_date, '%b %e, %Y') AS 'Acquisition Date',
+      DATE_FORMAT(p.date_last_performed, '%b %e, %Y') AS 'Date Last Performed'
     FROM pieces p
     INNER JOIN composers c ON p.composer_id = c.id 
     INNER JOIN publisher_options pub ON p.publisher_id = pub.id
@@ -34,7 +35,8 @@ const getMissing = (req, res, db) => {
     p.additional_notes AS Notes,
     con.label AS 'Condition',
     p.call_number AS 'Call Number',
-    DATE_FORMAT(p.acquisition_date, '%b %e, %Y') AS 'Acquisition Date'
+    DATE_FORMAT(p.acquisition_date, '%b %e, %Y') AS 'Acquisition Date',
+    DATE_FORMAT(p.date_last_performed, '%b %e, %Y') AS 'Date Last Performed'
   FROM pieces p
   INNER JOIN composers c ON p.composer_id = c.id 
   INNER JOIN publisher_options pub ON p.publisher_id = pub.id
@@ -59,7 +61,8 @@ const getPoorCondition = (req, res, db) => {
     p.additional_notes AS Notes,
     con.label AS 'Condition',
     p.call_number AS 'Call Number',
-    DATE_FORMAT(p.acquisition_date, '%b %e, %Y') AS 'Acquisition Date'
+    DATE_FORMAT(p.acquisition_date, '%b %e, %Y') AS 'Acquisition Date',
+    DATE_FORMAT(p.date_last_performed, '%b %e, %Y') AS 'Date Last Performed'
   FROM pieces p
   INNER JOIN composers c ON p.composer_id = c.id 
   INNER JOIN publisher_options pub ON p.publisher_id = pub.id
@@ -134,14 +137,15 @@ const getPerformanceHistory = (req, res, db) => {
       p.title AS Title,
       CONCAT(c.last_name, ', ', c.first_name) AS Composer,
       p.last_performed AS 'Last Performed'
-      DATE_FORMAT(p.acquisition_date, '%b %e, %Y') AS 'Acquisition Date'
+      DATE_FORMAT(p.acquisition_date, '%b %e, %Y') AS 'Acquisition Date',
+      DATE_FORMAT(p.date_last_performed, '%b %e, %Y') AS 'Date Last Performed'
     FROM pieces p
     JOIN composers c ON p.composer_id = c.id
     WHERE 
-      p.last_performed IS NOT NULL
-      AND YEAR(p.last_performed) BETWEEN YEAR(CURDATE()) - ? AND YEAR(CURDATE())
+      p.date_last_performed IS NOT NULL
+      AND YEAR(p.date_last_performed) BETWEEN YEAR(CURDATE()) - ? AND YEAR(CURDATE())
     ORDER BY 
-      p.last_performed DESC,
+      p.date_last_performed DESC,
       c.last_name ASC,
       c.first_name ASC,
       p.title ASC;

@@ -1,36 +1,31 @@
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { Search, BookOpen, BarChart3 } from 'lucide-react';
 
 const HomeCards = () => {
-    const isAdmin = useSelector((state) => state.auth.isAdmin);
-  
+
     const cards = [
       {
         title: 'Holdings',
         icon: <Search size={40} strokeWidth={1.5} />,
         link: '/browse-holdings',
-        disabled: false,
       },
       {
         title: 'Classification Guide',
         icon: <BookOpen size={40} strokeWidth={1.5} />,
         link: '/classification-guide',
-        disabled: false,
       },
       {
-        title: 'Reports',
+        title: 'Digital Catalogue',
         icon: <BarChart3 size={40} strokeWidth={1.5} />,
-        link: '/reports',
-        disabled: !isAdmin,
+        link: '/digital-catalogue',
       },
     ];
   
     return (
       <div className="card-section">
-        {cards.map(({ title, icon, link, disabled }) => {
+        {cards.map(({ title, icon, link }) => {
           const CardContent = (
-            <div className={`card ${disabled ? 'card-disabled' : ''}`}>
+            <div className="card">
               <div className="card-icon text-center">{icon}</div>
               <div className="card-content text-center">
                 <h3>{title}</h3>
@@ -38,13 +33,7 @@ const HomeCards = () => {
             </div>
           );
   
-          return disabled ? (
-            <div key={title}>{CardContent}</div>
-          ) : (
-            <Link to={link} key={title} className="card-link">
-              {CardContent}
-            </Link>
-          );
+          return <Link to={link} key={title} className="card-link">{CardContent}</Link>
         })}
       </div>
     );
