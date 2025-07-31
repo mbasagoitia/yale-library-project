@@ -136,7 +136,6 @@ const getPerformanceHistory = (req, res, db) => {
     SELECT 
       p.title AS Title,
       CONCAT(c.last_name, ', ', c.first_name) AS Composer,
-      p.last_performed AS 'Last Performed'
       DATE_FORMAT(p.acquisition_date, '%b %e, %Y') AS 'Acquisition Date',
       DATE_FORMAT(p.date_last_performed, '%b %e, %Y') AS 'Date Last Performed'
     FROM pieces p

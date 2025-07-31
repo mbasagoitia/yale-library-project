@@ -13,15 +13,10 @@ const Home = () => {
 };
 
 
-// Check that date last performed reports work
-
 // when editing a piece from the manage holdings page, it should not redirect you away but open an edit mode
 
-// Navbar: login/logout should be far right (accessible by profile icon), move reports to before search bar
 // Make sure general search works*** memoized selector
 // PDF preview needs to scale correctly on small screen sizes
-// Digital catalogue path and open finder button styles on small screen
-// Different icon for digital catalogue
 // Reset genre and publisher on new piece submit
 
 // css file

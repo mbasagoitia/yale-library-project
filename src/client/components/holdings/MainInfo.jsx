@@ -8,10 +8,7 @@ import IdAndNumber from "../holdings/call-number-selects/IdAndNumber";
 import useFetchResourceData from "../../hooks/useFetchResourceData.js";
 
 const MainInfo = ({ mainInfo, setMainInfo, formErrors, mediumResetKey }) => {
-
-  // The onItemClick methods passed to each select/filter to set main info.
-  // The behavior should be different when they are accessed from the browse holdings filter.
-
+  
   const resourceData = useFetchResourceData();
 
   const setMedium = (item) => {

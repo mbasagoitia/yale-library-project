@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Search, BookOpen, BarChart3 } from 'lucide-react';
+import { Search, BookOpen, Monitor } from 'lucide-react';
 
 const HomeCards = () => {
 
@@ -16,7 +16,7 @@ const HomeCards = () => {
       },
       {
         title: 'Digital Catalogue',
-        icon: <BarChart3 size={40} strokeWidth={1.5} />,
+        icon: <Monitor size={40} strokeWidth={1.5} />,
         link: '/digital-catalogue',
       },
     ];
