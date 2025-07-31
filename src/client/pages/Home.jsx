@@ -17,7 +17,6 @@ const Home = () => {
 
 // Make sure general search works*** memoized selector
 // PDF preview needs to scale correctly on small screen sizes
-// Reset genre and publisher on new piece submit
 
 // css file
 

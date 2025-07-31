@@ -2,19 +2,15 @@ import React, { useState, useEffect, useRef } from 'react';
 import { InputGroup, FormControl, Dropdown } from 'react-bootstrap';
 import filterItems from '../../helpers/general/filterItems';
 
-const SearchFilter = ({ placeholder, initialValue, items, selectedItem, onItemClick }) => {
+const SearchFilter = ({ placeholder, initialValue, items, onItemClick }) => {
   const [searchText, setSearchText] = useState(initialValue || '');
   const [filteredItems, setFilteredItems] = useState(items);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
   useEffect(() => {
-    if (selectedItem) {
-      setSearchText(selectedItem.label);
-    } else {
-      setSearchText('');
-    }
-  }, [selectedItem]);
+    setSearchText(initialValue || '');
+  }, [initialValue]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
