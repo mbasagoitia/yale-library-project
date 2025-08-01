@@ -118,21 +118,21 @@ const DigitalCatalogueFolders = ({ folderPath }) => {
         itemsPerPage={itemsPerPage}
       />
       </Row>
-        <Modal
-          show={isModalOpen}
-          header={"Preview PDF"}
-          content={
-            <div>
-              <div className="d-flex justify-content-center mb-4">
-                <Button variant="primary" className="mt-2" onClick={() => handleOpenFile(selectedPDF)}>
-                  Open File
-                </Button>
-              </div>
-              <PDFPreview filePath={selectedPDF} />
+      <Modal
+        show={isModalOpen}
+        header={"PDF Preview"}
+        content={
+          <div>
+            <div className="d-flex justify-content-center mb-4">
+              <Button variant="primary" className="mt-2" onClick={() => handleOpenFile(selectedPDF)}>
+                Open File
+              </Button>
             </div>
-          }
-          handleCloseModal={handleCloseModal}
-        />
+            <PDFPreview filePath={selectedPDF} isVisible={isModalOpen} />
+          </div>
+        }
+        handleCloseModal={handleCloseModal}
+      />
     </Container>
   );
 };
