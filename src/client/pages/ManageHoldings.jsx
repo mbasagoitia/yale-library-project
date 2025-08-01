@@ -10,6 +10,11 @@ import HoldingsFilter from "../components/search-filters/HoldingsFilter";
 
 const ManageHoldings = () => {
 
+    // Define the overall mode, "edit" or "new" here and use that to describe component behavior in filter and CatalogueNew
+    // Also rename CatalogueNew to CataloguePiece?
+    
+    const [mode, setMode] = useState("new")
+
     const [filteredItems, setFilteredItems] = useState([]);
     const [showResults, setShowResults] = useState(false);
 
@@ -44,7 +49,7 @@ const ManageHoldings = () => {
                     <Col xl={5}>
                         <Card>
                             <Card.Header>
-                                <h5 className="mb-0">Search Collection</h5>
+                                <h5 className="mb-0">Modify Existing Holdings</h5>
                             </Card.Header>
                             <Card.Body>
                                 <HoldingsFilter

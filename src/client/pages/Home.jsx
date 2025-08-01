@@ -16,7 +16,6 @@ const Home = () => {
 // when editing a piece from the manage holdings page, it should not redirect you away but open an edit mode
 
 // Make sure general search works*** memoized selector
-// PDF preview needs to scale correctly on small screen sizes
 
 // css file
 

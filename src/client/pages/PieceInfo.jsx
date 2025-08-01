@@ -95,7 +95,7 @@ const PieceInfo = () => {
             {isAdmin && isDeleteModalOpen && (
               <Modal content={
                 <>
-                <p>Are you sure you want to delete this item?</p>
+                <p>Are you sure you want to delete this item from the catalogue?</p>
                   <Button className="btn btn-primary align-self-center" onClick={handleDelete}>Delete</Button>
                 </>
             } handleCloseModal={handleCloseModal} />

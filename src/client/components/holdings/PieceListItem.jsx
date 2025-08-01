@@ -26,11 +26,15 @@ const PieceListItem = ({ data }) => {
     }
 
     return (
+        // This should not be a link. The behavior needs to change when accessed from different parts of the application
+        // useContext?
         <Link to={`/browse-holdings/${id}`} className="piece-list-item-link">
         <Card className="mb-1 piece-list-item">
             <Card.Body>
                 <Row className="align-items-center">
-                    <Col xs={0} sm={1} className="empty-col"><div className="empty-tag"></div></Col>
+                    <Col xs={0} sm={1} className="empty-col">
+                        <div className="empty-tag"></div>
+                    </Col>
                     <Col xs={5} sm={4} className='d-flex op-col'>
                         <p className="mb-0">{title}</p>
                     </Col>
