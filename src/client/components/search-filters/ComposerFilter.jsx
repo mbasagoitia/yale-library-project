@@ -11,6 +11,10 @@ const ComposerFilter = ({ initialValue, items, onItemClick }) => {
   const dropdownRef = useRef(null);
 
   useEffect(() => {
+    setSearchText(initialValue || '');
+  }, [initialValue]);
+
+  useEffect(() => {
     if (isDropdownOpen) {
       document.addEventListener('click', handleClickOutside);
     } else {
@@ -27,13 +31,6 @@ const ComposerFilter = ({ initialValue, items, onItemClick }) => {
       setIsDropdownOpen(false);
     }
   };
-
-  useEffect(() => {
-    if (!initialValue) {
-      setSearchText('');
-      setSelectedItemId(null);
-    }
-  }, [initialValue]);
 
   const handleInputChange = (value) => {
     setSearchText(value);

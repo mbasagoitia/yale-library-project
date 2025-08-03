@@ -9,6 +9,7 @@ import useFetchResourceData from "../../hooks/useFetchResourceData.js";
 
 const MainInfo = ({ mainInfo, setMainInfo, formErrors, mediumResetKey }) => {
   
+  console.log("medium", mainInfo.medium)
   const resourceData = useFetchResourceData();
 
   const setMedium = (item) => {
@@ -76,7 +77,7 @@ const MainInfo = ({ mainInfo, setMainInfo, formErrors, mediumResetKey }) => {
 
             <div>
               <h3>Ensemble Type</h3>
-              {resourceData.mediumData.length > 0 && <MediumSelect items={resourceData.mediumData} mainInfo={mainInfo} setMainInfo={setMainInfo} handleItemSelect={setMedium}   resetKey={mediumResetKey} />}
+              {resourceData.mediumData.length > 0 && <MediumSelect initialValue={mainInfo.medium || ""} items={resourceData.mediumData} mainInfo={mainInfo} setMainInfo={setMainInfo} handleItemSelect={setMedium} resetKey={mediumResetKey} />}
             </div>
         </Row>
         <Row className="my-4">

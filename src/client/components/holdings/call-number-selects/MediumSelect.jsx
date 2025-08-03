@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 
-const MediumSelect = ({ items, handleItemSelect, depth = 0, resetKey }) => {
+const MediumSelect = ({ initialValue, items, handleItemSelect, depth = 0, resetKey }) => {
   const [currentItem, setCurrentItem] = useState(null);
 
+  // This isn't currently working--find a way to set initialValue and also allow flexibility in changing it
+
   useEffect(() => {
-    setCurrentItem(null);
+    if (initialValue) {
+      setCurrentItem(initialValue)
+    } else {
+      setCurrentItem(null);
+    }
   }, [resetKey]);
 
   useEffect(() => {
@@ -47,6 +53,7 @@ const MediumSelect = ({ items, handleItemSelect, depth = 0, resetKey }) => {
     if (nestedItems?.length) {
       return (
         <MediumSelect
+          initialValue={initialValue}
           key={currentItem.label}
           items={nestedItems}
           handleItemSelect={handleItemSelect}

@@ -11,7 +11,6 @@ import HoldingsList from "../components/holdings/HoldingsList";
 import HoldingsFilter from "../components/search-filters/HoldingsFilter";
 
 const ManageHoldings = () => {
-
     // Get/set initial data when editing a piece
     const [data, setData] = useState(null);
 
@@ -63,7 +62,7 @@ const ManageHoldings = () => {
                         <Col xl={5}>
                             <Card>
                                 <Card.Header>
-                                    <h5 className="mb-0">Modify Existing Holdings</h5>
+                                    <h5 className="mb-0">Edit Existing Holdings</h5>
                                 </Card.Header>
                                 <Card.Body>
                                     <HoldingsFilter

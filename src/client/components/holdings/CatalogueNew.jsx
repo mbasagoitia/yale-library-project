@@ -86,7 +86,7 @@ const CatalogueNew = ({ handleSubmit, initialData }) => {
     }
   };
 
-
+  // Move helpers to component where this is defined?
   useEffect(() => {
     if (initialData) {
       initializePieceState({ initialData, resourceData, setMainInfo, setAdditionalInfo, setDataReady,
