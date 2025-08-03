@@ -13,7 +13,9 @@ const Home = () => {
 };
 
 
-// when editing a piece from the manage holdings page, it should not redirect you away but open an edit mode
+// Initial data: composer, medium, and date last performed are not populating correctly
+
+// Edit acquisition date?
 
 // Make sure general search works*** memoized selector
 

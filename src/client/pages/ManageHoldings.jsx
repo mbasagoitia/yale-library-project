@@ -2,11 +2,9 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from 'react-redux';
 import { ModeContext } from "../contexts/ModeContext.js";
-import { addHolding } from "../../redux/librarySlice.js";
+import { addHolding, updateHolding } from "../../redux/librarySlice.js";
 import updatePiece from "../helpers/holdings/updatePiece.js";
-import deletePiece from "../helpers/holdings/deletePiece.js";
 import { Container, Row, Col, Card } from "react-bootstrap";
-import { useSelector } from 'react-redux';
 import CatalogueNew from "../components/holdings/CatalogueNew.jsx";
 import catalogueNew from "../helpers/holdings/catalogueNew.js";
 import HoldingsList from "../components/holdings/HoldingsList";
@@ -14,34 +12,10 @@ import HoldingsFilter from "../components/search-filters/HoldingsFilter";
 
 const ManageHoldings = () => {
 
-    // Page mode (edit vs new): state/useContext
-    // Filter behavior: props
+    // Get/set initial data when editing a piece
+    const [data, setData] = useState(null);
 
-    // Every time form is submitted, set back to "new"
-    // Add option to change back to "new" mode if nothing is submitted
-    // Add delete button
-    // Move buttons to this component instead of AdditionalInfo???
-
-    // Remember to add admin access where needed
-    const { isAdmin } = useSelector((state) => state.auth);
-
-// This is used to get initial data when editing a piece. May not live on this component
-// Where should id come from?
-  const [data, setData] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetch(`http://localhost:5000/api/holdings-data/${id}`);
-        if (!res.ok) throw new Error('Network response was not ok');
-        const data = await res.json();
-        setData(data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    const [mode, setMode] = useState("new")
+    const [mode, setMode] = useState("new");
 
     const [filteredItems, setFilteredItems] = useState([]);
     const [showResults, setShowResults] = useState(false);
@@ -50,27 +24,28 @@ const ManageHoldings = () => {
 
     const dispatch = useDispatch();
 
-    const handleDelete = async (e) => {
-        e.preventDefault();
-        try {
-          await deletePiece(id);
-          // Reset form
-        } catch (error) {
-          console.error('Catalogue error:', error);
-        }
-      };
-
-    const handleSubmit = async (formData) => {
+    const handleAddNewPiece = async (formData) => {
         try {
           const newPiece = await catalogueNew(formData);
           dispatch(addHolding(newPiece));
+          setMode("new");
         } catch (err) {
           console.error("Error adding holding:", err);
         }
       };
 
+      const handleUpdatePiece = async (formData) => {
+        try {
+          const updated = await updatePiece(formData);
+          dispatch(updateHolding(updated));
+          setMode("new");
+        } catch (err) {
+          console.error("Error updating holding:", err);
+        }
+      };
+
     return (
-        <ModeContext.Provider value={{ mode, setMode }}>
+        <ModeContext.Provider value={{ mode, setMode, setData }}>
             <div className="manage-holdings">
                 <h1>Manage Holdings</h1>
                 <Container fluid className="mt-4 m-0 p-0">
@@ -81,7 +56,7 @@ const ManageHoldings = () => {
                                     <h5 className="mb-0">{`${mode == "new" ? "Add New" : "Edit"} Piece`}</h5>
                                 </Card.Header>
                                 <Card.Body>
-                                    <CatalogueNew submit={handleSubmit} />
+                                    <CatalogueNew handleSubmit={mode == "new" ? handleAddNewPiece : handleUpdatePiece} initialData={data} />
                                 </Card.Body>
                             </Card>
                         </Col>
@@ -98,7 +73,7 @@ const ManageHoldings = () => {
                                     />
                                     <hr />
                                     {showResults ? <h2 className="mt-2 mb-3">Results: {filteredItems.length}</h2> : null}
-                                    <HoldingsList filteredItems={filteredItems} />
+                                    <HoldingsList filteredItems={filteredItems} behavior={"edit"} />
                                 </Card.Body>
                             </Card>
                         </Col>

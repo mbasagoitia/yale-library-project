@@ -1,4 +1,4 @@
-const handleSubmit = async (e, mainInfo, setMainInfo, additionalInfo, setAdditionalInfo, setFormErrors, setShowCall, id, setMediumResetKey, onSubmit) => {
+const validateAndClearForm = async (e, mainInfo, setMainInfo, additionalInfo, setAdditionalInfo, setFormErrors, setShowCall, id, setMediumResetKey, onSubmit) => {
     e.preventDefault();
 
     const { title, medium, composer, genre, publisher, callNumber } = mainInfo;
@@ -11,8 +11,10 @@ const handleSubmit = async (e, mainInfo, setMainInfo, additionalInfo, setAdditio
           const allInfo = { ...mainInfo, ...additionalInfo };
 
           if (id) {
+            // Updating piece with preexisting ID
             await onSubmit(allInfo, id);
           } else {
+            // Adding new piece
             await onSubmit(allInfo);
           }
 
@@ -54,4 +56,4 @@ const handleSubmit = async (e, mainInfo, setMainInfo, additionalInfo, setAdditio
     }
   };
 
-export default handleSubmit;
+export default validateAndClearForm;

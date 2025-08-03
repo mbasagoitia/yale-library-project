@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import PieceListItem from "./PieceListItem";
 import PaginationControls from "../general/PaginationControls";
 
-const HoldingsList = ({ filteredItems }) => {
+const HoldingsList = ({ filteredItems, behavior }) => {
   
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -14,7 +14,7 @@ const HoldingsList = ({ filteredItems }) => {
     <div className="holdings-list-container">
       <div className="holdings-list">
         {currentItems.map((item) => (
-          <PieceListItem key={item.id} data={item} />
+          <PieceListItem key={item.id} data={item} behavior={behavior} />
         ))}
       </div>
       {filteredItems.length > 0 &&

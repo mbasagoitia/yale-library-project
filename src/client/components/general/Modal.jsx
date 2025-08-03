@@ -1,4 +1,4 @@
-import { Modal as BootstrapModal, Button } from 'react-bootstrap';
+import { Modal as BootstrapModal } from 'react-bootstrap';
 
 const Modal = ({ show, header, content, handleCloseModal }) => {
   return (

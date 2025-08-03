@@ -535,14 +535,11 @@ body {
 
 .piece-list-item {
   font-size: clamp(0.6rem, 2vw, 0.8rem);
+  cursor: pointer;
 }
 
 .piece-list-item:hover {
   background-color: #f8f9fa;
-}
-
-.piece-list-item-link {
-  text-decoration: none;
 }
 
 .op-col {

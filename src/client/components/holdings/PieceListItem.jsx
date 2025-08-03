@@ -1,7 +1,8 @@
 import { Card, Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { useMode } from "../../contexts/ModeContext.js";
+import { useNavigate } from 'react-router-dom';
 
-const PieceListItem = ({ data }) => {
+const PieceListItem = ({ data, behavior }) => {
     // Data comes in as a single piece with the following properties,
     // some of which are ids for processing purposes and others are titles for display purposes:
 
@@ -10,12 +11,12 @@ const PieceListItem = ({ data }) => {
     // media_type_id, media_type, location_id, location
 
     // Only title, opus (if present), number (if present AND opus is also present), composer, and publisher should be listed on this list item.
-    // Clicking on the list item routes the user to a new page based on the piece's unique id (check how 
-    // to format this other than as a number), where the rest of the information will be displayed
+    // Based on desired behavior, clicking on the list item either routes the user to a new page based on the piece's unique id or populates the 
+    // "edit piece" interface with current data
 
-    // Listing op. and no. are very rare and are only used in determining the call number if they are significant
-    // in the title, or are chamber music. Number alone won't be listed here, only opus alone if significant
-    // If both are present, it is assumed that the piece is part of a collection and will be listed as op 18/1
+    // Listing both op. and no. are very rare and are only used in determining the call number if they are significant
+    // in the title, or are chamber music. Number alone won't be listed here, only opus alone if significant.
+    // If both are present, it is assumed that the piece is part of a collection and will be listed as op. 18/1
 
     let { id, title, identifier_label, identifier_value, number, last_name, first_name, publisher } = data;
 
@@ -25,11 +26,24 @@ const PieceListItem = ({ data }) => {
         title += ` ${identifier_label} ${identifier_value}`;
     }
 
+    // Sets initial piece data on manage holdings page
+    const { setMode, setData } = useMode();
+
+    // Navigates to single piece page
+    const navigate = useNavigate();
+
     return (
-        // This should not be a link. The behavior needs to change when accessed from different parts of the application
-        // useContext?
-        <Link to={`/browse-holdings/${id}`} className="piece-list-item-link">
-        <Card className="mb-1 piece-list-item">
+        <Card
+            className="mb-1 piece-list-item"
+            onClick={() => {
+                if (behavior === "edit") {
+                setData(data);
+                setMode("edit");
+                } else {
+                navigate(`/browse-holdings/${id}`);
+                }
+            }}
+        >
             <Card.Body>
                 <Row className="align-items-center">
                     <Col xs={0} sm={1} className="empty-col">
@@ -49,7 +63,6 @@ const PieceListItem = ({ data }) => {
                 </Row>
             </Card.Body>
         </Card>
-        </Link>
     );
 }
 

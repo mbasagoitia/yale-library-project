@@ -1,5 +1,5 @@
 import React from "react";
-import { FormGroup, FormCheck, FormLabel, FormControl, Button, Row, Col, Container } from "react-bootstrap";
+import { FormGroup, FormCheck, FormLabel, FormControl, Row, Col, Container } from "react-bootstrap";
 import conditions from "./conditions";
 import Tooltip from "./Tooltip";
 import PDTooltip from "./tooltip-contents/PDTooltip";
@@ -7,6 +7,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const AdditionalInfo = ({ mode, additionalInfo, setAdditionalInfo, formErrors, setFormErrors }) => {
+    // Need to pass initialValue if applicable
 
     const handleConditionSelect = (id) => {
         setAdditionalInfo(prevState => ({ ...prevState, condition: id }));
@@ -169,10 +170,6 @@ const AdditionalInfo = ({ mode, additionalInfo, setAdditionalInfo, formErrors, s
                     />
                     <FormControl.Feedback type="invalid">{formErrors.missingPartsWarning}</FormControl.Feedback>
                 </Col>
-            </FormGroup>
-
-            <FormGroup as={Row} className="mt-2 d-flex justify-content-center">
-                    <Button type="submit" className="w-auto">{mode === "new" ? "Catalogue" : "Update"}</Button>
             </FormGroup>
         </Container>
     );

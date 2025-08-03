@@ -25,7 +25,7 @@ const Browse = () => {
                     <HoldingsFilter setShowResults={setShowResults} setFilteredItems={setFilteredItems} />
                 </div>
                 {showResults ? <h2>Results: {filteredItems.length}</h2> : null}
-                <HoldingsList filteredItems={filteredItems} />
+                <HoldingsList filteredItems={filteredItems} behavior={"search"} />
             </div>
         </div>
         )

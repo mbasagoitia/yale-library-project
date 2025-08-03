@@ -1,23 +1,42 @@
 import React, { useState, useEffect } from "react";
-import { Button } from "react-bootstrap";
+import { Form, FormGroup, Row, Button } from "react-bootstrap";
 import MainInfo from "./MainInfo.jsx";
 import AdditionalInfo from "./AdditionalInfo.jsx";
 import handleShowCall from "../../helpers/catalogue/handleShowCall.js";
 import CallNumberDisplay from "./CallNumberDisplay.jsx";
-// What does this do?
-import handleSubmit from "../../helpers/catalogue/submitPieceInfo.js";
 import splitString from "../../helpers//general/splitString.js";
 import { findMediumById, findComposerById, findGenreById, findPublisherById } from "../../helpers/holdings/filterData.js";
 import initializePieceState from "../../helpers/catalogue/initializePieceState.js";
-import { useParams } from 'react-router-dom';
 import useFetchResourceData from "../../hooks/useFetchResourceData.js";
 import useScrollOnFormErrors from "../../hooks/useScrollOnFormErrors.js";
 import { useMode } from "../../contexts/ModeContext.js";
+import { useDispatch } from "react-redux";
+import { deleteHolding } from "../../../redux/librarySlice.js";
+import validateAndClearForm from "../../helpers/catalogue/validateAndClearForm.js";
+import deletePiece from "../../helpers/holdings/deletePiece.js";
+import Modal from "../general/Modal.jsx";
 
-const CatalogueNew = ({ initialData, submit }) => {
+const CatalogueNew = ({ handleSubmit, initialData }) => {
 
-  const { id } = useParams();
   const { mode, setMode } = useMode();
+  const id = initialData?.id;
+
+  const [warningModal, setWarningModal] = useState(false);
+
+  const openDeleteModal = () => {
+    setWarningModal(true);
+  }
+
+  const closeDeleteModal = () => {
+    setWarningModal(false);
+  }
+
+  const setNewAndClear = () => {
+    setMode("new");
+    // reset form
+  }
+
+  const dispatch = useDispatch();
 
   const resourceData = useFetchResourceData();
 
@@ -26,14 +45,6 @@ const CatalogueNew = ({ initialData, submit }) => {
   const [showCall, setShowCall] = useState(mode === "edit" ? true : false);
 
   const [mediumResetKey, setMediumResetKey] = useState(0);
-
-  // Define onSubmit for either adding or editing
-  const onSubmit = {
-    // updatePiece or
-    // (e) => handleSubmit(e, mainInfo, setMainInfo, additionalInfo, setAdditionalInfo, setFormErrors, setShowCall, id, setMediumResetKey, submit)
-  }
-
-  useScrollOnFormErrors(formErrors);
 
   const [mainInfo, setMainInfo] = useState({
     title: "",
@@ -58,29 +69,48 @@ const CatalogueNew = ({ initialData, submit }) => {
     notes: ""
   });
 
-  // Is this necessary?
+  const onSubmit = (e) =>  {
+    validateAndClearForm(e, mainInfo, setMainInfo, additionalInfo, setAdditionalInfo, setFormErrors, setShowCall, id, setMediumResetKey, handleSubmit)
+  }
+
+  useScrollOnFormErrors(formErrors);
+
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    try {
+      const deleted = await deletePiece(id);
+      dispatch(deleteHolding(deleted))
+      // Reset form
+    } catch (err) {
+      console.error("Error deleting holding:", err);
+    }
+  };
+
 
   useEffect(() => {
-    initializePieceState({ initialData, resourceData, setMainInfo, setAdditionalInfo, setDataReady,
-      helpers: {
-        findMediumById,
-        findComposerById,
-        findGenreById,
-        findPublisherById,
-        splitString
-      }
-    });
+    if (initialData) {
+      initializePieceState({ initialData, resourceData, setMainInfo, setAdditionalInfo, setDataReady,
+        helpers: {
+          findMediumById,
+          findComposerById,
+          findGenreById,
+          findPublisherById,
+          splitString
+        }
+      });
+    }
+
   }, [initialData, resourceData]);
 
   return (
     <div className="catalogueNew">
-      <form onSubmit={"#"}>
+      <Form onSubmit={onSubmit}>
         {((mode === "new") || (mode === "edit" && initialData && dataReady)) && (
           <>
           {mode == "edit" && (
             <>
             <h2>Editing {mainInfo.title}</h2>
-            <Button onClick={() => setMode("new")}>Add New Piece Instead</Button>
+            <Button onClick={setNewAndClear}>Add New Piece Instead</Button>
             </>
           )}
             <MainInfo mainInfo={mainInfo} setMainInfo={setMainInfo} formErrors={formErrors} mediumResetKey={mediumResetKey} />
@@ -93,7 +123,13 @@ const CatalogueNew = ({ initialData, submit }) => {
         <div className="mt-4">
           <AdditionalInfo mode={mode} additionalInfo={additionalInfo} setAdditionalInfo={setAdditionalInfo} formErrors={formErrors} setFormErrors={setFormErrors} />
         </div>
-      </form>
+        {/* styling here will need to be fixed */}
+        <FormGroup as={Row} className="mt-2 d-flex justify-content-center">
+          <Button type="submit" className="w-auto">{mode === "new" ? "Catalogue" : "Update"}</Button>
+          {mode === "edit" && <Button type="button" onClick={openDeleteModal}>Delete Piece</Button>}
+        </FormGroup>
+      </Form>
+      <Modal show={warningModal} header={"Delete Piece from Library"} content={<><div>Are you sure you want to remove this piece from the library? This action cannot be undone.</div><Button type="button" onClick={handleDelete}>Delete</Button></>} handleCloseModal={closeDeleteModal} />
     </div>
   );
 };
