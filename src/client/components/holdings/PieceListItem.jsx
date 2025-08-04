@@ -37,8 +37,14 @@ const PieceListItem = ({ data, behavior }) => {
             className="mb-1 piece-list-item"
             onClick={() => {
                 if (behavior === "edit") {
-                setData(data);
-                setMode("edit");
+                    // Reset everything
+                    setData(null);
+
+                    // Then defer the real data update
+                    setTimeout(() => {
+                        setData(data);
+                        setMode("edit");
+                    }, 0);
                 } else {
                 navigate(`/browse-holdings/${id}`);
                 }

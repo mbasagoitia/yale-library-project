@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Form, FormGroup, Row, Button } from "react-bootstrap";
 import MainInfo from "./MainInfo.jsx";
 import AdditionalInfo from "./AdditionalInfo.jsx";
@@ -12,11 +12,12 @@ import useScrollOnFormErrors from "../../hooks/useScrollOnFormErrors.js";
 import { useMode } from "../../contexts/ModeContext.js";
 import { useDispatch } from "react-redux";
 import { deleteHolding } from "../../../redux/librarySlice.js";
+import clearForm from "../../helpers/catalogue/clearForm.js";
 import validateAndClearForm from "../../helpers/catalogue/validateAndClearForm.js";
 import deletePiece from "../../helpers/holdings/deletePiece.js";
 import Modal from "../general/Modal.jsx";
 
-const CatalogueNew = ({ handleSubmit, initialData }) => {
+const CatalogueNew = ({ handleSubmit, initialData, setFilteredItems, setShowResults }) => {
 
   const { mode, setMode } = useMode();
   const id = initialData?.id;
@@ -29,11 +30,6 @@ const CatalogueNew = ({ handleSubmit, initialData }) => {
 
   const closeDeleteModal = () => {
     setWarningModal(false);
-  }
-
-  const setNewAndClear = () => {
-    setMode("new");
-    // reset form
   }
 
   const dispatch = useDispatch();
@@ -75,12 +71,21 @@ const CatalogueNew = ({ handleSubmit, initialData }) => {
 
   useScrollOnFormErrors(formErrors);
 
+  const setNewAndClear = () => {
+    setMode("new");
+    clearForm(setShowCall, setMainInfo, setAdditionalInfo, setMediumResetKey, setFormErrors);
+  }
+
   const handleDelete = async (e) => {
     e.preventDefault();
     try {
       const deleted = await deletePiece(id);
-      dispatch(deleteHolding(deleted))
-      // Reset form
+      console.log("deleted", deleted);
+      dispatch(deleteHolding(deleted));
+      setNewAndClear();
+      setFilteredItems([]);
+      setShowResults(false);
+      setWarningModal(false);
     } catch (err) {
       console.error("Error deleting holding:", err);
     }
@@ -113,7 +118,7 @@ const CatalogueNew = ({ handleSubmit, initialData }) => {
             <Button onClick={setNewAndClear}>Add New Piece Instead</Button>
             </>
           )}
-            <MainInfo mainInfo={mainInfo} setMainInfo={setMainInfo} formErrors={formErrors} mediumResetKey={mediumResetKey} />
+            <MainInfo mainInfo={mainInfo} setMainInfo={setMainInfo} formErrors={formErrors} mediumResetKey={mediumResetKey} setMediumResetKey={setMediumResetKey} />
             <div className="d-flex justify-content-center">
               <Button onClick={(e) => handleShowCall(mainInfo, setMainInfo, setShowCall, setFormErrors)} className="btn btn-primary my-2">Generate Call Number</Button>
             </div>

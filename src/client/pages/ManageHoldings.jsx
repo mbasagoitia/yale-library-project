@@ -11,9 +11,9 @@ import HoldingsList from "../components/holdings/HoldingsList";
 import HoldingsFilter from "../components/search-filters/HoldingsFilter";
 
 const ManageHoldings = () => {
-    // Get/set initial data when editing a piece
+    // Get/set initial form data when editing a piece
     const [data, setData] = useState(null);
-
+    // Is the interface being used for cataloguing a new piece or updating an existing one?
     const [mode, setMode] = useState("new");
 
     const [filteredItems, setFilteredItems] = useState([]);
@@ -28,6 +28,7 @@ const ManageHoldings = () => {
           const newPiece = await catalogueNew(formData);
           dispatch(addHolding(newPiece));
           setMode("new");
+          setData(null);
         } catch (err) {
           console.error("Error adding holding:", err);
         }
@@ -35,9 +36,10 @@ const ManageHoldings = () => {
 
       const handleUpdatePiece = async (formData) => {
         try {
-          const updated = await updatePiece(formData);
+          const updated = await updatePiece(formData, data?.id);
           dispatch(updateHolding(updated));
           setMode("new");
+          setData(null);
         } catch (err) {
           console.error("Error updating holding:", err);
         }
@@ -55,7 +57,7 @@ const ManageHoldings = () => {
                                     <h5 className="mb-0">{`${mode == "new" ? "Add New" : "Edit"} Piece`}</h5>
                                 </Card.Header>
                                 <Card.Body>
-                                    <CatalogueNew handleSubmit={mode == "new" ? handleAddNewPiece : handleUpdatePiece} initialData={data} />
+                                    <CatalogueNew handleSubmit={mode == "new" ? handleAddNewPiece : handleUpdatePiece} initialData={data} setFilteredItems={setFilteredItems} setShowResults={setShowResults} />
                                 </Card.Body>
                             </Card>
                         </Col>

@@ -78,17 +78,28 @@ const editPiece = (req, res, db) => {
 
 const deletePiece = (req, res, db) => {
   const { id } = req.params;
-
-  deletePieceById(id, db, (err, result) => {
-    if (err) {
-      console.error('Error executing MySQL query:', err);
-      res.status(500).json({ error: 'Error deleting piece' });
+  getPieceById(id, db, (fetchErr, pieceToDelete) => {
+    if (fetchErr) {
+      console.error('Error retrieving piece before deletion:', fetchErr);
+      res.status(500).json({ error: 'Error retrieving piece to delete' });
       return;
     }
+    if (!pieceToDelete) {
+      res.status(404).json({ error: 'Piece not found' });
+      return;
+    }
+    deletePieceById(id, db, (deleteErr, result) => {
+      if (deleteErr) {
+        console.error('Error deleting piece:', deleteErr);
+        res.status(500).json({ error: 'Error deleting piece' });
+        return;
+      }
 
-    res.status(200).json({ message: 'Piece deleted successfully' });
+      res.status(200).json(pieceToDelete);
+    });
   });
 };
+
 
 module.exports = {
     getAllPieces,

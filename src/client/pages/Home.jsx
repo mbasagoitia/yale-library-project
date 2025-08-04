@@ -13,7 +13,9 @@ const Home = () => {
 };
 
 
-// Initial data: composer, medium, and date last performed are not populating correctly
+// Initial data: medium and date last performed are not populating correctly. different values for opus?
+// Make sure delete/add/update piece works in redux store
+// Now style the manage holdings page
 
 // Edit acquisition date?
 

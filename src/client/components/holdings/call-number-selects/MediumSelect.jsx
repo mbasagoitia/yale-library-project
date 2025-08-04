@@ -1,34 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 
 const MediumSelect = ({ initialValue, items, handleItemSelect, depth = 0, resetKey }) => {
-  const [currentItem, setCurrentItem] = useState(null);
+  const [currentItem, setCurrentItem] = useState(initialValue);
+  const [userHasInteracted, setUserHasInteracted] = useState(false);
 
-  // This isn't currently working--find a way to set initialValue and also allow flexibility in changing it
-
+  // Set first item if no current or initial
   useEffect(() => {
-    if (initialValue) {
-      setCurrentItem(initialValue)
-    } else {
-      setCurrentItem(null);
-    }
-  }, [resetKey]);
-
-  useEffect(() => {
-    if (!currentItem && items.length > 0) {
-      setCurrentItem(items[0])
+    if (!initialValue && !currentItem && items.length > 0) {
+      setCurrentItem(items[0]);
     }
   }, [items]);
 
+  // Update currentItem if initialValue changes, unless user already selected
+  useEffect(() => {
+    if (!userHasInteracted && initialValue) {
+      setCurrentItem(initialValue);
+    }
+  }, [initialValue, userHasInteracted]);
+
   const handleSelect = (item) => {
+    setUserHasInteracted(true);
     setCurrentItem(item);
-  
+
     const getFirstLeaf = (node) => {
       if (node.options?.length) return getFirstLeaf(node.options[0]);
       if (node.nested_options?.length) return getFirstLeaf(node.nested_options[0]);
       return node;
     };
-  
+
     const leaf = getFirstLeaf(item);
     handleItemSelect(leaf);
   };
@@ -58,6 +58,7 @@ const MediumSelect = ({ initialValue, items, handleItemSelect, depth = 0, resetK
           items={nestedItems}
           handleItemSelect={handleItemSelect}
           depth={depth + 1}
+          resetKey={resetKey}
         />
       );
     }
@@ -70,6 +71,6 @@ const MediumSelect = ({ initialValue, items, handleItemSelect, depth = 0, resetK
       {renderNestedMediumSelect()}
     </div>
   );
-}
+};
 
 export default MediumSelect;

@@ -1,3 +1,5 @@
+// This is a mess and needs to be split up into 2-3 smaller functions
+
 const validateAndClearForm = async (e, mainInfo, setMainInfo, additionalInfo, setAdditionalInfo, setFormErrors, setShowCall, id, setMediumResetKey, onSubmit) => {
     e.preventDefault();
 
