@@ -80,7 +80,6 @@ const CatalogueNew = ({ handleSubmit, initialData, setFilteredItems, setShowResu
     e.preventDefault();
     try {
       const deleted = await deletePiece(id);
-      console.log("deleted", deleted);
       dispatch(deleteHolding(deleted));
       setNewAndClear();
       setFilteredItems([]);
@@ -112,12 +111,6 @@ const CatalogueNew = ({ handleSubmit, initialData, setFilteredItems, setShowResu
       <Form onSubmit={onSubmit}>
         {((mode === "new") || (mode === "edit" && initialData && dataReady)) && (
           <>
-          {mode == "edit" && (
-            <>
-            <h2>Editing {mainInfo.title}</h2>
-            <Button onClick={setNewAndClear}>Add New Piece Instead</Button>
-            </>
-          )}
             <MainInfo mainInfo={mainInfo} setMainInfo={setMainInfo} formErrors={formErrors} mediumResetKey={mediumResetKey} setMediumResetKey={setMediumResetKey} />
             <div className="d-flex justify-content-center">
               <Button onClick={(e) => handleShowCall(mainInfo, setMainInfo, setShowCall, setFormErrors)} className="btn btn-primary my-2">Generate Call Number</Button>
@@ -128,13 +121,12 @@ const CatalogueNew = ({ handleSubmit, initialData, setFilteredItems, setShowResu
         <div className="mt-4">
           <AdditionalInfo mode={mode} additionalInfo={additionalInfo} setAdditionalInfo={setAdditionalInfo} formErrors={formErrors} setFormErrors={setFormErrors} />
         </div>
-        {/* styling here will need to be fixed */}
-        <FormGroup as={Row} className="mt-2 d-flex justify-content-center">
+        <FormGroup as={Row} className={`mt-2 d-flex justify-content-center ${mode === "new" ? "" : "gap-1"}`}>
           <Button type="submit" className="w-auto">{mode === "new" ? "Catalogue" : "Update"}</Button>
-          {mode === "edit" && <Button type="button" onClick={openDeleteModal}>Delete Piece</Button>}
+          {mode === "edit" && <Button type="button" variant="danger" className="w-auto" onClick={openDeleteModal}>Delete Piece</Button>}
         </FormGroup>
       </Form>
-      <Modal show={warningModal} header={"Delete Piece from Library"} content={<><div>Are you sure you want to remove this piece from the library? This action cannot be undone.</div><Button type="button" onClick={handleDelete}>Delete</Button></>} handleCloseModal={closeDeleteModal} />
+      <Modal show={warningModal} header={"Delete Piece from Library"} content={<div className="d-flex flex-column align-items-center"><div className="text-center mb-4">Are you sure you want to remove this piece from the library? This action cannot be undone.</div><Button type="button" variant="danger" onClick={handleDelete}>Delete</Button></div>} handleCloseModal={closeDeleteModal} />
     </div>
   );
 };

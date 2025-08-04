@@ -34,6 +34,7 @@ const initializePieceState = ({
         publicDomain: initialData.public_domain === 1,
         condition: initialData.condition_id,
         missingParts: initialData.missing_parts === 1,
+        lastPerformed: initialData.date_last_performed,
         notes: initialData.additional_notes
       });
   

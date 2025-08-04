@@ -13,9 +13,9 @@ const Home = () => {
 };
 
 
-// Initial data: medium and date last performed are not populating correctly. different values for opus?
 // Make sure delete/add/update piece works in redux store
-// Now style the manage holdings page
+// Fix text size on h5 Manage Holdings page
+// Clear form when changing to add new piece instead
 
 // Edit acquisition date?
 

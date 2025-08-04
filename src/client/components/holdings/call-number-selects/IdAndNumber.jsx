@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import generateCallNum from "../../../helpers/holdings/generateCallNum.js";
 import { Dropdown, ButtonGroup, Button, InputGroup, FormControl } from "react-bootstrap";
 import Tooltip from "../../holdings/Tooltip.jsx";
@@ -12,6 +12,14 @@ const IdAndNumber = ({ mainInfo, setMainInfo }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(identifiers[0]);
   const [otherIdInputRequired, setOtherIdInputRequired] = useState(false);
+
+  useEffect(() => {
+    if (mainInfo?.identifierLabel) {
+      setSelectedItem(mainInfo.identifierLabel);
+    } else {
+      setSelectedItem(identifiers[0]);
+    }
+  }, [mainInfo])
 
   const handleIdLabelChange = (e) => {
     console.log(e)

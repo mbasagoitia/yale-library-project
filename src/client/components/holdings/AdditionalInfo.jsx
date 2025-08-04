@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect } from "react";
 import { FormGroup, FormCheck, FormLabel, FormControl, Row, Col, Container } from "react-bootstrap";
 import conditions from "./conditions";
 import Tooltip from "./Tooltip";
@@ -6,8 +6,7 @@ import PDTooltip from "./tooltip-contents/PDTooltip";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-const AdditionalInfo = ({ mode, additionalInfo, setAdditionalInfo, formErrors, setFormErrors }) => {
-    // Need to pass initialValue if applicable
+const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setFormErrors }) => {
 
     const handleConditionSelect = (id) => {
         setAdditionalInfo(prevState => ({ ...prevState, condition: id }));
@@ -147,14 +146,18 @@ const AdditionalInfo = ({ mode, additionalInfo, setAdditionalInfo, formErrors, s
                     Date last performed (if known)
                 </FormLabel>
                 <Col sm={8} className="my-2">
-                    <DatePicker
-                    selected={additionalInfo.lastPerformed || null}
+                <DatePicker
+                    selected={
+                        additionalInfo.lastPerformed
+                        ? new Date(additionalInfo.lastPerformed)
+                        : null
+                    }
                     onChange={handleLastPerformedSelect}
                     className="form-control"
                     dateFormat="MM-dd-yyyy"
                     isClearable
                     placeholderText="Select date"
-                    />
+                />
                 </Col>
             </FormGroup>
 

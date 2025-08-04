@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from 'react-redux';
 import { ModeContext } from "../contexts/ModeContext.js";
@@ -13,8 +13,14 @@ import HoldingsFilter from "../components/search-filters/HoldingsFilter";
 const ManageHoldings = () => {
     // Get/set initial form data when editing a piece
     const [data, setData] = useState(null);
+
     // Is the interface being used for cataloguing a new piece or updating an existing one?
     const [mode, setMode] = useState("new");
+
+    const setNewAndClear = () => {
+        setMode("new");
+        setData(null);
+    }
 
     const [filteredItems, setFilteredItems] = useState([]);
     const [showResults, setShowResults] = useState(false);
@@ -54,7 +60,13 @@ const ManageHoldings = () => {
                         <Col xl={7} className="mb-4 mb-xl-0">
                             <Card>
                                 <Card.Header>
-                                    <h5 className="mb-0">{`${mode == "new" ? "Add New" : "Edit"} Piece`}</h5>
+                                    {mode === "new" ? (
+                                    <h5 className="mb-0">Add New Piece</h5>
+                                    ): 
+                                    (
+                                    <h5 className="mb-0">Editing <em>{data?.title}</em> | <span onClick={setNewAndClear}>Add New Piece</span></h5>
+                                    )}
+
                                 </Card.Header>
                                 <Card.Body>
                                     <CatalogueNew handleSubmit={mode == "new" ? handleAddNewPiece : handleUpdatePiece} initialData={data} setFilteredItems={setFilteredItems} setShowResults={setShowResults} />

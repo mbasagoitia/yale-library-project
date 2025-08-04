@@ -9,6 +9,7 @@ import IdAndNumber from "../holdings/call-number-selects/IdAndNumber";
 import useFetchResourceData from "../../hooks/useFetchResourceData.js";
 
 const MainInfo = ({ mainInfo, setMainInfo, formErrors, mediumResetKey, setMediumResetKey }) => {
+  
   const resourceData = useFetchResourceData();
 
   useEffect(() => {
