@@ -38,6 +38,7 @@ const PieceListItem = ({ data, behavior }) => {
             onClick={() => {
                 if (behavior === "edit") {
                     // Reset everything
+                    // Is there any way to do this without resetting?
                     setData(null);
 
                     // Then defer the real data update

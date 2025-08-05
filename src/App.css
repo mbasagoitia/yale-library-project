@@ -9,6 +9,13 @@
   --gray-light: #f5f5f5;
 }
 
+.Toastify__progress-bar--success {
+  background: #00356B;
+}
+
+.Toastify__progress-bar--error {
+  background: crimson;
+}
 
 .App-logo {
   height: 40vmin;

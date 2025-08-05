@@ -1,16 +1,12 @@
 import { useState, useRef } from "react";
-import { useDispatch } from "react-redux";
 import { useSelector } from 'react-redux';
 import { ModeContext } from "../contexts/ModeContext.js";
-import { addHolding, updateHolding } from "../../redux/librarySlice.js";
-import updatePiece from "../helpers/holdings/updatePiece.js";
 import { Container, Row, Col, Card } from "react-bootstrap";
-import CatalogueNew from "../components/holdings/CatalogueNew.jsx";
-import catalogueNew from "../helpers/holdings/catalogueNew.js";
+
 import HoldingsList from "../components/holdings/HoldingsList";
 import HoldingsFilter from "../components/search-filters/HoldingsFilter";
 import { selectFilteredHoldings } from "../../redux/searchSelectors.js";
-import { clearSearch } from "../../redux/searchSlice.js";
+import CatalogueNew from "../components/holdings/CatalogueNew.jsx";
 
 const ManageHoldings = () => {
 
@@ -24,46 +20,15 @@ const ManageHoldings = () => {
     const catalogeNewRef = useRef();
 
     const handleSetNewAndClear = () => {
-        catalogeNewRef.current?.setNewAndClear();
-    }
+        // Calling the callback function from the child component to reset the form
+        catalogeNewRef.current?.resetForm();
+      };
 
     // Search results
     const filteredItems = useSelector(selectFilteredHoldings);
 
     // Show search results (when searching for a piece to edit)
     const [showResults, setShowResults] = useState(false);
-
-    const dispatch = useDispatch();
-
-    const handleAddNewPiece = async (formData) => {
-        try {
-          // Save to database
-          const newPiece = await catalogueNew(formData);
-          // Update redux store
-          dispatch(addHolding(newPiece));
-          // Reset form
-          setMode("new");
-          setData(null);
-        } catch (err) {
-          console.error("Error adding holding:", err);
-        }
-      };
-
-      const handleUpdatePiece = async (formData) => {
-        try {
-          // Save to database
-          const updated = await updatePiece(formData, data?.id);
-          // Update redux store
-          dispatch(updateHolding(updated));
-          // Reset form
-          setMode("new");
-          setData(null);
-          setShowResults(false);
-          dispatch(clearSearch())
-        } catch (err) {
-          console.error("Error updating holding:", err);
-        }
-      };
 
     return (
         <ModeContext.Provider value={{ mode, setMode, setData }}>
@@ -83,7 +48,7 @@ const ManageHoldings = () => {
 
                                 </Card.Header>
                                 <Card.Body>
-                                    <CatalogueNew ref={catalogeNewRef} handleSubmit={mode == "new" ? handleAddNewPiece : handleUpdatePiece} initialData={data} setShowResults={setShowResults} />
+                                    <CatalogueNew ref={catalogeNewRef} onResetForm={handleSetNewAndClear} initialData={data} setData={setData} setShowResults={setShowResults} />
                                 </Card.Body>
                             </Card>
                         </Col>

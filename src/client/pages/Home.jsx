@@ -17,13 +17,19 @@ const Home = () => {
 
 // css file
 
+// Is the form actually being reset when cataloguing new piece?
+
 // Something more enticing for home page? Photos of Woolsey, rehearsals? Fade in?
 // Style reports and single piece page
 
 // Fix buttons and bootstrap default colors
 
-// Alerts on success for cataloguing, logging in, etc. What happens if login fails?
+// Redux needs to reload the holdings if something has been added/updated/deleted
+// Multiple login banners are showing
+// Reset medium???
 
 // Renew authToken logic
+
+// Remove console.errors and consider error handling
 
 export default Home;

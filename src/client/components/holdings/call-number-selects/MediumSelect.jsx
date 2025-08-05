@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 
 const MediumSelect = ({ initialValue, items, handleItemSelect, depth = 0, resetKey }) => {
@@ -7,11 +7,11 @@ const MediumSelect = ({ initialValue, items, handleItemSelect, depth = 0, resetK
 
   // Set first item if no current or initial
   useEffect(() => {
+    console.log("inital", initialValue, "currentItem", currentItem);
     if (!initialValue && !currentItem && items.length > 0) {
       setCurrentItem(items[0]);
     }
   }, [items]);
-
   // Update currentItem if initialValue changes, unless user already selected
   useEffect(() => {
     if (!userHasInteracted && initialValue) {

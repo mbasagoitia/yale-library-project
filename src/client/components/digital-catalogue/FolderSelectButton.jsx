@@ -1,14 +1,15 @@
 import { Button } from "react-bootstrap";
+import { toast } from 'react-toastify';
 
 const handleSelectBasePath = async () => {
   if (!window.api?.filesystem.setBasePath) {
-    alert("setPath not available");
+    toast.error("setPath not available");
     return;
   }
 
   const basePath = await window.api.filesystem.setBasePath();
   if (basePath) {
-    alert(`Base path set to: ${basePath}`);
+    toast.success(`Base path set to: ${basePath}`);
   }
 };
 

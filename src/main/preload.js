@@ -33,7 +33,7 @@ contextBridge.exposeInMainWorld("api", {
 
   events: {
     on: (channel, callback) => {
-      const validChannels = ["base-path-updated", "auth-success"];
+      const validChannels = ["base-path-updated", "auth-success", "auth-failed"];
       if (validChannels.includes(channel)) {
         ipcRenderer.on(channel, callback);
       }

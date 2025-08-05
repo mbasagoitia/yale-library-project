@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify';
+
 const addNewAdmin = async (info) => {
     const apiUrl = "http://localhost:5000/api/admin";
     const token = await window.api.auth.getToken();
@@ -22,7 +24,7 @@ const addNewAdmin = async (info) => {
       return data;
     } catch (error) {
       console.error('Error adding new admin:', error);
-      alert(error.message || 'An error occurred.');
+      toast.error(error.message || 'An error occurred.');
     }
   };
   

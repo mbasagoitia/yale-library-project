@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { toast } from 'react-toastify';
 import { Container, Form, Button, Card, Row, Col } from "react-bootstrap";
 import FolderSelectButton from "../components//digital-catalogue/FolderSelectButton";
 import addNewAdmin from "../helpers/auth/addNewAdmin";
@@ -42,13 +43,13 @@ const Settings = () => {
     e.preventDefault();
 
     if (!adminInfo.name || !adminInfo.netid) {
-      alert("Please make sure to fill out all fields.");
+      toast.error("Please make sure to fill out all fields.");
       return;
     }
 
     const result = await addNewAdmin(adminInfo);
     if (result?.message) {
-      alert(result.message);
+      toast.success(result.message);
       setAdminInfo({ name: "", netid: "" });
     }
   };

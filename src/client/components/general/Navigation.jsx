@@ -7,19 +7,26 @@ import { generalSearch } from "../../../redux/searchSlice";
 import { openLoginWindow, handleLogout } from '../../helpers/auth/handleAuth';
 import { useNavigate } from 'react-router-dom';
 import { FaUserCircle} from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
 const Navigation = () => {
   const [isHovered, setIsHovered] = useState(false);
   const [navExpanded, setNavExpanded] = useState(false);
 
   const { isAdmin, isLoggedIn } = useSelector((state) => state.auth);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleNavLogout = async () => {
-    setIsHovered(false);
-    setNavExpanded(false);
-    await handleLogout(dispatch, navigate);
+    try {
+      await handleLogout(dispatch, navigate);
+      toast.success('Successfully logged out');
+      setIsHovered(false);
+      setNavExpanded(false);
+    } catch (error) {
+      toast.error(`Error logging out: ${error.message || 'Unknown error'}`);
+    }
   };
 
   const handleSearch = (searchText) => {

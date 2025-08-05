@@ -16,7 +16,6 @@ const updatePiece = async (info, id) => {
       }
   
       const updatedPiece = await res.json();
-      console.log("Piece updated successfully:", updatedPiece);
       return updatedPiece;
     } catch (error) {
       console.error("Error updating catalogue:", error);

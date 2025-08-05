@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { login } from './redux/authSlice';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -15,6 +15,9 @@ import Reports from './client/pages/Reports.jsx';
 import TokenExpiryHandler from './client/components/general/TokenExpiryHandler.jsx';
 import handleRenewToken from './client/helpers/auth/handleRenewToken.js';
 import { fetchHoldings } from '../src/redux/librarySlice';
+import { ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
@@ -22,21 +25,38 @@ import './App.css';
 function App() {
 
   const dispatch = useDispatch();
+  const hasAttachedAuthListeners = useRef(false);
   
   const [authToken, setAuthToken] = useState(null);
 
   useEffect(() => {
-    const handler = (_event, data) => {
+    if (hasAttachedAuthListeners.current) return;
+    hasAttachedAuthListeners.current = true;
+
+    const handleAuthSuccess = (_event, data) => {
+      if (!data?.netid) {
+        console.error("Login data missing netid:", data);
+        toast.error("Login failed: Invalid user data");
+        return;
+      }
+
       dispatch(login({ netid: data.netid, isAdmin: data.isAdmin }));
+      toast.success(`Welcome back, ${data.netid}!`);
     };
-  
-    window.api?.events.on('auth-success', handler);
-  
+
+    const handleAuthFailure = (_event, data) => {
+      toast.error(data?.reason || 'Login failed. Please try again.');
+    };
+
+    window.api?.events.on('auth-success', handleAuthSuccess);
+    window.api?.events.on('auth-failed', handleAuthFailure);
+
     return () => {
-      window.api?.events.remove('auth-success', handler);
+      window.api?.events.remove('auth-success', handleAuthSuccess);
+      window.api?.events.remove('auth-failed', handleAuthFailure);
     };
   }, [dispatch]);
-
+  
   useEffect(() => {
     const fetchToken = async () => {
       try {
@@ -74,6 +94,15 @@ function App() {
         <Route path="/reports" element={<Reports />} />
       </Routes>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        pauseOnHover
+        draggable
+      />
     </div>
     </BrowserRouter>
   );

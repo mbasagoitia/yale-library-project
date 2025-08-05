@@ -38,13 +38,15 @@ const createAuthWindow = (mainWindow, store) => {
               isAdmin: data.isAdmin
             });
           } else {
-            mainWindow.webContents.send('auth-failed');
+            mainWindow.webContents.send('auth-failed', { reason: 'Invalid credentials' });
           }
         })
         .catch(err => {
           console.error('Auth validation error:', err);
-          mainWindow.webContents.send('auth-failed');
-        });
+          mainWindow.webContents.send('auth-failed', {
+            reason: 'An error occurred while validating your login. Please try again.'
+          });
+        });        
     }
   });
 };
