@@ -6,7 +6,7 @@ import Searchbar from '../search-filters/Searchbar';
 import { generalSearch } from "../../../redux/searchSlice";
 import { openLoginWindow, handleLogout } from '../../helpers/auth/handleAuth';
 import { useNavigate } from 'react-router-dom';
-import { FaUserCircle, FaCog, FaBook, FaSignOutAlt } from 'react-icons/fa';
+import { FaUserCircle} from 'react-icons/fa';
 
 const Navigation = () => {
   const [isHovered, setIsHovered] = useState(false);
@@ -75,15 +75,15 @@ const Navigation = () => {
                   show={isHovered}
                   className="nav-nav-dropdown"
                 >
-                  <NavDropdown.Item href="/manage-holdings" onClick={() => setNavExpanded(false)}><FaBook size={24} /><span className="mx-2">Manage Holdings</span></NavDropdown.Item>
-                  <NavDropdown.Item href="/settings" onClick={() => setNavExpanded(false)}><FaCog size={24} /><span className="mx-2">Settings</span></NavDropdown.Item>
+                  <NavDropdown.Item href="/manage-holdings" onClick={() => setNavExpanded(false)}>Manage Holdings</NavDropdown.Item>
+                  <NavDropdown.Item href="/settings" onClick={() => setNavExpanded(false)}>Settings</NavDropdown.Item>
                   <Dropdown.Divider />
                   <NavDropdown.Item
                     as="span"
                     className="logout-text"
                     onClick={handleNavLogout}
                   >
-                    <FaSignOutAlt size={24} /><span className="mx-2">Log Out</span>
+                    Log Out
                   </NavDropdown.Item>
                 </NavDropdown>
               </div>

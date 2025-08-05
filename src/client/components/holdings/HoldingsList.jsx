@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import PieceListItem from "./PieceListItem";
 import PaginationControls from "../general/PaginationControls";
 

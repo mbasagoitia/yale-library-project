@@ -13,13 +13,7 @@ const Home = () => {
 };
 
 
-// Make sure delete/add/update piece works in redux store
-// Fix text size on h5 Manage Holdings page
-// Clear form when changing to add new piece instead
-
 // Edit acquisition date?
-
-// Make sure general search works*** memoized selector
 
 // css file
 

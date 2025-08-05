@@ -2,12 +2,9 @@ import normalizeString from "../general/normalizeString";
 import convertToDigits from "../general/convertToDigits";
 
 const filterSearch = (search, holdings) => {
-  console.log("search", search)
   if (!search || !Array.isArray(holdings)) return holdings;
-
   // General search from navbar
   if (search.searchType === "general") {
-    console.log("in general")
     const tokens = search.generalQuery?.toLowerCase().split(/\s+/).map(token => normalizeString(token)) || [];
   
     const filteredHoldings = holdings.filter(piece => {
@@ -23,12 +20,11 @@ const filterSearch = (search, holdings) => {
         normalizedPublisher.includes(token)
       );
     });
-    console.log(filteredHoldings);
     return filteredHoldings;
   }
 
   // Basic or Advanced search
-  const { title, composer, medium, genre, publisher } = search || {};
+  const { title, composer, medium, genre, publisher } = search.filters || {};
 
   const lowerTitle = title ? normalizeString(convertToDigits(title)).trim() : '';
   const lowerComposer = composer ? normalizeString(composer).trim() : '';

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from 'react-redux';
 import { ModeContext } from "../contexts/ModeContext.js";
@@ -9,30 +9,39 @@ import CatalogueNew from "../components/holdings/CatalogueNew.jsx";
 import catalogueNew from "../helpers/holdings/catalogueNew.js";
 import HoldingsList from "../components/holdings/HoldingsList";
 import HoldingsFilter from "../components/search-filters/HoldingsFilter";
+import { selectFilteredHoldings } from "../../redux/searchSelectors.js";
+import { clearSearch } from "../../redux/searchSlice.js";
 
 const ManageHoldings = () => {
+
     // Get/set initial form data when editing a piece
     const [data, setData] = useState(null);
 
-    // Is the interface being used for cataloguing a new piece or updating an existing one?
+    // Is the CataloguePiece interface being used for cataloguing a new piece or updating an existing one?
     const [mode, setMode] = useState("new");
 
-    const setNewAndClear = () => {
-        setMode("new");
-        setData(null);
+    // Reference CatalogueNew and clear the form, since the logic is defined there
+    const catalogeNewRef = useRef();
+
+    const handleSetNewAndClear = () => {
+        catalogeNewRef.current?.setNewAndClear();
     }
 
-    const [filteredItems, setFilteredItems] = useState([]);
-    const [showResults, setShowResults] = useState(false);
+    // Search results
+    const filteredItems = useSelector(selectFilteredHoldings);
 
-    const holdingsData = useSelector(state => state.library.holdings);
+    // Show search results (when searching for a piece to edit)
+    const [showResults, setShowResults] = useState(false);
 
     const dispatch = useDispatch();
 
     const handleAddNewPiece = async (formData) => {
         try {
+          // Save to database
           const newPiece = await catalogueNew(formData);
+          // Update redux store
           dispatch(addHolding(newPiece));
+          // Reset form
           setMode("new");
           setData(null);
         } catch (err) {
@@ -42,10 +51,15 @@ const ManageHoldings = () => {
 
       const handleUpdatePiece = async (formData) => {
         try {
+          // Save to database
           const updated = await updatePiece(formData, data?.id);
+          // Update redux store
           dispatch(updateHolding(updated));
+          // Reset form
           setMode("new");
           setData(null);
+          setShowResults(false);
+          dispatch(clearSearch())
         } catch (err) {
           console.error("Error updating holding:", err);
         }
@@ -64,12 +78,12 @@ const ManageHoldings = () => {
                                     <h5 className="mb-0">Add New Piece</h5>
                                     ): 
                                     (
-                                    <h5 className="mb-0">Editing <em>{data?.title}</em> | <span onClick={setNewAndClear}>Add New Piece</span></h5>
+                                    <h5 className="mb-0">Editing <em>{data?.title}</em> | <span onClick={handleSetNewAndClear}>Add New Piece</span></h5>
                                     )}
 
                                 </Card.Header>
                                 <Card.Body>
-                                    <CatalogueNew handleSubmit={mode == "new" ? handleAddNewPiece : handleUpdatePiece} initialData={data} setFilteredItems={setFilteredItems} setShowResults={setShowResults} />
+                                    <CatalogueNew ref={catalogeNewRef} handleSubmit={mode == "new" ? handleAddNewPiece : handleUpdatePiece} initialData={data} setShowResults={setShowResults} />
                                 </Card.Body>
                             </Card>
                         </Col>
@@ -79,11 +93,7 @@ const ManageHoldings = () => {
                                     <h5 className="mb-0">Edit Existing Holdings</h5>
                                 </Card.Header>
                                 <Card.Body>
-                                    <HoldingsFilter
-                                        holdingsData={holdingsData}
-                                        setFilteredItems={setFilteredItems}
-                                        setShowResults={setShowResults}
-                                    />
+                                    <HoldingsFilter setShowResults={setShowResults}/>
                                     <hr />
                                     {showResults ? <h2 className="mt-2 mb-3">Results: {filteredItems.length}</h2> : null}
                                     <HoldingsList filteredItems={filteredItems} behavior={"edit"} />

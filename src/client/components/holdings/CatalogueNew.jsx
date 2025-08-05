@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useImperativeHandle, forwardRef, } from "react";
 import { Form, FormGroup, Row, Button } from "react-bootstrap";
 import MainInfo from "./MainInfo.jsx";
 import AdditionalInfo from "./AdditionalInfo.jsx";
@@ -16,8 +16,11 @@ import clearForm from "../../helpers/catalogue/clearForm.js";
 import validateAndClearForm from "../../helpers/catalogue/validateAndClearForm.js";
 import deletePiece from "../../helpers/holdings/deletePiece.js";
 import Modal from "../general/Modal.jsx";
+import { clearSearch } from "../../../redux/searchSlice.js";
 
-const CatalogueNew = ({ handleSubmit, initialData, setFilteredItems, setShowResults }) => {
+const CatalogueNew = forwardRef((props, ref) => {
+
+  const { handleSubmit, initialData, setShowResults } = props;
 
   const { mode, setMode } = useMode();
   const id = initialData?.id;
@@ -76,13 +79,20 @@ const CatalogueNew = ({ handleSubmit, initialData, setFilteredItems, setShowResu
     clearForm(setShowCall, setMainInfo, setAdditionalInfo, setMediumResetKey, setFormErrors);
   }
 
+  useImperativeHandle(ref, () => ({
+    setNewAndClear () {
+      setMode("new");
+      clearForm(setShowCall, setMainInfo, setAdditionalInfo, setMediumResetKey, setFormErrors);
+    }
+  }));
+
   const handleDelete = async (e) => {
     e.preventDefault();
     try {
       const deleted = await deletePiece(id);
       dispatch(deleteHolding(deleted));
       setNewAndClear();
-      setFilteredItems([]);
+      dispatch(clearSearch);
       setShowResults(false);
       setWarningModal(false);
     } catch (err) {
@@ -129,6 +139,6 @@ const CatalogueNew = ({ handleSubmit, initialData, setFilteredItems, setShowResu
       <Modal show={warningModal} header={"Delete Piece from Library"} content={<div className="d-flex flex-column align-items-center"><div className="text-center mb-4">Are you sure you want to remove this piece from the library? This action cannot be undone.</div><Button type="button" variant="danger" onClick={handleDelete}>Delete</Button></div>} handleCloseModal={closeDeleteModal} />
     </div>
   );
-};
+});
 
 export default CatalogueNew;

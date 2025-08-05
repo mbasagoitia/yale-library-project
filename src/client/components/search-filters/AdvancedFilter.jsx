@@ -118,10 +118,10 @@ const AdvancedFilter = ({ searchCriteria, setSearchCriteria, resetHoldings }) =>
                 </Row>
                 <Row>
                     <Col md={6} className="my-2 my-md-0">
-                        {resourceData.publisherData.length > 0 && <PublisherSelect items={resourceData.publisherData} selectedItem={searchCriteria.publisher} onItemClick={onPublisherSelect} />}
+                        {resourceData.publisherData.length > 0 && <PublisherSelect items={resourceData.publisherData} selectedItem={searchCriteria?.publisher} onItemClick={onPublisherSelect} />}
                     </Col>
                     <Col md={6} className="my-2 my-md-0">
-                            <SpeciesSelect items={resourceData.speciesData} selectedItem={searchCriteria.genre} onItemClick={onGenreSelect}  />    
+                            <SpeciesSelect items={resourceData.speciesData} selectedItem={searchCriteria?.genre} onItemClick={onGenreSelect}  />    
                     </Col>
                 </Row>
                 <Row className="my-0 my-md-3">

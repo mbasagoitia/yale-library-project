@@ -71,8 +71,8 @@ const insertNewPiece = (pieceInfo, db, callback) => {
     const finalIdentifierValue = identifierValue === "" ? null : identifierValue;
     const finalIdentifierLabel = !identifierValue ? null : identifierLabel;
     const mediumId = medium.id || medium.options?.[0]?.id || 1
+
     const acquisitionDate = getFormattedDate();
-    
     lastPerformedFormatted = lastPerformed ? getFormattedLastPerformedDate(lastPerformed) : null;
 
     const insertQuery = `
@@ -115,6 +115,8 @@ const insertNewPiece = (pieceInfo, db, callback) => {
   
     const finalIdentifierValue = identifierValue === "" ? null : identifierValue;
     const mediumId = medium.id || medium.options?.[0]?.id;
+
+    lastPerformedFormatted = lastPerformed ? getFormattedLastPerformedDate(lastPerformed) : null;
   
     const updateQuery = `
       UPDATE pieces
@@ -141,7 +143,7 @@ const insertNewPiece = (pieceInfo, db, callback) => {
       ownDigital,
       missingParts,
       scansUrl,
-      lastPerformed,
+      lastPerformedFormatted,
       id
     ];
   

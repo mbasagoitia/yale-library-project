@@ -5,10 +5,10 @@ import { Button } from "react-bootstrap";
 import BasicFilter from "./BasicFilter";
 import AdvancedFilter from "./AdvancedFilter";
 import { BiFilter } from 'react-icons/bi';
-import filterSearch from "../../helpers/search/filterSearch";
 import { basicSearch, advancedSearch } from "../../../redux/searchSlice";
+import { clearSearch } from "../../../redux/searchSlice";
 
-const HoldingsFilter = ({ setShowResults, setFilteredItems }) => {
+const HoldingsFilter = ({ setShowResults }) => {
 
     const [advancedFilter, setAdvancedFilter] = useState(false);
 
@@ -32,13 +32,12 @@ const HoldingsFilter = ({ setShowResults, setFilteredItems }) => {
         });
       }, [search.filters]);
 
-    const holdings = useSelector((state) => state.library.holdings);
+      const dispatch = useDispatch();
 
     const resetHoldings = () => {
-        setFilteredItems(holdings);
+        dispatch(clearSearch());
+        setShowResults(false);
     }
-
-    const dispatch = useDispatch();
 
     const clearAdvancedSearch = () => {
         setSearchCriteria((prev) => ({
@@ -59,20 +58,18 @@ const HoldingsFilter = ({ setShowResults, setFilteredItems }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!advancedFilter) {
-            dispatch(basicSearch({ composer: searchCriteria.composer, title: searchCriteria.title }));
+          dispatch(basicSearch({ composer: searchCriteria.composer, title: searchCriteria.title }));
         } else {
-            dispatch(advancedSearch({
-                composer: searchCriteria.composer,
-                title: searchCriteria.title,
-                genre: searchCriteria.genre,
-                medium: searchCriteria.medium,
-                publisher: searchCriteria.publisher
-            }));
+          dispatch(advancedSearch({
+            composer: searchCriteria.composer,
+            title: searchCriteria.title,
+            genre: searchCriteria.genre,
+            medium: searchCriteria.medium,
+            publisher: searchCriteria.publisher
+          }));
         }
-        const filtered = filterSearch(searchCriteria, holdings);
-        setFilteredItems(filtered);
         setShowResults(true);
-    }
+      };
 
     return (
         <div className="holdings-filter">
