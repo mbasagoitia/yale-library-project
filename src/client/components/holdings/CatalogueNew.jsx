@@ -19,14 +19,12 @@ import clearForm from "../../helpers/holdings/clearForm.js";
 import Modal from "../general/Modal.jsx";
 import processAndSubmitForm from "../../helpers/holdings/processAndSubmitForm.js";
 import { toast } from 'react-toastify';
-import { clearSearch } from "../../../redux/searchSlice.js";
-
 
 const CatalogueNew = forwardRef((props, ref) => {
 
   // Issue is that initial data keeps getting passed in, never reset
 
-  const { initialData, setShowResults } = props;
+  const { initialData } = props;
 
 
   const { mode, setMode, mediumResetKey, setMediumResetKey } = useMode();
@@ -124,12 +122,13 @@ const CatalogueNew = forwardRef((props, ref) => {
   const handleDelete = async (e) => {
     e.preventDefault();
     try {
+      // Delete piece from database and redux store
       const deleted = await deletePiece(id);
-
-      // dispatch deletedPiece
-      dispatch(clearSearch());
-      setShowResults(false);
+      dispatchDeletePiece(dispatch, deleted);
+      // Clear form
       setWarningModal(false);
+      clearForm(setShowCall, setMainInfo, setAdditionalInfo, setMediumResetKey, setFormErrors);
+      setMode("new");
       toast.success("Successfully deleted piece from library")
     } catch (err) {
       toast.error("Error deleting holding:", err);

@@ -15,7 +15,6 @@ const deletePiece = async (id) => {
       }
   
       const result = await res.json();
-      console.log("Piece deleted successfully:", result.message);
       return result;
     } catch (error) {
       console.error("Error deleting piece from catalogue:", error);

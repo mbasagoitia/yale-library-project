@@ -28,7 +28,7 @@ const librarySlice = createSlice({
       }
     },
     deleteHolding: (state, action) => {
-      const idToDelete = action.payload;
+      const idToDelete = action.payload.id;
       state.holdings = state.holdings.filter(piece => piece.id !== idToDelete);
     }
   },

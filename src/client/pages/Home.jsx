@@ -17,14 +17,10 @@ const Home = () => {
 
 // css file
 
-
+// Fix stuff on CatalogueNew page (leftover attempts to clear form), rename
 // Something more enticing for home page? Photos of Woolsey, rehearsals? Fade in?
 // Style reports and single piece page
-
-// Fix buttons and bootstrap default colors
-
-// Fix delete method on the catalogueNew page
-// Redux needs to reload the holdings if something has been added/updated/deleted
+// Style reports select
 
 // Renew authToken logic
 

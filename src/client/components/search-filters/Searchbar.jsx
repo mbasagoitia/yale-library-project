@@ -14,8 +14,8 @@ const Searchbar = ({ placeholder, onSearch }) => {
     <Form className="mb-4 d-inline" onSubmit={handleSubmit}>
       <InputGroup className="search-wrapper">
         <InputGroup.Text className="rounded-pill-left">
-          <Button type="submit" variant="primary" className="search-button">
-            <FaSearch size={16} className="search-icon" />
+          <Button type="submit" variant="outline-primary" className="search-button">
+            <FaSearch size={12} className="search-icon" />
           </Button>
         </InputGroup.Text>
         <FormControl
