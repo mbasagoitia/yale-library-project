@@ -38,7 +38,8 @@ const PieceListItem = ({ data, behavior }) => {
             onClick={() => {
                 if (behavior === "edit") {
                     // Reset everything
-                    // Is there any way to do this without resetting?
+                    // set medium empty specifically?
+                    // set mediumResetKey? useContext
                     setData(null);
 
                     // Then defer the real data update

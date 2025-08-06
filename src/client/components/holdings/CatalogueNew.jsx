@@ -26,7 +26,8 @@ const CatalogueNew = forwardRef((props, ref) => {
 
   // Issue is that initial data keeps getting passed in, never reset
 
-  const { initialData, setData, setShowResults} = props;
+  const { initialData, setShowResults } = props;
+
 
   const { mode, setMode } = useMode();
   const id = initialData?.id;
@@ -146,7 +147,6 @@ const CatalogueNew = forwardRef((props, ref) => {
       handleUpdatePiece();
     }
     setMode("new");
-    setMediumResetKey(mediumResetKey + 1);
   }
 
   return (

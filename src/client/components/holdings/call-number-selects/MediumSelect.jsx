@@ -2,19 +2,34 @@ import React, { useState, useEffect } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 
 const MediumSelect = ({ initialValue, items, handleItemSelect, resetKey }) => {
-  const [currentItem, setCurrentItem] = useState(initialValue);
+  const [currentItem, setCurrentItem] = useState(initialValue); // Track the currently selected item for the top-level dropdown
+  const [selectionHistory, setSelectionHistory] = useState([initialValue]); // Track the selection history for each level
   const [userHasInteracted, setUserHasInteracted] = useState(false);
 
-  // Update the current item only when resetKey changes, but preserve user interaction
+  // Update the current item only when resetKey changes or the initialValue changes, but preserve user interaction
+
+
   useEffect(() => {
     if (resetKey && !userHasInteracted) {
-      setCurrentItem(initialValue || items[0]); // Reset to initialValue or the first item
+      setSelectionHistory([initialValue || items[0]]); // Reset to initialValue or first item
+      setCurrentItem(initialValue || items[0]); // Ensure the top-level dropdown resets correctly
+      setUserHasInteracted(false); // Reset user interaction flag
     }
   }, [resetKey, initialValue, items, userHasInteracted]);
 
-  const handleSelect = (item) => {
+  // Update the state if initialValue changes after user interaction
+  useEffect(() => {
+    if (!userHasInteracted) {
+      setSelectionHistory([initialValue || items[0]]);
+      setCurrentItem(initialValue || items[0]);
+    }
+  }, [initialValue, userHasInteracted, items]);
+
+  const handleSelect = (item, level) => {
+    const updatedHistory = [...selectionHistory.slice(0, level), item]; // Update selection history for this level
     setUserHasInteracted(true); // Mark user interaction
-    setCurrentItem(item); // Set current item to the selected one
+    setSelectionHistory(updatedHistory); // Set the updated selection history
+    setCurrentItem(item); // Update the current item to the selected one
 
     const getFirstLeaf = (node) => {
       if (node.options?.length) return getFirstLeaf(node.options[0]);
@@ -23,44 +38,39 @@ const MediumSelect = ({ initialValue, items, handleItemSelect, resetKey }) => {
     };
 
     const leaf = getFirstLeaf(item);
-    handleItemSelect(leaf);
+    handleItemSelect(leaf); // Propagate the selected item to parent
   };
 
-  const renderDropdown = () => (
-    <Dropdown className="my-2">
-      <Dropdown.Toggle variant="primary" id="medium-dropdown" className="p-2">
-        {currentItem?.label || 'Select Ensemble Type'}
-      </Dropdown.Toggle>
-      <Dropdown.Menu>
-        {items.map((item, index) => (
-          <Dropdown.Item key={index} onClick={() => handleSelect(item)}>
-            {item.label}
-          </Dropdown.Item>
-        ))}
-      </Dropdown.Menu>
-    </Dropdown>
-  );
+  // Render a dropdown for the current level and its nested items, if applicable
+  const renderDropdowns = (items, level = 0) => {
+    if (!items || items.length === 0) return null;
 
-  const renderNestedMediumSelect = () => {
-    const nestedItems = currentItem?.options || currentItem?.nested_options;
-    if (nestedItems?.length) {
-      return (
-        <MediumSelect
-          initialValue={initialValue}
-          key={currentItem.label}
-          items={nestedItems}
-          handleItemSelect={handleItemSelect}
-          resetKey={resetKey} // Ensure resetKey is passed down to nested component
-        />
-      );
-    }
-    return null;
+    const currentSelection = selectionHistory[level];
+    const initialItemForLevel = items[0]; // Set the first item as the initial value for each nested dropdown
+
+    return (
+      <Dropdown key={level} className="my-2">
+        <Dropdown.Toggle variant="primary" id={`medium-dropdown-${level}`} className="p-2">
+          {currentSelection?.label || (level === 0 ? 'Select Ensemble Type' : initialItemForLevel.label)}
+        </Dropdown.Toggle>
+        <Dropdown.Menu>
+          {items.map((item, index) => (
+            <Dropdown.Item key={index} onClick={() => handleSelect(item, level)}>
+              {item.label}
+            </Dropdown.Item>
+          ))}
+        </Dropdown.Menu>
+        {currentSelection?.options || currentSelection?.nested_options ? (
+          // Render the nested dropdowns if there are options or nested_options
+          renderDropdowns(currentSelection.options || currentSelection.nested_options, level + 1)
+        ) : null}
+      </Dropdown>
+    );
   };
 
   return (
     <div>
-      {renderDropdown()}
-      {renderNestedMediumSelect()}
+      {renderDropdowns(items)} {/* Dynamically render dropdowns based on the nesting */}
     </div>
   );
 };

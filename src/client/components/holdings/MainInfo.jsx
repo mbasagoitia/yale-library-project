@@ -13,10 +13,9 @@ const MainInfo = ({ mainInfo, setMainInfo, formErrors, mediumResetKey, setMedium
   const resourceData = useFetchResourceData();
 
   useEffect(() => {
-    if (mainInfo.medium) {
+    // I changed this here, and it seems to work... explore this some more
       setMediumResetKey(mediumResetKey + 1);
-    }
-  }, [mainInfo])
+  }, [])
 
   const setMedium = (item) => {
     const selected =
@@ -89,7 +88,7 @@ const MainInfo = ({ mainInfo, setMainInfo, formErrors, mediumResetKey, setMedium
           {resourceData.mediumData.length > 0 && (
             <MediumSelect
               initialValue={mainInfo.medium || ""}
-              resetKey={mediumResetKey}
+              key={mediumResetKey}
               items={resourceData.mediumData}
               handleItemSelect={setMedium}
             />
