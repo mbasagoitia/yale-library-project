@@ -27,7 +27,7 @@ const PieceListItem = ({ data, behavior }) => {
     }
 
     // Sets initial piece data on manage holdings page
-    const { setMode, setData } = useMode();
+    const { setMode, setData, setMediumResetKey } = useMode();
 
     // Navigates to single piece page
     const navigate = useNavigate();
@@ -37,16 +37,12 @@ const PieceListItem = ({ data, behavior }) => {
             className="mb-1 piece-list-item"
             onClick={() => {
                 if (behavior === "edit") {
-                    // Reset everything
-                    // set medium empty specifically?
-                    // set mediumResetKey? useContext
-                    setData(null);
-
-                    // Then defer the real data update
-                    setTimeout(() => {
-                        setData(data);
-                        setMode("edit");
-                    }, 0);
+                    // Trigger reset of the medium dropdown component
+                    setMediumResetKey(prev => prev + 1)
+                    // Set initial data from this component
+                    setData(data);
+                    // If a user clicks on this item, the mode should be set to edit instead of new
+                    setMode("edit");
                 } else {
                 navigate(`/browse-holdings/${id}`);
                 }

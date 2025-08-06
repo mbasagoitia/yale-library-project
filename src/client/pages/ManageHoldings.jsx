@@ -30,8 +30,11 @@ const ManageHoldings = () => {
     // Show search results (when searching for a piece to edit)
     const [showResults, setShowResults] = useState(false);
 
+    // Used to reset the MediumSelect component, which is used several times in nested child components
+    const [mediumResetKey, setMediumResetKey] = useState(0);
+
     return (
-        <ModeContext.Provider value={{ mode, setMode, setData }}>
+        <ModeContext.Provider value={{ mode, setMode, setData, mediumResetKey, setMediumResetKey }}>
             <div className="manage-holdings">
                 <h1>Manage Holdings</h1>
                 <Container fluid className="mt-4 m-0 p-0">

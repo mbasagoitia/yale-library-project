@@ -29,7 +29,7 @@ const CatalogueNew = forwardRef((props, ref) => {
   const { initialData, setShowResults } = props;
 
 
-  const { mode, setMode } = useMode();
+  const { mode, setMode, mediumResetKey, setMediumResetKey } = useMode();
   const id = initialData?.id;
 
   const [warningModal, setWarningModal] = useState(false);
@@ -64,9 +64,6 @@ const CatalogueNew = forwardRef((props, ref) => {
       }
   
     }, [initialData, resourceData]);  
-
-
-  const [mediumResetKey, setMediumResetKey] = useState(0);
 
   const [mainInfo, setMainInfo] = useState({
     title: "",
