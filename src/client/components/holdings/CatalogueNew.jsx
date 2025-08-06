@@ -1,5 +1,6 @@
 import { useState, useEffect, useImperativeHandle, forwardRef, } from "react";
 import { Form, FormGroup, Row, Button } from "react-bootstrap";
+import { useDispatch } from "react-redux";
 import MainInfo from "./MainInfo.jsx";
 import AdditionalInfo from "./AdditionalInfo.jsx";
 import handleShowCall from "../../helpers/catalogue/handleShowCall.js";
@@ -10,21 +11,20 @@ import initializePieceState from "../../helpers/catalogue/initializePieceState.j
 import useFetchResourceData from "../../hooks/useFetchResourceData.js";
 import useScrollOnFormErrors from "../../hooks/useScrollOnFormErrors.js";
 import { useMode } from "../../contexts/ModeContext.js";
-import { useDispatch } from "react-redux";
-import { addHolding, updateHolding, deleteHolding } from "../../../redux/librarySlice.js";
+import { dispatchNewPiece, dispatchUpdatePiece, dispatchDeletePiece } from "../../helpers/holdings/updateReduxHoldings.js";
 import catalogueNew from "../../helpers/holdings/catalogueNew.js";
 import updatePiece from "../../helpers/holdings/updatePiece.js";
 import deletePiece from "../../helpers/holdings/deletePiece.js";
-import clearForm from "../../helpers/catalogue/clearForm.js";
-import validateAndClearForm from "../../helpers/catalogue/validateAndClearForm.js";
+import clearForm from "../../helpers/holdings/clearForm.js";
 import Modal from "../general/Modal.jsx";
+import processAndSubmitForm from "../../helpers/holdings/processAndSubmitForm.js";
 import { toast } from 'react-toastify';
 import { clearSearch } from "../../../redux/searchSlice.js";
+
 
 const CatalogueNew = forwardRef((props, ref) => {
 
   // Issue is that initial data keeps getting passed in, never reset
-  // Just totally refactor the submit form functions--valdiateAndClearForm, clearForm, setNewAndClear, etc.
 
   const { initialData, setData, setShowResults} = props;
 
@@ -72,7 +72,7 @@ const CatalogueNew = forwardRef((props, ref) => {
     identifierLabel: "Op.",
     identifierValue: "",
     number: "",
-    medium: null,
+    medium: {},
     composer: {},
     genre: {},
     publisher: {},
@@ -92,55 +92,43 @@ const CatalogueNew = forwardRef((props, ref) => {
 
   useScrollOnFormErrors(formErrors);
 
-  const setNewAndClear = () => {
-    setMode("new");
-    clearForm(setShowCall, setMainInfo, setAdditionalInfo, setMediumResetKey, setFormErrors);
-  }
-
   useImperativeHandle(ref, () => ({
     resetForm () {
+      // Doesn't really need to be here, can be called from parent
       setMode("new");
       clearForm(setShowCall, setMainInfo, setAdditionalInfo, setMediumResetKey, setFormErrors);
     }
   }));
 
-  const handleAddNewPiece = async (formData) => {
+  const handleAddNewPiece = async () => {
+    if (Object.keys(formErrors).length === 0) {
     try {
-      // Save to database
-      const newPiece = await catalogueNew(formData);
-      // Update redux store
-      dispatch(addHolding(newPiece));
-      // Reset form
-      setNewAndClear();
-      toast.success("Successfully added new piece");
+      processAndSubmitForm(mainInfo, setMainInfo, additionalInfo, setAdditionalInfo, setFormErrors, setShowCall, id, setMediumResetKey, catalogueNew, dispatch, dispatchNewPiece);
+        toast.success("Successfully added new piece");
     } catch (err) {
       toast.error("Error adding holding:", err);
     }
+  }
   };
 
-  const handleUpdatePiece = async (formData) => {
+  const handleUpdatePiece = async () => {
+    if (Object.keys(formErrors).length === 0) {
     try {
-      // Save to database
-      const updated = await updatePiece(formData, id);
-      // Update redux store
-      dispatch(updateHolding(updated));
-      // Reset form
-      setData(null);
-      setNewAndClear();
-      setShowResults(false);
-      dispatch(clearSearch());
-      toast.success("Successfully updated piece");
+      processAndSubmitForm(mainInfo, setMainInfo, additionalInfo, setAdditionalInfo, setFormErrors, setShowCall, id, setMediumResetKey, updatePiece, dispatch, dispatchUpdatePiece);
+        toast.success("Successfully updated piece");
     } catch (err) {
       toast.error("Error updating holding:", err);
     }
+  }
   };
 
+  // Fix this
   const handleDelete = async (e) => {
     e.preventDefault();
     try {
       const deleted = await deletePiece(id);
-      dispatch(deleteHolding(deleted));
-      setNewAndClear();
+
+
       dispatch(clearSearch());
       setShowResults(false);
       setWarningModal(false);
@@ -151,18 +139,19 @@ const CatalogueNew = forwardRef((props, ref) => {
   };
 
   const onSubmit = (e) =>  {
+    e.preventDefault();
     if (mode === "new") {
-      validateAndClearForm(e, mainInfo, setMainInfo, additionalInfo, setAdditionalInfo, setFormErrors, setShowCall, id, setMediumResetKey, handleAddNewPiece);
+      handleAddNewPiece();
+    } else if (mode === "edit") {
+      handleUpdatePiece();
     }
-    if (mode === "edit") {
-      validateAndClearForm(e, mainInfo, setMainInfo, additionalInfo, setAdditionalInfo, setFormErrors, setShowCall, id, setMediumResetKey, handleUpdatePiece);
-    }
+    setMode("new");
+    setMediumResetKey(mediumResetKey + 1);
   }
-
 
   return (
     <div className="catalogueNew">
-      <Form onSubmit={onSubmit}>
+      <Form onSubmit={(e) => onSubmit(e)}>
         {((mode === "new") || (mode === "edit" && initialData && dataReady)) && (
           <>
             <MainInfo mainInfo={mainInfo} setMainInfo={setMainInfo} formErrors={formErrors} mediumResetKey={mediumResetKey} setMediumResetKey={setMediumResetKey} />

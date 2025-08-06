@@ -1,5 +1,3 @@
-import { toast } from 'react-toastify';
-
 const catalogueNew = async (info) => {
     const apiUrl = "http://localhost:5000/api/holdings-data";
   

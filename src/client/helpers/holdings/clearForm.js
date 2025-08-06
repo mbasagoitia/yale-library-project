@@ -1,21 +1,23 @@
 const clearForm = (setShowCall, setMainInfo, setAdditionalInfo, setMediumResetKey, setFormErrors) => {
+  setShowCall(false);
 
-  setShowCall(false)
-
+  // Reset Main Info
   setMainInfo({
     title: "",
     identifierLabel: "Op.",
     identifierValue: "",
     number: "",
-    medium: null,
+    medium: {},
     composer: {},
     genre: {},
     publisher: {},
-    callNumber: []
+    callNumber: [],
   });
 
-  setMediumResetKey(prev => prev + 1);
+  // Reset MediumResetKey
+  setMediumResetKey((prev) => prev + 1);
 
+  // Reset Additional Info
   setAdditionalInfo({
     ownPhysical: true,
     ownDigital: false,
@@ -24,10 +26,11 @@ const clearForm = (setShowCall, setMainInfo, setAdditionalInfo, setMediumResetKe
     condition: 1,
     missingParts: false,
     lastPerformed: null,
-    notes: ""
+    notes: "",
   });
 
+  // Reset Form Errors
   setFormErrors({});
-}
+};
 
 export default clearForm;

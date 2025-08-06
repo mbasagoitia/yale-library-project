@@ -1,27 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 
-const MediumSelect = ({ initialValue, items, handleItemSelect, depth = 0, resetKey }) => {
+const MediumSelect = ({ initialValue, items, handleItemSelect, resetKey }) => {
   const [currentItem, setCurrentItem] = useState(initialValue);
   const [userHasInteracted, setUserHasInteracted] = useState(false);
 
-  // Set first item if no current or initial
+  // Update the current item only when resetKey changes, but preserve user interaction
   useEffect(() => {
-    console.log("inital", initialValue, "currentItem", currentItem);
-    if (!initialValue && !currentItem && items.length > 0) {
-      setCurrentItem(items[0]);
+    if (resetKey && !userHasInteracted) {
+      setCurrentItem(initialValue || items[0]); // Reset to initialValue or the first item
     }
-  }, [items]);
-  // Update currentItem if initialValue changes, unless user already selected
-  useEffect(() => {
-    if (!userHasInteracted && initialValue) {
-      setCurrentItem(initialValue);
-    }
-  }, [initialValue, userHasInteracted]);
+  }, [resetKey, initialValue, items, userHasInteracted]);
 
   const handleSelect = (item) => {
-    setUserHasInteracted(true);
-    setCurrentItem(item);
+    setUserHasInteracted(true); // Mark user interaction
+    setCurrentItem(item); // Set current item to the selected one
 
     const getFirstLeaf = (node) => {
       if (node.options?.length) return getFirstLeaf(node.options[0]);
@@ -35,7 +28,7 @@ const MediumSelect = ({ initialValue, items, handleItemSelect, depth = 0, resetK
 
   const renderDropdown = () => (
     <Dropdown className="my-2">
-      <Dropdown.Toggle variant="primary" id={`dropdown-${depth}`} className="p-2">
+      <Dropdown.Toggle variant="primary" id="medium-dropdown" className="p-2">
         {currentItem?.label || 'Select Ensemble Type'}
       </Dropdown.Toggle>
       <Dropdown.Menu>
@@ -57,8 +50,7 @@ const MediumSelect = ({ initialValue, items, handleItemSelect, depth = 0, resetK
           key={currentItem.label}
           items={nestedItems}
           handleItemSelect={handleItemSelect}
-          depth={depth + 1}
-          resetKey={resetKey}
+          resetKey={resetKey} // Ensure resetKey is passed down to nested component
         />
       );
     }

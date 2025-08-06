@@ -17,7 +17,6 @@ const Home = () => {
 
 // css file
 
-// Is the form actually being reset when cataloguing new piece?
 
 // Something more enticing for home page? Photos of Woolsey, rehearsals? Fade in?
 // Style reports and single piece page
@@ -30,6 +29,7 @@ const Home = () => {
 
 // Renew authToken logic
 
+// Alerts on no permission
 // Remove console.errors and consider error handling
 
 export default Home;
