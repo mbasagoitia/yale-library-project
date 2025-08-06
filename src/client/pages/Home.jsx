@@ -23,9 +23,8 @@ const Home = () => {
 
 // Fix buttons and bootstrap default colors
 
+// Fix delete method on the catalogueNew page
 // Redux needs to reload the holdings if something has been added/updated/deleted
-// Multiple login banners are showing
-// Reset medium???
 
 // Renew authToken logic
 

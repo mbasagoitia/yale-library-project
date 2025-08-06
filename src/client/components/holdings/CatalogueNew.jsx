@@ -126,7 +126,7 @@ const CatalogueNew = forwardRef((props, ref) => {
     try {
       const deleted = await deletePiece(id);
 
-
+      // dispatch deletedPiece
       dispatch(clearSearch());
       setShowResults(false);
       setWarningModal(false);

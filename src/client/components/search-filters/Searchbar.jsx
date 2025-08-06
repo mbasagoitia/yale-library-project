@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Form, FormControl, Button, InputGroup } from "react-bootstrap";
+import { FaSearch } from 'react-icons/fa';
 
 const Searchbar = ({ placeholder, onSearch }) => {
   const [searchText, setSearchText] = useState("");
@@ -13,8 +14,8 @@ const Searchbar = ({ placeholder, onSearch }) => {
     <Form className="mb-4 d-inline" onSubmit={handleSubmit}>
       <InputGroup className="search-wrapper">
         <InputGroup.Text className="rounded-pill-left">
-          <Button type="submit" variant="outline-primary" className="search-button">
-            <i className="fa fa-search"></i>
+          <Button type="submit" variant="primary" className="search-button">
+            <FaSearch size={16} className="search-icon" />
           </Button>
         </InputGroup.Text>
         <FormControl

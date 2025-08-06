@@ -22,22 +22,21 @@ const PaginationControls = ({
 
   return (
     <div className="pagination-controls">
-      <Button variant="outline-primary" onClick={handlePrev} disabled={currentPage === 1}>
+      <Button onClick={handlePrev} disabled={currentPage === 1}>
         ← Prev
       </Button>
 
       {Array.from({ length: totalPages }, (_, idx) => (
         <Button
           key={idx + 1}
-          variant="outline-primary"
           onClick={() => handlePageClick(idx + 1)}
-          className={`${currentPage === idx + 1 ? "active" : ""} current-page-btn`}
+          className={`btn-primary ${currentPage === idx + 1 ? "active" : ""} current-page-btn`}
         >
           {idx + 1}
         </Button>
       ))}
 
-      <Button variant="outline-primary" onClick={handleNext} disabled={currentPage === totalPages}>
+      <Button className="btn-primary" onClick={handleNext} disabled={currentPage === totalPages}>
         Next →
       </Button>
     </div>
