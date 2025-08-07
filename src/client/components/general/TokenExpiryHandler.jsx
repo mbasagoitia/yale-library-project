@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Modal from './Modal';
 import { Button } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 
 const TokenExpiryHandler = ({ renewToken }) => {
   const [secondsLeft, setSecondsLeft] = useState(null);
@@ -48,7 +49,8 @@ const TokenExpiryHandler = ({ renewToken }) => {
           }, countdownStart - currentTimeMs);
         }
       } catch (err) {
-        console.error('Token check/setup failed:', err);
+        // why did this alert?
+        toast.error('Token check/setup failed:', err);
       }
     };
 
@@ -96,12 +98,14 @@ const TokenExpiryHandler = ({ renewToken }) => {
           setSecondsLeft(Math.ceil(msUntilExpiry / 1000));
           startCountdown(Math.ceil(msUntilExpiry / 1000));
         }
+        toast.success("Successfully renewed session");
+        handleCloseModal();
       } else {
-        alert('Failed to renew session, please log in again.');
+        toast.error('Failed to renew session, please log in again.');
         handleLogout(dispatch, navigate);
       }
     } catch (err) {
-      alert('Error renewing session, please log in again.');
+      toast.error(err);
       handleLogout(dispatch, navigate);
     }
   };
@@ -112,7 +116,7 @@ const TokenExpiryHandler = ({ renewToken }) => {
 
   return (
     <Modal 
-      show={true || showModal}
+      show={showModal}
       header="Session will Expire"
       content={
         <div className="d-flex flex-column align-items-center">

@@ -1,5 +1,4 @@
 const renewToken = async (store) => {
-
     try {
       const token = store.get('authToken');
       if (!token) {
@@ -31,7 +30,6 @@ const renewToken = async (store) => {
       return { success: true, token: data.token };
   
     } catch (error) {
-      console.error('Error renewing token:', error);
       return { success: false, message: error.message };
     }
 }
