@@ -14,17 +14,16 @@ const Home = () => {
 
 
 // Edit acquisition date?
+// Renew authToken logic
 
-// css file
-
-// Fix stuff on CatalogueNew page (leftover attempts to clear form), rename
 // Something more enticing for home page? Photos of Woolsey, rehearsals? Fade in?
 // Style reports and single piece page
 // Style reports select
 
-// Renew authToken logic
+// css file
 
 // Alerts on no permission
 // Remove console.errors and consider error handling
+// Middleware error handler
 
 export default Home;

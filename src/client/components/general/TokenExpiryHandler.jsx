@@ -3,11 +3,12 @@ import { jwtDecode } from 'jwt-decode';
 import { handleLogout } from '../../helpers/auth/handleAuth';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-
-// Break this up into helper functions
+import Modal from './Modal';
+import { Button } from 'react-bootstrap';
 
 const TokenExpiryHandler = ({ renewToken }) => {
   const [secondsLeft, setSecondsLeft] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   const countdownInterval = useRef(null);
 
   const dispatch = useDispatch();
@@ -43,6 +44,7 @@ const TokenExpiryHandler = ({ renewToken }) => {
           timeoutId = setTimeout(() => {
             setSecondsLeft(30);
             startCountdown(30);
+            setShowModal(true);
           }, countdownStart - currentTimeMs);
         }
       } catch (err) {
@@ -77,6 +79,7 @@ const TokenExpiryHandler = ({ renewToken }) => {
   const handleRenew = async () => {
     clearInterval(countdownInterval.current);
     setSecondsLeft(null);
+    setShowModal(false);
 
     try {
       const result = await renewToken();
@@ -87,6 +90,7 @@ const TokenExpiryHandler = ({ renewToken }) => {
           const timeoutId = setTimeout(() => {
             setSecondsLeft(30);
             startCountdown(30);
+            setShowModal(true);
           }, msUntilExpiry - 30 * 1000);
         } else {
           setSecondsLeft(Math.ceil(msUntilExpiry / 1000));
@@ -102,22 +106,22 @@ const TokenExpiryHandler = ({ renewToken }) => {
     }
   };
 
-  if (secondsLeft === null) return null;
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
 
   return (
-    <div style={{
-      position: 'fixed',
-      bottom: 20,
-      right: 20,
-      background: '#fff',
-      padding: '1em',
-      border: '1px solid black',
-      borderRadius: '4px',
-      zIndex: 9999
-    }}>
-      <p>Your session will expire in {secondsLeft} second{secondsLeft !== 1 ? 's' : ''}.</p>
-      <button onClick={handleRenew}>Renew Session</button>
-    </div>
+    <Modal 
+      show={true || showModal}
+      header="Session will Expire"
+      content={
+        <div className="d-flex flex-column align-items-center">
+          <p>Your session will expire in {secondsLeft} second{secondsLeft !== 1 ? 's' : ''}.</p>
+          <Button onClick={handleRenew}>Renew Session</Button>
+        </div>
+      }
+      handleCloseModal={handleCloseModal}
+    />
   );
 };
 

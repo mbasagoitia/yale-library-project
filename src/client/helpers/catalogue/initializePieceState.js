@@ -1,19 +1,8 @@
-const initializePieceState = ({
-    initialData,
-    resourceData,
-    setMainInfo,
-    setAdditionalInfo,
-    setDataReady,
-    helpers
-  }) => {
+import splitString from "../../helpers//general/splitString.js";
+import { findMediumById, findComposerById, findGenreById, findPublisherById } from "../../helpers/holdings/filterData.js";
+
+const initializePieceState = ({ initialData, resourceData, setMainInfo, setAdditionalInfo, setDataReady }) => {
     if (initialData && resourceData.mediumData.length) {
-      const {
-        findMediumById,
-        findComposerById,
-        findGenreById,
-        findPublisherById,
-        splitString
-      } = helpers;
   
       setMainInfo({
         title: initialData.title,

@@ -6,25 +6,26 @@ import { Container, Row, Col, Card } from "react-bootstrap";
 import HoldingsList from "../components/holdings/HoldingsList";
 import HoldingsFilter from "../components/search-filters/HoldingsFilter";
 import { selectFilteredHoldings } from "../../redux/searchSelectors.js";
-import CatalogueNew from "../components/holdings/CatalogueNew.jsx";
+import CatalogueForm from "../components/holdings/CatalogueForm.jsx";
 
 const ManageHoldings = () => {
-
-    // Get/set initial form data when editing a piece
-    const [data, setData] = useState(null);
 
     // Is the CataloguePiece interface being used for cataloguing a new piece or updating an existing one?
     const [mode, setMode] = useState("new");
 
-    // Reference CatalogueNew and clear the form, since the logic is defined there
-    const catalogeNewRef = useRef();
+    // Get/set initial form data when editing a piece
+    const [data, setData] = useState(null);
+
+    // Reference CatalogueForm and clear the form, since the logic is defined there
+    const catalogueFormRef = useRef();
 
     const handleSetNewAndClear = () => {
+        setMode("new");
         // Calling the callback function from the child component to reset the form
-        catalogeNewRef.current?.resetForm();
+        catalogueFormRef.current?.resetForm();
       };
 
-    // Search results
+    // Search results, if any; otherwise entire holdings list
     const filteredItems = useSelector(selectFilteredHoldings);
 
     // Show search results (when searching for a piece to edit)
@@ -51,7 +52,7 @@ const ManageHoldings = () => {
 
                                 </Card.Header>
                                 <Card.Body>
-                                    <CatalogueNew ref={catalogeNewRef} onResetForm={handleSetNewAndClear} initialData={data} setData={setData} setShowResults={setShowResults} />
+                                    <CatalogueForm ref={catalogueFormRef} initialData={data} />
                                 </Card.Body>
                             </Card>
                         </Col>

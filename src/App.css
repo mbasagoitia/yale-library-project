@@ -288,11 +288,11 @@ body {
   padding: 0 0.5rem;
 }
 
-.catalogueNew button, .form-control, .form-label, .form-check, .new-composer-open {
+.catalogueForm button, .form-control, .form-label, .form-check, .new-composer-open {
   font-size: clamp(0.8rem, 4vw, 1rem);
 }
 
-.catalogueNew .dropdown-toggle, .holdings-filter .dropdown-toggle {
+.catalogueForm .dropdown-toggle, .holdings-filter .dropdown-toggle {
   color: white;
   width: 100%;
   white-space: normal;
@@ -303,7 +303,7 @@ body {
   width: 100%;
 }
 
-.catalogueNew .dropdown-menu {
+.catalogueForm .dropdown-menu {
   width: 100%;
   background-color: white;
   color: black;
@@ -311,7 +311,7 @@ body {
   white-space: normal;
 }
 
-.catalogueNew .dropdown-item {
+.catalogueForm .dropdown-item {
   white-space: normal;
 }
 
@@ -383,6 +383,10 @@ body {
   background-color: var(--yale-blue);
   color: white;
   border-bottom: none;
+}
+
+.modal-header h1 {
+  font-size: clamp(1.2rem, 3vw, 1.5rem);
 }
 
 .modal-header .btn-close {

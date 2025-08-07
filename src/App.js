@@ -81,8 +81,6 @@ function App() {
       <div className="hero"></div>
       <Navigation />
       <div className="page-content">
-        {/* put this in a modal or something */}
-      <TokenExpiryHandler token={authToken} dispatch={dispatch} renewToken={handleRenewToken} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="classification-guide" element={<ClassificationGuide />} />
@@ -103,6 +101,7 @@ function App() {
         pauseOnHover
         draggable
       />
+      <TokenExpiryHandler token={authToken} dispatch={dispatch} renewToken={handleRenewToken} />
     </div>
     </BrowserRouter>
   );
