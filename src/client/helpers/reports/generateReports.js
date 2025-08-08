@@ -1,6 +1,8 @@
-import pdfMake from 'pdfmake/build/pdfmake';
+
+import { toast } from "react-toastify";import pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 pdfMake.vfs = pdfFonts.vfs;
+
 
 const formatValue = (value) => {
   if (Array.isArray(value)) return value.join(', ');
@@ -13,7 +15,7 @@ const generateReport = (data) => {
   const { reportType, holdings } = data;
 
   if (!holdings || holdings.length === 0) {
-    console.error('No holdings data provided.');
+    toast.error('No holdings data provided.');
     return;
   }
 

@@ -35,7 +35,6 @@ function App() {
 
     const handleAuthSuccess = (_event, data) => {
       if (!data?.netid) {
-        console.error("Login data missing netid:", data);
         toast.error("Login failed: Invalid user data");
         return;
       }
@@ -63,7 +62,7 @@ function App() {
         const token = await window.api.auth.getToken();
         setAuthToken(token);
       } catch (err) {
-        console.error("Failed to fetch token:", err);
+        toast.error("Failed to fetch auth token");
       }
     };
 

@@ -32,12 +32,10 @@ const handleOpenFile = async (fullPath) => {
     try {
         const result = await shell.openPath(fullPath);
         if (result) {
-            console.error('Failed to open file:', result);
             return { success: false, error: result };
         }
         return { success: true };
     } catch (err) {
-        console.error('Error opening file:', err);
         return { success: false, error: err.message };
     }
 };
@@ -46,12 +44,10 @@ const handleOpenFolder = async (folderPath) => {
     try {
         const result = await shell.openPath(folderPath);
         if (result) {
-            console.error('Failed to open folder:', result);
             return { success: false, error: result };
         }
         return { success: true };
     } catch (err) {
-        console.error('Error opening folder:', err);
         return { success: false, error: err.message };
     }
 };

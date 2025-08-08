@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import fetchResourceData from '../helpers/holdings/fetchResourceData';
+import { toast } from "react-toastify";
 
 const useFetchResourceData = () => {
   const [resourceData, setResourceData] = useState({
@@ -20,7 +21,7 @@ const useFetchResourceData = () => {
           publisherData: resources[3],
         });
       } catch (error) {
-        console.error("Error fetching resource data:", error);
+        toast.error("Error fetching resource data:", error);
       }
     };
     fetchData();

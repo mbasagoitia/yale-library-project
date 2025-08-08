@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Dropdown, ButtonGroup, } from 'react-bootstrap';
 import fetchReportData from '../../helpers/reports/fetchReportData';
 import generateReport from '../../helpers/reports/generateReports';
 
 const ReportForm = () => {
+  // Report types: all holdings, missing parts, poor condition, condition summary, by composer, performance history
   const [reportType, setReportType] = useState('');
+  // If performance history is selected, how many years back do you want to analyze?
   const [years, setYears] = useState('');
 
   const handleSubmit = async (e) => {
@@ -18,26 +20,23 @@ const ReportForm = () => {
       generateReport({ reportType, holdings: data });
     }
   };
-
+//  Adjust logic for setting dropdown, style with css. See composerfilter
   return (
     <div className="my-4">
-      <h3 className="mb-4">Generate Report</h3>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="reportType" className="mb-3">
           <Form.Label>Select Type</Form.Label>
-          <Form.Select
-            value={reportType}
-            onChange={(e) => setReportType(e.target.value)}
-            required
-          >
-            <option value="">-- Select --</option>
-            <option value="all">All Holdings</option>
-            <option value="missing">Missing Parts</option>
-            <option value="poor-condition">Poor Condition</option>
-            <option value="condition-summary">Condition Summary</option>
-            <option value="music-by-composer">Music by Composer</option>
-            <option value="performance-history">Performance History</option>
-          </Form.Select>
+          <Dropdown as={ButtonGroup} className="w-100">
+            <Dropdown.Toggle split variant="secondary" id="dropdown-split-basic" />
+            <Dropdown.Menu>
+              <Dropdown.Item onClick={() => setReportType("all")}>All Holdings</Dropdown.Item>
+              <Dropdown.Item onClick={() => setReportType("missing")}>Missing Parts</Dropdown.Item>
+              <Dropdown.Item onClick={() => setReportType("poor-condition")}>Poor Condition</Dropdown.Item>
+              <Dropdown.Item onClick={() => setReportType("condition-summary")}>Condition Summary</Dropdown.Item>
+              <Dropdown.Item onClick={() => setReportType("music-by-composer")}>Music by Composer</Dropdown.Item>
+              <Dropdown.Item onClick={() => setReportType("performance-history")}>Performance History</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         </Form.Group>
 
         {reportType === 'performance-history' && (

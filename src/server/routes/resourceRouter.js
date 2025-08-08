@@ -9,29 +9,29 @@ const {
 
 const router = express.Router();
 
-router.get('/medium-data', (req, res) => {
+router.get('/medium-data', (req, res, next) => {
     const db = req.db;
-    getMediumData(req, res, db);
+    getMediumData(req, res, next, db);
 });
 
-router.get('/composer-data', (req, res) => {
+router.get('/composer-data', (req, res, next) => {
   const db = req.db;
-  getComposerData(req, res, db);
+  getComposerData(req, res, next, db);
 });
 
-router.get('/species-data', (req, res) => {
+router.get('/species-data', (req, res, next) => {
   const db = req.db;
-  getSpeciesData(req, res, db);
+  getSpeciesData(req, res, next, db);
 });
 
-router.get('/publisher-data', (req, res) => {
+router.get('/publisher-data', (req, res, next) => {
   const db = req.db;
-  getPublisherData(req, res, db);
+  getPublisherData(req, res, next, db);
 });
 
-router.post('/composer-data', (req, res) => {
+router.post('/composer-data', (req, res, next) => {
   const db = req.db;
-  addComposer(req, res, db);
+  addComposer(req, res, next, db);
 });
 
 module.exports = router;

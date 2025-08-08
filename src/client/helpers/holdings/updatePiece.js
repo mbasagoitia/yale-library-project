@@ -1,7 +1,6 @@
 const updatePiece = async (info, id) => {
     const apiUrl = `http://localhost:5000/api/holdings-data/${id}`;
-  
-    try {
+
       const res = await fetch(apiUrl, {
         method: "PUT",
         headers: {
@@ -17,10 +16,6 @@ const updatePiece = async (info, id) => {
   
       const updatedPiece = await res.json();
       return updatedPiece;
-    } catch (error) {
-      console.error("Error updating catalogue:", error);
-      throw error;
-    }
   };
   
   export default updatePiece;

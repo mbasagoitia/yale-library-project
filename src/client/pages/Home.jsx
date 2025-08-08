@@ -14,7 +14,8 @@ const Home = () => {
 
 
 // Edit acquisition date?
-// Renew authToken logic
+
+// Renew authToken logic (make sure it works)
 
 // Something more enticing for home page? Photos of Woolsey, rehearsals? Fade in?
 // Style reports and single piece page
@@ -22,8 +23,16 @@ const Home = () => {
 
 // css file
 
-// Alerts on no permission
-// Remove console.errors and consider error handling
-// Middleware error handler
+// Sanitize inputs
+
+/* Testing:
+
+1. Have someone else log in and try to do admin things
+2. Try all forms
+3. Try all backups
+4. All token renewal things
+5. Test on different devices
+
+*/
 
 export default Home;

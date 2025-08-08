@@ -1,7 +1,5 @@
 const deletePiece = async (id) => {
     const apiUrl = `http://localhost:5000/api/holdings-data/${id}`;
-  
-    try {
       const res = await fetch(apiUrl, {
         method: "DELETE",
         headers: {
@@ -11,15 +9,12 @@ const deletePiece = async (id) => {
       });
   
       if (!res.ok) {
-        throw new Error("Network response was not ok");
+        const data = await res.json();
+        throw new Error(data.error || "Something went wrong while deleting piece");
       }
   
       const result = await res.json();
       return result;
-    } catch (error) {
-      console.error("Error deleting piece from catalogue:", error);
-      throw error;
-    }
   };
   
   export default deletePiece;

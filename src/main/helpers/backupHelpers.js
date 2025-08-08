@@ -37,7 +37,6 @@ const createReadableBackup = async (mainWindow, store) => {
 
     return { success: true, filePath };
   } catch (err) {
-    console.error("Readable backup failed:", err);
     return { success: false, message: "Unexpected error during CSV backup." };
   }
 };
@@ -73,7 +72,6 @@ const createMysqlDump = async (mainWindow, store) => {
 
     return { success: true, filePath };
   } catch (err) {
-    console.error("MySQL dump failed:", err);
     return { success: false, message: "Unexpected error during MySQL backup." };
   }
 };
@@ -97,7 +95,6 @@ const zipFolder = async (store) => {
 
       output.on('close', () => resolve({ success: true, filePath: zipPath }));
       archive.on('error', (err) => {
-        console.error("Zip archive error:", err);
         reject({ success: false, message: "Failed to zip catalogue." });
       });
 
@@ -106,7 +103,6 @@ const zipFolder = async (store) => {
       archive.finalize();
     });
   } catch (err) {
-    console.error("Zipping failed:", err);
     return { success: false, message: "Unexpected error during backup. Please try logging in again." };
   }
 };

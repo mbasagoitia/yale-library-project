@@ -3,9 +3,9 @@ const { addNewAdmin } = require("../controllers/adminController.js");
 
 const router = express.Router();
 
-router.post('/', (req, res) => {
+router.post('/', (req, res, next) => {
     const db = req.db;
-    addNewAdmin(req, res, db);
-})
+    addNewAdmin(req, res, db, next);
+});
 
 module.exports = router;

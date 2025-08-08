@@ -4,6 +4,7 @@ import { ArrowLeft } from 'react-bootstrap-icons';
 import { Container } from 'react-bootstrap';
 import renderIdAndNumber from '../helpers/holdings/renderIdAndNumber.js';
 import InfoTable from '../components/holdings/InfoTable.jsx';
+import { toast } from "react-toastify";
 
 const PieceInfo = () => {
 
@@ -19,7 +20,7 @@ const PieceInfo = () => {
         const data = await res.json();
         setData(data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        toast.error('Error fetching data');
       }
     };
   

@@ -1,7 +1,5 @@
 const catalogueNew = async (info) => {
     const apiUrl = "http://localhost:5000/api/holdings-data";
-  
-    try {
       const res = await fetch(apiUrl, {
         method: "POST",
         headers: {
@@ -12,15 +10,12 @@ const catalogueNew = async (info) => {
       });
   
       if (!res.ok) {
-        throw new Error("Network response was not ok");
+        const data = await res.json();
+        throw new Error(data.error || "Something went wrong while adding composer");
       }
   
       const newPiece = await res.json();
       return newPiece;
-    } catch (error) {
-      console.error("Catalogue error:", error);
-      throw error;
-    }
   };
   
   export default catalogueNew;

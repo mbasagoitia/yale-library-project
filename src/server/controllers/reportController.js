@@ -1,8 +1,31 @@
-const getAllPieces = (req, res, db) => {
+const { 
+  getAllPiecesQuery,
+  getPieceById,
+  insertNewPiece,
+  updatePieceById,
+  deletePieceById
+} = require("../helpers/pieceHelpers.js");
+
+const getAllPieces = (req, res, next) => {
+  const db = req.db;
+
+  getAllPiecesQuery(db, (err, result) => {
+    if (err) {
+      const error = new Error('Error retrieving piece list');
+      error.status = 500;
+      return next(error);
+    }
+    res.status(200).json(result);
+  });
+};
+
+const getMissing = (req, res, next) => {
+  const db = req.db;
+
   const query = `
     SELECT 
-      CONCAT(c.last_name, ', ', c.first_name) AS Composer,
       p.title AS Title,
+      CONCAT(c.last_name, ', ', c.first_name) AS Composer,
       pub.label AS Publisher,
       p.additional_notes AS Notes,
       con.label AS 'Condition',
@@ -13,73 +36,52 @@ const getAllPieces = (req, res, db) => {
     INNER JOIN composers c ON p.composer_id = c.id 
     INNER JOIN publisher_options pub ON p.publisher_id = pub.id
     INNER JOIN conditions con ON p.condition_id = con.id
-    ORDER BY Composer ASC, Title ASC;
-  `;
+    WHERE p.missing_parts = 1
+    ORDER BY c.last_name, c.first_name, p.title;`;
+
   db.query(query, (err, result) => {
     if (err) {
-      console.error('Error executing MySQL query:', err);
-      return res.status(500).json({ error: 'Error retrieving piece list' });
+      const error = new Error('Error retrieving piece list');
+      error.status = 500;
+      return next(error);
     }
     res.status(200).json(result);
   });
 };
 
-// For some reason this isn't returning anything
+const getPoorCondition = (req, res, next) => {
+  const db = req.db;
 
-const getMissing = (req, res, db) => {
   const query = `
-  SELECT 
-    p.title AS Title,
-    CONCAT(c.last_name, ', ', c.first_name) AS Composer,
-    pub.label AS Publisher,
-    p.additional_notes AS Notes,
-    con.label AS 'Condition',
-    p.call_number AS 'Call Number',
-    DATE_FORMAT(p.acquisition_date, '%b %e, %Y') AS 'Acquisition Date',
-    DATE_FORMAT(p.date_last_performed, '%b %e, %Y') AS 'Date Last Performed'
-  FROM pieces p
-  INNER JOIN composers c ON p.composer_id = c.id 
-  INNER JOIN publisher_options pub ON p.publisher_id = pub.id
-  INNER JOIN conditions con ON p.condition_id = con.id
-  WHERE p.missing_parts = 1
-  ORDER BY c.last_name, c.first_name, p.title;`
+    SELECT 
+      p.title AS Title,
+      CONCAT(c.last_name, ', ', c.first_name) AS Composer,
+      pub.label AS Publisher,
+      p.additional_notes AS Notes,
+      con.label AS 'Condition',
+      p.call_number AS 'Call Number',
+      DATE_FORMAT(p.acquisition_date, '%b %e, %Y') AS 'Acquisition Date',
+      DATE_FORMAT(p.date_last_performed, '%b %e, %Y') AS 'Date Last Performed'
+    FROM pieces p
+    INNER JOIN composers c ON p.composer_id = c.id 
+    INNER JOIN publisher_options pub ON p.publisher_id = pub.id
+    INNER JOIN conditions con ON p.condition_id = con.id
+    WHERE p.condition_id > 2
+    ORDER BY p.condition_id DESC, c.last_name ASC, p.title ASC;`;
+
   db.query(query, (err, result) => {
     if (err) {
-      console.error('Error executing MySQL query:', err);
-      return res.status(500).json({ error: 'Error retrieving piece list' });
+      const error = new Error('Error retrieving piece list');
+      error.status = 500;
+      return next(error);
     }
     res.status(200).json(result);
   });
 };
 
-const getPoorCondition = (req, res, db) => {
-  const query = `
-  SELECT 
-    p.title AS Title,
-    CONCAT(c.last_name, ', ', c.first_name) AS Composer,
-    pub.label AS Publisher,
-    p.additional_notes AS Notes,
-    con.label AS 'Condition',
-    p.call_number AS 'Call Number',
-    DATE_FORMAT(p.acquisition_date, '%b %e, %Y') AS 'Acquisition Date',
-    DATE_FORMAT(p.date_last_performed, '%b %e, %Y') AS 'Date Last Performed'
-  FROM pieces p
-  INNER JOIN composers c ON p.composer_id = c.id 
-  INNER JOIN publisher_options pub ON p.publisher_id = pub.id
-  INNER JOIN conditions con ON p.condition_id = con.id
-  WHERE p.condition_id > 2
-  ORDER BY p.condition_id DESC, c.last_name ASC, p.title ASC;`
-  db.query(query, (err, result) => {
-    if (err) {
-      console.error('Error executing MySQL query:', err);
-      return res.status(500).json({ error: 'Error retrieving piece list' });
-    }
-    console.log(result);
-    res.status(200).json(result);
-  });
-};
+const getConditionSummary = (req, res, next) => {
+  const db = req.db;
 
-const getConditionSummary = (req, res, db) => {
   const query = `
     SELECT 
       con.label AS 'Condition',
@@ -91,19 +93,21 @@ const getConditionSummary = (req, res, db) => {
       SELECT COUNT(*) AS total_count FROM pieces
     ) AS total
     GROUP BY con.id, con.label, total.total_count
-    ORDER BY con.id ASC;
-  `;
+    ORDER BY con.id ASC;`;
+
   db.query(query, (err, result) => {
     if (err) {
-      console.error('Error executing MySQL query:', err);
-      return res.status(500).json({ error: 'Error retrieving condition summary' });
+      const error = new Error('Error retrieving condition summary');
+      error.status = 500;
+      return next(error);
     }
     res.status(200).json(result);
   });
 };
 
+const getMusicByComposer = (req, res, next) => {
+  const db = req.db;
 
-const getMusicByComposer = (req, res, db) => {
   const query = `
     SELECT 
     CONCAT(c.last_name, ', ', c.first_name) AS Composer,
@@ -113,23 +117,26 @@ const getMusicByComposer = (req, res, db) => {
   FROM pieces p
   JOIN composers c ON p.composer_id = c.id
   JOIN species_options s ON p.species_id = s.id
-  ORDER BY COUNT(*) OVER (PARTITION BY c.id) DESC, c.last_name, c.first_name, s.label;
-  `;
+  ORDER BY COUNT(*) OVER (PARTITION BY c.id) DESC, c.last_name, c.first_name, s.label;`;
+
   db.query(query, (err, result) => {
     if (err) {
-      console.error('Error executing MySQL query:', err);
-      return res.status(500).json({ error: 'Error retrieving music by composer' });
+      const error = new Error('Error retrieving music by composer');
+      error.status = 500;
+      return next(error);
     }
     res.status(200).json(result);
   });
 };
 
-
-const getPerformanceHistory = (req, res, db) => {
+const getPerformanceHistory = (req, res, next) => {
+  const db = req.db;
   const yearsAgo = parseInt(req.query.years, 10);
 
   if (isNaN(yearsAgo)) {
-    return res.status(400).json({ error: 'Invalid number of years provided' });
+    const error = new Error('Invalid number of years provided');
+    error.status = 400;
+    return next(error);
   }
 
   const query = `
@@ -147,24 +154,23 @@ const getPerformanceHistory = (req, res, db) => {
       p.date_last_performed DESC,
       c.last_name ASC,
       c.first_name ASC,
-      p.title ASC;
-  `;
+      p.title ASC;`;
 
   db.query(query, [yearsAgo], (err, results) => {
     if (err) {
-      console.error('Error executing MySQL query:', err);
-      return res.status(500).json({ error: 'Error retrieving performance history' });
+      const error = new Error('Error retrieving performance history');
+      error.status = 500;
+      return next(error);
     }
     res.status(200).json(results);
   });
 };
 
-
 module.exports = {
-    getAllPieces,
-    getMissing,
-    getPoorCondition,
-    getConditionSummary,
-    getMusicByComposer,
-    getPerformanceHistory
-}
+  getAllPieces,
+  getMissing,
+  getPoorCondition,
+  getConditionSummary,
+  getMusicByComposer,
+  getPerformanceHistory
+};

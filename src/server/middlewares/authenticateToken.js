@@ -1,16 +1,28 @@
 const jwt = require('jsonwebtoken');
-
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
-  if (!authHeader) return res.status(401).json({ error: 'Missing Authorization header' });
+
+  if (!authHeader) {
+    const error = new Error('Missing Authorization header');
+    error.status = 401;
+    return next(error);
+  }
 
   const token = authHeader.split(' ')[1];
-  if (!token) return res.status(401).json({ error: 'Missing token' });
+  if (!token) {
+    const error = new Error('Missing token');
+    error.status = 401;
+    return next(error);
+  }
 
   jwt.verify(token, JWT_SECRET, (err, user) => {
-    if (err) return res.status(403).json({ error: 'Invalid or expired token' });
+    if (err) {
+      const error = new Error('Invalid or expired token');
+      error.status = 403;
+      return next(error);
+    }
 
     req.user = user;
     next();

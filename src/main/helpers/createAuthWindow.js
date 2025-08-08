@@ -42,7 +42,6 @@ const createAuthWindow = (mainWindow, store) => {
           }
         })
         .catch(err => {
-          console.error('Auth validation error:', err);
           mainWindow.webContents.send('auth-failed', {
             reason: 'An error occurred while validating your login. Please try again.'
           });

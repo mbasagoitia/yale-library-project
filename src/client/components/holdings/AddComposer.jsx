@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button, InputGroup, FormControl } from "react-bootstrap";
 import addComposer from "../../helpers/holdings/addComposer";
+import { toast } from "react-toastify";
 
 const AddComposer = ({ handleCloseModal }) => {
     const [composer, setComposer] = useState({
@@ -25,7 +26,7 @@ const AddComposer = ({ handleCloseModal }) => {
                     cutterNumber: ""
                 })
             } catch (error) {
-                console.error("Error adding composer:", error);
+                toast.error("Error adding composer");
             }
         } else {
             setFormErrors({

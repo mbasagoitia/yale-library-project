@@ -9,29 +9,29 @@ const {
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
     const db = req.db;
-    getAllPieces(req, res, db);
-})
+    getAllPieces(req, res, next, db);
+});
 
-router.get('/:id', (req, res) => {
+router.get('/:id', (req, res, next) => {
     const db = req.db;
-    getSinglePiece(req, res, db);
-})
+    getSinglePiece(req, res, next, db);
+});
 
-router.post('/', (req, res) => {
+router.post('/', (req, res, next) => {
     const db = req.db;
-    addNewPiece(req, res, db);
-})
+    addNewPiece(req, res, next, db);
+});
 
-router.put('/:id', (req, res) => {
+router.put('/:id', (req, res, next) => {
     const db = req.db;
-    editPiece(req, res, db);
-})
+    editPiece(req, res, next, db);
+});
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', (req, res, next) => {
     const db = req.db;
-    deletePiece(req, res, db);
-})
+    deletePiece(req, res, next, db);
+});
 
 module.exports = router;

@@ -1,55 +1,63 @@
 const { exportReadableBackup, exportMySQLDump } = require("../helpers/backupHelpers.js");
 
-const readableBackup = async (req, res) => {
+const readableBackup = async (req, res, next) => {
   try {
     const db = req.db;
     const filePath = req.query.filePath;
 
     if (!filePath) {
-      return res.status(400).json({ success: false, message: "Missing filePath." });
+      const error = new Error("Missing filePath.");
+      error.status = 400;
+      return next(error);
     }
 
     const result = await exportReadableBackup(db, filePath);
 
     if (!result.success) {
-      return res.status(500).json({ success: false, message: result.message });
+      const error = new Error(result.message);
+      error.status = 500;
+      return next(error);
     }
 
     res.download(filePath, (err) => {
       if (err) {
-        console.error("Download error:", err);
-        return res.status(500).send("Failed to send readable backup.");
+        const downloadError = new Error("Failed to send readable backup.");
+        downloadError.status = 500;
+        return next(downloadError);
       }
     });
   } catch (err) {
-    console.error("Readable backup failed:", err);
-    res.status(500).json({ success: false, message: "Failed to create readable backup." });
+    return next(err);
   }
 };
 
-const mysqlDump = async (req, res) => {
+const mysqlDump = async (req, res, next) => {
   try {
     const filePath = req.query.filePath;
 
     if (!filePath) {
-      return res.status(400).json({ success: false, message: "Missing filePath." });
+      const error = new Error("Missing filePath.");
+      error.status = 400;
+      return next(error);
     }
 
     const result = await exportMySQLDump(filePath);
 
     if (!result.success) {
-      return res.status(500).json({ success: false, message: result.message });
+      const error = new Error(result.message);
+      error.status = 500;
+      return next(error);
     }
 
     res.download(result.filePath, (err) => {
       if (err) {
-        console.error("Download error:", err);
-        return res.status(500).send("Failed to send MySQL dump.");
+        const downloadError = new Error("Failed to send MySQL dump.");
+        downloadError.status = 500;
+        return next(downloadError);
       }
     });
   } catch (err) {
-    console.error("MySQL dump error:", err);
-    res.status(500).json({ success: false, message: "Failed to create MySQL dump." });
+    return next(err);
   }
 };
 

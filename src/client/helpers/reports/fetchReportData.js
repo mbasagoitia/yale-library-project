@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 const fetchReportData = async (reportType, options = {}) => {
     let apiUrl = `http://localhost:5000/api/report-data/${reportType}`;
     const token = await window.api.auth.getToken();
@@ -22,8 +24,7 @@ const fetchReportData = async (reportType, options = {}) => {
   
       return data;
     } catch (error) {
-      console.error('Error fetching report data:', error);
-      alert(error.message || 'An error occurred.');
+      toast.error(error.message || 'An error occurred fetching report data');
     }
   };
 

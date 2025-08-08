@@ -8,9 +8,7 @@ const handleCreateCSVBackup = async () => {
     } else {
     toast.success(`Backup saved to ${result.filePath}`);
     }
-
 }
-
 
 const handleCreateMysqlDump = async () => {
     const result = await window.api.backup.createMySQL();
@@ -19,14 +17,12 @@ const handleCreateMysqlDump = async () => {
         } else {
         toast.success(`Backup saved to ${result.filePath}`);
         }
-
 }
 
 const handleBackupScans = async () => {
     const result = await window.api.backup.zipCatalogue();
     if (!result.success) {
-      toast.error(`Failed to back up digital catalogue:\n${result.message}`);
-      console.error(result.message);
+      toast.error(result.message);
     } else {
       toast.success(`Digital catalogue successfully backed up to:\n${result.filePath}`);
     }
