@@ -52,7 +52,6 @@ const Navigation = () => {
             <Nav.Link href="/digital-catalogue" onClick={() => setNavExpanded(false)}>Digital Catalogue</Nav.Link>
             <Nav.Link href="/classification-guide" onClick={() => setNavExpanded(false)}>Classification Guide</Nav.Link>
 
-            {/* Always show Reports, disabled if not logged in */}
             {isLoggedIn ? (
               <Nav.Link href="/reports" onClick={() => setNavExpanded(false)}>Reports</Nav.Link>
             ) : (
@@ -65,12 +64,10 @@ const Navigation = () => {
               </Nav.Link>
             )}
 
-            {/* Always show Searchbar */}
             <div className="nav-searchbar">
               <Searchbar placeholder={"Search the collection"} onSearch={handleSearch} />
             </div>
 
-            {/* Admin Panel or Login */}
             {isAdmin ? (
               <div
                 onMouseEnter={() => setIsHovered(true)}

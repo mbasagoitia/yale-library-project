@@ -18,7 +18,7 @@ const AddComposer = ({ handleCloseModal }) => {
             try {
                 await addComposer(composer);
                 handleCloseModal();
-                console.log("Composer added successfully");
+                toast.success("Successfully added composer");
 
                 setComposer({
                     lastName: "",

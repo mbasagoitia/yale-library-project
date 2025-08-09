@@ -15,15 +15,14 @@ const Home = () => {
 
 // Edit acquisition date?
 
-// Renew authToken logic (make sure it works)
-
 // Something more enticing for home page? Photos of Woolsey, rehearsals? Fade in?
-// Style reports and single piece page
-// Style reports select
+// Scans will need to link to local path, not Google Drive
 
 // css file
 
 // Sanitize inputs
+
+// Footer?
 
 /* Testing:
 

@@ -4,37 +4,60 @@ import fetchReportData from '../../helpers/reports/fetchReportData';
 import generateReport from '../../helpers/reports/generateReports';
 
 const ReportForm = () => {
+
   // Report types: all holdings, missing parts, poor condition, condition summary, by composer, performance history
-  const [reportType, setReportType] = useState('');
+  const [reportType, setReportType] = useState("");
   // If performance history is selected, how many years back do you want to analyze?
   const [years, setYears] = useState('');
 
+  const reports = [
+    { type: "all", label: "All Holdings" },
+    { type: "missing", label: "Missing Parts" },
+    { type: "poor-condition", label: "Poor Condition" },
+    { type: "condition-summary", label: "Condition Summary" },
+    { type: "music-by-composer", label: "Music by Composer" },
+    { type: "performance-history", label: "Performance History" }
+  ]
+
+  const isItemSelected = (item) => {
+    const type = reportType.type;
+    return item.type === type;
+  };
+
+  const handleItemClick = (item) => {
+    setReportType(item);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!reportType) return;
+    if (!reportType.type) return;
 
-    const options = reportType === 'performance-history' ? { years } : {};
-    const data = await fetchReportData(reportType, options);
+    const options = reportType.type === 'performance-history' ? { years } : {};
+    const data = await fetchReportData(reportType.type, options);
 
     if (data) {
-      generateReport({ reportType, holdings: data });
+      const type = reportType.type;
+      generateReport({ type, holdings: data });
     }
   };
-//  Adjust logic for setting dropdown, style with css. See composerfilter
+
   return (
-    <div className="my-4">
+    <div className="my-4 report-form">
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="reportType" className="mb-3">
           <Form.Label>Select Type</Form.Label>
           <Dropdown as={ButtonGroup} className="w-100">
-            <Dropdown.Toggle split variant="secondary" id="dropdown-split-basic" />
+            <Dropdown.Toggle variant="secondary" id="dropdown-basic">{reportType?.label || "Select Report Type"}</Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item onClick={() => setReportType("all")}>All Holdings</Dropdown.Item>
-              <Dropdown.Item onClick={() => setReportType("missing")}>Missing Parts</Dropdown.Item>
-              <Dropdown.Item onClick={() => setReportType("poor-condition")}>Poor Condition</Dropdown.Item>
-              <Dropdown.Item onClick={() => setReportType("condition-summary")}>Condition Summary</Dropdown.Item>
-              <Dropdown.Item onClick={() => setReportType("music-by-composer")}>Music by Composer</Dropdown.Item>
-              <Dropdown.Item onClick={() => setReportType("performance-history")}>Performance History</Dropdown.Item>
+              {reports.map((report) => (
+              <Dropdown.Item
+                key={report.type}
+                onClick={() => handleItemClick(report)}
+                active={isItemSelected(report)}
+              >
+                {`${report.label}`}
+              </Dropdown.Item>
+            ))}
             </Dropdown.Menu>
           </Dropdown>
         </Form.Group>

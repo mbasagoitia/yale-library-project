@@ -25,15 +25,20 @@ import processAndSubmitForm from "../../helpers/holdings/processAndSubmitForm.js
 
 const CatalogueForm = forwardRef((props, ref) => {
 
+  const [dataReady, setDataReady] = useState(false);
+  const [formErrors, setFormErrors] = useState({});
+
+    // Get info from parent component
+  const { mode, setMode, mediumResetKey, setMediumResetKey } = useMode();
+
+  const [showCall, setShowCall] = useState(mode === "edit" ? true : false);
+
   // Any initial data passed in (updating existing data)
   const { initialData } = props;
   const id = initialData?.id;
 
   // List of composer, medium, publisher, etc. data
   const resourceData = useFetchResourceData();
-
-  // Get info from parent component
-  const { mode, setMode, mediumResetKey, setMediumResetKey } = useMode();
 
   const dispatch = useDispatch();
 
@@ -46,10 +51,6 @@ const CatalogueForm = forwardRef((props, ref) => {
       clearForm(setShowCall, setMainInfo, setAdditionalInfo, setMediumResetKey, setFormErrors);
     }
   }));
-
-  const [dataReady, setDataReady] = useState(false);
-  const [formErrors, setFormErrors] = useState({});
-  const [showCall, setShowCall] = useState(mode === "edit" ? true : false);
 
   // Main form info used to determine title, call number, and catalogue category
   const [mainInfo, setMainInfo] = useState({
