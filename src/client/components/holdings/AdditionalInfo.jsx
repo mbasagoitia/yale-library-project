@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { FormGroup, FormCheck, FormLabel, FormControl, Row, Col, Container } from "react-bootstrap";
 import conditions from "./conditions";
 import Tooltip from "./Tooltip";
@@ -47,6 +46,13 @@ const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setForm
             lastPerformed: date ? date.toISOString() : null,
           }))
       };
+
+      const handleAcquisitionDateSelect = (date) => {
+        setAdditionalInfo((prev) => ({
+            ...prev,
+            acquisitionDate: date ? date.toISOString() : null,
+          }))
+      };    
 
     const handleMediaTypeChange = (key) => {
         setAdditionalInfo(prevState => ({ ...prevState, [key]: !prevState[key] }));
@@ -138,6 +144,26 @@ const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setForm
                         checked={!additionalInfo.missingParts}
                         onChange={handleMissingPartsSelect}
                     />
+                </Col>
+            </FormGroup>
+
+            <FormGroup as={Row} className="mt-2 lg-border">
+                <FormLabel as="legend" column sm={4} className="my-2">
+                    Acquisition Date
+                </FormLabel>
+                <Col sm={8} className="my-2">
+                <DatePicker
+                    selected={
+                        additionalInfo.acquisitionDate
+                        ? new Date(additionalInfo.acquisitionDate)
+                        : null
+                    }
+                    onChange={handleAcquisitionDateSelect}
+                    className="form-control"
+                    dateFormat="MM-dd-yyyy"
+                    isClearable
+                    placeholderText="Select date"
+                />
                 </Col>
             </FormGroup>
 

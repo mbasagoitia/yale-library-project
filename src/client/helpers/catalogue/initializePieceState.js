@@ -23,6 +23,7 @@ const initializePieceState = ({ initialData, resourceData, setMainInfo, setAddit
         publicDomain: initialData.public_domain === 1,
         condition: initialData.condition_id,
         missingParts: initialData.missing_parts === 1,
+        acquisitionDate: initialData.acquisition_date,
         lastPerformed: initialData.date_last_performed,
         notes: initialData.additional_notes
       });

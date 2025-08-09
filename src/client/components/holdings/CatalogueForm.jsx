@@ -73,6 +73,7 @@ const CatalogueForm = forwardRef((props, ref) => {
     publicDomain: true,
     condition: 1,
     missingParts: false,
+    acquisitionDate: new Date(),
     lastPerformed: null,
     notes: ""
   });

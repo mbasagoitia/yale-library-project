@@ -13,16 +13,13 @@ const Home = () => {
 };
 
 
-// Edit acquisition date?
-
 // Something more enticing for home page? Photos of Woolsey, rehearsals? Fade in?
 // Scans will need to link to local path, not Google Drive
+// How to use this application page?
 
 // css file
 
 // Sanitize inputs
-
-// Footer?
 
 /* Testing:
 

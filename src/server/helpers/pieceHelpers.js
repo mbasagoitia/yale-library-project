@@ -51,12 +51,7 @@ const getPieceById = (id, db, callback) => {
     });
   };
 
-const getFormattedDate = () => {
-    const d = new Date();
-    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-  };
-
-const getFormattedLastPerformedDate = (datestring) => {
+const getFormattedDate = (datestring) => {
     const d = new Date(datestring);
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
@@ -65,15 +60,15 @@ const insertNewPiece = (pieceInfo, db, callback) => {
     const {
         title, identifierLabel, identifierValue, number, composer, medium,
         genre, publisher, callNumber, condition, publicDomain, notes,
-        ownPhysical, ownDigital, missingParts, scansUrl, lastPerformed
+        ownPhysical, ownDigital, missingParts, scansUrl, acquisitionDate, lastPerformed
     } = pieceInfo;
 
     const finalIdentifierValue = identifierValue === "" ? null : identifierValue;
     const finalIdentifierLabel = !identifierValue ? null : identifierLabel;
     const mediumId = medium.id || medium.options?.[0]?.id || 1
 
-    const acquisitionDate = getFormattedDate();
-    lastPerformedFormatted = lastPerformed ? getFormattedLastPerformedDate(lastPerformed) : null;
+    const acquisitionDateFormatted = acquisitionDate ? getFormattedDate(acquisitionDate) : null;
+    const lastPerformedFormatted = lastPerformed ? getFormattedDate(lastPerformed) : null;
 
     const insertQuery = `
         INSERT INTO pieces (
@@ -86,7 +81,7 @@ const insertNewPiece = (pieceInfo, db, callback) => {
         title, finalIdentifierLabel, finalIdentifierValue, number,
         composer.id, genre.id, mediumId, publisher.id,
         callNumber.join(" "), condition, publicDomain, notes,
-        ownPhysical, ownDigital, missingParts, scansUrl, acquisitionDate, lastPerformedFormatted
+        ownPhysical, ownDigital, missingParts, scansUrl, acquisitionDateFormatted, lastPerformedFormatted
     ];
 
     db.query(insertQuery, values, callback);
@@ -110,19 +105,21 @@ const insertNewPiece = (pieceInfo, db, callback) => {
       ownDigital,
       missingParts,
       scansUrl, 
+      acquisitionDate,
       lastPerformed
     } = pieceInfo;
   
     const finalIdentifierValue = identifierValue === "" ? null : identifierValue;
     const mediumId = medium.id || medium.options?.[0]?.id;
 
-    lastPerformedFormatted = lastPerformed ? getFormattedLastPerformedDate(lastPerformed) : null;
+    const acquisitionDateFormatted = acquisitionDate ? getFormattedDate(acquisitionDate) : null;
+    const lastPerformedFormatted = lastPerformed ? getFormattedDate(lastPerformed) : null;
   
     const updateQuery = `
       UPDATE pieces
       SET title = ?, identifier_label = ?, identifier_value = ?, number = ?, composer_id = ?, species_id = ?, medium_id = ?,
           publisher_id = ?, call_number = ?, condition_id = ?, public_domain = ?, additional_notes = ?, own_physical = ?, own_digital = ?,
-          missing_parts = ?, scans_url = ?, date_last_performed = ?
+          missing_parts = ?, scans_url = ?, acquisition_date = ?, date_last_performed = ?
       WHERE id = ?
     `;
   
@@ -143,6 +140,7 @@ const insertNewPiece = (pieceInfo, db, callback) => {
       ownDigital,
       missingParts,
       scansUrl,
+      acquisitionDateFormatted,
       lastPerformedFormatted,
       id
     ];
