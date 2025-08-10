@@ -10,7 +10,6 @@ const getAllPieces = (req, res, next) => {
 
   getAllPiecesQuery(db, (err, result) => {
     if (err) {
-      console.error('Error executing MySQL query:', err);
       const error = new Error('Error retrieving piece list');
       error.status = 500;
       return next(error);
@@ -25,7 +24,6 @@ const getSinglePiece = (req, res, next) => {
 
   getPieceById(id, db, (err, piece) => {
     if (err) {
-      console.error('Error fetching piece:', err);
       const error = new Error('Error retrieving piece');
       error.status = 500;
       return next(error);
@@ -40,7 +38,6 @@ const addNewPiece = (req, res, next) => {
 
   insertNewPiece(pieceInfo, db, (err, result) => {
     if (err) {
-      console.error('Error inserting piece:', err);
       const error = new Error('Error adding new piece');
       error.status = 500;
       return next(error); 
@@ -50,7 +47,6 @@ const addNewPiece = (req, res, next) => {
 
     getPieceById(newId, db, (err2, fullPiece) => {
       if (err2) {
-        console.error('Error retrieving new piece:', err2);
         const error = new Error('Piece added but retrieval failed');
         error.status = 500;
         return next(error); 
@@ -68,7 +64,6 @@ const editPiece = (req, res, next) => {
 
   updatePieceById(id, pieceInfo, db, (err, result) => {
     if (err) {
-      console.error('Error executing UPDATE query:', err);
       const error = new Error('Error updating piece');
       error.status = 500;
       return next(error);
@@ -76,7 +71,6 @@ const editPiece = (req, res, next) => {
 
     getPieceById(id, db, (err2, updatedPiece) => {
       if (err2) {
-        console.error('Error retrieving updated piece:', err2);
         const error = new Error('Piece updated but retrieval failed');
         error.status = 500;
         return next(error);
@@ -93,7 +87,6 @@ const deletePiece = (req, res, next) => {
 
   getPieceById(id, db, (fetchErr, pieceToDelete) => {
     if (fetchErr) {
-      console.error('Error retrieving piece before deletion:', fetchErr);
       const error = new Error('Error retrieving piece to delete');
       error.status = 500;
       return next(error);
@@ -106,7 +99,6 @@ const deletePiece = (req, res, next) => {
 
     deletePieceById(id, db, (deleteErr, result) => {
       if (deleteErr) {
-        console.error('Error deleting piece:', deleteErr);
         const error = new Error('Error deleting piece');
         error.status = 500;
         return next(error);

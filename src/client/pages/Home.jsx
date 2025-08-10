@@ -14,12 +14,14 @@ const Home = () => {
 
 
 // Something more enticing for home page? Photos of Woolsey, rehearsals? Fade in?
-// Scans will need to link to local path, not Google Drive
-// How to use this application page?
+// Scans will need to link to local path, not Google Drive. Check if base folder is set before allowing you to click it.
+// How to use this application page
 
 // css file
 
 // Sanitize inputs
+
+// How to handle MySQL... bundle with app, docker, etc.?
 
 /* Testing:
 
@@ -27,7 +29,8 @@ const Home = () => {
 2. Try all forms
 3. Try all backups
 4. All token renewal things
-5. Test on different devices
+5. What if no call number is present?
+6. Test on different devices
 
 */
 

@@ -1,9 +1,5 @@
 const { 
   getAllPiecesQuery,
-  getPieceById,
-  insertNewPiece,
-  updatePieceById,
-  deletePieceById
 } = require("../helpers/pieceHelpers.js");
 
 const getAllPieces = (req, res, next) => {

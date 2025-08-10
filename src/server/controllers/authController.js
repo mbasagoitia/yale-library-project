@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
+const xssClean = require('xss-clean');
 const { parseStringPromise } = require('xml2js');
 const { httpsRequest, isNetIDAdmin } = require('../helpers/authHelpers.js');
 
@@ -15,6 +16,8 @@ const validateTicket = async (req, res, next) => {
     error.status = 400;
     return next(error);
   }
+
+  ticket = xssClean(ticket);
 
   try {
     const serviceUrl = 'https://yourapp.local/verify';

@@ -43,8 +43,15 @@ const getPieceById = (id, db, callback) => {
       JOIN conditions con ON p.condition_id = con.id
       WHERE p.id = ?
     `;
+
+    const idNum = Number(id);
+    if (!Number.isInteger(Number(id))) {
+      const error = new Error('Invalid ID format');
+      error.status = 400;
+      return next(error);
+    }
   
-    db.query(query, [id], (err, results) => {
+    db.query(query, [idNum], (err, results) => {
       if (err) return callback(err);
       if (!results.length) return callback(new Error("Piece not found"));
       callback(null, results[0]);
@@ -63,9 +70,35 @@ const insertNewPiece = (pieceInfo, db, callback) => {
         ownPhysical, ownDigital, missingParts, scansUrl, acquisitionDate, lastPerformed
     } = pieceInfo;
 
+    // Sanitize inputs
+    title = title ? xssClean(title) : null;
+    identifierLabel = identifierLabel ? xssClean(identifierLabel) : null;
+  
+    identifierValue = identifierValue === "" ? null : Number(identifierValue);
+    number = number === "" ? null : Number(number);
+  
+    const composerId = Number(composer.id) || null;
+    const genreId = Number(genre.id) || null;
+    const publisherId = Number(publisher.id) || null;
+  
+    callNumber = callNumber ? callNumber.map(xssClean) : [];
+
+    condition = Number(condition) || null;
+
+    publicDomain = !!publicDomain;
+  
+    notes = notes ? xssClean(notes) : null;
+  
+    ownPhysical = !!ownPhysical;
+    ownDigital = !!ownDigital;
+    missingParts = !!missingParts;
+  
+    scansUrl = scansUrl ? xssClean(scansUrl) : null
+
     const finalIdentifierValue = identifierValue === "" ? null : identifierValue;
     const finalIdentifierLabel = !identifierValue ? null : identifierLabel;
     const mediumId = medium.id || medium.options?.[0]?.id || 1
+    mediumId = Number(medium.id) || null;
 
     const acquisitionDateFormatted = acquisitionDate ? getFormattedDate(acquisitionDate) : null;
     const lastPerformedFormatted = lastPerformed ? getFormattedDate(lastPerformed) : null;
@@ -79,7 +112,7 @@ const insertNewPiece = (pieceInfo, db, callback) => {
 
     const values = [
         title, finalIdentifierLabel, finalIdentifierValue, number,
-        composer.id, genre.id, mediumId, publisher.id,
+        composerId, genreId, mediumId, publisherId,
         callNumber.join(" "), condition, publicDomain, notes,
         ownPhysical, ownDigital, missingParts, scansUrl, acquisitionDateFormatted, lastPerformedFormatted
     ];
@@ -108,9 +141,44 @@ const insertNewPiece = (pieceInfo, db, callback) => {
       acquisitionDate,
       lastPerformed
     } = pieceInfo;
+
+    const idNum = Number(id);
+    if (!Number.isInteger(Number(id))) {
+      const error = new Error('Invalid ID format');
+      error.status = 400;
+      return next(error);
+    }
+
+    // Sanitize inputs
+    title = title ? xssClean(title) : null;
+    identifierLabel = identifierLabel ? xssClean(identifierLabel) : null;
   
+    identifierValue = identifierValue === "" ? null : Number(identifierValue);
+    number = number === "" ? null : Number(number);
+  
+    const composerId = Number(composer.id) || null;
+    const genreId = Number(genre.id) || null;
+    const publisherId = Number(publisher.id) || null;
+  
+    callNumber = callNumber ? callNumber.map(xssClean) : [];
+
+    condition = Number(condition) || null;
+
+    publicDomain = !!publicDomain;
+  
+    notes = notes ? xssClean(notes) : null;
+  
+    ownPhysical = !!ownPhysical;
+    ownDigital = !!ownDigital;
+    missingParts = !!missingParts;
+  
+    scansUrl = scansUrl ? xssClean(scansUrl) : null
+
     const finalIdentifierValue = identifierValue === "" ? null : identifierValue;
-    const mediumId = medium.id || medium.options?.[0]?.id;
+    const finalIdentifierLabel = !identifierValue ? null : identifierLabel;
+    const mediumId = medium.id || medium.options?.[0]?.id || 1
+    mediumId = Number(medium.id) || null;
+  
 
     const acquisitionDateFormatted = acquisitionDate ? getFormattedDate(acquisitionDate) : null;
     const lastPerformedFormatted = lastPerformed ? getFormattedDate(lastPerformed) : null;
@@ -125,13 +193,13 @@ const insertNewPiece = (pieceInfo, db, callback) => {
   
     const values = [
       title,
-      identifierLabel,
+      finalIdentifierLabel,
       finalIdentifierValue,
       number,
-      composer.id,
-      genre.id,
+      composerId,
+      genreId,
       mediumId,
-      publisher.id,
+      publisherId,
       callNumber.join(" "),
       condition,
       publicDomain,
@@ -142,15 +210,23 @@ const insertNewPiece = (pieceInfo, db, callback) => {
       scansUrl,
       acquisitionDateFormatted,
       lastPerformedFormatted,
-      id
+      idNum
     ];
   
     db.query(updateQuery, values, callback);
   };
 
 const deletePieceById = (id, db, callback) => {
+
+  const idNum = Number(id);
+  if (!Number.isInteger(Number(id))) {
+    const error = new Error('Invalid ID format');
+    error.status = 400;
+    return next(error);
+  }
+  
     const query = 'DELETE FROM pieces WHERE id = ?';
-    db.query(query, [id], callback);
+    db.query(query, [idNum], callback);
 };
   
   
