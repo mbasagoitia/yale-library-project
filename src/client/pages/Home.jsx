@@ -19,8 +19,6 @@ const Home = () => {
 
 // css file
 
-// Sanitize inputs
-
 // How to handle MySQL... bundle with app, docker, etc.?
 
 /* Testing:

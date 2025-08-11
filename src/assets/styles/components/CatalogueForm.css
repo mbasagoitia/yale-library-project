@@ -1,0 +1,22 @@
+.catalogueForm button {
+    font-size: clamp(0.8rem, 4vw, 1rem);
+}
+
+.catalogueForm .dropdown-toggle {
+    color: white;
+    width: 100%;
+    white-space: normal;
+    font-size: clamp(0.8rem, 4vw, 1rem);
+}
+
+.catalogueForm .dropdown-menu {
+    width: 100%;
+    background-color: white;
+    color: black;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    white-space: normal;
+}
+
+.catalogueForm .dropdown-item {
+    white-space: normal;
+}

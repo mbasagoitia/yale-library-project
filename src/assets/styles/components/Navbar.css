@@ -1,0 +1,31 @@
+.site-nav {
+    display: flex;
+    justify-content: center;
+    padding: 0;
+  }
+
+.nav-content {
+    width: 100vw;
+    background-color: #f8f9fa;
+    padding: 1rem;
+    max-width: 1200px;
+    font-size: clamp(0.8rem, 2vw, 1rem);
+    font-family: 'Mallory Compact', sans-serif;
+    z-index: 100;
+}
+
+.nav-content .dropdown-item {
+    font-size: clamp(0.8rem, 2vw, 1rem);
+}
+
+.nav-content i {
+    color: #222;
+}
+
+.nav-content .navbar-toggler {
+    margin-right: calc(100% - 2rem);
+}
+
+.nav-link {
+    cursor: pointer;
+}

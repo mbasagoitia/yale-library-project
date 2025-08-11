@@ -1,3 +1,5 @@
+import "../../../assets/styles/components/Header.css";
+
 const Header = () => {
     return (
     <header className="App-header">

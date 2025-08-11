@@ -8,6 +8,7 @@ import { openLoginWindow, handleLogout } from '../../helpers/auth/handleAuth';
 import { useNavigate } from 'react-router-dom';
 import { FaUserCircle} from 'react-icons/fa';
 import { toast } from 'react-toastify';
+import "../../../assets/styles/components/Navbar.css";
 
 const Navigation = () => {
   const [isHovered, setIsHovered] = useState(false);

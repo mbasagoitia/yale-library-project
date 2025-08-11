@@ -1,4 +1,5 @@
 import ReportForm from "../components/reports/ReportForm";
+import "../../assets/styles/pages/ReportsPage.css";
 
 const Reports = () => {
     return (

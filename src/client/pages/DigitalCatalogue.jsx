@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import DigitalCatalogueFolders from "../components/digital-catalogue/DigitalCatalogueFolders";
 import FolderSelectButton from "../components/digital-catalogue/FolderSelectButton";
 import { useSelector } from "react-redux";
+import "../../assets/styles/pages/DigitalCataloguePage.css";
 
 const DigitalCatalogue = () => {
     

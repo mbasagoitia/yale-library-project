@@ -7,6 +7,7 @@ import AdvancedFilter from "./AdvancedFilter";
 import { BiFilter } from 'react-icons/bi';
 import { basicSearch, advancedSearch } from "../../../redux/searchSlice";
 import { clearSearch } from "../../../redux/searchSlice";
+import "../../../assets/styles/components/HoldingsFilter.css";
 
 const HoldingsFilter = ({ setShowResults }) => {
 

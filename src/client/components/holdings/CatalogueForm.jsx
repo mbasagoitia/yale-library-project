@@ -22,6 +22,8 @@ import deletePiece from "../../helpers/holdings/deletePiece.js";
 import clearForm from "../../helpers/holdings/clearForm.js";
 import processAndSubmitForm from "../../helpers/holdings/processAndSubmitForm.js";
 
+import "../../../assets/styles/components/CatalogueForm.css";
+
 
 const CatalogueForm = forwardRef((props, ref) => {
 

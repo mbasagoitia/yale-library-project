@@ -1,0 +1,26 @@
+.custom-dropdown-menu {
+    max-height: 20vh;
+    overflow-y: auto;
+    position: absolute;
+    width: 100%;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+  }
+  
+.custom-dropdown-menu .dropdown-item {
+    white-space: nowrap;
+    font-family: 'Yale New Roman', serif;
+}
+
+.custom-dropdown-menu .dropdown-header {
+    background-color: #f8f9fa;
+    padding: 0.5rem 1rem;
+    font-weight: bold;
+}
+
+.searchableList {
+    position: relative;
+}

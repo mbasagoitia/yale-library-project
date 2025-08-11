@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Form, FormControl, Button, InputGroup } from "react-bootstrap";
 import { FaSearch } from 'react-icons/fa';
+import "../../../assets/styles/components/Searchbar.css";
 
 const Searchbar = ({ placeholder, onSearch }) => {
   const [searchText, setSearchText] = useState("");
-  // Start here; see where I've imported this (navbar is one) and define onSearch
   const handleSubmit = (e) => {
     e.preventDefault();
     onSearch(searchText);

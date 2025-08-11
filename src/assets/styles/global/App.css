@@ -1,4 +1,5 @@
 .App {
+  /* is this necessary? */
   text-align: center;
 }
 
@@ -7,31 +8,6 @@
   --modal-bg: #ffffff;
   --text-dark: #1a1a1a;
   --gray-light: #f5f5f5;
-}
-
-.Toastify__progress-bar--success {
-  background: #00356B;
-}
-
-.Toastify__progress-bar--error {
-  background: crimson;
-}
-
-.search-button {
-  width: 100%;
-  height: 100%;
-  border-radius: 50px 0 0 50px;
-}
-
-.search-button:hover {
-  background: #00356B;
-}
-
-.search-icon {
-  width: 100%;
-  height: 100%;
-  margin: 0 0 2px 2px;
-  color: rgba(0, 0, 0, 0.65);
 }
 
 .App-logo {
@@ -50,6 +26,10 @@
   color: white;
 }
 
+.App-link {
+  color: #61dafb;
+}
+
 h1, h2, h3, h4, h5 {
   font-family: 'Yale New Roman', serif;
 }
@@ -58,59 +38,21 @@ h2 {
   color: #286dc0;
 }
 
+body {
+  font-family: 'Mallory', sans-serif;
+  font-size: clamp(16px, 1.5vw, 20px);
+}
+
+.Toastify__progress-bar--success {
+  background: #00356B;
+}
+
+.Toastify__progress-bar--error {
+  background: crimson;
+}
+
 .fa {
   color: white;
-}
-
-.header-content {
-  width: 100%;
-}
-
-.site-header a {
-  font-family: 'Yale Display Roman', serif;
-  font-size: clamp(0.8rem, 2vw, 1.2rem);
-  text-decoration: none;
-  color: white;
-}
-
-.site-title {
-  font-size: clamp(1.2rem, 3vw, 2rem);
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-.site-nav {
-  display: flex;
-  justify-content: center;
-  padding: 0;
-}
-
-.nav-content {
-  width: 100vw;
-  background-color: #f8f9fa;
-  padding: 1rem;
-  max-width: 1200px;
-  font-size: clamp(0.8rem, 2vw, 1rem);
-  font-family: 'Mallory Compact', sans-serif;
-  z-index: 100;
-}
-
-.nav-content .dropdown-item {
-  font-size: clamp(0.8rem, 2vw, 1rem);
-}
-
-.nav-content i {
-  color: #222;
-}
-
-.nav-content .navbar-toggler {
-  margin-right: calc(100% - 2rem);
-}
-
-.nav-link {
-  cursor: pointer;
 }
 
 .hero {
@@ -121,104 +63,13 @@ h2 {
   width: 100vw;
 }
 
-.home .card-section {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 2rem;
-  padding: 2rem;
+.btn-primary {
+  background-color: #00356b;
+  border-color: #00356b;
 }
 
-.home .card {
-  width: 300px;
-  background: white;
-  border-radius: 1rem;
-  overflow: hidden;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 1.5rem 1rem;
-  gap: 1rem;
-  text-align: center;
-  cursor: pointer;
-}
-
-.home .card:hover {
-  transform: translateY(-5px);
-}
-
-.home .card-disabled {
-  opacity: 0.5;
-  pointer-events: none;
-}
-
-.home .card-image {
-  height: 180px;
-  background-size: cover;
-  background-position: center;
-}
-
-.home .card-content {
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  flex-grow: 1;
-}
-
-.home .card-icon {
-  color: #2c3e50;
-}
-
-.home .card-link {
-  text-decoration: none;
-}
-
-.home .card-content h3 {
-  margin: 0;
-  font-size: 1.2rem;
-  padding: 0;
-}
-
-.home .card-content p {
-  margin: 0;
-  padding: 0;
-}
-
-.home .card-disabled-text {
-  color: #777;
-  font-size: 0.9rem;
-}
-
-.search-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-.search-button i {
-  color: #222;
-}
-
-.search-wrapper {
-  display: flex;
-  align-items: center;
-}
-
-.search-wrapper input, .search-button, .filter-input, .basic-filter-search {
-  font-size: clamp(0.8rem, 2vw, 1rem);
-}
-
-.search-wrapper .input-group-text {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.input-group-text {
-  padding: 0;
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary:disabled {
+  background-color: #002b50;
 }
 
 .rounded-pill-left {
@@ -247,11 +98,6 @@ h2 {
   border-bottom-left-radius: 0;
 }
 
-body {
-  font-family: 'Mallory', sans-serif;
-  font-size: clamp(16px, 1.5vw, 20px);
-}
-
 .page-content {
   max-width: 1500px;
   width: 100%;
@@ -268,10 +114,6 @@ body {
   text-wrap: balance;
 }
 
-.searchableList {
-  position: relative;
-}
-
 .dropdown-menu {
   width: 100%;
   border: transparent;
@@ -284,58 +126,38 @@ body {
   padding: 0.25rem 0.5rem;
 }
 
-/* .dropdown-toggle {
-  padding: 0 0.5rem;
-} */
-
-.catalogueForm button, .form-control, .form-label, .form-check, .new-composer-open {
-  font-size: clamp(0.8rem, 4vw, 1rem);
-}
-
-.catalogueForm .dropdown-toggle, .holdings-filter .dropdown-toggle {
+.form-control, .form-label, .form-check {
   color: white;
   width: 100%;
   white-space: normal;
   font-size: clamp(0.8rem, 4vw, 1rem);
 }
 
-.holdings-filter .search-wrapper {
-  width: 100%;
-}
-
-.catalogueForm .dropdown-menu {
-  width: 100%;
-  background-color: white;
-  color: black;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  white-space: normal;
-}
-
-.catalogueForm .dropdown-item {
-  white-space: normal;
-}
-
-.custom-dropdown-menu {
-  max-height: 20vh;
-  overflow-y: auto;
-  position: absolute;
-  width: 100%;
-  top: 100%;
-  left: 0;
-  z-index: 1000;
-  background-color: white;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-}
-
-.custom-dropdown-menu .dropdown-item, .form-select .dropdown-item {
+.form-select .dropdown-item {
   white-space: nowrap;
   font-family: 'Yale New Roman', serif;
 }
 
-.custom-dropdown-menu .dropdown-header {
-  background-color: #f8f9fa;
-  padding: 0.5rem 1rem;
-  font-weight: bold;
+
+
+
+
+
+
+.new-composer-open {
+  font-size: clamp(0.8rem, 4vw, 1rem);
+}
+
+
+
+
+
+.filter-input {
+  font-size: clamp(0.8rem, 2vw, 1rem);
+}
+
+.basic-filter-search {
+  font-size: clamp(0.8rem, 2vw, 1rem);
 }
 
 .additionalInfo {
@@ -360,49 +182,6 @@ body {
 .feedback {
   font-size: .875em;
   color: var(--bs-form-invalid-color);
-}
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 100;
-}
-
-.modal-width {
-  --bs-modal-width: fit-content;
-}
-
-.modal-header {
-  background-color: var(--yale-blue);
-  color: white;
-  border-bottom: none;
-}
-
-.modal-header h1 {
-  font-size: clamp(1.2rem, 3vw, 1.5rem);
-}
-
-.modal-header .btn-close {
-  filter: invert(1);
-}
-
-.modal-body {
-  background-color: var(--modal-bg);
-  color: var(--text-dark);
-  padding: 1.5rem;
-  border-radius: 0.75rem;
-  width: fit-content;
-}
-
-.modal-content {
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .manage-holdings h5 {
@@ -433,6 +212,8 @@ body {
   display: inline-block;
 }
 
+/* The tooltips should all be one unified component with central styles */
+
 #tooltip-icon {
   cursor: pointer;
 }
@@ -459,15 +240,6 @@ body {
   opacity: 1;
 }
 
-.btn-primary {
-  background-color: #00356b;
-  border-color: #00356b;
-}
-
-.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary:disabled {
-  background-color: #002b50;
-}
-
 /* Fix this without using important */
 
 .ensemble-toggle-btn {
@@ -490,33 +262,6 @@ body {
   background-color: rgba(51, 102, 153, 0.5);
   color: #00356b;
   border: 1px solid #00356b;
-}
-
-.pagination-controls {
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-top: 1rem;
-}
-
-.pagination-controls button {
-  padding: 0.3rem 0.5rem;
-  cursor: pointer;
-}
-
-.current-page-btn {
-  display: none;
-}
-
-.pagination-controls button.active {
-  font-weight: bold;
-  background-color: white;
-  color: #00356b;
-}
-
-.pagination-controls button:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
 }
 
 .holdings-list {
@@ -583,62 +328,6 @@ body {
   font-size: 0.8rem;
 }
 
-.holdings-filter svg {
-  font-size: clamp(0.8rem, 2vw, 1rem);
-  margin-bottom: 4px;
-}
-
-.folder-item {
-  cursor: pointer;
-  padding: 0.5rem;
-}
-
-.folder-item:hover {
-  background-color: #f0f0f0;
-}
-
-.file-card {
-  transition: transform 0.2s, box-shadow 0.2s;
-  min-height: 125px;
-}
-
-.file-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-} 
-
-.file-card .card-body {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.pdf-preview {
-  margin-top: 1rem;
-  border: 1px solid #ccc;
-  padding: 1rem;
-}
-
-.react-pdf__Document {
-  display: flex;
-  justify-content: center;
-}
-
-.react-pdf__Page {
-  display: flex;
-  justify-content: center;
-}
-
-.react-pdf__Page__canvas {
-  width: 100% !important;
-  height: auto !important;
-  display: block;
-}
-
-.react-pdf__Page__annotations.annotationLayer {
-  display: none;
-}
-
 .logout-text {
   cursor: pointer;
 }
@@ -690,23 +379,6 @@ body {
 
 .settings .row>* {
   padding-left: 0;
-}
-
-.report-form {
-  max-width: 500px;
-}
-
-.reports-description ul {
-  list-style: none;
-  padding: 0;
-}
-
-.report-form .dropdown-menu.show {
-  background: white;
-}
-
-.report-page-container {
-  flex-direction: column;
 }
 
 @media (min-width: 491px) {

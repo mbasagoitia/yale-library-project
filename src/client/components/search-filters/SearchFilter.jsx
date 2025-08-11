@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { InputGroup, FormControl, Dropdown } from 'react-bootstrap';
 import filterItems from '../../helpers/general/filterItems';
+import "../../../assets/styles/components/SearchFilter.css";
 
 const SearchFilter = ({ placeholder, initialValue, items, onItemClick }) => {
   const [searchText, setSearchText] = useState(initialValue || '');

@@ -1,0 +1,15 @@
+.holdings-filter .dropdown-toggle {
+    color: white;
+    width: 100%;
+    white-space: normal;
+    font-size: clamp(0.8rem, 4vw, 1rem);
+}
+
+.holdings-filter .search-wrapper {
+    width: 100%;
+}
+
+.holdings-filter svg {
+    font-size: clamp(0.8rem, 2vw, 1rem);
+    margin-bottom: 4px;
+}

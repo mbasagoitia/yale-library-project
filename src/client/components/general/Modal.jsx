@@ -1,4 +1,5 @@
 import { Modal as BootstrapModal } from 'react-bootstrap';
+import "../../../assets/styles/components/Modal.css";
 
 const Modal = ({ show, header, content, handleCloseModal }) => {
   return (

@@ -1,0 +1,14 @@
+.header-content {
+    width: 100%;
+  }
+  
+.site-header a {
+    font-family: 'Yale Display Roman', serif;
+    font-size: clamp(0.8rem, 2vw, 1.2rem);
+    text-decoration: none;
+    color: white;
+}
+
+.site-title {
+    font-size: clamp(1.2rem, 3vw, 2rem);
+}

@@ -1,0 +1,16 @@
+.report-form {
+    max-width: 500px;
+  }
+  
+.reports-description ul {
+    list-style: none;
+    padding: 0;
+}
+
+.report-form .dropdown-menu.show {
+    background: white;
+}
+
+.report-page-container {
+    flex-direction: column;
+}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Container, Row, Form } from "react-bootstrap";
 import generateCallNum from "../../helpers/holdings/generateCallNum.js";
 import MediumSelect from '../holdings/call-number-selects/MediumSelect';
@@ -13,7 +13,6 @@ const MainInfo = ({ mainInfo, setMainInfo, formErrors, mediumResetKey, setMedium
   const resourceData = useFetchResourceData();
 
   useEffect(() => {
-    // I changed this here, and it seems to work... explore this some more
       setMediumResetKey(mediumResetKey + 1);
   }, [])
 
