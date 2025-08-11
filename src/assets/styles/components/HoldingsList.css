@@ -1,0 +1,30 @@
+.holdings-list {
+    max-height: 90vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.holdings-list .card-body {
+    padding: 0.5rem;
+}
+
+.piece-list-item {
+    font-size: clamp(0.6rem, 2vw, 0.8rem);
+    cursor: pointer;
+}
+
+.piece-list-item:hover {
+    background-color: #f8f9fa;
+}
+
+.op-col {
+    gap: 0.5rem;
+}
+
+.empty-tag {
+    display: none;
+    background-color: #00356b;
+    height: 40px;
+    width: 10px;
+    border-radius: var(--bs-border-radius) 0 0 var(--bs-border-radius);
+}

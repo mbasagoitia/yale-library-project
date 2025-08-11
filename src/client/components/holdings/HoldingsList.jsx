@@ -1,6 +1,7 @@
 import { useState } from "react";
 import PieceListItem from "./PieceListItem";
 import PaginationControls from "../general/PaginationControls";
+import "../../../assets/styles/components/HoldingsList.css";
 
 const HoldingsList = ({ filteredItems, behavior }) => {
   

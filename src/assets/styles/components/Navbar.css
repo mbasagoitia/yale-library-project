@@ -29,3 +29,11 @@
 .nav-link {
     cursor: pointer;
 }
+
+.nav-nav-dropdown {
+    padding: 8px 0 8px 0;
+}
+
+.logout-text {
+    cursor: pointer;
+}

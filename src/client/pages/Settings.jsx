@@ -4,6 +4,7 @@ import { Container, Form, Button, Card, Row, Col } from "react-bootstrap";
 import FolderSelectButton from "../components//digital-catalogue/FolderSelectButton";
 import addNewAdmin from "../helpers/auth/addNewAdmin";
 import { handleCreateCSVBackup, handleCreateMysqlDump, handleBackupScans } from "../helpers/backups/createBackups";
+import "../../assets/styles/pages/SettingsPage.css";
 
 const Settings = () => {
   const [adminInfo, setAdminInfo] = useState({ name: "", netid: "" });

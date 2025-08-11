@@ -13,3 +13,38 @@
     font-size: clamp(0.8rem, 2vw, 1rem);
     margin-bottom: 4px;
 }
+
+.open-advanced-filter, .open-basic-filter {
+    font-size: clamp(0.8rem, 2vw, 1rem);
+    cursor: pointer;
+    text-align: center;
+}
+
+.open-advanced-filter {
+    width: 20%;
+    padding: 0;
+}
+
+.filter-text {
+    font-size: 0.8rem;
+}
+
+.reset-text {
+    font-size: 1rem;
+    text-decoration: underline;
+    color: #002b50;
+    text-align: left;
+    cursor: pointer;
+}
+
+.ensemble-toggle-btn {
+    background-color: transparent;
+    border-color: transparent;
+    color: #222 !important;
+}
+
+.ensemble-toggle-btn:hover, .ensemble-toggle-btn:focus, .ensemble-toggle-btn:active {
+    background-color: transparent !important;
+    border-color: transparent !important;
+    color: #222 !important;
+}

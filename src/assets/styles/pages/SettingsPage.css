@@ -1,0 +1,19 @@
+.holdings-buttons-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.holdings-buttons-container button {
+    width: auto;
+    margin-bottom: 1rem;
+}
+
+.choose-catalogue-folder-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.settings .row>* {
+    padding-left: 0;
+}

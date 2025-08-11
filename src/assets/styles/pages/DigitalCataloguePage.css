@@ -50,3 +50,17 @@
 .react-pdf__Page__annotations.annotationLayer {
     display: none;
 }
+
+.dc-nav-info {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.prev-folder-btn {
+    margin-right: 5px;
+}
+
+.dc-nav-info p {
+    font-size: 0.8rem;
+    margin-top: 1rem;
+}

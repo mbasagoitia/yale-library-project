@@ -151,6 +151,7 @@ body {
 
 
 
+/* Start here  */
 
 .filter-input {
   font-size: clamp(0.8rem, 2vw, 1rem);
@@ -186,16 +187,6 @@ body {
 
 .manage-holdings h5 {
   font-size: clamp(1rem, 3vw, 1.2rem);
-}
-
-.callNumLine {
-  font-size: 2rem;
-  text-align: left;
-}
-
-.additionalInfo .form-label {
-  text-align: center;
-  padding-top: 0;
 }
 
 .lg-border {
@@ -240,131 +231,27 @@ body {
   opacity: 1;
 }
 
-/* Fix this without using important */
 
-.ensemble-toggle-btn {
-  background-color: transparent;
-  border-color: transparent;
-  color: #222 !important;
-}
 
-.ensemble-toggle-btn:hover, .ensemble-toggle-btn:focus, .ensemble-toggle-btn:active {
-  background-color: transparent !important;
-  border-color: transparent !important;
-  color: #222 !important;
-}
 
-.reopen-dropdown-btn {
-  border-radius: var(--bs-border-radius) 0 0 var(--bs-border-radius);
-}
 
-.alert-success {
-  background-color: rgba(51, 102, 153, 0.5);
-  color: #00356b;
-  border: 1px solid #00356b;
-}
 
-.holdings-list {
-  max-height: 90vh;
-  overflow-x: hidden;
-  overflow-y: auto;
-}
 
-.holdings-list .card-body {
-  padding: 0.5rem;
-}
 
-.piece-list-item {
-  font-size: clamp(0.6rem, 2vw, 0.8rem);
-  cursor: pointer;
-}
 
-.piece-list-item:hover {
-  background-color: #f8f9fa;
-}
 
-.op-col {
-  gap: 0.5rem;
-}
 
-.empty-tag {
-  display: none;
-  background-color: #00356b;
-  height: 40px;
-  width: 10px;
-  border-radius: var(--bs-border-radius) 0 0 var(--bs-border-radius);
-}
 
-.new-composer-open, .edit-text, .delete-text, .reset-text {
-  text-decoration: underline;
-  color: #002b50;
-  text-align: left;
-  cursor: pointer;
-}
 
-.reset-text, .filter-by-text {
-  font-size: 1rem;
-}
 
-.identifier-dropdown {
-  padding: 6px 6px;
-}
 
-#identifierValueInput, #titleInput {
-  padding: 6px 12px;
-}
 
-.id-num-col {
-  width: 30%;
-}
 
-.open-advanced-filter, .open-basic-filter {
-  font-size: clamp(0.8rem, 2vw, 1rem);
-  cursor: pointer;
-  text-align: center;
-}
 
-.filter-text {
-  font-size: 0.8rem;
-}
 
-.logout-text {
-  cursor: pointer;
-}
 
-.dc-nav-info {
-  display: flex;
-  justify-content: flex-start;
-}
 
-.prev-folder-btn {
-  margin-right: 5px;
-}
 
-.dc-nav-info p {
-  font-size: 0.8rem;
-  margin-top: 1rem;
-}
-
-.open-advanced-filter {
-  width: 20%;
-  padding: 0;
-}
-
-.holdings-buttons-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.holdings-buttons-container button {
-  width: auto;
-  margin-bottom: 1rem;
-}
-
-.nav-nav-dropdown {
-  padding: 8px 0 8px 0;
-}
 
 .back-arrow-btn {
   cursor: pointer;
@@ -372,14 +259,7 @@ body {
   border: transparent;
 }
 
-.choose-catalogue-folder-container {
-  display: flex;
-  flex-direction: column;
-}
 
-.settings .row>* {
-  padding-left: 0;
-}
 
 @media (min-width: 491px) {
   .holdings-buttons-container {

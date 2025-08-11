@@ -20,3 +20,42 @@
 .catalogueForm .dropdown-item {
     white-space: normal;
 }
+
+.additionalInfo .form-label {
+    text-align: center;
+    padding-top: 0;
+}
+
+.alert-success {
+    background-color: rgba(51, 102, 153, 0.5);
+    color: #00356b;
+    border: 1px solid #00356b;
+}
+
+.reopen-dropdown-btn {
+    border-radius: var(--bs-border-radius) 0 0 var(--bs-border-radius);
+}
+
+.callNumLine {
+    font-size: 2rem;
+    text-align: left;
+}
+
+.new-composer-open {
+    text-decoration: underline;
+    color: #002b50;
+    text-align: left;
+    cursor: pointer;
+}
+
+.id-num-col {
+    width: 30%;
+}
+
+#identifierValueInput, #titleInput {
+    padding: 6px 12px;
+}
+
+.identifier-dropdown {
+    padding: 6px 6px;
+}
