@@ -18,6 +18,8 @@ const Home = () => {
 // Scans will need to link to local path, not Google Drive. Check if base folder is set before allowing you to click it.
 // How to use this application page
 
+// Something still going on with renewing authToken
+// Issue with reports naming
 
 // How to handle MySQL... bundle with app, docker, etc.?
 

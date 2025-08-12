@@ -127,7 +127,7 @@ const Settings = () => {
                 </Card.Text>
                 <div className="holdings-buttons-container">
                   <Button variant="primary" onClick={handleCreateMysqlDump}>
-                    Export full Database
+                    Export Full Database
                   </Button>
                   <Button variant="primary" onClick={handleBackupScans} disabled={!basePath}>
                       Export Digital Catalogue
