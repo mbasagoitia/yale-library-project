@@ -61,6 +61,7 @@ const ComposerFilter = ({ initialValue, items, onItemClick }) => {
             value={searchText}
             onChange={(e) => handleInputChange(e.target.value)}
             onClick={() => setIsDropdownOpen(true)}
+            id="composer-select"
           />
         </InputGroup>
       </div>

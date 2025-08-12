@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Form, FormControl, Button, InputGroup } from "react-bootstrap";
 import { FaSearch } from 'react-icons/fa';
-import "../../../assets/styles/components/Searchbar.css";
+import "../../../assets/styles/components/SearchBar.css";
 
 const Searchbar = ({ placeholder, onSearch }) => {
   const [searchText, setSearchText] = useState("");

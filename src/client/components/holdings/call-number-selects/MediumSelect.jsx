@@ -46,10 +46,11 @@ const MediumSelect = ({ initialValue, items, handleItemSelect, resetKey }) => {
     if (!items || items.length === 0) return null;
 
     const currentSelection = selectionHistory[level];
-    const initialItemForLevel = items[0]; // Set the first item as the initial value for each nested dropdown
+    // Set the first item as the initial value for each nested dropdown
+    const initialItemForLevel = items[0];
 
     return (
-      <Dropdown key={level} className="my-2">
+      <Dropdown key={level} className="my-2" id="medium-select">
         <Dropdown.Toggle variant="primary" id={`medium-dropdown-${level}`} className="p-2">
           {currentSelection?.label || (level === 0 ? 'Select Ensemble Type' : initialItemForLevel.label)}
         </Dropdown.Toggle>
@@ -70,7 +71,7 @@ const MediumSelect = ({ initialValue, items, handleItemSelect, resetKey }) => {
 
   return (
     <div>
-      {renderDropdowns(items)} {/* Dynamically render dropdowns based on the nesting */}
+      {renderDropdowns(items)}
     </div>
   );
 };

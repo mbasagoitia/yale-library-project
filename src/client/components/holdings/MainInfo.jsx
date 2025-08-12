@@ -63,7 +63,7 @@ const MainInfo = ({ mainInfo, setMainInfo, formErrors, mediumResetKey, setMedium
         </div>
 
         <Form.Group controlId="titleInput">
-          <Form.Label>Title:</Form.Label>
+          <Form.Label><h3>Title:</h3></Form.Label>
           <Form.Control 
             type="text" 
             value={mainInfo.title} 
@@ -83,7 +83,7 @@ const MainInfo = ({ mainInfo, setMainInfo, formErrors, mediumResetKey, setMedium
         </div>
 
         <div>
-          <h3>Ensemble Type</h3>
+        <Form.Label htmlFor="medium-select"><h3>Ensemble Type</h3></Form.Label>
           {resourceData.mediumData.length > 0 && (
             <MediumSelect
               initialValue={mainInfo.medium || ""}
@@ -97,7 +97,7 @@ const MainInfo = ({ mainInfo, setMainInfo, formErrors, mediumResetKey, setMedium
 
       <Row className="my-4">
         <div>
-          <h3>Composer</h3>
+        <Form.Label htmlFor="composer-select"><h3>Composer</h3></Form.Label>
           {resourceData.composerData.length > 0 && (
             <ComposerSelect items={resourceData.composerData} mainInfo={mainInfo} onItemClick={setComposer} />
           )}
@@ -106,7 +106,7 @@ const MainInfo = ({ mainInfo, setMainInfo, formErrors, mediumResetKey, setMedium
 
       <Row className="my-4">
         <div>
-          <h3>Genre</h3>
+        <Form.Label htmlFor="species-select"><h3>Genre</h3></Form.Label>
           {resourceData.speciesData.length > 0 && (
             <SpeciesSelect items={resourceData.speciesData} mainInfo={mainInfo} onItemClick={setSpecies} />
           )}
@@ -115,7 +115,7 @@ const MainInfo = ({ mainInfo, setMainInfo, formErrors, mediumResetKey, setMedium
 
       <Row className="my-4">
         <div>
-          <h3>Publisher</h3>
+        <Form.Label htmlFor="publisher-select"><h3>Publisher</h3></Form.Label>
           {resourceData.publisherData.length > 0 && (
             <PublisherSelect items={resourceData.publisherData} mainInfo={mainInfo} onItemClick={setPublisher} />
           )}

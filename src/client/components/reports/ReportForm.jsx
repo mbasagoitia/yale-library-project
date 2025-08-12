@@ -44,9 +44,10 @@ const ReportForm = () => {
   return (
     <div className="my-4 report-form">
       <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="reportType" className="mb-3">
+      <div className="reports-btn-wrapper d-flex w-100">
+        <Form.Group controlId="reportType" className="mb-3 d-flex flex-column">
           <Form.Label>Select Type</Form.Label>
-          <Dropdown as={ButtonGroup} className="w-100">
+          <Dropdown as={ButtonGroup} className="w-auto">
             <Dropdown.Toggle variant="secondary" id="dropdown-basic">{reportType?.label || "Select Report Type"}</Dropdown.Toggle>
             <Dropdown.Menu>
               {reports.map((report) => (
@@ -74,8 +75,8 @@ const ReportForm = () => {
             />
           </Form.Group>
         )}
-
-        <Button variant="primary" type="submit">Generate Report</Button>
+          <Button variant="primary" type="submit" className="generate-report-btn">Generate Report</Button>
+        </div>
       </Form>
     </div>
   );

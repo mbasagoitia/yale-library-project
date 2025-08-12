@@ -1,4 +1,4 @@
-const xssClean = require('xss-clean');
+const xss = require('xss');
 
 const getMediumData = (req, res, next) => {
   const query = `
@@ -35,9 +35,9 @@ const getComposerData = (req, res, next) => {
 const addComposer = (req, res, next) => {
   const { lastName, firstName, cutterNumber } = req.body;
 
-  lastName = xssClean(lastName);
-  firstName = xssClean(firstName);
-  cutterNumber = xssClean(cutterNumber);
+  lastName = xss(lastName);
+  firstName = xss(firstName);
+  cutterNumber = xss(cutterNumber);
 
   const query = 'INSERT INTO composers (last_name, first_name, cutter_number) VALUES (?, ?, ?)';
   const values = [lastName, firstName, cutterNumber];

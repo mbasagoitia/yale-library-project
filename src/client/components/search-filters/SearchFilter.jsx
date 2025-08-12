@@ -3,7 +3,7 @@ import { InputGroup, FormControl, Dropdown } from 'react-bootstrap';
 import filterItems from '../../helpers/general/filterItems';
 import "../../../assets/styles/components/SearchFilter.css";
 
-const SearchFilter = ({ placeholder, initialValue, items, onItemClick }) => {
+const SearchFilter = ({ id, placeholder, initialValue, items, onItemClick }) => {
   const [searchText, setSearchText] = useState(initialValue || '');
   const [filteredItems, setFilteredItems] = useState(items);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -49,6 +49,7 @@ const SearchFilter = ({ placeholder, initialValue, items, onItemClick }) => {
       <div className="searchBar">
         <InputGroup>
           <FormControl
+            id={id}
             placeholder={placeholder}
             aria-label="Search"
             aria-describedby="searchBar"

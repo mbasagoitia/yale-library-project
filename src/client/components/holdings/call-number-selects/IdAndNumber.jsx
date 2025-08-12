@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import generateCallNum from "../../../helpers/holdings/generateCallNum.js";
-import { Dropdown, ButtonGroup, Button, InputGroup, FormControl } from "react-bootstrap";
+import { Dropdown, ButtonGroup, Button, InputGroup, FormControl, Form } from "react-bootstrap";
 import Tooltip from "../../holdings/Tooltip.jsx";
 import ValueTooltip from "../../holdings/tooltip-contents/ValueTooltip.jsx";
 import NumberTooltip from "../../holdings/tooltip-contents/NumberTooltip.jsx";
@@ -22,7 +22,6 @@ const IdAndNumber = ({ mainInfo, setMainInfo }) => {
   }, [mainInfo])
 
   const handleIdLabelChange = (e) => {
-    console.log(e)
     setMainInfo(prev => {
       const updated = { ...prev, identifierLabel: e.target.value };
       const call = generateCallNum(updated);
@@ -81,7 +80,7 @@ const IdAndNumber = ({ mainInfo, setMainInfo }) => {
       <div className="d-flex flex-column justify-content-end id-num-col">
         {otherIdInputRequired ? (
           <>
-            <label htmlFor="identifierLabelInput" className="form-label">Identifier:</label>
+            <Form.Label htmlFor="identifierLabelInput">Identifier:</Form.Label>
             <InputGroup>
               <ButtonGroup>
                   <Button onClick={handleReopenDropdown} className="reopen-dropdown-btn">
@@ -98,22 +97,25 @@ const IdAndNumber = ({ mainInfo, setMainInfo }) => {
             </InputGroup>
           </>
         ) : (
-          <Dropdown show={isDropdownOpen} onToggle={() => setIsDropdownOpen(!isDropdownOpen)}>
-            <Dropdown.Toggle id="dropdown-basic" className="identifier-dropdown">
-              {selectedItem || identifiers[0]}
-            </Dropdown.Toggle>
-            <Dropdown.Menu className="identifier-dropdown-menu">
-              {identifiers.map((identifier, idx) => (
-                <Dropdown.Item
-                  key={`identifier-${idx}`}
-                  onClick={() => handleDropdownItemClick(identifier)}
-                  active={isItemSelected(identifier)}
-                >
-                  {identifier}
-                </Dropdown.Item>
-              ))}
-            </Dropdown.Menu>
-          </Dropdown>
+          <>
+            <Form.Label htmlFor="identifierLabelInput">Identifier:</Form.Label>
+            <Dropdown show={isDropdownOpen} onToggle={() => setIsDropdownOpen(!isDropdownOpen)}>
+              <Dropdown.Toggle id="identifierLabelInput" className="identifier-dropdown">
+                {selectedItem || identifiers[0]}
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="identifier-dropdown-menu">
+                {identifiers.map((identifier, idx) => (
+                  <Dropdown.Item
+                    key={`identifier-${idx}`}
+                    onClick={() => handleDropdownItemClick(identifier)}
+                    active={isItemSelected(identifier)}
+                  >
+                    {identifier}
+                  </Dropdown.Item>
+                ))}
+              </Dropdown.Menu>
+            </Dropdown>
+          </>
         )}
       </div>
       <div className="id-num-col">

@@ -23,7 +23,6 @@ const exportReadableBackup = (pool, filePath) => {
       ORDER BY c.last_name ASC, p.title ASC;
     `, async (err, rows) => {
       if (err) {
-        console.error('CSV export query failed:', err);
         return resolve({ success: false, message: 'Failed to export CSV backup.' });
       }
 
@@ -33,7 +32,6 @@ const exportReadableBackup = (pool, filePath) => {
         await fs.writeFile(filePath, csv, 'utf8');
         resolve({ success: true, filePath });
       } catch (error) {
-        console.error('CSV export write failed:', error);
         resolve({ success: false, message: 'Failed to write CSV file.' });
       }
     });
@@ -56,7 +54,6 @@ const exportMySQLDump = async (filePath) => {
 
     return { success: true, filePath };
   } catch (error) {
-    console.error('MySQL dump failed:', error);
     return { success: false, message: 'Failed to export full database backup.' };
   }
 };

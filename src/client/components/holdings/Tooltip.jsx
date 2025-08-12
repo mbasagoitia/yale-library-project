@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { QuestionCircle } from 'react-bootstrap-icons';
+import "../../../assets/styles/components/Tooltip.css";
 
 const Tooltip = ({ content }) => {
     const [isHovered, setIsHovered] = useState(false);

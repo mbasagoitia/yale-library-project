@@ -25,8 +25,16 @@
     padding: 0;
 }
 
+.basic-filter-search {
+    font-size: clamp(0.8rem, 2vw, 1rem);
+}
+
 .filter-text {
     font-size: 0.8rem;
+}
+
+.filter-input {
+    font-size: clamp(0.8rem, 2vw, 1rem);
 }
 
 .reset-text {

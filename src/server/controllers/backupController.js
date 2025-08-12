@@ -1,4 +1,4 @@
-const xssClean = require('xss-clean');
+const xss = require('xss');
 const { exportReadableBackup, exportMySQLDump } = require("../helpers/backupHelpers.js");
 
 const readableBackup = async (req, res, next) => {
@@ -12,7 +12,7 @@ const readableBackup = async (req, res, next) => {
       return next(error);
     }
 
-    filePath = xssClean(filePath);
+    filePath = xss(filePath);
 
     const result = await exportReadableBackup(db, filePath);
 
@@ -44,7 +44,7 @@ const mysqlDump = async (req, res, next) => {
       return next(error);
     }
 
-    filePath = xssClean(filePath);
+    filePath = xss(filePath);
 
     const result = await exportMySQLDump(filePath);
 

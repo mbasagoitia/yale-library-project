@@ -64,3 +64,18 @@
     font-size: 0.8rem;
     margin-top: 1rem;
 }
+
+@media (min-width: 768px) {
+    .dc-nav-info {
+        justify-content: space-between;
+    }
+
+    .prev-folder-btn {
+        margin-right: 0;
+    }
+
+    .dc-nav-info p {
+        margin-top: 0;
+        font-size: 1rem;
+    }
+}

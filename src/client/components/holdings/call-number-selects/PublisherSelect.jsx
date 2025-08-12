@@ -4,8 +4,7 @@ const PublisherSelect = ({ items, onItemClick, mainInfo }) => {
 
     return (
         <>
-        {/* initial value should be passed in from search state */}
-        <SearchFilter placeholder={"Publisher"} initialValue={mainInfo?.publisher?.label || ''} items={items} onItemClick={onItemClick} />
+        <SearchFilter id="publisher-select" placeholder="Publisher" initialValue={mainInfo?.publisher?.label || ''} items={items} onItemClick={onItemClick} />
         </>
     )
 }

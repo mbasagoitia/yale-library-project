@@ -7,10 +7,25 @@
     padding: 0;
 }
 
+.report-form .dropdown-toggle, .generate-report-btn {
+    min-width: 300px;
+}
+
 .report-form .dropdown-menu.show {
     background: white;
+    text-align: left;
 }
 
 .report-page-container {
     flex-direction: column;
+}
+
+.reports-btn-wrapper {
+    flex-direction: column;
+}
+
+@media (min-width: 576px) {
+    .report-btn-wrapper {
+        align-items: flex-start;
+    }
 }

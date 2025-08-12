@@ -1,0 +1,30 @@
+.icon-container {
+    position: relative;
+    display: inline-block;
+}
+
+#tooltip-icon {
+    cursor: pointer;
+}
+
+.tooltip-content {
+    width: 180px;
+    background-color: #555;
+    color: #fff;
+    text-align: left;
+    font-weight: normal;
+    font-size: 0.8rem;
+    border-radius: 6px;
+    padding: 8px;
+    position: absolute;
+    z-index: 1;
+    top: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.icon-container:hover .tooltip-content {
+    opacity: 1;
+}

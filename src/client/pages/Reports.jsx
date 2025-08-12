@@ -8,8 +8,8 @@ const Reports = () => {
             <div className="report-page-container d-flex gap-4">
                 <ReportForm />
                 <div className="reports-description">
-                    <p>Generate a variety of insightful reports to help you effectively manage and track the performance library.</p>
-                    <ul>
+                    <h2>Report Types</h2>
+                    <ul className="mt-4">
                         <li>
                             <strong>All Holdings</strong>
                             <p>View a complete list of the library's holdings and all details including condition, notes, acquisition date, etc.</p>

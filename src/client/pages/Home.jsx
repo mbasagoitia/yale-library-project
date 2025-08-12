@@ -1,4 +1,5 @@
 import HomeCards from '../components/general/HomeCards';
+import "../../assets/styles/pages/HomePage.css";
 
 const Home = () => {
       
@@ -17,7 +18,6 @@ const Home = () => {
 // Scans will need to link to local path, not Google Drive. Check if base folder is set before allowing you to click it.
 // How to use this application page
 
-// css file
 
 // How to handle MySQL... bundle with app, docker, etc.?
 

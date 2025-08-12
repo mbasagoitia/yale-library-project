@@ -65,7 +65,7 @@ const Navigation = () => {
               </Nav.Link>
             )}
 
-            <div className="nav-searchbar">
+            <div className="nav-searchbar my-2">
               <Searchbar placeholder={"Search the collection"} onSearch={handleSearch} />
             </div>
 

@@ -1,3 +1,5 @@
+const xss = require('xss');
+
 const getAllPiecesQuery = (db, callback) => {
     const query = `
       SELECT p.*, 
@@ -71,8 +73,8 @@ const insertNewPiece = (pieceInfo, db, callback) => {
     } = pieceInfo;
 
     // Sanitize inputs
-    title = title ? xssClean(title) : null;
-    identifierLabel = identifierLabel ? xssClean(identifierLabel) : null;
+    title = title ? xss(title) : null;
+    identifierLabel = identifierLabel ? xss(identifierLabel) : null;
   
     identifierValue = identifierValue === "" ? null : Number(identifierValue);
     number = number === "" ? null : Number(number);
@@ -81,19 +83,19 @@ const insertNewPiece = (pieceInfo, db, callback) => {
     const genreId = Number(genre.id) || null;
     const publisherId = Number(publisher.id) || null;
   
-    callNumber = callNumber ? callNumber.map(xssClean) : [];
+    callNumber = callNumber ? callNumber.map(xss) : [];
 
     condition = Number(condition) || null;
 
     publicDomain = !!publicDomain;
   
-    notes = notes ? xssClean(notes) : null;
+    notes = notes ? xss(notes) : null;
   
     ownPhysical = !!ownPhysical;
     ownDigital = !!ownDigital;
     missingParts = !!missingParts;
   
-    scansUrl = scansUrl ? xssClean(scansUrl) : null
+    scansUrl = scansUrl ? xss(scansUrl) : null
 
     const finalIdentifierValue = identifierValue === "" ? null : identifierValue;
     const finalIdentifierLabel = !identifierValue ? null : identifierLabel;
@@ -150,8 +152,8 @@ const insertNewPiece = (pieceInfo, db, callback) => {
     }
 
     // Sanitize inputs
-    title = title ? xssClean(title) : null;
-    identifierLabel = identifierLabel ? xssClean(identifierLabel) : null;
+    title = title ? xss(title) : null;
+    identifierLabel = identifierLabel ? xss(identifierLabel) : null;
   
     identifierValue = identifierValue === "" ? null : Number(identifierValue);
     number = number === "" ? null : Number(number);
@@ -160,19 +162,19 @@ const insertNewPiece = (pieceInfo, db, callback) => {
     const genreId = Number(genre.id) || null;
     const publisherId = Number(publisher.id) || null;
   
-    callNumber = callNumber ? callNumber.map(xssClean) : [];
+    callNumber = callNumber ? callNumber.map(xss) : [];
 
     condition = Number(condition) || null;
 
     publicDomain = !!publicDomain;
   
-    notes = notes ? xssClean(notes) : null;
+    notes = notes ? xss(notes) : null;
   
     ownPhysical = !!ownPhysical;
     ownDigital = !!ownDigital;
     missingParts = !!missingParts;
   
-    scansUrl = scansUrl ? xssClean(scansUrl) : null
+    scansUrl = scansUrl ? xss(scansUrl) : null
 
     const finalIdentifierValue = identifierValue === "" ? null : identifierValue;
     const finalIdentifierLabel = !identifierValue ? null : identifierLabel;

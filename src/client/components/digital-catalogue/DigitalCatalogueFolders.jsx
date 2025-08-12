@@ -111,12 +111,14 @@ const DigitalCatalogueFolders = ({ folderPath }) => {
         ))}
       </Row>
       <Row>
-      <PaginationControls
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        totalItems={filteredFolders.length}
-        itemsPerPage={itemsPerPage}
-      />
+        <div className="mt-4">
+          <PaginationControls
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            totalItems={filteredFolders.length}
+            itemsPerPage={itemsPerPage}
+          />
+      </div>
       </Row>
       <Modal
         show={isModalOpen}

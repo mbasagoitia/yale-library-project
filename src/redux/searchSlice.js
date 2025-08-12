@@ -1,19 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  searchType: null, // 'general' | 'basic' | 'advanced'
+  // Could be general (from navbar), basic, or advanced
+  searchType: null,
 
-  // general search (from navbar)
+  // general search to be persisted across page redirect
   generalQuery: null,
 
-  // basic & advanced filters from Browse Page
+  // basic & advanced filters from Browse page
   filters: {
     title: null,
     composer: null,
     publisher: null,
     genre: null,
     medium: null,
-  },
+  }
 };
 
 const searchSlice = createSlice({
@@ -23,7 +24,6 @@ const searchSlice = createSlice({
     generalSearch: (state, action) => {
       state.searchType = 'general';
       state.generalQuery = action.payload.query;
-      console.log(action.payload.query);
     },
     basicSearch: (state, action) => {
       state.searchType = 'basic';

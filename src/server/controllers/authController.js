@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
-const xssClean = require('xss-clean');
+const xss = require('xss');
 const { parseStringPromise } = require('xml2js');
 const { httpsRequest, isNetIDAdmin } = require('../helpers/authHelpers.js');
 
@@ -9,7 +9,7 @@ dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const validateTicket = async (req, res, next) => {
-  const { ticket } = req.query;
+  let { ticket } = req.query;
 
   if (!ticket) {
     const error = new Error('Missing CAS ticket');
@@ -17,7 +17,7 @@ const validateTicket = async (req, res, next) => {
     return next(error);
   }
 
-  ticket = xssClean(ticket);
+  ticket = xss(ticket);
 
   try {
     const serviceUrl = 'https://yourapp.local/verify';
@@ -52,7 +52,6 @@ const validateTicket = async (req, res, next) => {
     });
 
   } catch (err) {
-    console.error("Ticket validation failed:", err);
     return next(err);
   }
 };
@@ -64,7 +63,6 @@ const renewToken = (req, res, next) => {
 
     res.json({ success: true, token: newToken });
   } catch (err) {
-    console.error('Token renewal failed:', err);
     const error = new Error('Failed to renew token');
     error.status = 500;
     return next(error);

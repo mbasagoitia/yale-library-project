@@ -8,6 +8,8 @@ import HoldingsFilter from "../components/search-filters/HoldingsFilter";
 import { selectFilteredHoldings } from "../../redux/searchSelectors.js";
 import CatalogueForm from "../components/holdings/CatalogueForm.jsx";
 
+import "../../assets/styles/pages/ManageHoldingsPage.css";
+
 const ManageHoldings = () => {
 
     // Is the CataloguePiece interface being used for cataloguing a new piece or updating an existing one?

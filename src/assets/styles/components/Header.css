@@ -4,7 +4,7 @@
   
 .site-header a {
     font-family: 'Yale Display Roman', serif;
-    font-size: clamp(0.8rem, 2vw, 1.2rem);
+    font-size: 1rem;
     text-decoration: none;
     color: white;
 }

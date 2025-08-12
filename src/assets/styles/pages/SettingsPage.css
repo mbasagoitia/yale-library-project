@@ -17,3 +17,20 @@
 .settings .row>* {
     padding-left: 0;
 }
+
+@media (min-width: 491px) {
+    .holdings-buttons-container {
+      display: block;
+    } 
+  
+    .holdings-buttons-container button {
+      margin-right: 1rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .choose-catalogue-folder-container {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}

@@ -26,10 +26,42 @@
     padding-top: 0;
 }
 
+.additionalInfo {
+    border-top: 1px solid gray;
+}
+
+.additionalInfo .form-check {
+    display: flex;
+    text-align: left;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.additionalInfo .form-check label {
+    width: 90%;
+}
+
+.additionalInfo .form-label {
+    font-weight: bold;
+}
+
 .alert-success {
     background-color: rgba(51, 102, 153, 0.5);
     color: #00356b;
     border: 1px solid #00356b;
+}
+
+.feedback {
+    font-size: .875em;
+    color: var(--bs-form-invalid-color);
+}
+
+.lg-border {
+    border-top: 1px solid lightgray;
+}
+
+.filter-input {
+    font-size: clamp(0.8rem, 2vw, 1rem);
 }
 
 .reopen-dropdown-btn {
@@ -58,4 +90,14 @@
 
 .identifier-dropdown {
     padding: 6px 6px;
+}
+
+@media (min-width: 576px) {
+    .additionalInfo .form-check {
+        gap: 4rem;
+    }
+
+    .additionalInfo .form-label {
+        text-align: left;
+    }
 }

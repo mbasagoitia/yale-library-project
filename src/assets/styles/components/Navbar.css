@@ -9,13 +9,12 @@
     background-color: #f8f9fa;
     padding: 1rem;
     max-width: 1200px;
-    font-size: clamp(0.8rem, 2vw, 1rem);
     font-family: 'Mallory Compact', sans-serif;
     z-index: 100;
 }
 
 .nav-content .dropdown-item {
-    font-size: clamp(0.8rem, 2vw, 1rem);
+    font-size: 1rem;
 }
 
 .nav-content i {
@@ -36,4 +35,42 @@
 
 .logout-text {
     cursor: pointer;
+}
+
+@media (min-width: 576px) {
+    .nav-content {
+        padding: 1rem 3rem;
+    }
+}
+
+@media (min-width: 992px) {
+    .nav-searchbar {
+        margin-top: 0;
+    }
+
+    .site-nav {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        transition: height 0.3s ease;
+        height: 160px;
+        width: 100vw;
+        z-index: 100;
+        overflow: visible;
+    }
+
+    .site-nav.hovered {
+        height: 250px;
+    }
+
+    .nav-content {
+        display: flex;
+        flex: 0 0 auto;
+        position: relative;
+        padding: 3rem 1.5rem;
+        z-index: 101;
+        align-items: center;
+        width: 100vw;
+    }
 }
