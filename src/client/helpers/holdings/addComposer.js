@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 
 const addComposer = async (info) => {
-  const apiUrl = "http://localhost:5000/api/resources/composer-data";
+  const apiUrl = "https://localhost:5000/api/resources/composer-data";
   
   try {
     const res = await fetch(apiUrl, {

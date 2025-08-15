@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, session } = require('electron');
 const dotenv = require('dotenv');
 
 dotenv.config();
@@ -20,6 +20,32 @@ if (!isDev) {
 let mainWindow;
 
 app.whenReady().then(() => {
+  // Setting content security policy
+  const DEV_UI = 'https://yourapp.local:3000';
+  const DEV_API = 'https://localhost:5000'; 
+
+  const CSP = [
+    "default-src 'self'",
+    "base-uri 'self'",
+    "object-src 'none'",
+    "script-src 'self'",
+    "style-src 'self' 'unsafe-inline'",
+    "img-src 'self' data: blob:",
+    "font-src 'self' data:",
+    `connect-src 'self' ${DEV_UI} wss://yourapp.local:3000 ${DEV_API}`,
+    "frame-src 'none'",
+    "worker-src 'self' blob:",                      
+  ].join('; ');
+
+  session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+    callback({
+      responseHeaders: {
+        ...details.responseHeaders,
+        'Content-Security-Policy': [CSP],
+      },
+    });
+  });
+
   mainWindow = createWindow();
 
   handleFileHandlers(ipcMain, store, mainWindow);

@@ -14,7 +14,7 @@ const handleLogout = async (dispatch, navigate) => {
 
   try {
     dispatch(logout());
-    persistor.purge();
+    await persistor.purge();
 
     if (window.api?.auth.clear) {
       await window.api.auth.clear();

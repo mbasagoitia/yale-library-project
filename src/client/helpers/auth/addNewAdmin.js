@@ -1,8 +1,7 @@
 import { toast } from 'react-toastify';
 
 const addNewAdmin = async (info) => {
-  // search for this
-  const apiUrl = "http://localhost:5000/api/admin";
+  const apiUrl = "https://localhost:5000/api/admin";
   const token = await window.api.auth.getToken();
 
   try {

@@ -5,7 +5,7 @@ const renewToken = async (store) => {
         throw new Error('No auth token found');
       }
   
-      const response = await fetch('http://localhost:5000/api/auth/renew-token', {
+      const response = await fetch('https://localhost:5000/api/auth/renew-token', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

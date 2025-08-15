@@ -25,7 +25,7 @@ const createAuthWindow = (mainWindow, store) => {
       event.preventDefault();
       authWindow.close();
 
-      fetch(`http://localhost:5000/api/auth/validate-ticket?ticket=${encodeURIComponent(ticket)}`)
+      fetch(`https://localhost:5000/api/auth/validate-ticket?ticket=${encodeURIComponent(ticket)}`)
         .then(res => res.json())
         .then(data => {
           if (data.success) {

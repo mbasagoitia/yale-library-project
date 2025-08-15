@@ -49,7 +49,6 @@ const TokenExpiryHandler = ({ renewToken }) => {
           }, countdownStart - currentTimeMs);
         }
       } catch (err) {
-        // why did this alert?
         toast.error('Token check/setup failed:', err);
       }
     };
@@ -69,7 +68,8 @@ const TokenExpiryHandler = ({ renewToken }) => {
       setSecondsLeft((prev) => {
         if (prev <= 1) {
           clearInterval(countdownInterval.current);
-          alert('Your session has expired. You will be logged out.');
+          toast.error('Your session has expired. You will be logged out.');
+          handleCloseModal();
           handleLogout(dispatch, navigate);
           return 0;
         }

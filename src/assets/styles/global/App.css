@@ -32,7 +32,7 @@ h2 {
 }
 
 body {
-  font-family: 'Mallory', sans-serif;
+  font-family: sans-serif;
   font-size: clamp(16px, 1.5vw, 20px);
 }
 

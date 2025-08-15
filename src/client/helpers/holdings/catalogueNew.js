@@ -1,5 +1,5 @@
 const catalogueNew = async (info) => {
-    const apiUrl = "http://localhost:5000/api/holdings-data";
+    const apiUrl = "https://localhost:5000/api/holdings-data";
       const res = await fetch(apiUrl, {
         method: "POST",
         headers: {

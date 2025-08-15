@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 
 const fetchReportData = async (reportType, options = {}) => {
-    let apiUrl = `http://localhost:5000/api/report-data/${reportType}`;
+    let apiUrl = `https://localhost:5000/api/report-data/${reportType}`;
     const token = await window.api.auth.getToken();
   
     if (reportType === 'performance-history' && options.years) {

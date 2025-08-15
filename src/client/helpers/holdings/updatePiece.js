@@ -1,5 +1,5 @@
 const updatePiece = async (info, id) => {
-    const apiUrl = `http://localhost:5000/api/holdings-data/${id}`;
+    const apiUrl = `https://localhost:5000/api/holdings-data/${id}`;
 
       const res = await fetch(apiUrl, {
         method: "PUT",

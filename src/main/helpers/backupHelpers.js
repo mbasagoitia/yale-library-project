@@ -24,7 +24,7 @@ const createReadableBackup = async (mainWindow, store) => {
   }
 
   try {
-    const backupUrl = `http://localhost:5000/api/backup/readable?filePath=${encodeURIComponent(filePath)}`;
+    const backupUrl = `https://localhost:5000/api/backup/readable?filePath=${encodeURIComponent(filePath)}`;
     const res = await fetch(backupUrl, {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -59,7 +59,7 @@ const createMysqlDump = async (mainWindow, store) => {
   }
 
   try {
-    const backupUrl = `http://localhost:5000/api/backup/mysqldump?filePath=${encodeURIComponent(filePath)}`;
+    const backupUrl = `https://localhost:5000/api/backup/mysqldump?filePath=${encodeURIComponent(filePath)}`;
     const res = await fetch(backupUrl, {
       headers: { Authorization: `Bearer ${token}` },
     });
