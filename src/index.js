@@ -4,13 +4,19 @@ import './assets/styles/global/index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './styles/fonts/fontVars.css';
+import { cfg } from './config/appConfig';
 import "./assets/styles/fonts/fonts.css";
 import '@fortawesome/fontawesome-free/css/all.css';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './redux/store';
 
-
+  // Only bundle Yale fonts in internal build
+if (process.env.REACT_APP_APP_MODE === 'internal') {
+  require('./assets/styles/fonts/yale-fonts.css');
+  document.documentElement.classList.add('yale-fonts');
+}
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

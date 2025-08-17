@@ -1,11 +1,16 @@
 const jwt = require('jsonwebtoken');
-const dotenv = require("dotenv");
 
-dotenv.config()
+const isDemo = (process.env.APP_MODE || 'demo') === 'demo';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const authenticateAdmin = (req, res, next) => {
+
+  if (isDemo) {
+    req.user = { netid:'demo', isAdmin: true };
+    return next();
+  }
+  
   const authHeader = req.headers.authorization;
   if (!authHeader) {
     const err = new Error('Authentication required: No token provided');

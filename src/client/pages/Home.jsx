@@ -19,6 +19,7 @@ const Home = () => {
 // How to use this application page
 
 // How to handle MySQL... bundle with app, docker, etc.?
+// Next, change routes to use Knex depending on mode
 
 /* Testing:
 

@@ -1,3 +1,5 @@
+const APP_MODE = process.env.APP_MODE || 'demo';
+
 const { app, BrowserWindow, ipcMain, session } = require('electron');
 const dotenv = require('dotenv');
 

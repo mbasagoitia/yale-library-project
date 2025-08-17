@@ -20,9 +20,10 @@
     "json2csv": "^6.0.0-alpha.2",
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",
+    "knex": "^3.1.0",
     "lucide-react": "^0.513.0",
     "morgan": "^1.10.0",
-    "mysql2": "^3.10.0",
+    "mysql2": "^3.14.3",
     "mysqldump": "^3.2.0",
     "nodemon": "^3.1.3",
     "path-browserify": "^1.0.1",
@@ -40,19 +41,21 @@
     "react-scripts": "5.0.1",
     "react-toastify": "^11.0.5",
     "redux-persist": "^6.0.0",
+    "seedrandom": "^3.0.5",
+    "sqlite3": "^5.1.7",
     "web-vitals": "^2.1.4",
     "xml2js": "^0.6.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "dev": "concurrently \"npm run server\" \"npm run react\" \"npm run electron\"",
-    "server": "node src/server/startServer.js",
+    "start:internal": "dotenv -e .env.development.internal -- concurrently \"npm run server\" \"npm run react\" \"npm run electron\"",
+    "start:demo": "dotenv -e .env.development.demo -- concurrently \"npm run server\" \"npm run react\" \"npm run electron\"",
     "react": "react-scripts start",
+    "server": "node src/server/startServer.js",
     "electron": "wait-on https://yourapp.local:3000 && electron .",
-    "electron-dev": "concurrently \"npm run dev\" \"npm start\" \"wait-on https://yourapp.local:3000 && electron .\""
+    "build:internal": "dotenv -e .env.production.internal -- react-scripts build && electron-builder -c electron-builder.internal.yml",
+    "build:demo": "dotenv -e .env.production.demo -- react-scripts build && electron-builder -c electron-builder.demo.yml",
+
+    "demo:builddb": "node scripts/demoBuilder/buildDemoDb.js"
   },
   "eslintConfig": {
     "extends": [
