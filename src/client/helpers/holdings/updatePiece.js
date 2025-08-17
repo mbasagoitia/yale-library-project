@@ -1,22 +1,44 @@
-const updatePiece = async (info, id) => {
-    const apiUrl = `https://localhost:5000/api/holdings-data/${id}`;
+import { toast } from "react-toastify";
 
-      const res = await fetch(apiUrl, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ info }),
-      });
-  
-      if (!res.ok) {
-        throw new Error("Network response was not ok");
-      }
-  
-      const updatedPiece = await res.json();
-      return updatedPiece;
-  };
-  
-  export default updatePiece;
-  
+const isDemo =
+  process.env.REACT_APP_APP_MODE === "demo" ||
+  String(process.env.REACT_APP_CAS_ENABLED).toLowerCase() === "false";
+
+const API_BASE = process.env.REACT_APP_API_BASE || "https://localhost:5000";
+
+const updatePiece = async (info, id) => {
+  const url = `${API_BASE}/api/holdings-data/${id}`;
+
+  const headers = { "Content-Type": "application/json" };
+  if (!isDemo) {
+    try {
+      const token = await window?.api?.auth?.getToken?.();
+      if (token) headers.Authorization = `Bearer ${token}`;
+    } catch {
+      toast.error("Could not retrieve auth token");
+      return;
+    }
+  }
+
+  try {
+    const res = await fetch(url, {
+      method: "PUT",
+      headers,
+      credentials: "include",
+      body: JSON.stringify({ info }),
+    });
+
+    const text = await res.text();
+    const data = text ? JSON.parse(text) : {};
+
+    if (!res.ok) {
+      throw new Error(data.error || data.message || "Failed to update piece");
+    }
+
+    return data;
+  } catch (error) {
+    toast.error(error.message || "An error occurred while updating piece");
+  }
+};
+
+export default updatePiece;

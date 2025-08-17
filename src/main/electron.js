@@ -1,9 +1,8 @@
-const APP_MODE = process.env.APP_MODE || 'demo';
-
 const { app, BrowserWindow, ipcMain, session } = require('electron');
 const dotenv = require('dotenv');
 
 dotenv.config();
+const APP_MODE = process.env.APP_MODE || 'demo';
 
 const handleFileHandlers = require("./ipcHandlers/fileHandlers.js");
 const handleAuthHandlers = require("./ipcHandlers/authHandlers.js");
@@ -22,22 +21,29 @@ if (!isDev) {
 let mainWindow;
 
 app.whenReady().then(() => {
-  // Setting content security policy
-  const DEV_UI = 'https://yourapp.local:3000';
-  const DEV_API = 'https://localhost:5000'; 
 
+  const DEV_HOST = process.env.HOST || 'localhost';
+  const DEV_PORT = Number(process.env.PORT) || 3000;
+  const DEV_HTTPS = String(process.env.HTTPS).toLowerCase() === 'true';
+
+  const DEV_UI = `${DEV_HTTPS ? 'https' : 'http'}://${DEV_HOST}:${DEV_PORT}`;
+  const DEV_WS = `${DEV_HTTPS ? 'wss' : 'ws'}://${DEV_HOST}:${DEV_PORT}`;
+
+  const DEV_API = process.env.REACT_APP_API_BASE || 'https://localhost:5000';
+
+  // Setting content security policy
   const CSP = [
-    "default-src 'self'",
-    "base-uri 'self'",
-    "object-src 'none'",
-    "script-src 'self'",
-    "style-src 'self' 'unsafe-inline'",
-    "img-src 'self' data: blob:",
-    "font-src 'self' data:",
-    `connect-src 'self' ${DEV_UI} wss://yourapp.local:3000 ${DEV_API}`,
-    "frame-src 'none'",
-    "worker-src 'self' blob:",                      
-  ].join('; ');
+  "default-src 'self'",
+  "base-uri 'self'",
+  "object-src 'none'",
+  "script-src 'self' https://cdnjs.cloudflare.com",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: blob:",
+  "font-src 'self' data:",
+  `connect-src 'self' ${DEV_UI} ${DEV_WS} ${DEV_API}`,
+  "frame-src 'none'",
+  "worker-src 'self' blob: https://cdnjs.cloudflare.com",
+].join('; ');
 
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
     callback({

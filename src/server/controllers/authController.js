@@ -35,12 +35,7 @@ const validateTicket = async (req, res, next) => {
 
     const netid = success[0]?.['cas:user']?.[0];
     
-    const isAdmin = await new Promise((resolve, reject) => {
-      isNetIDAdmin(req.db, netid, (err, result) => {
-        if (err) return reject(err);
-        resolve(result);
-      });
-    });
+    const isAdmin = await isNetIDAdmin(req.db, netid);
 
     const token = jwt.sign({ netid, isAdmin }, JWT_SECRET, { expiresIn: '1h' });
 

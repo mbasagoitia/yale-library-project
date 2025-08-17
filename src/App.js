@@ -21,6 +21,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./assets/styles/global/App.css";
 
+const isDemo = process.env.REACT_APP_APP_MODE === 'demo' || process.env.REACT_APP_CAS_ENABLED === 'false';
 
 function App() {
 
@@ -30,6 +31,12 @@ function App() {
   const [authToken, setAuthToken] = useState(null);
 
   useEffect(() => {
+    if (!isDemo) return;
+    dispatch(login({ netid: 'demo', isAdmin: true }));
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (isDemo) return;
     if (hasAttachedAuthListeners.current) return;
     hasAttachedAuthListeners.current = true;
 
@@ -57,6 +64,7 @@ function App() {
   }, [dispatch]);
   
   useEffect(() => {
+    if (isDemo) return; 
     const fetchToken = async () => {
       try {
         const token = await window.api.auth.getToken();
@@ -100,7 +108,7 @@ function App() {
         pauseOnHover
         draggable
       />
-      <TokenExpiryHandler token={authToken} dispatch={dispatch} renewToken={handleRenewToken} />
+      {!isDemo && <TokenExpiryHandler token={authToken} dispatch={dispatch} renewToken={handleRenewToken} />}
     </div>
     </BrowserRouter>
   );

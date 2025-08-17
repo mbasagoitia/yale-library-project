@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
+import { login } from "../../../redux/authSlice";
 import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Searchbar from '../search-filters/Searchbar';
@@ -11,6 +12,8 @@ import { toast } from 'react-toastify';
 import "../../../assets/styles/components/Navbar.css";
 
 const Navigation = () => {
+  const isDemo = process.env.REACT_APP_APP_MODE === 'demo' || process.env.REACT_APP_CAS_ENABLED === 'false';
+
   const [isHovered, setIsHovered] = useState(false);
   const [navExpanded, setNavExpanded] = useState(false);
 
@@ -18,6 +21,15 @@ const Navigation = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const handleLogin = () => {
+    if (isDemo) {
+      dispatch(login({ netid: 'demo', isAdmin: true }));
+      toast.success(`Welcome back, demo user!`);
+    } else {
+      openLoginWindow();
+    }
+  }
 
   const handleNavLogout = async () => {
     try {
@@ -93,7 +105,7 @@ const Navigation = () => {
                 </NavDropdown>
               </div>
             ) : (
-              <Nav.Link as="span" onClick={() => openLoginWindow()}><FaUserCircle size={24} /><span className="mx-2">Log In</span></Nav.Link>
+              <Nav.Link as="span" onClick={handleLogin}><FaUserCircle size={24} /><span className="mx-2">Log In</span></Nav.Link>
             )}
           </Nav>
         </Navbar.Collapse>

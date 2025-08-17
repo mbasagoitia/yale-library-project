@@ -1,9 +1,11 @@
 const path = require('path');
-const { BrowserWindow } = require('electron');
+const { BrowserWindow, app } = require('electron');
 
-const isDev = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
+const isDev = !app.isPackaged;
 
-const createWindow = () => {
+const bool = v => (typeof v === 'string' ? v.toLowerCase() === 'true' : !!v);
+
+function createWindow() {
   const mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
@@ -14,15 +16,22 @@ const createWindow = () => {
     },
   });
 
-  const url = isDev
-    ? 'https://yourapp.local:3000'
-    : `file://${path.join(__dirname, 'build', 'index.html')}`;
+  if (isDev) {
+    const startURLFromEnv = process.env.ELECTRON_START_URL;
 
-  mainWindow.loadURL(url);
+    const HOST = process.env.HOST || 'localhost';
+    const PORT = process.env.PORT || '3000';
+    const HTTPS = bool(process.env.HTTPS);
+    const defaultDevURL = `${HTTPS ? 'https' : 'http'}://${HOST}:${PORT}`;
+
+    const devURL = startURLFromEnv || defaultDevURL;
+    mainWindow.loadURL(devURL);
+    // mainWindow.webContents.openDevTools();
+  } else {
+    mainWindow.loadFile(path.join(__dirname, 'build', 'index.html'));
+  }
 
   return mainWindow;
-};
+}
 
-module.exports = {
-  createWindow,
-};
+module.exports = { createWindow };

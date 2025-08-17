@@ -1,113 +1,93 @@
-const { getAllPiecesQuery,
+const {
+  getAllPiecesQuery,
   getPieceById,
   insertNewPiece,
   updatePieceById,
   deletePieceById
-} = require("../helpers/pieceHelpers.js");
+} = require('../helpers/pieceHelpers');
 
-const getAllPieces = (req, res, next) => {
-  const db = req.db;
+async function getAllPieces(req, res, next) {
+  try {
+    const rows = await getAllPiecesQuery(req.db);
+    res.status(200).json(rows);
+  } catch (err) {
+    err.status = 500;
+    err.message = 'Error retrieving piece list';
+    next(err);
+  }
+}
 
-  getAllPiecesQuery(db, (err, result) => {
-    if (err) {
-      const error = new Error('Error retrieving piece list');
-      error.status = 500;
-      return next(error);
-    }
-    res.status(200).json(result);
-  });
-};
+async function getSinglePiece(req, res, next) {
+  try {
+    const id = Number(req.params.id);
+    if (!Number.isInteger(id)) return res.status(400).json({ error: 'Invalid ID format' });
 
-const getSinglePiece = (req, res, next) => {
-  const { id } = req.params;
-  const db = req.db;
+    const piece = await getPieceById(id, req.db);
+    if (!piece) return res.status(404).json({ error: 'Piece not found' });
 
-  getPieceById(id, db, (err, piece) => {
-    if (err) {
-      const error = new Error('Error retrieving piece');
-      error.status = 500;
-      return next(error);
-    }
     res.status(200).json(piece);
-  });
-};
+  } catch (err) {
+    err.status = err.status || 500;
+    err.message = err.message || 'Error retrieving piece';
+    next(err);
+  }
+}
 
-const addNewPiece = (req, res, next) => {
-  const pieceInfo = req.body.info;
-  const db = req.db;
+async function addNewPiece(req, res, next) {
+  try {
+    const pieceInfo = req.body.info || {};
+    const newId = await insertNewPiece(pieceInfo, req.db);
 
-  insertNewPiece(pieceInfo, db, (err, result) => {
-    if (err) {
-      const error = new Error('Error adding new piece');
-      error.status = 500;
-      return next(error); 
-    }
+    const fullPiece = await getPieceById(newId, req.db);
+    if (!fullPiece) return res.status(500).json({ error: 'Piece added but retrieval failed' });
 
-    const newId = result.insertId;
+    res.status(201).json(fullPiece);
+  } catch (err) {
+    err.status = err.status || 500;
+    err.message = err.message || 'Error adding new piece';
+    next(err);
+  }
+}
 
-    getPieceById(newId, db, (err2, fullPiece) => {
-      if (err2) {
-        const error = new Error('Piece added but retrieval failed');
-        error.status = 500;
-        return next(error); 
-      }
+async function editPiece(req, res, next) {
+  try {
+    const id = Number(req.params.id);
+    if (!Number.isInteger(id)) return res.status(400).json({ error: 'Invalid ID format' });
 
-      res.status(201).json(fullPiece);
-    });
-  });
-};
+    const pieceInfo = req.body.info || {};
+    const updated = await updatePieceById(id, pieceInfo, req.db);
 
-const editPiece = (req, res, next) => {
-  const { id } = req.params;
-  const pieceInfo = req.body.info;
-  const db = req.db;
+    if (!updated) return res.status(404).json({ error: 'Piece not found' });
 
-  updatePieceById(id, pieceInfo, db, (err, result) => {
-    if (err) {
-      const error = new Error('Error updating piece');
-      error.status = 500;
-      return next(error);
-    }
+    const updatedPiece = await getPieceById(id, req.db);
+    if (!updatedPiece) return res.status(500).json({ error: 'Piece updated but retrieval failed' });
 
-    getPieceById(id, db, (err2, updatedPiece) => {
-      if (err2) {
-        const error = new Error('Piece updated but retrieval failed');
-        error.status = 500;
-        return next(error);
-      }
+    res.status(200).json(updatedPiece);
+  } catch (err) {
+    err.status = err.status || 500;
+    err.message = err.message || 'Error updating piece';
+    next(err);
+  }
+}
 
-      res.status(200).json(updatedPiece);
-    });
-  });
-};
+async function deletePiece(req, res, next) {
+  try {
+    const id = Number(req.params.id);
+    if (!Number.isInteger(id)) return res.status(400).json({ error: 'Invalid ID format' });
 
-const deletePiece = (req, res, next) => {
-  const { id } = req.params;
-  const db = req.db;
+    const piece = await getPieceById(id, req.db);
+    if (!piece) return res.status(404).json({ error: 'Piece not found' });
 
-  getPieceById(id, db, (fetchErr, pieceToDelete) => {
-    if (fetchErr) {
-      const error = new Error('Error retrieving piece to delete');
-      error.status = 500;
-      return next(error);
-    }
-    if (!pieceToDelete) {
-      const error = new Error('Piece not found');
-      error.status = 404;
-      return next(error);
-    }
+    const deleted = await deletePieceById(id, req.db);
+    if (!deleted) return res.status(500).json({ error: 'Error deleting piece' });
 
-    deletePieceById(id, db, (deleteErr, result) => {
-      if (deleteErr) {
-        const error = new Error('Error deleting piece');
-        error.status = 500;
-        return next(error);
-      }
-
-      res.status(200).json(pieceToDelete);
-    });
-  });
-};
+    res.status(200).json(piece);
+  } catch (err) {
+    err.status = err.status || 500;
+    err.message = err.message || 'Error deleting piece';
+    next(err);
+  }
+}
 
 module.exports = {
   getAllPieces,

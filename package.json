@@ -48,13 +48,12 @@
   },
   "scripts": {
     "start:internal": "dotenv -e .env.development.internal -- concurrently \"npm run server\" \"npm run react\" \"npm run electron\"",
-    "start:demo": "dotenv -e .env.development.demo -- concurrently \"npm run server\" \"npm run react\" \"npm run electron\"",
-    "react": "react-scripts start",
-    "server": "node src/server/startServer.js",
-    "electron": "wait-on https://yourapp.local:3000 && electron .",
+    "start:demo": "dotenv -e .env.development.demo -- concurrently -k -n server,react,electron -c blue,green,yellow \"npm:server\" \"npm:react\" \"npm:electron\"",
+    "react": "cross-env PORT=3000 HOST=yourapp.local HTTPS=true BROWSER=none WDS_SOCKET_PORT=3000 WDS_SOCKET_HOST=yourapp.local react-scripts start",
+    "server": "cross-env API_PORT=5000 node src/server/startServer.js",
+    "electron": "wait-on --log --timeout 120000 tcp:3000 && cross-env ELECTRON_START_URL=https://yourapp.local:3000 electron .",
     "build:internal": "dotenv -e .env.production.internal -- react-scripts build && electron-builder -c electron-builder.internal.yml",
     "build:demo": "dotenv -e .env.production.demo -- react-scripts build && electron-builder -c electron-builder.demo.yml",
-
     "demo:builddb": "node scripts/demoBuilder/buildDemoDb.js"
   },
   "eslintConfig": {
@@ -77,6 +76,8 @@
   },
   "devDependencies": {
     "concurrently": "^9.1.2",
+    "cross-env": "^10.0.0",
+    "dotenv-cli": "^10.0.0",
     "electron": "^36.3.2",
     "electron-builder": "^26.0.12",
     "wait-on": "^8.0.3"

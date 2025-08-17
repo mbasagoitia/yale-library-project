@@ -13,11 +13,11 @@ const handleSelectBasePath = async () => {
   }
 };
 
-const FolderSelectButton = () => {
+const FolderSelectButton = ({ disabled }) => {
 
   return (
     <div>
-      <Button variant="primary" type="button" onClick={handleSelectBasePath}>
+      <Button variant="primary" type="button" onClick={handleSelectBasePath} disabled={disabled}>
         Choose Folder
       </Button>
     </div>

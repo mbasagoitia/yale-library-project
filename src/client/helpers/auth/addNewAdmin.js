@@ -1,29 +1,43 @@
 import { toast } from 'react-toastify';
 
+const isDemo =
+  process.env.REACT_APP_APP_MODE === 'demo' ||
+  String(process.env.REACT_APP_CAS_ENABLED).toLowerCase() === 'false';
+
+const API_BASE = process.env.REACT_APP_API_BASE || 'https://localhost:5000';
+
 const addNewAdmin = async (info) => {
-  const apiUrl = "https://localhost:5000/api/admin";
-  const token = await window.api.auth.getToken();
+  const url = `${API_BASE}/api/admin`;
+
+  const headers = { 'Content-Type': 'application/json' };
+
+  if (!isDemo) {
+    try {
+      const token = await window?.api?.auth?.getToken?.();
+      if (token) headers.Authorization = `Bearer ${token}`;
+    } catch {
+      toast.error('Could not retrieve auth token');
+      return;
+    }
+  }
 
   try {
-    const res = await fetch(apiUrl, {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      credentials: "include",
-      body: JSON.stringify(info)
+    const res = await fetch(url, {
+      method: 'POST',
+      headers,
+      credentials: 'include',
+      body: JSON.stringify(info),
     });
 
     const data = await res.json();
 
     if (!res.ok) {
-      throw new Error(data.error || 'Something went wrong while adding the admin.');
+      throw new Error(data.error || data.message || 'Failed to add admin');
     }
 
     return data;
   } catch (error) {
-    toast.error(error.message || error.error || 'An error occurred while adding new admin');
+    toast.error(error.message || 'An error occurred while adding new admin');
   }
 };
 

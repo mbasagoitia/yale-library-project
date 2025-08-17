@@ -1,241 +1,180 @@
 const xss = require('xss');
 
-const getAllPiecesQuery = (db, callback) => {
-    const query = `
-      SELECT p.*, 
-        c.last_name AS last_name, 
-        c.first_name AS first_name, 
-        s.label AS genre, 
-        m.label AS medium, 
-        COALESCE(mc.label, mo_parent.label) AS medium_category, 
-        pub.label AS publisher, 
-        con.label AS \`condition\`
-      FROM pieces p
-      JOIN composers c ON p.composer_id = c.id
-      JOIN species_options s ON p.species_id = s.id
-      JOIN medium_options m ON p.medium_id = m.id
-      LEFT JOIN medium_category mc ON m.category_id = mc.id
-      LEFT JOIN medium_options mo_parent ON m.category_id = 66 AND m.category_id = mo_parent.value
-      JOIN publisher_options pub ON p.publisher_id = pub.id
-      JOIN conditions con ON p.condition_id = con.id
-      ORDER BY p.id
-    `;
-  
-    db.query(query, callback);
-  };
+// Utilities
 
-const getPieceById = (id, db, callback) => {
-    const query = `
-      SELECT 
-        p.*, 
-        c.last_name AS last_name, 
-        c.first_name AS first_name, 
-        s.label AS genre, 
-        m.label AS medium, 
-        COALESCE(mc.label, mo_parent.label) AS medium_category, 
-        pub.label AS publisher, 
-        con.label AS \`condition\`
-      FROM pieces p
-      JOIN composers c ON p.composer_id = c.id
-      JOIN species_options s ON p.species_id = s.id
-      JOIN medium_options m ON p.medium_id = m.id
-      LEFT JOIN medium_category mc ON m.category_id = mc.id
-      LEFT JOIN medium_options mo_parent ON m.category_id = 66 AND m.category_id = mo_parent.value
-      JOIN publisher_options pub ON p.publisher_id = pub.id
-      JOIN conditions con ON p.condition_id = con.id
-      WHERE p.id = ?
-    `;
-
-    const idNum = Number(id);
-    if (!Number.isInteger(Number(id))) {
-      const error = new Error('Invalid ID format');
-      error.status = 400;
-      return next(error);
-    }
-  
-    db.query(query, [idNum], (err, results) => {
-      if (err) return callback(err);
-      if (!results.length) return callback(new Error("Piece not found"));
-      callback(null, results[0]);
-    });
-  };
-
-const getFormattedDate = (datestring) => {
-    const d = new Date(datestring);
-    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+const to01 = (v) => (v ? 1 : 0);
+function fmtDate(d) {
+  if (!d) return null;
+  if (typeof d === 'string') return d.slice(0, 10);
+  const dt = new Date(d);
+  const mm = String(dt.getMonth() + 1).padStart(2, '0');
+  const dd = String(dt.getDate()).padStart(2, '0');
+  return `${dt.getFullYear()}-${mm}-${dd}`;
 }
-  
-const insertNewPiece = (pieceInfo, db, callback) => {
-    const {
-        title, identifierLabel, identifierValue, number, composer, medium,
-        genre, publisher, callNumber, condition, publicDomain, notes,
-        ownPhysical, ownDigital, missingParts, scansUrl, acquisitionDate, lastPerformed
-    } = pieceInfo;
 
-    // Sanitize inputs
-    title = title ? xss(title) : null;
-    identifierLabel = identifierLabel ? xss(identifierLabel) : null;
-  
-    identifierValue = identifierValue === "" ? null : Number(identifierValue);
-    number = number === "" ? null : Number(number);
-  
-    const composerId = Number(composer.id) || null;
-    const genreId = Number(genre.id) || null;
-    const publisherId = Number(publisher.id) || null;
-  
-    callNumber = callNumber ? callNumber.map(xss) : [];
+function baseSelect(db) {
+  return db('pieces as p')
+    .join('composers as c', 'p.composer_id', 'c.id')
+    .join('species_options as s', 'p.species_id', 's.id')
+    .join('medium_options as m', 'p.medium_id', 'm.id')
+    .leftJoin('medium_category as mc', 'm.category_id', 'mc.id')
+    .leftJoin({ mo_parent: 'medium_options' }, 'm.parent_id', 'mo_parent.id')
+    .join('publisher_options as pub', 'p.publisher_id', 'pub.id')
+    .join('conditions as con', 'p.condition_id', 'con.id')
+    .select(
+      'p.*',
+      { last_name: 'c.last_name' },
+      { first_name: 'c.first_name' },
+      { genre: 's.label' },
+      { medium: 'm.label' },
+      { publisher: 'pub.label' },
+      db.ref('con.label').as('condition'),
+      db.raw('COALESCE(mc.label, mo_parent.label) as medium_category')
+    );
+}
 
-    condition = Number(condition) || null;
+// Queries
 
-    publicDomain = !!publicDomain;
-  
-    notes = notes ? xss(notes) : null;
-  
-    ownPhysical = !!ownPhysical;
-    ownDigital = !!ownDigital;
-    missingParts = !!missingParts;
-  
-    scansUrl = scansUrl ? xss(scansUrl) : null
+async function getAllPiecesQuery(db) {
+  return baseSelect(db).orderBy('p.id', 'asc');
+}
 
-    const finalIdentifierValue = identifierValue === "" ? null : identifierValue;
-    const finalIdentifierLabel = !identifierValue ? null : identifierLabel;
-    const mediumId = medium.id || medium.options?.[0]?.id || 1
-    mediumId = Number(medium.id) || null;
+async function getPieceById(id, db) {
+  return baseSelect(db).where('p.id', id).first();
+}
 
-    const acquisitionDateFormatted = acquisitionDate ? getFormattedDate(acquisitionDate) : null;
-    const lastPerformedFormatted = lastPerformed ? getFormattedDate(lastPerformed) : null;
+// sanitize + normalize incoming "info" payload -> DB row
 
-    const insertQuery = `
-        INSERT INTO pieces (
-        title, identifier_label, identifier_value, number, composer_id, species_id, medium_id, publisher_id,
-        call_number, condition_id, public_domain, additional_notes,
-        own_physical, own_digital, missing_parts, scans_url, acquisition_date, date_last_performed
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+function normalizePieceInfo(info = {}) {
 
-    const values = [
-        title, finalIdentifierLabel, finalIdentifierValue, number,
-        composerId, genreId, mediumId, publisherId,
-        callNumber.join(" "), condition, publicDomain, notes,
-        ownPhysical, ownDigital, missingParts, scansUrl, acquisitionDateFormatted, lastPerformedFormatted
-    ];
+  let {
+    title,
+    identifierLabel,
+    identifierValue,
+    number,
+    composer,
+    medium,
+    genre,
+    publisher,
+    callNumber,
+    condition,
+    publicDomain,
+    notes,
+    ownPhysical,
+    ownDigital,
+    missingParts,
+    scansUrl,
+    acquisitionDate,
+    lastPerformed,
+  } = info;
 
-    db.query(insertQuery, values, callback);
-};
+  title = title ? xss(String(title).trim()) : null;
+  identifierLabel = identifierLabel ? xss(String(identifierLabel)) : null;
 
-  const updatePieceById = (id, pieceInfo, db, callback) => {
-    const {
-      title,
-      identifierLabel,
-      identifierValue,
-      number,
-      composer,
-      medium,
-      genre,
-      publisher,
-      callNumber,
-      condition,
-      publicDomain,
-      notes,
-      ownPhysical,
-      ownDigital,
-      missingParts,
-      scansUrl, 
-      acquisitionDate,
-      lastPerformed
-    } = pieceInfo;
+  const finalIdentifierValue =
+    identifierValue === '' || identifierValue == null ? null : Number(identifierValue);
+  const finalIdentifierLabel = finalIdentifierValue == null ? null : identifierLabel;
 
-    const idNum = Number(id);
-    if (!Number.isInteger(Number(id))) {
-      const error = new Error('Invalid ID format');
-      error.status = 400;
-      return next(error);
-    }
+  const numberVal = number === '' || number == null ? null : Number(number);
 
-    // Sanitize inputs
-    title = title ? xss(title) : null;
-    identifierLabel = identifierLabel ? xss(identifierLabel) : null;
-  
-    identifierValue = identifierValue === "" ? null : Number(identifierValue);
-    number = number === "" ? null : Number(number);
-  
-    const composerId = Number(composer.id) || null;
-    const genreId = Number(genre.id) || null;
-    const publisherId = Number(publisher.id) || null;
-  
-    callNumber = callNumber ? callNumber.map(xss) : [];
+  const composerId = composer?.id != null ? Number(composer.id) : null;
+  const genreId = genre?.id != null ? Number(genre.id) : null;
+  const mediumId =
+    medium?.id != null
+      ? Number(medium.id)
+      : medium?.options?.[0]?.id != null
+      ? Number(medium.options[0].id)
+      : null;
 
-    condition = Number(condition) || null;
+  const publisherId = publisher?.id != null ? Number(publisher.id) : null;
 
-    publicDomain = !!publicDomain;
-  
-    notes = notes ? xss(notes) : null;
-  
-    ownPhysical = !!ownPhysical;
-    ownDigital = !!ownDigital;
-    missingParts = !!missingParts;
-  
-    scansUrl = scansUrl ? xss(scansUrl) : null
+  const callNumStr = Array.isArray(callNumber) ? callNumber.map((v) => xss(String(v))).join(' ') : null;
 
-    const finalIdentifierValue = identifierValue === "" ? null : identifierValue;
-    const finalIdentifierLabel = !identifierValue ? null : identifierLabel;
-    const mediumId = medium.id || medium.options?.[0]?.id || 1
-    mediumId = Number(medium.id) || null;
-  
+  const conditionId = condition != null ? Number(condition) : null;
 
-    const acquisitionDateFormatted = acquisitionDate ? getFormattedDate(acquisitionDate) : null;
-    const lastPerformedFormatted = lastPerformed ? getFormattedDate(lastPerformed) : null;
-  
-    const updateQuery = `
-      UPDATE pieces
-      SET title = ?, identifier_label = ?, identifier_value = ?, number = ?, composer_id = ?, species_id = ?, medium_id = ?,
-          publisher_id = ?, call_number = ?, condition_id = ?, public_domain = ?, additional_notes = ?, own_physical = ?, own_digital = ?,
-          missing_parts = ?, scans_url = ?, acquisition_date = ?, date_last_performed = ?
-      WHERE id = ?
-    `;
-  
-    const values = [
-      title,
-      finalIdentifierLabel,
-      finalIdentifierValue,
-      number,
-      composerId,
-      genreId,
-      mediumId,
-      publisherId,
-      callNumber.join(" "),
-      condition,
-      publicDomain,
-      notes,
-      ownPhysical,
-      ownDigital,
-      missingParts,
-      scansUrl,
-      acquisitionDateFormatted,
-      lastPerformedFormatted,
-      idNum
-    ];
-  
-    db.query(updateQuery, values, callback);
+  const notesSan = notes ? xss(String(notes)) : null;
+  const scansUrlSan = scansUrl ? xss(String(scansUrl)) : null;
+
+  return {
+    title,
+    identifier_label: finalIdentifierLabel,
+    identifier_value: finalIdentifierValue,
+    number: numberVal,
+    composer_id: composerId,
+    species_id: genreId,
+    medium_id: mediumId,
+    publisher_id: publisherId,
+    call_number: callNumStr,
+    condition_id: conditionId,
+    public_domain: to01(publicDomain),
+    additional_notes: notesSan,
+    own_physical: to01(ownPhysical),
+    own_digital: to01(ownDigital),
+    missing_parts: to01(missingParts),
+    scans_url: scansUrlSan,
+    acquisition_date: fmtDate(acquisitionDate),
+    date_last_performed: fmtDate(lastPerformed),
   };
+}
 
-const deletePieceById = (id, db, callback) => {
+async function insertNewPiece(pieceInfo, db) {
+  const row = normalizePieceInfo(pieceInfo);
 
-  const idNum = Number(id);
-  if (!Number.isInteger(Number(id))) {
-    const error = new Error('Invalid ID format');
-    error.status = 400;
-    return next(error);
+  for (const [tbl, key] of [
+    ['composers', 'composer_id'],
+    ['species_options', 'species_id'],
+    ['medium_options', 'medium_id'],
+    ['publisher_options', 'publisher_id'],
+    ['conditions', 'condition_id'],
+  ]) {
+    if (!row[key]) {
+      const e = new Error(`${key} is required`);
+      e.status = 400;
+      throw e;
+    }
+    const ok = await db(tbl).where({ id: row[key] }).first('id');
+    if (!ok) {
+      const e = new Error(`Invalid ${key}`);
+      e.status = 400;
+      throw e;
+    }
   }
-  
-    const query = 'DELETE FROM pieces WHERE id = ?';
-    db.query(query, [idNum], callback);
-};
-  
-  
-module.exports = {
-    getAllPiecesQuery,
-    getPieceById,
-    insertNewPiece,
-    updatePieceById,
-    deletePieceById
+
+  const [id] = await db('pieces').insert(row);
+  return Array.isArray(id) ? id[0] : id;
 }
+
+async function updatePieceById(id, pieceInfo, db) {
+  const idNum = Number(id);
+  if (!Number.isInteger(idNum)) {
+    const e = new Error('Invalid ID format');
+    e.status = 400;
+    throw e;
+  }
+
+  const exists = await db('pieces').where({ id: idNum }).first('id');
+  if (!exists) return 0;
+
+  const row = normalizePieceInfo(pieceInfo);
+  const affected = await db('pieces').where({ id: idNum }).update(row);
+  return affected;
+}
+
+async function deletePieceById(id, db) {
+  const idNum = Number(id);
+  if (!Number.isInteger(idNum)) {
+    const e = new Error('Invalid ID format');
+    e.status = 400;
+    throw e;
+  }
+  const affected = await db('pieces').where({ id: idNum }).del();
+  return affected;
+}
+
+module.exports = {
+  getAllPiecesQuery,
+  getPieceById,
+  insertNewPiece,
+  updatePieceById,
+  deletePieceById
+};

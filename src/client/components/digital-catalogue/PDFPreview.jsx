@@ -31,7 +31,11 @@ function PDFPreview({ filePath }) {
 
   return (
     <div ref={containerRef} style={{ width: '100%', maxWidth: '900px', margin: 'auto', minWidth: '300px' }}>
-      <Document file={pdfData}>
+      <Document
+        file={pdfData}
+        onLoadSuccess={({ numPages }) => console.log('PDF loaded, pages:', numPages)}
+        onLoadError={(err) => console.error('PDF load error:', err)}
+        onSourceError={(err) => console.error('PDF source error:', err)}>
         <Page pageNumber={1} width={containerWidth} />
       </Document>
     </div>

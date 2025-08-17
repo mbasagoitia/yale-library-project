@@ -5,7 +5,7 @@ const Home = () => {
       
     return (
         <div className="home">
-            <h1 className='text-center'>Yale Philharmonia Library Catalogue</h1>
+            <h1 className="text-center">Yale Philharmonia Library Catalogue</h1>
             <div className="mt-4">
                 <HomeCards />
             </div>
@@ -18,8 +18,16 @@ const Home = () => {
 // Scans will need to link to local path, not Google Drive. Check if base folder is set before allowing you to click it.
 // How to use this application page
 
+// Button to cancel/close auth window, fonts not loading on internal build <-- start here
+
+// Get off the branch you are on
+// Pagination controls way too big
+// Change hover color
+// Open pdf on computer in demo? Link to digital scans?
+// Demo call numbers
+// Capitalize condition
+
 // How to handle MySQL... bundle with app, docker, etc.?
-// Next, change routes to use Knex depending on mode
 
 /* Testing:
 

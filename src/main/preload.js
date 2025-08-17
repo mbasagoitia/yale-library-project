@@ -7,7 +7,8 @@ contextBridge.exposeInMainWorld("api", {
     getNetID: () => ipcRenderer.invoke("auth:getNetID"),
     getIsAdmin: () => ipcRenderer.invoke("auth:getIsAdmin"),
     clear: () => ipcRenderer.invoke("auth:clear"),
-    openLoginWindow: () => ipcRenderer.invoke("auth:openWindow"),
+    openLoginWindow: () => ipcRenderer.invoke('auth:open'),
+    cancelLogin:     () => ipcRenderer.invoke('auth:cancel'),
   },
 
   backup: {

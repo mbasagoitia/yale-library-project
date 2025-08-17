@@ -8,7 +8,7 @@ import Modal from '../general/Modal';
 import PaginationControls from '../general/PaginationControls';
 import Searchbar from '../search-filters/Searchbar';
 
-pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.12.313/pdf.worker.min.js`;
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const DigitalCatalogueFolders = ({ folderPath }) => {
   
@@ -84,7 +84,7 @@ const DigitalCatalogueFolders = ({ folderPath }) => {
             variant="outline-primary" 
             onClick={() => handleOpenCurrentFolder(folderPath, currentPath)}
           >
-            Open in Finder
+            Open Folder
           </Button>
 
 

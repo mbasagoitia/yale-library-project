@@ -10,6 +10,8 @@ const Settings = () => {
   const [adminInfo, setAdminInfo] = useState({ name: "", netid: "" });
   const [basePath, setBasePath] = useState("");
 
+  const isDemo = process.env.REACT_APP_APP_MODE === 'demo' || process.env.REACT_APP_CAS_ENABLED === 'false';
+
   // This is used twice; make helper function
 
   // This whole page needs to be broken into different components
@@ -64,7 +66,7 @@ const Settings = () => {
           <h2>Set Digital Catalogue Folder</h2>
           <Card className="mb-4">
             <Card.Body className="choose-catalogue-folder-container">
-              <FolderSelectButton />
+              <FolderSelectButton disabled={isDemo} />
               <div className="mt-2">{basePath ? `Current Path: ${basePath}` : "No base path set"}</div>
             </Card.Body>
           </Card>

@@ -1,25 +1,29 @@
 const xss = require('xss');
 
-const addNewAdmin = (req, res, db, next) => {
+async function addNewAdmin(req, res, next) {
+  const db = req.db;
+
   let { netid, name } = req.body;
+  netid = xss((netid || '').trim());
+  name  = xss((name  || '').trim());
 
-  netid = xss(netid);
-  name = xss(name);
+  if (!netid || !name) {
+    return res.status(400).json({ error: 'netid and name are required' });
+  }
 
-  const query = `INSERT INTO admins (netid, name) VALUES (?, ?)`;
-
-  db.query(query, [netid, name], (err, result) => {
-    if (err) {
-      const error = new Error('Error adding new admin. Please try again.');
-      error.status = 500;
-      return next(error);
+  try {
+    const existing = await db('admins').where({ netid }).first();
+    if (existing) {
+      return res.status(409).json({ error: `Admin with netid "${netid}" already exists.` });
     }
 
-    res.status(200).json({ message: `Successfully added ${name} with NetID of ${netid} as a system administrator.` });
-  });
-};
-
-
-module.exports = {
-    addNewAdmin
+    const [id] = await db('admins').insert({ netid, name });
+    return res.status(201).json({ message: `Added ${name} (${netid}).`, id });
+  } catch (err) {
+    err.status = 500;
+    err.message = 'Error adding new admin. Please try again.';
+    return next(err);
+  }
 }
+
+module.exports = { addNewAdmin };

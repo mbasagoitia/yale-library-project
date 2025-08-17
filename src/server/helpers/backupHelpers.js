@@ -1,64 +1,146 @@
 const fs = require('fs-extra');
 const path = require('path');
 const { parse } = require('json2csv');
-const mysqldump = require("mysqldump");
+const mysqldump = require('mysqldump');
 
-const exportReadableBackup = (pool, filePath) => {
-  return new Promise((resolve, reject) => {
-    pool.query(`
-      SELECT 
-        p.title AS Title,
-        c.last_name AS composer_lastname,
-        c.first_name AS composer_firstname,
-        pub.label AS publisher,
-        p.additional_notes AS additional_notes,
-        con.label AS condition_description,
-        p.call_number,
-        p.acquisition_date,
-        p.date_last_performed
-      FROM pieces p
-        INNER JOIN composers c ON p.composer_id = c.id 
-        INNER JOIN publisher_options pub ON p.publisher_id = pub.id
-        INNER JOIN conditions con ON p.condition_id = con.id
-      ORDER BY c.last_name ASC, p.title ASC;
-    `, async (err, rows) => {
-      if (err) {
-        return resolve({ success: false, message: 'Failed to export CSV backup.' });
-      }
+function knexClient(db) {
+  return (db && db.client && db.client.config && db.client.config.client) || '';
+}
 
-      try {
-        const csv = parse(rows);
-        await fs.ensureDir(path.dirname(filePath));
-        await fs.writeFile(filePath, csv, 'utf8');
-        resolve({ success: true, filePath });
-      } catch (error) {
-        resolve({ success: false, message: 'Failed to write CSV file.' });
-      }
-    });
-  });
-};
+function mysqlConnFromKnex(db) {
+  // Knex connection can be an object or a connection URL string
+  const conn = db?.client?.config?.connection;
+  if (!conn) return null;
 
-const exportMySQLDump = async (filePath) => {
+  if (typeof conn === 'string') {
+    try {
+      const u = new URL(conn);
+      return {
+        host: u.hostname,
+        port: u.port ? Number(u.port) : 3306,
+        user: decodeURIComponent(u.username || ''),
+        password: decodeURIComponent(u.password || ''),
+        database: (u.pathname || '').replace(/^\//, ''),
+        socketPath: u.searchParams.get('socketPath') || undefined,
+      };
+    } catch {
+      return null;
+    }
+  }
+
+  // object shape
+  return {
+    host: conn.host || '127.0.0.1',
+    port: conn.port ? Number(conn.port) : 3306,
+    user: conn.user,
+    password: conn.password,
+    database: conn.database,
+    socketPath: conn.socketPath,
+  };
+}
+
+/**
+ * Export a human-readable CSV from join of pieces + lookups.
+ * Works on MySQL & SQLite (portable Knex query).
+ *
+ * @param {import('knex').Knex} db
+ * @param {string} filePath - destination CSV path
+ * @returns {Promise<{success:boolean, filePath?:string, message?:string}>}
+ */
+async function exportReadableBackup(db, filePath) {
   try {
-    await fs.ensureDir(require('path').dirname(filePath));
+    const rows = await db('pieces as p')
+      .innerJoin('composers as c', 'p.composer_id', 'c.id')
+      .innerJoin('publisher_options as pub', 'p.publisher_id', 'pub.id')
+      .innerJoin('conditions as con', 'p.condition_id', 'con.id')
+      .select(
+        db.ref('p.title').as('Title'),
+        db.ref('c.last_name').as('composer_lastname'),
+        db.ref('c.first_name').as('composer_firstname'),
+        db.ref('pub.label').as('publisher'),
+        db.ref('p.additional_notes').as('additional_notes'),
+        db.ref('con.label').as('condition_description'),
+        db.ref('p.call_number').as('call_number'),
+        db.ref('p.acquisition_date').as('acquisition_date'),
+        db.ref('p.date_last_performed').as('date_last_performed'),
+      )
+      .orderBy([{ column: 'c.last_name', order: 'asc' }, { column: 'p.title', order: 'asc' }]);
 
-    await mysqldump({
-      connection: {
-        host: process.env.DB_HOST,
-        user: process.env.DB_USER,
-        password: process.env.DB_PW,
-        database: process.env.DB_DATABASE
-      },
-      dumpToFile: filePath
+    const csv = parse(rows, {
+      fields: [
+        'Title',
+        'composer_lastname',
+        'composer_firstname',
+        'publisher',
+        'additional_notes',
+        'condition_description',
+        'call_number',
+        'acquisition_date',
+        'date_last_performed',
+      ],
     });
+
+    await fs.ensureDir(path.dirname(filePath));
+    await fs.writeFile(filePath, csv, 'utf8');
 
     return { success: true, filePath };
   } catch (error) {
+    return { success: false, message: 'Failed to export CSV backup.' };
+  }
+}
+
+/**
+ * Export a full database backup.
+ * - MySQL: writes a .sql dump (mysqldump)
+ * - SQLite: writes a consistent .db snapshot (VACUUM INTO) or copies the file
+ *
+ * @param {import('knex').Knex} db
+ * @param {string} filePath - destination .sql (MySQL) or .db (SQLite)
+ * @returns {Promise<{success:boolean, filePath?:string, message?:string}>}
+ */
+async function exportDatabaseBackup(db, filePath) {
+  const client = knexClient(db);
+  try {
+    await fs.ensureDir(path.dirname(filePath));
+
+    if (client === 'mysql2') {
+      const conn = mysqlConnFromKnex(db);
+      if (!conn) throw new Error('Could not read MySQL connection from Knex');
+
+      await mysqldump({
+        connection: conn,
+        dumpToFile: filePath,
+      });
+
+      return { success: true, filePath };
+    }
+
+    if (client === 'sqlite3') {
+      // Prefer SQLite's atomic snapshot if supported (3.27+)
+      try {
+        // Ensure absolute path (SQLite expects a real path)
+        const abs = path.isAbsolute(filePath) ? filePath : path.resolve(filePath);
+        // Escape single quotes for SQL string literal
+        const absSql = abs.replace(/'/g, "''");
+        await db.raw(`VACUUM INTO '${absSql}'`);
+        return { success: true, filePath: abs };
+      } catch {
+        // Fallback: copy the DB file (may capture WAL; acceptable for a simple backup)
+        const src = db?.client?.config?.connection?.filename;
+        if (!src) throw new Error('Could not resolve SQLite filename from Knex');
+        await fs.copy(src, filePath);
+        return { success: true, filePath };
+      }
+    }
+
+    // Fallback message for other engines
+    return { success: false, message: `Unsupported client "${client}" for backup.` };
+  } catch (error) {
     return { success: false, message: 'Failed to export full database backup.' };
   }
-};
+}
 
 module.exports = {
   exportReadableBackup,
-  exportMySQLDump
+  exportDatabaseBackup,
 };

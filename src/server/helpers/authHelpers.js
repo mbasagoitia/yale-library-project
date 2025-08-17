@@ -10,13 +10,12 @@ const httpsRequest = (url) => {
     });
   };
 
-  const isNetIDAdmin = (db, netid, callback) => {
-    db.query('SELECT * FROM admins WHERE netid = ?', [netid], (err, results) => {
-      if (err) return callback(err);
-      const isAdmin = results.length > 0;
-      callback(null, isAdmin);
-    });
-  };
+  async function isNetIDAdmin(db, netid) {
+    if (!netid) return false;
+    const row = await db('admins').where({ netid }).first('id');
+    return !!row;
+  }
+  module.exports = { isNetIDAdmin };
   
 
 module.exports = {

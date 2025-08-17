@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import "../../assets/styles/pages/DigitalCataloguePage.css";
 
 const DigitalCatalogue = () => {
-    
+
     const [basePath, setBasePath] = useState(null);
     const isAdmin = useSelector((state) => state.auth.isAdmin);
 

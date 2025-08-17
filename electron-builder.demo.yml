@@ -1,0 +1,8 @@
+extraResources:
+  - from: src/assets/demo/digital-catalogue
+    to: demo-catalogue
+    filter:
+      - "**/*"
+
+asarUnpack:
+  - "demo-catalogue/**/*.pdf"

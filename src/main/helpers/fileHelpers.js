@@ -2,6 +2,19 @@ const { dialog, shell } = require('electron');
 const path = require('path');
 const fs = require('fs-extra');
 
+const IS_DEMO =
+  process.env.APP_MODE === 'demo' ||
+  process.env.REACT_APP_APP_MODE === 'demo' ||
+  String(process.env.REACT_APP_CAS_ENABLED || '').toLowerCase() === 'false';
+
+function resolveDemoBase() {
+    const devDir = path.join(process.cwd(), 'src', 'assets', 'demo', 'digital-catalogue');
+    const prodDir = path.join(process.resourcesPath, 'demo-catalogue');
+    if (fs.existsSync(prodDir)) return prodDir;
+    if (fs.existsSync(devDir)) return devDir;
+    return null;
+}
+
 const getBasePath = (store) => {
     const basePath = store.get('basePath');
     return basePath || null;
@@ -53,7 +66,7 @@ const handleOpenFolder = async (folderPath) => {
 };
 
 const handleListDirectory = async (store, relativePath = '') => {
-    const basePath = getBasePath(store);
+    const basePath = IS_DEMO ? resolveDemoBase() : getBasePath(store);
     const targetPath = path.join(basePath, relativePath);
 
     const entries = await fs.promises.readdir(targetPath, { withFileTypes: true });
