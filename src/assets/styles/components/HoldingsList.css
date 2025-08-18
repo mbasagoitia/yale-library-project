@@ -23,7 +23,7 @@
 
 .empty-tag {
     display: none;
-    background-color: #00356b;
+    background-color: var(--yale-blue);
     height: 40px;
     width: 10px;
     border-radius: var(--bs-border-radius) 0 0 var(--bs-border-radius);

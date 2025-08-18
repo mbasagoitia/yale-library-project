@@ -38,6 +38,7 @@ function App() {
   useEffect(() => {
     if (isDemo) return;
     if (hasAttachedAuthListeners.current) return;
+    
     hasAttachedAuthListeners.current = true;
 
     const handleAuthSuccess = (_event, data) => {

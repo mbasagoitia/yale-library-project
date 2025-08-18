@@ -17,7 +17,7 @@
 .pagination-controls button.active {
     font-weight: bold;
     background-color: white;
-    color: #00356b;
+    color: var(--yale-blue);
 }
 
 .pagination-controls button:disabled {

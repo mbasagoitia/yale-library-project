@@ -18,7 +18,7 @@ const Home = () => {
 // Scans will need to link to local path, not Google Drive. Check if base folder is set before allowing you to click it.
 // How to use this application page
 
-// Button to cancel/close auth window, fonts not loading on internal build <-- start here
+// Fonts not loading on internal build <-- start here
 
 // Pagination controls way too big
 // Open pdf on computer in demo? Link to digital scans?

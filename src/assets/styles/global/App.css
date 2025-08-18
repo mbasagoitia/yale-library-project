@@ -12,19 +12,8 @@
   --bs-nav-link-font-size: 1rem;
 }
 
-.App-header {
-  background-color: #00356b;
-  display: flex;
-  align-items: center;
-  text-align: left;
-  padding: 1rem;
-  font-family: 'Yale New Bold', serif;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
 h1, h2, h3, h4, h5 {
-  font-family: 'Yale New Roman', serif;
+  font-family: var(--font-serif);
 }
 
 h2 {
@@ -69,7 +58,7 @@ body {
 /* Overriding React Bootstrap Default Styles */
 
 .Toastify__progress-bar--success {
-  background: #00356B;
+  background: var(--yale-blue);
 }
 
 .Toastify__progress-bar--error {
@@ -81,8 +70,8 @@ body {
 }
 
 .btn-primary {
-  background-color: #00356b;
-  border-color: #00356b;
+  background-color: var(--yale-blue);
+  border-color: var(--yale-blue);
 }
 
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary:disabled {
