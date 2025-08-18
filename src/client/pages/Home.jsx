@@ -20,12 +20,9 @@ const Home = () => {
 
 // Button to cancel/close auth window, fonts not loading on internal build <-- start here
 
-// Get off the branch you are on
 // Pagination controls way too big
-// Change hover color
 // Open pdf on computer in demo? Link to digital scans?
 // Demo call numbers
-// Capitalize condition
 
 // How to handle MySQL... bundle with app, docker, etc.?
 

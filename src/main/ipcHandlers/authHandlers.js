@@ -1,9 +1,13 @@
-const { createAuthWindow } = require("../helpers/createAuthWindow.js");
+const { createAuthWindow, closeAuthWindow } = require("../helpers/createAuthWindow.js");
 const { renewToken } = require("../helpers/authHelpers.js")
 
 const handleAuthHandlers = (ipcMain, store, mainWindow) => {
   ipcMain.handle("auth:open", () => {
     return createAuthWindow(mainWindow, store);
+  });
+
+  ipcMain.handle('auth:cancel', () => {
+    return closeAuthWindow();
   });
 
   ipcMain.handle("auth:getToken", () => {

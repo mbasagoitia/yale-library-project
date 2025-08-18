@@ -8,7 +8,6 @@ function knexClient(db) {
 }
 
 function mysqlConnFromKnex(db) {
-  // Knex connection can be an object or a connection URL string
   const conn = db?.client?.config?.connection;
   if (!conn) return null;
 
@@ -28,7 +27,6 @@ function mysqlConnFromKnex(db) {
     }
   }
 
-  // object shape
   return {
     host: conn.host || '127.0.0.1',
     port: conn.port ? Number(conn.port) : 3306,
