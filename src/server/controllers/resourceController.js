@@ -4,20 +4,24 @@ async function getMediumData(req, res, next) {
   try {
     const db = req.db;
 
-    const rows = await db('medium_options as mo')
-      .leftJoin('medium_category as mc', 'mo.category_id', 'mc.id')
-      .leftJoin({ child: 'medium_options' }, 'child.parent_id', 'mo.id')
+    const rows = await db('medium_category as mc')
+      .join('medium_options as mo', 'mc.id', 'mo.parent_id')
+      .leftJoin({ nested_mo: 'medium_options' }, function () {
+        this.on('mo.value', '=', 'nested_mo.parent_id')
+            .andOn(db.raw('mo.parent_id = ?', ['6']));
+      })
       .select(
         'mo.id',
         db.ref('mc.label').as('category_label'),
         db.ref('mo.label').as('option_label'),
         db.ref('mo.value').as('option_value'),
-        'mo.parent_id',
-        db.ref('child.id').as('nested_option_id'),
-        db.ref('child.label').as('nested_option_label'),
-        db.ref('child.value').as('nested_option_value')
+        db.ref('mo.parent_id').as('parent_id'),
+        db.ref('nested_mo.id').as('nested_option_id'),
+        db.ref('nested_mo.label').as('nested_option_label'),
+        db.ref('nested_mo.value').as('nested_option_value')
       )
-      .orderBy([{ column: 'mo.value', order: 'asc' }, { column: 'child.value', order: 'asc' }]);
+      .orderBy('mo.value', 'asc')
+      .orderBy('nested_mo.value', 'asc');
 
     res.status(200).json(rows);
   } catch (err) {
@@ -26,6 +30,7 @@ async function getMediumData(req, res, next) {
     next(err);
   }
 }
+
 
 async function getComposerData(req, res, next) {
   try {

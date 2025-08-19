@@ -12,13 +12,27 @@ function fmtDate(d) {
   return `${dt.getFullYear()}-${mm}-${dd}`;
 }
 
+function mediumCategoryExpr(db) {
+  return db.raw(`
+    CASE
+      WHEN m.category_id BETWEEN 0 AND 9 THEN mc.label
+      WHEN parent.category_id BETWEEN 0 AND 9 THEN mc_parent.label
+      WHEN grand.category_id BETWEEN 0 AND 9 THEN mc_grand.label
+      ELSE mc.label
+    END AS medium_category
+  `);
+}
+
 function baseSelect(db) {
   return db('pieces as p')
     .join('composers as c', 'p.composer_id', 'c.id')
     .join('species_options as s', 'p.species_id', 's.id')
     .join('medium_options as m', 'p.medium_id', 'm.id')
-    .leftJoin('medium_category as mc', 'm.category_id', 'mc.id')
-    .leftJoin({ mo_parent: 'medium_options' }, 'm.parent_id', 'mo_parent.id')
+    .leftJoin({ parent: 'medium_options' }, 'm.parent_id', 'parent.id')
+    .leftJoin({ grand: 'medium_options' }, 'parent.parent_id', 'grand.id')
+    .leftJoin({ mc: 'medium_category' }, 'm.category_id', 'mc.id')
+    .leftJoin({ mc_parent: 'medium_category' }, 'parent.category_id', 'mc_parent.id')
+    .leftJoin({ mc_grand: 'medium_category' }, 'grand.category_id', 'mc_grand.id')
     .join('publisher_options as pub', 'p.publisher_id', 'pub.id')
     .join('conditions as con', 'p.condition_id', 'con.id')
     .select(
@@ -27,10 +41,11 @@ function baseSelect(db) {
       { first_name: 'c.first_name' },
       { genre: 's.label' },
       { medium: 'm.label' },
+      mediumCategoryExpr(db),
       { publisher: 'pub.label' },
-      db.ref('con.label').as('condition'),
-      db.raw('COALESCE(mc.label, mo_parent.label) as medium_category')
-    );
+      { condition: 'con.label' }
+    )
+    .orderBy('p.id', 'asc');
 }
 
 // Queries
@@ -75,7 +90,7 @@ function normalizePieceInfo(info = {}) {
     identifierValue === '' || identifierValue == null ? null : Number(identifierValue);
   const finalIdentifierLabel = finalIdentifierValue == null ? null : identifierLabel;
 
-  const numberVal = number === '' || number == null ? null : Number(number);
+  const numberVal = number == null || number === '' ? null : String(number).trim();
 
   const composerId = composer?.id != null ? Number(composer.id) : null;
   const genreId = genre?.id != null ? Number(genre.id) : null;

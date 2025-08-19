@@ -5,9 +5,9 @@
     --app-header-font: "Source Serif 4", Georgia, "Times New Roman", serif;
   }
 
-  .yale-fonts {
+.yale-fonts {
     --font-serif: "Yale New Roman", "Source Serif 4", Georgia, "Times New Roman", serif;
     --site-header-link-font: 'Yale Display Roman', serif;
     --app-header-font: 'Yale New Bold', serif;
-  }
+}
 

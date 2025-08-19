@@ -4,35 +4,50 @@
     gap: 0.5rem;
     margin-top: 1rem;
   }
-  
-.pagination-controls button {
-    padding: 0.3rem 0.5rem;
-    cursor: pointer;
-}
-
-.current-page-btn {
+.pagination-controls .page-buttons {
     display: none;
 }
 
-.pagination-controls button.active {
-    font-weight: bold;
+.pagination-controls .ellipsis {
+    display: inline-block;
+    padding: 0 8px;
+    user-select: none;
+    opacity: 0.7;
+}
+
+.pagination-controls button {
+    padding: 0.3rem 0.5rem;
+    cursor: pointer;
     background-color: white;
     color: var(--yale-blue);
+}
+
+.pagination-controls .current-page-btn {
+    font-weight: bold;
+    color: white;
+    background-color: var(--yale-blue);
 }
 
 .pagination-controls button:disabled {
     cursor: not-allowed;
     opacity: 0.5;
+    background-color: white;
+    color: var(--yale-blue);
+}
+
+.pagination-controls .next-btn, .pagination-controls .prev-btn {
+    color: white;
+    background-color: var(--yale-blue);
 }
 
 @media (min-width: 491px) {
 
-    .pagination-controls button {
-        padding: 0.6rem;
-    }
+.pagination-controls button {
+    padding: 0.6rem;
+}
 
-    .current-page-btn {
-        display: block;
-    }
+.pagination-controls .page-buttons {
+    display: block;
+}
   
   }

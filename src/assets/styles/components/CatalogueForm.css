@@ -47,8 +47,8 @@
 
 .alert-success {
     background-color: rgba(51, 102, 153, 0.5);
-    color: #00356b;
-    border: 1px solid #00356b;
+    color: var(--yale-blue);
+    border: 1px solid var(--yale-blue);
 }
 
 .feedback {

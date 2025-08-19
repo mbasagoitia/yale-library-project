@@ -15,14 +15,19 @@ const Home = () => {
 
 
 // Something more enticing for home page? Photos of Woolsey, rehearsals? Fade in?
-// Scans will need to link to local path, not Google Drive. Check if base folder is set before allowing you to click it.
 // How to use this application page
 
-// Fonts not loading on internal build <-- start here
-
-// Pagination controls way too big
+// Scans will need to link to local path, not Google Drive. Check if base folder is set before allowing you to click it.
 // Open pdf on computer in demo? Link to digital scans?
+// Getting cancelled login flag on login...check
+
 // Demo call numbers
+
+// Medium select doing weird things again
+// 1. Make a backup of the laptop db in case something goes wrong
+// 2. Dump the desktop data into the laptop
+// 3. Add any missing tables (double check this and FK relationships)
+// 4. Run gpt query against database
 
 // How to handle MySQL... bundle with app, docker, etc.?
 
