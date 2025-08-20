@@ -3,6 +3,3 @@ extraResources:
     to: demo-catalogue
     filter:
       - "**/*"
-
-asarUnpack:
-  - "demo-catalogue/**/*.pdf"

@@ -56,6 +56,10 @@
     color: var(--bs-form-invalid-color);
 }
 
+.pathname-text {
+    font-size: 0.8rem;
+}
+
 .lg-border {
     border-top: 1px solid lightgray;
 }

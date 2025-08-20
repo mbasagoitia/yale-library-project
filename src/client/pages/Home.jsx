@@ -17,17 +17,16 @@ const Home = () => {
 // Something more enticing for home page? Photos of Woolsey, rehearsals? Fade in?
 // How to use this application page
 
-// Scans will need to link to local path, not Google Drive. Check if base folder is set before allowing you to click it.
-// Open pdf on computer in demo? Link to digital scans?
+// Digital scans handling <-- start here at AdditionalInfo component
+
+// 1. Change scan URL to be a showOpenDialog with defaultPath set (either demoBase or basePath)
+// 2. Let the user choose a piece folder path and store it in the database for that piece (use path.normalize())
+// 3. In piece info page, when user clicks on scans link, resolve the path and redirect to digital catalogue page with that folder open
+
+
 // Getting cancelled login flag on login...check
 
 // Demo call numbers
-
-// Medium select doing weird things again
-// 1. Make a backup of the laptop db in case something goes wrong
-// 2. Dump the desktop data into the laptop
-// 3. Add any missing tables (double check this and FK relationships)
-// 4. Run gpt query against database
 
 // How to handle MySQL... bundle with app, docker, etc.?
 
@@ -39,6 +38,13 @@ const Home = () => {
 4. All token renewal things
 5. What if no call number is present?
 6. Test on different devices
+
+*/
+
+/* Long-term goals:
+
+1. Add optional cloud integration for digital catalogue (BackBlaze)
+2. Add metadata for advanced filtering in digital catalogue
 
 */
 

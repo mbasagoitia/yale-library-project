@@ -11,7 +11,7 @@ import Searchbar from '../search-filters/Searchbar';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const DigitalCatalogueFolders = ({ folderPath }) => {
-  
+
   const { contents, currentPath, navigateTo, goUp } = useFolderContents();
   const [filteredFolders, setFilteredFolders] = useState([]);
   const [selectedPDF, setSelectedPDF] = useState(null);

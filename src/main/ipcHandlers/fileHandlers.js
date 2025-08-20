@@ -3,6 +3,7 @@ const fs = require('fs');
 
 const {
   getBasePath,
+  setFolderPath,
   setBasePath,
   handleReadFile,
   handleOpenFile,
@@ -35,6 +36,10 @@ const handleFileHandlers = (ipcMain, store, mainWindow) => {
       return demoBase;
     }
     return getBasePath(store);
+  });
+
+  ipcMain.handle('fs:setFolderPath', () => {
+    return setFolderPath(store);
   });
 
   ipcMain.handle('fs:setBasePath', () => {

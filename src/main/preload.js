@@ -20,6 +20,7 @@ contextBridge.exposeInMainWorld("api", {
   filesystem: {
     getFullPath: (basePath, relativePath) =>
       ipcRenderer.invoke("fs:getFullPath", basePath, relativePath),
+    setFolderPath: () => ipcRenderer.invoke("fs:setFolderPath"),
     setBasePath: () => ipcRenderer.invoke("fs:setBasePath"),
     getBasePath: () => ipcRenderer.invoke("fs:getBasePath"),
     readFile: (filePath) => ipcRenderer.invoke("fs:readFile", filePath),

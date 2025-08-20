@@ -1,4 +1,5 @@
-import { FormGroup, FormCheck, FormLabel, FormControl, Row, Col, Container } from "react-bootstrap";
+import { useState, useEffect } from "react";
+import { FormGroup, FormCheck, FormLabel, FormControl, Row, Col, Container, Button } from "react-bootstrap";
 import conditions from "./conditions";
 import Tooltip from "./Tooltip";
 import PDTooltip from "./tooltip-contents/PDTooltip";
@@ -6,6 +7,24 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setFormErrors }) => {
+
+    // Initial for scansUrl?
+    // Change scansUrl to null when digital scans is unselected
+
+    const [basePath, setBasePath] = useState(null);
+
+    useEffect(() => {
+        const fetchBasePath = async () => {
+            if (window.api?.filesystem.getBasePath) {
+              const result = await window.api.filesystem.getBasePath();
+              if (result) {
+                setBasePath(result);
+              }
+            }
+          };
+      
+          fetchBasePath();
+    }, []);
 
     const handleConditionSelect = (id) => {
         setAdditionalInfo(prevState => ({ ...prevState, condition: id }));
@@ -25,10 +44,14 @@ const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setForm
         setAdditionalInfo(prevState => ({ ...prevState, publicDomain: pd }));
     }
 
-    const handleScansUrl = (e) => {
-        const url = e.target.value;
-        setAdditionalInfo(prevState => ({ ...prevState, scansUrl: url }))
+    const handleScansPath = async () => {
+        if (window.api?.filesystem.setFolderPath) {
+            const result = await window.api.filesystem.setFolderPath();
+            if (result) {
+                setAdditionalInfo(prevState => ({ ...prevState, scansUrl: result }));
+            }
     }
+}
 
     const handleAdditionalNotes = (e) => {
         const notesValue = e.target.value;
@@ -62,7 +85,7 @@ const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setForm
         <Container className="additionalInfo">
             <FormGroup as={Row} className="mt-2">
                 <FormLabel as="legend" column sm={4} className="my-2">Holdings Type</FormLabel>
-                <Col sm={8} className="my-2">
+                <Col md={6} className="my-2">
                     <FormCheck 
                         type="checkbox" 
                         id="physical" 
@@ -77,16 +100,18 @@ const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setForm
                         checked={additionalInfo.ownDigital}
                         onChange={() => handleMediaTypeChange('ownDigital')}
                     />
-                            
+                    </Col>
+                    <Col md={6} className="d-flex flex-column justify-content-center">
                     {additionalInfo.ownDigital && (
-                        <>
-                        <FormLabel className="mt-4 mb-2 w-100 text-left">Link to Digital Scans:</FormLabel>
-                        <FormControl 
-                            as="input" 
-                            onChange={(e) => handleScansUrl(e)}
-                            value={additionalInfo.scansUrl}
-                        />
-                        </>
+                        <div>
+                        {basePath ? 
+                            (<div className="mt-2 mt-md-0">
+                                <Button onClick={handleScansPath}>Select Scans Folder</Button>
+                                <div className="pathname-text text-muted mt-2">{additionalInfo.scansUrl ? additionalInfo.scansUrl : null}</div>
+                            </div>)
+                        : <p>Please set a base path for the digital catalogue folder.</p>
+                        }
+                        </div>
                     )}
                 </Col>
             </FormGroup>

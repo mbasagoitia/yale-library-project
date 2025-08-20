@@ -20,6 +20,22 @@ const getBasePath = (store) => {
     return basePath || null;
 };
 
+const setFolderPath = async (store) => {
+    const result = await dialog.showOpenDialog({
+      properties: ['openDirectory'],
+      defaultPath: IS_DEMO ? resolveDemoBase() : getBasePath(store)
+    });
+  
+    if (!result.canceled && result.filePaths.length > 0) {
+        const selectedPath = result.filePaths[0];
+        const normalizedPath = selectedPath.replace(/\\/g, '/');
+    
+      return normalizedPath;
+  }
+  
+    return null;
+};
+
 const setBasePath = async (store, window) => {
     const result = await dialog.showOpenDialog({
       properties: ['openDirectory'],
@@ -27,14 +43,16 @@ const setBasePath = async (store, window) => {
   
     if (!result.canceled && result.filePaths.length > 0) {
       const selectedPath = result.filePaths[0];
-      store.set("basePath", selectedPath);
-      window.webContents.send("base-path-updated", selectedPath);
+      const normalizedPath = selectedPath.replace(/\\/g, '/');
+
+      store.set("basePath", normalizedPath);
+      window.webContents.send("base-path-updated", normalizedPath);
     
-      return selectedPath;
+      return normalizedPath;
   }
   
     return null;
-  };
+};
 
 const handleReadFile = async (filePath) => {
     const data = await fs.promises.readFile(filePath);
@@ -80,6 +98,7 @@ const handleListDirectory = async (store, relativePath = '') => {
 
 module.exports = {
     getBasePath,
+    setFolderPath,
     setBasePath,
     handleReadFile,
     handleOpenFile,
