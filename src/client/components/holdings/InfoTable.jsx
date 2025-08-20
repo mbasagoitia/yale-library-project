@@ -1,8 +1,20 @@
 import { Table } from 'react-bootstrap';
 import formatDate from "../../helpers/general/formatDate";
+import { useNavigate } from "react-router-dom";
 
 const InfoTable = ({ data }) => {
     const { first_name, last_name, genre, publisher, acquisition_date, call_number, public_domain, own_digital, scans_url, condition, date_last_performed, additional_notes } = data;
+
+    const navigate = useNavigate();
+
+    const navigateToScans = () => {
+        if (own_digital && scans_url) {
+          navigate("/digital-catalogue", {
+            state: { initialPath: scans_url }
+          });
+        }
+      };
+
         return (
             <Table striped bordered className="mt-3">
                 <tbody>
@@ -37,7 +49,7 @@ const InfoTable = ({ data }) => {
                 <tr>
                     <td><strong>Digital Scans</strong></td>
                     <td>
-                    {own_digital ? <a href={scans_url} target="_blank" rel="noreferrer" className="ml-2">Yes</a> : "No"}
+                    {own_digital && scans_url ? <span onClick={navigateToScans} className="ml-2">Yes</span> : "No"}
                     </td>
                 </tr>
                 <tr>
@@ -46,8 +58,8 @@ const InfoTable = ({ data }) => {
                 </tr>
                 {additional_notes && (
                     <tr>
-                    <td><strong>Notes</strong></td>
-                    <td>{additional_notes}</td>
+                        <td><strong>Notes</strong></td>
+                        <td>{additional_notes}</td>
                     </tr>
                 )}
                 </tbody>

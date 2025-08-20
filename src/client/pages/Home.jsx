@@ -17,11 +17,8 @@ const Home = () => {
 // Something more enticing for home page? Photos of Woolsey, rehearsals? Fade in?
 // How to use this application page
 
-// Digital scans handling <-- start here at AdditionalInfo component
-
-// 1. Change scan URL to be a showOpenDialog with defaultPath set (either demoBase or basePath)
-// 2. Let the user choose a piece folder path and store it in the database for that piece (use path.normalize())
-// 3. In piece info page, when user clicks on scans link, resolve the path and redirect to digital catalogue page with that folder open
+// Check that things happen ONLY if base path is set--navigating to digital scans, etc.
+// Style InfoTable digital scans text so you know you can click it
 
 
 // Getting cancelled login flag on login...check

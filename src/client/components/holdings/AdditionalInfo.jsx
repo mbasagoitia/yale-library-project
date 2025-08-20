@@ -8,7 +8,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setFormErrors }) => {
 
-    // Initial for scansUrl?
+    // Initial for scansUrl? Should be ok, but double check
     // Change scansUrl to null when digital scans is unselected
 
     const [basePath, setBasePath] = useState(null);
@@ -46,12 +46,29 @@ const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setForm
 
     const handleScansPath = async () => {
         if (window.api?.filesystem.setFolderPath) {
-            const result = await window.api.filesystem.setFolderPath();
-            if (result) {
-                setAdditionalInfo(prevState => ({ ...prevState, scansUrl: result }));
+          const selectedFullPath = await window.api.filesystem.setFolderPath();
+          if (selectedFullPath) {
+            const basePath = await window.api.filesystem.getBasePath();
+      
+            // Normalize slashes to be safe
+            const normalizedBase = basePath.replace(/\\/g, "/");
+            const normalizedSelected = selectedFullPath.replace(/\\/g, "/");
+      
+            // Remove basePath from the selected path
+            let relativePath = normalizedSelected;
+            if (normalizedSelected.startsWith(normalizedBase)) {
+              relativePath = normalizedSelected.substring(normalizedBase.length).replace(/^\/+/, "");
             }
-    }
-}
+      
+            // Store only the relative path in the db
+            setAdditionalInfo(prev => ({
+              ...prev,
+              scansUrl: relativePath
+            }));
+          }
+        }
+      };
+      
 
     const handleAdditionalNotes = (e) => {
         const notesValue = e.target.value;

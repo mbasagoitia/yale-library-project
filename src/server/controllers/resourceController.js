@@ -72,51 +72,31 @@ async function addComposer(req, res, next) {
   }
 }
 
-async function getSpeciesData(req, res, next) {
+async function getSpeciesData (req, res, next) {
   try {
     const rows = await req.db('species_category as sc')
       .join('species_options as so', 'sc.id', 'so.species_category_id')
-      .select(
-        'sc.id as category_id',
-        'sc.label as category_label',
-        'so.id as option_id',
-        'so.abbr as option_abbr',
-        'so.label as option_label'
-      )
-      .orderBy([
-        { column: 'sc.id', order: 'asc' },
-        { column: 'so.label', order: 'asc' },
-      ]);
+      .select('*');
 
     res.status(200).json(rows);
   } catch (err) {
-    err.status = 500;
-    err.message = 'Error retrieving species list';
-    next(err);
+    const error = new Error('Error retrieving species list');
+    error.status = 500;
+    return next(error);
   }
 }
 
-async function getPublisherData(req, res, next) {
+async function getPublisherData (req, res, next) {
   try {
     const rows = await req.db('publisher_category as pc')
       .join('publisher_options as po', 'pc.id', 'po.publisher_category_id')
-      .select(
-        'pc.id as category_id',
-        'pc.label as category_label',
-        'po.id as option_id',
-        'po.abbr as option_abbr',
-        'po.label as option_label'
-      )
-      .orderBy([
-        { column: 'pc.id', order: 'asc' },
-        { column: 'po.label', order: 'asc' },
-      ]);
+      .select('*');
 
     res.status(200).json(rows);
   } catch (err) {
-    err.status = 500;
-    err.message = 'Error retrieving publisher list';
-    next(err);
+    const error = new Error('Error retrieving publisher list');
+    error.status = 500;
+    return next(error);
   }
 }
 

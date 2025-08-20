@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from "react-router-dom";
 import { useFolderContents } from '../../hooks/useFolderContents';
 import { handleOpenFile, handleOpenCurrentFolder } from "../../helpers/digital-catalogue/openContents";
 import PDFPreview from './PDFPreview';
@@ -12,15 +13,17 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 
 const DigitalCatalogueFolders = ({ folderPath }) => {
 
-  const { contents, currentPath, navigateTo, goUp } = useFolderContents();
+  const location = useLocation();
+  const initialPath = location.state?.initialPath || '';
+
+  const { contents, currentPath, navigateTo, goUp } = useFolderContents(initialPath);
   const [filteredFolders, setFilteredFolders] = useState([]);
   const [selectedPDF, setSelectedPDF] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
-
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
 
+  const itemsPerPage = 10;
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentItems = filteredFolders.slice(startIndex, startIndex + itemsPerPage);
 
