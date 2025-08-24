@@ -1,3 +1,20 @@
+.home {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* Navbar height is 160px */
+    height: calc(100vh - 160px);
+}
+
+.home-content {
+    color: white;
+    background: rgba(0, 0, 0, 0.3);
+    position: relative;
+    top: 6rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem; /* soften corners */
+    box-shadow: 0 0 40px 20px rgba(0, 0, 0, 0.3);
+}
 
 .home .card-section {
     display: flex;
@@ -68,4 +85,19 @@
 .home .card-disabled-text {
     color: #777;
     font-size: 0.9rem;
+}
+
+.homepage-bg {
+    background-image: url("../../../../public/images/woolsey-hall.jpeg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+}
+
+@media (min-width: 728px) {
+    .home-content {
+        top: 0;
+    }
 }

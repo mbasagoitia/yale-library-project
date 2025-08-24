@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { login } from './redux/authSlice';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 import Header from "./client/components/general/Header.jsx";
 import Navigation from "./client/components/general/Navigation.jsx";
 import Home from "./client/pages/Home.jsx";
@@ -98,35 +98,14 @@ function App() {
     return <div>Loading...</div>;
   }
 
-  // Layout for the main app (all routes except /setup)
-  function AppLayout() {
+  // Layout wrapper for all pages (with header/nav, token handler, etc.)
+  function BaseLayout({ children }) {
     return (
       <div className="App">
         <Header />
         <div className="hero"></div>
         <Navigation />
-        <div className="page-content">
-          <Routes>
-            {/* If catalogue missing, show notice */}
-            {!cataloguePathExists && !pathReset && (
-              <Route
-                path="*"
-                element={<MissingCatalogueNotice onPathSet={() => setPathReset(true)} />}
-              />
-            )}
-
-            {/* Normal app routes */}
-            <Route path="/" element={<Home />} />
-            <Route path="/classification-guide" element={<ClassificationGuide />} />
-            <Route path="/manage-holdings" element={<ManageHoldings />} />
-            <Route path="/browse-holdings" element={<Browse />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/browse-holdings/:id" element={<PieceInfo />} />
-            <Route path="/digital-catalogue" element={<DigitalCatalogue />} />
-            <Route path="/reports" element={<Reports />} />
-          </Routes>
-        </div>
-
+        {children}
         <ToastContainer
           position="top-right"
           autoClose={3000}
@@ -136,7 +115,6 @@ function App() {
           pauseOnHover
           draggable
         />
-
         {!isDemo && (
           <TokenExpiryHandler
             token={authToken}
@@ -148,11 +126,55 @@ function App() {
     );
   }
 
+  // Layout specifically for padded pages
+  function PaddedLayout() {
+    return (
+      <div className="page-content">
+        <Outlet />
+      </div>
+    );
+  }
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/setup" element={<SetupWizard />} />
-        <Route path="/*" element={<AppLayout />} />
+        <Route path="setup" element={<SetupWizard />} />
+
+        {/* Home (no padding) */}
+        <Route
+          path="/"
+          element={
+            <BaseLayout>
+              <Home />
+            </BaseLayout>
+          }
+        />
+
+        {/* All other pages (inside .page-content) */}
+        <Route
+          element={
+            <BaseLayout>
+              <PaddedLayout />
+            </BaseLayout>
+          }
+        >
+          {/* If catalogue missing, show notice */}
+          {!cataloguePathExists && !pathReset && (
+            <Route
+              path="*"
+              element={
+                <MissingCatalogueNotice onPathSet={() => setPathReset(true)} />
+              }
+            />
+          )}
+          <Route path="/classification-guide" element={<ClassificationGuide />} />
+          <Route path="/manage-holdings" element={<ManageHoldings />} />
+          <Route path="/browse-holdings" element={<Browse />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/browse-holdings/:id" element={<PieceInfo />} />
+          <Route path="/digital-catalogue" element={<DigitalCatalogue />} />
+          <Route path="/reports" element={<Reports />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

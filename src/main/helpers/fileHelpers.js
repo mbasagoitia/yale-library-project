@@ -65,6 +65,7 @@ const setBasePath = async (store, newPath, window) => {
 
 
 // Generic get path of chosen folder
+// Pass in defaultPath <---------------------------------------- start here
 const chooseFolder = async (store) => {
   // defaultPath may be null if basePath is not set
     const result = await dialog.showOpenDialog({

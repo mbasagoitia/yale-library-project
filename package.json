@@ -1,5 +1,6 @@
 {
-  "name": "library-project",
+  "name": "philharmonia-library-catalogue",
+  "productName": "Philharmonia Library Catalogue",
   "version": "0.1.0",
   "private": true,
   "main": "src/main/electron.js",

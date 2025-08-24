@@ -27,7 +27,7 @@ const SetupWizard = () => {
   }, []);
 
   const handleChooseFolder = async () => {
-    const newPath = await window.api.filesystem.openFolderDialog();
+    const newPath = await window.api.filesystem.chooseFolder();
     if (newPath) {
       setFolderPath(newPath);
       await window.api.filesystem.setBasePath(newPath);

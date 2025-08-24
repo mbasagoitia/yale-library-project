@@ -13,7 +13,6 @@ contextBridge.exposeInMainWorld("api", {
 
   backup: {
     createReadable: () => ipcRenderer.invoke("backup:createReadable"),
-    createMySQL: () => ipcRenderer.invoke("backup:createMySQL"),
     zipCatalogue: () => ipcRenderer.invoke("backup:zipCatalogue")
   },
 
@@ -21,7 +20,6 @@ contextBridge.exposeInMainWorld("api", {
     getFullPath: (basePath, relativePath) =>
       ipcRenderer.invoke("fs:getFullPath", basePath, relativePath),
     checkDefaultBasePath: () => ipcRenderer.invoke("fs:checkDefaultBasePath"),
-    openFolderDialog: () => ipcRenderer.invoke("fs:openFolderDialog"),
     chooseFolder: () => ipcRenderer.invoke("fs:chooseFolder"),
     setBasePath: (newPath) => ipcRenderer.invoke("fs:setBasePath", newPath),
     getBasePath: () => ipcRenderer.invoke("fs:getBasePath"),

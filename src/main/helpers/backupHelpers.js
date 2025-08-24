@@ -41,41 +41,6 @@ const createReadableBackup = async (mainWindow, store) => {
   }
 };
 
-const createMysqlDump = async (mainWindow, store) => {
-  const token = store.get("authToken");
-  if (!token) {
-    return { success: false, message: "You must be logged in to create a MySQL backup." };
-  }
-
-  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-  const { filePath, canceled } = await dialog.showSaveDialog(mainWindow, {
-    title: "Save MySQL Dump",
-    defaultPath: `mysqldump_${timestamp}.sql`,
-    filters: [{ name: "SQL File", extensions: ["sql"] }],
-  });
-
-  if (canceled || !filePath) {
-    return { success: false, message: "Backup cancelled by user." };
-  }
-
-  try {
-    const backupUrl = `https://localhost:5000/api/backup/mysqldump?filePath=${encodeURIComponent(filePath)}`;
-    const res = await fetch(backupUrl, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-
-    if (!res.ok) {
-      return { success: false, message: `Backup failed: ${res.statusText}` };
-    }
-
-    await streamPipeline(res.body, fs.createWriteStream(filePath));
-
-    return { success: true, filePath };
-  } catch (err) {
-    return { success: false, message: "Unexpected error during MySQL backup." };
-  }
-};
-
 const zipFolder = async (store) => {
   const baseFolder = store.get("basePath");
   if (!baseFolder) {
@@ -108,7 +73,6 @@ const zipFolder = async (store) => {
 };
 
 module.exports = {
-  createMysqlDump,
   createReadableBackup,
   zipFolder,
 };

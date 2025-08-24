@@ -1,13 +1,3 @@
-.holdings-buttons-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-.holdings-buttons-container button {
-    width: auto;
-    margin-bottom: 1rem;
-}
 
 .choose-catalogue-folder-container {
     display: flex;
@@ -16,16 +6,6 @@
 
 .settings .row>* {
     padding-left: 0;
-}
-
-@media (min-width: 491px) {
-    .holdings-buttons-container {
-      display: block;
-    } 
-  
-    .holdings-buttons-container button {
-      margin-right: 1rem;
-    }
 }
 
 @media (min-width: 768px) {

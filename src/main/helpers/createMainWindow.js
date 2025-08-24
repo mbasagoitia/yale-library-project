@@ -7,6 +7,7 @@ const bool = v => (typeof v === 'string' ? v.toLowerCase() === 'true' : !!v);
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
+    title: "Philharmonia Library Catalogue",
     width: 1200,
     height: 800,
     webPreferences: {

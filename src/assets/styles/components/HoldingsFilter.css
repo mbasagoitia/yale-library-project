@@ -5,6 +5,10 @@
     font-size: clamp(0.8rem, 4vw, 1rem);
 }
 
+.holdings-filter .dropdown-menu.show {
+    background: white;
+}
+
 .holdings-filter .search-wrapper {
     width: 100%;
 }
@@ -46,9 +50,10 @@
 }
 
 .ensemble-toggle-btn {
-    background-color: transparent;
-    border-color: transparent;
+    background-color: transparent !important;
+    border-color: transparent !important;
     color: #222 !important;
+    width: auto !important;
 }
 
 .ensemble-toggle-btn:hover, .ensemble-toggle-btn:focus, .ensemble-toggle-btn:active {

@@ -30,6 +30,7 @@ let setupWindow;
 
 function createSetupWindow() {
   setupWindow = new BrowserWindow({
+    title: "Setup Wizard",
     // 600
     width: 800,
     // 400
@@ -38,7 +39,7 @@ function createSetupWindow() {
       preload: path.join(__dirname, 'preload.js'),
     },
     resizable: false,
-    modal: true, // keeps wizard above main
+    modal: true
   });
 
   if (isDev) {

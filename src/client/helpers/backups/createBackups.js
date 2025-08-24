@@ -10,15 +10,6 @@ const handleCreateCSVBackup = async () => {
     }
 }
 
-const handleCreateMysqlDump = async () => {
-    const result = await window.api.backup.createMySQL();
-        if (!result.success) {
-        toast.error(`Backup failed: ${result.message}`);
-        } else {
-        toast.success(`Backup saved to ${result.filePath}`);
-        }
-}
-
 const handleBackupScans = async () => {
     const result = await window.api.backup.zipCatalogue();
     if (!result.success) {
@@ -30,6 +21,5 @@ const handleBackupScans = async () => {
 
 export {
     handleCreateCSVBackup,
-    handleCreateMysqlDump,
     handleBackupScans
 }

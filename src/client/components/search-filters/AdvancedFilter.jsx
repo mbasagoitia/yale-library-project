@@ -89,18 +89,17 @@ const AdvancedFilter = ({ searchCriteria, setSearchCriteria, resetHoldings }) =>
 
     const clearSearchCriteria = () => {
 
+      // issue here
+
         dispatch(clearSearch());
-
         resetHoldings();
-
         setMediumSelectShown(false);
-
         setSearchCriteria({
-            composer: null,
-            title: null,
-            medium: null,
-            publisher: null,
-            genre: null
+            composer: "",
+            title: "",
+            medium: "",
+            publisher: "",
+            genre: ""
         })
     }
     
