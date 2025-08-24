@@ -49,7 +49,7 @@ const InfoTable = ({ data }) => {
                 <tr>
                     <td><strong>Digital Scans</strong></td>
                     <td>
-                    {own_digital && scans_url ? <span onClick={navigateToScans} className="ml-2">Yes</span> : "No"}
+                    {own_digital && scans_url ? <span onClick={navigateToScans} className="ml-2 have-scans-text">Yes</span> : "No"}
                     </td>
                 </tr>
                 <tr>

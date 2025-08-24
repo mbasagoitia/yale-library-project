@@ -2,8 +2,9 @@ const path = require('path');
 const fs = require('fs');
 
 const {
+  checkDefaultBasePath,
   getBasePath,
-  setFolderPath,
+  chooseFolder,
   setBasePath,
   handleReadFile,
   handleOpenFile,
@@ -30,6 +31,11 @@ const handleFileHandlers = (ipcMain, store, mainWindow) => {
     return handleListDirectory(store, relativePath);
   });
 
+  ipcMain.handle('fs:checkDefaultBasePath', () => {
+    return checkDefaultBasePath();
+  });
+
+  // Get digital catalogue base path
   ipcMain.handle('fs:getBasePath', () => {
     if (IS_DEMO) {
       const demoBase = resolveDemoBase();
@@ -38,12 +44,12 @@ const handleFileHandlers = (ipcMain, store, mainWindow) => {
     return getBasePath(store);
   });
 
-  ipcMain.handle('fs:setFolderPath', () => {
-    return setFolderPath(store);
+  ipcMain.handle('fs:setBasePath', (_, newPath) => {
+    return setBasePath(store, newPath, mainWindow);
   });
 
-  ipcMain.handle('fs:setBasePath', () => {
-    return setBasePath(store, mainWindow);
+  ipcMain.handle('fs:chooseFolder', () => {
+    return chooseFolder(store);
   });
 
   ipcMain.handle('fs:getFullPath', (_, basePath, relativePath) => {
