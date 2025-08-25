@@ -42,6 +42,7 @@ function App() {
   }, []);
 
   const { exists: cataloguePathExists } = useFolderCheck();
+  console.log(cataloguePathExists);
 
   // demo login shortcut
   useEffect(() => {

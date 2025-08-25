@@ -1,6 +1,20 @@
+// electron.js
 const { app, BrowserWindow, ipcMain, session } = require('electron');
 const path = require('path');
 const dotenv = require('dotenv');
+const fs = require("fs");
+
+// Path to your mkcert root CA
+const caPath = path.join(
+  process.env.HOME,
+  "Library",
+  "Application Support",
+  "mkcert",
+  "rootCA.pem"
+);
+
+// Make Node trust the mkcert root CA globally
+process.env.NODE_EXTRA_CA_CERTS = caPath;
 
 dotenv.config();
 const APP_MODE = process.env.APP_MODE || 'demo';
@@ -31,9 +45,7 @@ let setupWindow;
 function createSetupWindow() {
   setupWindow = new BrowserWindow({
     title: "Setup Wizard",
-    // 600
     width: 800,
-    // 400
     height: 600,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
@@ -72,7 +84,6 @@ app.whenReady().then(() => {
   const DEV_WS = `${DEV_HTTPS ? 'wss' : 'ws'}://${DEV_HOST}:${DEV_PORT}`;
   const DEV_API = process.env.REACT_APP_API_BASE || 'https://localhost:5000';
 
-  // Setting content security policy
   const CSP = [
     "default-src 'self'",
     "base-uri 'self'",
@@ -95,17 +106,18 @@ app.whenReady().then(() => {
     });
   });
 
-  // Check setup state
+  // Register IPC handlers (Option 1: no mainWindow dependency)
+  handleFileHandlers(ipcMain, store);
+  handleAuthHandlers(ipcMain, store);
+  handleBackupHandlers(ipcMain, store);
+  handleSetupHandlers(ipcMain, store);
+
+  // Open the appropriate window
   if (!store.get("initialSetup")) {
     createSetupWindow();
   } else {
     createMainWindow();
   }
-
-  handleFileHandlers(ipcMain, store, mainWindow);
-  handleAuthHandlers(ipcMain, store, mainWindow);
-  handleBackupHandlers(ipcMain, store, mainWindow);
-  handleSetupHandlers(ipcMain, store);
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
@@ -122,7 +134,7 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
 });
 
-
+// Setup completion from renderer
 ipcMain.on("setup-complete", () => {
   store.set("initialSetup", true);
 

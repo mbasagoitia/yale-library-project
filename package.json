@@ -27,6 +27,7 @@
     "morgan": "^1.10.0",
     "mysql2": "^3.14.3",
     "mysqldump": "^3.2.0",
+    "node-fetch": "^3.3.2",
     "nodemon": "^3.1.3",
     "path-browserify": "^1.0.1",
     "pdfjs-dist": "^3.11.174",

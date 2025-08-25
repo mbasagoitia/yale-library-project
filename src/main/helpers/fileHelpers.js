@@ -3,21 +3,7 @@ const path = require('path');
 const fs = require('fs-extra');
 const os = require("os");
 
-const IS_DEMO =
-  process.env.APP_MODE === 'demo' ||
-  process.env.REACT_APP_APP_MODE === 'demo' ||
-  String(process.env.REACT_APP_CAS_ENABLED || '').toLowerCase() === 'false';
-
-function resolveDemoBase() {
-    const devDir = path.join(process.cwd(), 'src', 'assets', 'demo', 'digital-catalogue');
-    const prodDir = path.join(process.resourcesPath, 'demo-catalogue');
-    if (fs.existsSync(prodDir)) return prodDir;
-    if (fs.existsSync(devDir)) return devDir;
-    return null;
-}
-
 const checkDefaultBasePath = async () => {
-
   const getDocumentsPath = () => {
     const homeDir = os.homedir();
     // Documents folder path
@@ -55,22 +41,19 @@ const getBasePath = (store) => {
   return { exists, basePath };
 };
 
-const setBasePath = async (store, newPath, window) => {
+const setBasePath = async (store, newPath) => {
     const normalizedPath = newPath.replace(/\\/g, '/');
     store.set("basePath", normalizedPath);
-    window.webContents.send("base-path-updated", normalizedPath);
   
     return null;
 }
 
 
 // Generic get path of chosen folder
-// Pass in defaultPath <---------------------------------------- start here
-const chooseFolder = async (store) => {
-  // defaultPath may be null if basePath is not set
+const chooseFolder = async (store, defaultPath) => {
     const result = await dialog.showOpenDialog({
       properties: ['openDirectory'],
-      defaultPath: IS_DEMO ? resolveDemoBase() : getBasePath(store)
+      defaultPath: defaultPath
     });
   
     if (!result.canceled && result.filePaths.length > 0) {
@@ -112,16 +95,14 @@ const handleOpenFolder = async (folderPath) => {
     }
 };
 
-const handleListDirectory = async (store, relativePath = '') => {
-    const basePath = IS_DEMO ? resolveDemoBase() : getBasePath(store);
-    const targetPath = path.join(basePath, relativePath);
+const handleListDirectory = async (store, filePath = '') => {
 
-    const entries = await fs.promises.readdir(targetPath, { withFileTypes: true });
+    const entries = await fs.promises.readdir(filePath, { withFileTypes: true });
 
     return entries.map((entry) => ({
         name: entry.name,
         isDirectory: entry.isDirectory(),
-        relativePath: path.join(relativePath, entry.name)
+        relativePath: path.join(filePath, entry.name)
     }));
 };
 

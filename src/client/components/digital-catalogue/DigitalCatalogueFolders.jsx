@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from "react-router-dom";
 import { useFolderContents } from '../../hooks/useFolderContents';
 import { handleOpenFile, handleOpenCurrentFolder } from "../../helpers/digital-catalogue/openContents";
 import PDFPreview from './PDFPreview';
@@ -13,10 +12,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 
 const DigitalCatalogueFolders = ({ folderPath }) => {
 
-  const location = useLocation();
-  const initialPath = location.state?.initialPath || '';
-
-  const { contents, currentPath, navigateTo, goUp } = useFolderContents(initialPath);
+  const { contents, currentPath, navigateTo, goUp } = useFolderContents(folderPath);
   const [filteredFolders, setFilteredFolders] = useState([]);
   const [selectedPDF, setSelectedPDF] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -54,8 +50,7 @@ const DigitalCatalogueFolders = ({ folderPath }) => {
       navigateTo(item.relativePath);
       setSearchText("");
     } else if (item.name.endsWith('.pdf')) {
-      const fullPath = await window.api.filesystem.getFullPath(folderPath, item.relativePath);
-      setSelectedPDF(fullPath);
+      setSelectedPDF(item.relativePath);
       setIsModalOpen(true);
     }
   };

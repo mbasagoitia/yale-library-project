@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 
-export const useFolderContents = (initialPath = '') => {
+export const useFolderContents = (initialPath) => {
   
   const [contents, setContents] = useState([]);
   const [currentPath, setCurrentPath] = useState(initialPath);
   const [breadcrumbs, setBreadcrumbs] = useState([]);
 
   const fetchDirectory = async (path) => {
+    console.log(path);
     const result = await window.api.digitalCatalogue.listDirectory(path);
 
     // Filter out .DS_Store and other system files that I don't need to be displayed

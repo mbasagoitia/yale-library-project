@@ -3,10 +3,10 @@ const {
   zipFolder
 } = require("../helpers/backupHelpers");
 
-const handleBackupHandlers = (ipcMain, store, mainWindow) => {
+const handleBackupHandlers = (ipcMain, store) => {
 
   ipcMain.handle('backup:createReadable', async () => {
-    return await createReadableBackup(mainWindow, store);
+    return await createReadableBackup(store);
   });
 
   ipcMain.handle('backup:zipCatalogue', async () => {

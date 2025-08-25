@@ -11,6 +11,8 @@ import { clearSearch } from "../../../redux/searchSlice";
 const AdvancedFilter = ({ searchCriteria, setSearchCriteria, resetHoldings }) => {
 
     const [mediumSelectShown, setMediumSelectShown] = useState(false);
+    const [genreKey, setGenreKey] = useState(1);
+    const [publisherKey, setPublisherKey] = useState(1);
 
     const resourceData = useFetchResourceData();
 
@@ -89,11 +91,11 @@ const AdvancedFilter = ({ searchCriteria, setSearchCriteria, resetHoldings }) =>
 
     const clearSearchCriteria = () => {
 
-      // issue here
-
         dispatch(clearSearch());
         resetHoldings();
         setMediumSelectShown(false);
+        setGenreKey(genreKey + 1);
+        setPublisherKey(publisherKey + 1);
         setSearchCriteria({
             composer: "",
             title: "",
@@ -117,10 +119,10 @@ const AdvancedFilter = ({ searchCriteria, setSearchCriteria, resetHoldings }) =>
                 </Row>
                 <Row>
                     <Col md={6} className="my-2 my-md-0">
-                        {resourceData.publisherData.length > 0 && <PublisherSelect items={resourceData.publisherData} selectedItem={searchCriteria?.publisher} onItemClick={onPublisherSelect} />}
+                        {resourceData.publisherData.length > 0 && <PublisherSelect key={publisherKey} items={resourceData.publisherData} selectedItem={searchCriteria?.publisher} onItemClick={onPublisherSelect} />}
                     </Col>
                     <Col md={6} className="my-2 my-md-0">
-                            <SpeciesSelect items={resourceData.speciesData} selectedItem={searchCriteria?.genre} onItemClick={onGenreSelect}  />    
+                            <SpeciesSelect key={genreKey} items={resourceData.speciesData} selectedItem={searchCriteria?.genre} onItemClick={onGenreSelect}  />    
                     </Col>
                 </Row>
                 <Row className="my-0 my-md-3">

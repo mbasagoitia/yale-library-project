@@ -25,10 +25,10 @@ function resolveDemoBase() {
   return null;
 }
 
-const handleFileHandlers = (ipcMain, store, mainWindow) => {
+const handleFileHandlers = (ipcMain, store) => {
 
-  ipcMain.handle('catalogue:listDirectory', (_, relativePath) => {
-    return handleListDirectory(store, relativePath);
+  ipcMain.handle('catalogue:listDirectory', (_, path) => {
+    return handleListDirectory(store, path);
   });
 
   ipcMain.handle('fs:checkDefaultBasePath', () => {
@@ -45,11 +45,11 @@ const handleFileHandlers = (ipcMain, store, mainWindow) => {
   });
 
   ipcMain.handle('fs:setBasePath', (_, newPath) => {
-    return setBasePath(store, newPath, mainWindow);
+    return setBasePath(store, newPath);
   });
 
-  ipcMain.handle('fs:chooseFolder', () => {
-    return chooseFolder(store);
+  ipcMain.handle('fs:chooseFolder', (_, defaultPath) => {
+    return chooseFolder(store, defaultPath);
   });
 
   ipcMain.handle('fs:getFullPath', (_, basePath, relativePath) => {

@@ -6,14 +6,15 @@ const { promisify } = require('util');
 const streamPipeline = promisify(pipeline);
 const archiver = require("archiver");
 
-const createReadableBackup = async (mainWindow, store) => {
+const createReadableBackup = async (store) => {
   const token = store.get("authToken");
   if (!token) {
     return { success: false, message: "You must be logged in to create a CSV backup." };
   }
 
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-  const { filePath, canceled } = await dialog.showSaveDialog(mainWindow, {
+  
+  const { filePath, canceled } = await dialog.showSaveDialog({
     title: "Save CSV Backup",
     defaultPath: `readable_backup_${timestamp}.csv`,
     filters: [{ name: "CSV File", extensions: ["csv"] }],
@@ -59,7 +60,7 @@ const zipFolder = async (store) => {
       const archive = archiver('zip', { zlib: { level: 9 } });
 
       output.on('close', () => resolve({ success: true, filePath: zipPath }));
-      archive.on('error', (err) => {
+      archive.on('error', () => {
         reject({ success: false, message: "Failed to zip catalogue." });
       });
 
@@ -68,7 +69,7 @@ const zipFolder = async (store) => {
       archive.finalize();
     });
   } catch (err) {
-    return { success: false, message: "Unexpected error during backup. Please try logging in again." };
+    return { success: false, message: "Unexpected error during backup. Please try again." };
   }
 };
 

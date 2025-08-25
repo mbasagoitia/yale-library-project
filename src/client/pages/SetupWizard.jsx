@@ -13,21 +13,24 @@ const SetupWizard = () => {
 
   useEffect(() => {
     const checkDefaultPath = async () => {
-      const { exists, basePath } = await window.api.filesystem.getBasePath(); 
-      if (exists) {
-        setDefaultPath(basePath);
-        setFolderPath(basePath);
-        setDefaultPathExists(true);
-      } else {
-        setDefaultPath("User/Documents/philharmonia_library_digital_catalogue");
-        setDefaultPathExists(false);
-      }
-    };
-    checkDefaultPath();
-  }, []);
+    // Check to see if folder exists at expected default path (User/Documents/philharmonia_library_digital_catalogue)
+    const { exists, path } = await window.api.filesystem.checkDefaultBasePath();
+
+    setDefaultPath(path);
+    if (exists) {
+      setFolderPath(path) 
+    // set path in electron store
+    await window.api.filesystem.setBasePath(path);
+    setDefaultPathExists(true)
+    }
+  }
+  checkDefaultPath();
+}, []);
 
   const handleChooseFolder = async () => {
-    const newPath = await window.api.filesystem.chooseFolder();
+    // No base path set, so choose from anywhere on the computer
+    const defaultPath = "";
+    const newPath = await window.api.filesystem.chooseFolder(defaultPath);
     if (newPath) {
       setFolderPath(newPath);
       await window.api.filesystem.setBasePath(newPath);
@@ -41,7 +44,6 @@ const SetupWizard = () => {
     }
 
     // Notify Electron setup is complete
-    console.log("setup complete");
     window.api.setup.setupComplete();
     toast.success("Setup complete!");
   };

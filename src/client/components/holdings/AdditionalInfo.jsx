@@ -16,9 +16,9 @@ const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setForm
     useEffect(() => {
         const fetchBasePath = async () => {
             if (window.api?.filesystem.getBasePath) {
-              const result = await window.api.filesystem.getBasePath();
-              if (result) {
-                setBasePath(result);
+              const { exists, basePath } = await window.api.filesystem.getBasePath();
+              if (exists) {
+                setBasePath(basePath);
               }
             }
           };
@@ -45,29 +45,31 @@ const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setForm
     }
 
     const handleScansPath = async () => {
-        if (window.api?.filesystem.setFolderPath) {
-          const selectedFullPath = await window.api.filesystem.setFolderPath();
-          if (selectedFullPath) {
-            const basePath = await window.api.filesystem.getBasePath();
+        if (!window.api?.filesystem.getBasePath || !window.api?.filesystem.chooseFolder) return;
       
-            // Normalize slashes to be safe
-            const normalizedBase = basePath.replace(/\\/g, "/");
-            const normalizedSelected = selectedFullPath.replace(/\\/g, "/");
+        const { exists, basePath } = await window.api.filesystem.getBasePath();
+        if (!exists) return;
       
-            // Remove basePath from the selected path
-            let relativePath = normalizedSelected;
-            if (normalizedSelected.startsWith(normalizedBase)) {
-              relativePath = normalizedSelected.substring(normalizedBase.length).replace(/^\/+/, "");
-            }
+        // Use basePath as the default path in the dialog
+        const selectedFullPath = await window.api.filesystem.chooseFolder(basePath);
+        if (!selectedFullPath) return;
       
-            // Store only the relative path in the db
-            setAdditionalInfo(prev => ({
-              ...prev,
-              scansUrl: relativePath
-            }));
-          }
-        }
+        // Normalize slashes
+        const normalizedBase = basePath.replace(/\\/g, "/");
+        const normalizedSelected = selectedFullPath.replace(/\\/g, "/");
+      
+        // Remove basePath from the selected path to get the relative path
+        const relativePath = normalizedSelected.startsWith(normalizedBase)
+          ? normalizedSelected.substring(normalizedBase.length).replace(/^\/+/, "")
+          : normalizedSelected;
+      
+        // Store only the relative path in the database
+        setAdditionalInfo(prev => ({
+          ...prev,
+          scansUrl: relativePath
+        }));
       };
+      
       
 
     const handleAdditionalNotes = (e) => {

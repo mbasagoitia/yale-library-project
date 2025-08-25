@@ -20,7 +20,7 @@ contextBridge.exposeInMainWorld("api", {
     getFullPath: (basePath, relativePath) =>
       ipcRenderer.invoke("fs:getFullPath", basePath, relativePath),
     checkDefaultBasePath: () => ipcRenderer.invoke("fs:checkDefaultBasePath"),
-    chooseFolder: () => ipcRenderer.invoke("fs:chooseFolder"),
+    chooseFolder: (defaultPath) => ipcRenderer.invoke("fs:chooseFolder", defaultPath),
     setBasePath: (newPath) => ipcRenderer.invoke("fs:setBasePath", newPath),
     getBasePath: () => ipcRenderer.invoke("fs:getBasePath"),
     readFile: (filePath) => ipcRenderer.invoke("fs:readFile", filePath),
@@ -40,7 +40,7 @@ contextBridge.exposeInMainWorld("api", {
 
   events: {
     on: (channel, callback) => {
-      const validChannels = ["base-path-updated", "auth-success", "auth-failed", "setup-complete"];
+      const validChannels = ["auth-success", "auth-failed", "setup-complete"];
       if (validChannels.includes(channel)) {
         ipcRenderer.on(channel, callback);
       }
