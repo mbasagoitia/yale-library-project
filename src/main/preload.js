@@ -25,17 +25,17 @@ contextBridge.exposeInMainWorld("api", {
     getBasePath: () => ipcRenderer.invoke("fs:getBasePath"),
     readFile: (filePath) => ipcRenderer.invoke("fs:readFile", filePath),
     openFile: (fullPath) => ipcRenderer.invoke("fs:openFile", fullPath),
-    openFolder: (folderPath) => ipcRenderer.invoke("fs:openFolder", folderPath)
+    listDirectory: (relativePath) => ipcRenderer.invoke("fs:listDirectory", relativePath),
+    openFolder: (folderPath) => ipcRenderer.invoke("fs:openFolder", folderPath),
+    deleteItem: (path) => ipcRenderer.invoke("fs:deleteItem", path),
+    moveItem: (src, dest) => ipcRenderer.invoke("fs:moveItem", src, dest),
+    createFolder: (parent, name) => ipcRenderer.invoke("fs:createFolder", parent, name),
+    selectFolder: (defaultPath) => ipcRenderer.invoke("fs:selectFolder", defaultPath),
   },
 
   setup: {
     getInitialSetup: () => ipcRenderer.invoke("setup:getInitialSetup"),
     setupComplete: () => ipcRenderer.send("setup-complete")
-  },
-
-  digitalCatalogue: {
-    listDirectory: (relativePath) =>
-      ipcRenderer.invoke("catalogue:listDirectory", relativePath)
   },
 
   events: {

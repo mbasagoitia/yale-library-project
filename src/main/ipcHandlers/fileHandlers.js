@@ -9,7 +9,10 @@ const {
   handleReadFile,
   handleOpenFile,
   handleOpenFolder,
-  handleListDirectory
+  handleListDirectory,
+  deleteItem,
+  moveItem,
+  createFolder
 } = require("../helpers/fileHelpers");
 
 const IS_DEMO =
@@ -27,7 +30,7 @@ function resolveDemoBase() {
 
 const handleFileHandlers = (ipcMain, store) => {
 
-  ipcMain.handle('catalogue:listDirectory', (_, path) => {
+  ipcMain.handle('fs:listDirectory', (_, path) => {
     return handleListDirectory(store, path);
   });
 
@@ -67,6 +70,21 @@ const handleFileHandlers = (ipcMain, store) => {
   ipcMain.handle('fs:openFolder', (_, folderPath) => {
     return handleOpenFolder(folderPath);
   });
+
+  // Digital Catalogue manipulation
+
+  ipcMain.handle("fs:deleteItem", async (_, filePath) => {
+    return deleteItem(filePath);
+  });
+  
+  ipcMain.handle("fs:moveItem", async (_, src, dest) => {
+    return moveItem(src, dest);
+  });
+  
+  ipcMain.handle("fs:createFolder", async (_, parentPath, name) => {
+    return createFolder(parentPath, name);
+  });
+
 };
 
 module.exports = handleFileHandlers;

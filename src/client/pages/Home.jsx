@@ -40,7 +40,7 @@ export default Home;
 
 // Add PDF "upload" to digital catalogue
 
-// Getting cancelled login flag on login...check
+// Weird styling on pagination controls when on third to last page
 
 // Demo call numbers
 

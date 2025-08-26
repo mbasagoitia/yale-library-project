@@ -106,6 +106,34 @@ const handleListDirectory = async (store, filePath = '') => {
     }));
 };
 
+const deleteItem = async (filePath) => {
+  try {
+    await fs.remove(filePath);
+    return { success: true };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+}
+
+const moveItem = async (src, dest) => {
+  try {
+    await fs.move(src, dest, { overwrite: true });
+    return { success: true };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+}
+
+const createFolder = async (parentPath, name) => {
+  try {
+    const fullPath = path.join(parentPath, name);
+    await fsExtra.ensureDir(fullPath);
+    return { success: true, path: fullPath };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+}
+
 module.exports = {
     checkDefaultBasePath,
     getBasePath,
@@ -114,5 +142,8 @@ module.exports = {
     handleReadFile,
     handleOpenFile,
     handleOpenFolder,
-    handleListDirectory
+    handleListDirectory,
+    deleteItem,
+    moveItem,
+    createFolder
 };

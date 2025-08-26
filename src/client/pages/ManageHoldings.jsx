@@ -8,6 +8,8 @@ import HoldingsFilter from "../components/search-filters/HoldingsFilter";
 import { selectFilteredHoldings } from "../../redux/searchSelectors.js";
 import CatalogueForm from "../components/holdings/CatalogueForm.jsx";
 
+import ManageDigitalCatalogue from "../components/digital-catalogue/ManageDigitalCatalogue.jsx";
+
 import "../../assets/styles/pages/ManageHoldingsPage.css";
 
 const ManageHoldings = () => {
@@ -59,6 +61,14 @@ const ManageHoldings = () => {
                             </Card>
                         </Col>
                         <Col xl={5}>
+                            <Card>
+                                 <Card.Header>
+                                    <h5 className="mb-0">Manage Digital Catalogue</h5>
+                                </Card.Header>
+                                <Card.Body>
+                                    <ManageDigitalCatalogue />
+                                </Card.Body>
+                            </Card>
                             <Card>
                                 <Card.Header>
                                     <h5 className="mb-0">Edit Existing Holdings</h5>

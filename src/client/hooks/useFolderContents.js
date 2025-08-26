@@ -8,7 +8,7 @@ export const useFolderContents = (initialPath) => {
 
   const fetchDirectory = async (path) => {
     console.log(path);
-    const result = await window.api.digitalCatalogue.listDirectory(path);
+    const result = await window.api.filesystem.listDirectory(path);
 
     // Filter out .DS_Store and other system files that I don't need to be displayed
     const filtered = result.filter(item => !item.name.startsWith('.'));
