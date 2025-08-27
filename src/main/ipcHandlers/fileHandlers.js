@@ -12,7 +12,9 @@ const {
   handleListDirectory,
   deleteItem,
   moveItem,
-  createFolder
+  createFolder,
+  selectFiles,
+  copyFile
 } = require("../helpers/fileHelpers");
 
 const IS_DEMO =
@@ -81,8 +83,16 @@ const handleFileHandlers = (ipcMain, store) => {
     return moveItem(src, dest);
   });
   
-  ipcMain.handle("fs:createFolder", async (_, parentPath, name) => {
-    return createFolder(parentPath, name);
+  ipcMain.handle("fs:createFolder", async (event, { basePath, folderName }) => {
+    return createFolder(basePath, folderName);
+  });
+
+  ipcMain.handle("fs:selectFiles", async (event, filters) => {
+    return selectFiles(filters);
+  });
+  
+  ipcMain.handle("fs:copyFile", async (event, filePath, targetDir) => {
+    return copyFile(filePath, targetDir);
   });
 
 };

@@ -38,11 +38,12 @@ export default Home;
 
 // Make sure the relative path is stored and it works no matter where the base path is! Try to make a copy of the root folder and rename it
 
-// Add PDF "upload" to digital catalogue
-
 // Weird styling on pagination controls when on third to last page
+// Change console.errors and throw Errors to toast
+// Issue with adding folders is that when navigating back through folder tree to root, somehow / gets removed
 
 // Demo call numbers
+// Token renewal not working
 
 // How to handle MySQL... bundle with app, docker, etc.?
 

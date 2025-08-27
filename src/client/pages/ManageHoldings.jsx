@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useSelector } from 'react-redux';
 import { ModeContext } from "../contexts/ModeContext.js";
 import { Container, Row, Col, Card } from "react-bootstrap";
@@ -23,6 +23,22 @@ const ManageHoldings = () => {
     // Reference CatalogueForm and clear the form, since the logic is defined there
     const catalogueFormRef = useRef();
 
+    // Fetch base path to pass to manage digital catalogue component
+    const [basePath, setBasePath] = useState("");
+
+    useEffect(() => {
+        const fetchPath = async () => {
+            if (window.api.filesystem?.getBasePath) {
+                const { exists, basePath } = await window.api.filesystem.getBasePath();
+                if (exists) {
+                    setBasePath(basePath);
+                }
+            }
+        }
+        fetchPath();
+    }, [])
+
+    // Clear form after submit
     const handleSetNewAndClear = () => {
         setMode("new");
         // Calling the callback function from the child component to reset the form
@@ -66,7 +82,7 @@ const ManageHoldings = () => {
                                     <h5 className="mb-0">Manage Digital Catalogue</h5>
                                 </Card.Header>
                                 <Card.Body>
-                                    <ManageDigitalCatalogue />
+                                    <ManageDigitalCatalogue folderPath={basePath} />
                                 </Card.Body>
                             </Card>
                             <Card>

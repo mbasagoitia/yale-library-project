@@ -96,14 +96,17 @@ const handleOpenFolder = async (folderPath) => {
 };
 
 const handleListDirectory = async (store, filePath = '') => {
+  if (!path.isAbsolute(filePath)) {
+    filePath = path.resolve('/', filePath);
+  }
 
-    const entries = await fs.promises.readdir(filePath, { withFileTypes: true });
+  const entries = await fs.promises.readdir(filePath, { withFileTypes: true });
 
-    return entries.map((entry) => ({
-        name: entry.name,
-        isDirectory: entry.isDirectory(),
-        relativePath: path.join(filePath, entry.name)
-    }));
+  return entries.map((entry) => ({
+    name: entry.name,
+    isDirectory: entry.isDirectory(),
+    relativePath: path.join(filePath, entry.name),
+  }));
 };
 
 const deleteItem = async (filePath) => {
@@ -124,12 +127,42 @@ const moveItem = async (src, dest) => {
   }
 }
 
-const createFolder = async (parentPath, name) => {
+const createFolder = async (basePath, folderName) => {
   try {
-    const fullPath = path.join(parentPath, name);
-    await fsExtra.ensureDir(fullPath);
+    const fullPath = path.join(basePath, folderName);
+    if (fs.existsSync(fullPath)) {
+      throw new Error("Folder already exists");
+    }
+
+    await fs.promises.mkdir(fullPath, { recursive: false });
+
     return { success: true, path: fullPath };
   } catch (err) {
+    console.error("Error creating folder:", err);
+    throw err;
+  }
+}
+
+const selectFiles = async (filters = []) => {
+  const result = await dialog.showOpenDialog({
+    properties: ["openFile", "multiSelections"],
+    filters: filters.length
+      ? [{ name: "Allowed Files", extensions: filters }]
+      : [],
+  });
+
+  if (result.canceled) return [];
+  return result.filePaths;
+}
+
+const copyFile = async (filePath, targetDir) => {
+  try {
+    const fileName = path.basename(filePath);
+    const destPath = path.join(targetDir, fileName);
+    await fs.promises.copyFile(filePath, destPath);
+    return { success: true, destPath };
+  } catch (err) {
+    console.error("Copy error:", err);
     return { success: false, error: err.message };
   }
 }
@@ -145,5 +178,7 @@ module.exports = {
     handleListDirectory,
     deleteItem,
     moveItem,
-    createFolder
+    createFolder,
+    selectFiles,
+    copyFile
 };

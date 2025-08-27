@@ -29,8 +29,10 @@ contextBridge.exposeInMainWorld("api", {
     openFolder: (folderPath) => ipcRenderer.invoke("fs:openFolder", folderPath),
     deleteItem: (path) => ipcRenderer.invoke("fs:deleteItem", path),
     moveItem: (src, dest) => ipcRenderer.invoke("fs:moveItem", src, dest),
-    createFolder: (parent, name) => ipcRenderer.invoke("fs:createFolder", parent, name),
+    createFolder: (basePath, folderName) => ipcRenderer.invoke("fs:createFolder", { basePath, folderName }),
     selectFolder: (defaultPath) => ipcRenderer.invoke("fs:selectFolder", defaultPath),
+    selectFiles: (filters) => ipcRenderer.invoke("fs:selectFiles", filters),
+    copyFile: (file, targetDir) => ipcRenderer.invoke("fs:copyFile", file, targetDir)
   },
 
   setup: {
