@@ -1,132 +1,121 @@
-const { BrowserWindow } = require("electron");
-const fs = require("fs");
+const { BrowserWindow, session, net } = require("electron");
 const path = require("path");
-const https = require("https");
+const fs = require("fs");
+const dotenv = require("dotenv");
 
-// Path to mkcert root CA
-const caPath = path.join(
-  process.env.HOME,
-  "Library",
-  "Application Support",
-  "mkcert",
-  "rootCA.pem"
-);
+dotenv.config();
 
-// HTTPS agent that trusts mkcert CA
-const httpsAgent = new https.Agent({
-  ca: fs.readFileSync(caPath),
-});
-
-let authWin = null;
-
-const createAuthWindow = (targetWin, store) => {
-  if (authWin) {
-    authWin.focus();
-    return;
-  }
-
-  let loginCompleted = false;
-  let closingForRedirect = false;
-
-  authWin = new BrowserWindow({
+function createAuthWindow(parentWindow, store, { casLoginUrl, serviceUrl, backendVerifyUrl }) {
+  const win = new BrowserWindow({
+    parent: parentWindow,
+    modal: false,
+    show: true,
     width: 800,
     height: 600,
-    show: false,
-    modal: false,
-    resizable: true,
-    minimizable: true,
-    maximizable: false,
-    closable: true,
-    title: "Yale CAS Login",
-    autoHideMenuBar: true,
+    webPreferences: {
+      preload: path.join(__dirname, "../preload.js"),
+      contextIsolation: true,
+      nodeIntegration: false,
+      sandbox: false,
+      webSecurity: true,
+      partition: "persist:auth",
+    },
     frame: true,
     titleBarStyle: "default",
-    webPreferences: {
-      nodeIntegration: false,
-      contextIsolation: true,
-    },
+    trafficLightPosition: undefined,
+    fullscreenable: false   
   });
 
-  const serviceUrl = "https://yourapp.local/verify";
-  const casLoginUrl = `https://secure.its.yale.edu/cas/login?service=${encodeURIComponent(serviceUrl)}`;
+  const loginUrl = `${casLoginUrl}?service=${encodeURIComponent(serviceUrl)}`;
+  // console.log("[AUTH] Loading CAS login:", loginUrl);
+  win.loadURL(loginUrl);
 
-  authWin.loadURL(casLoginUrl);
+  // // Allow Duo popups/iframes
+  // win.webContents.setWindowOpenHandler(({ url }) => {
+  //   console.log("[AUTH] window.open requested:", url);
+  //   return { action: "allow" };
+  // });
 
-  authWin.once("ready-to-show", () => authWin?.show());
+  // // Debug network requests
+  // win.webContents.session.webRequest.onBeforeRequest((details, callback) => {
+  //   console.log("[AUTH] Request →", details.url);
+  //   callback({});
+  // });
 
-  authWin.on("closed", () => {
-    authWin = null;
-    // Only send "Cancelled login" if user manually closed the window
-    if (!loginCompleted && !closingForRedirect && targetWin && !targetWin.isDestroyed()) {
-      targetWin.webContents.send("auth-failed", { reason: "Cancelled login" });
-    }
-  });
+  // Capture CAS ticket on redirect and send to backend via GET
+  win.webContents.on("will-redirect", (event, url) => {
+    if (url.startsWith(serviceUrl)) {
+      event.preventDefault(); // stop Electron from navigating
+      const ticket = new URL(url).searchParams.get("ticket");
+      // console.log("[AUTH] Got CAS ticket:", ticket);
 
-  authWin.webContents.on("before-input-event", (e, input) => {
-    const isCmdOrCtrl = input.meta || input.control;
-    if (
-      input.type === "keyDown" &&
-      (input.key === "Escape" || (isCmdOrCtrl && input.key.toLowerCase() === "w"))
-    ) {
-      e.preventDefault();
-      authWin?.close();
-    }
-  });
+      // Build GET URL with query param
+      const verifyUrl = `${backendVerifyUrl}?ticket=${encodeURIComponent(ticket)}`;
 
-  authWin.webContents.on("will-redirect", (event, url) => {
-    const ticketMatch = url.match(/[?&]ticket=([^&]+)/);
-    if (!ticketMatch) return;
+      const request = net.request(verifyUrl);
 
-    const ticket = ticketMatch[1];
-    event.preventDefault();
-
-    closingForRedirect = true; // flag to prevent "Cancelled login"
-    authWin.close();
-
-    // Dynamically import node-fetch and use custom https agent
-    import("node-fetch").then(({ default: fetch }) => {
-      fetch(`https://localhost:5000/api/auth/validate-ticket?ticket=${encodeURIComponent(ticket)}`, {
-        agent: httpsAgent,
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (!targetWin || targetWin.isDestroyed()) return;
-
-          if (data.success) {
-            store.set("authToken", data.token);
-            store.set("netid", data.netid);
-            store.set("isAdmin", data.isAdmin);
-
-            targetWin.webContents.send("auth-success", {
-              token: data.token,
-              netid: data.netid,
-              isAdmin: data.isAdmin,
-            });
-
-            loginCompleted = true;
-          } else {
-            targetWin.webContents.send("auth-failed", { reason: "Invalid credentials" });
-          }
-        })
-        .catch((err) => {
-          console.error(err);
-          if (targetWin && !targetWin.isDestroyed()) {
-            targetWin.webContents.send("auth-failed", {
-              reason: "An error occurred while validating your login. Please try again.",
-            });
-          }
+      let responseBody = "";
+      request.on("response", (response) => {
+        response.on("data", (chunk) => {
+          responseBody += chunk;
         });
-    });
+        response.on("end", () => {
+          try {
+            const data = JSON.parse(responseBody);
+            // console.log("[AUTH] Backend verification response:", data);
+
+            if (data?.success) {
+              store.set("authToken", data.token);
+              store.set("netid", data.netid);
+              store.set("isAdmin", data.isAdmin);
+              parentWindow.webContents.send("auth-success", {
+                netid: data.netid,
+                isAdmin: data.isAdmin,
+              });
+              // console.log("[AUTH] User logged in:", data.netid);
+            } else {
+              parentWindow.webContents.send("auth-failed");
+            }
+          } catch (err) {
+            console.error("[AUTH] Error parsing backend response:", err, responseBody);
+          }
+          win.close();
+        });
+      });
+
+      // request.on("error", (err) => {
+      //   console.error("[AUTH] Network error verifying ticket:", err);
+      //   win.close();
+      // });
+
+      request.end();
+    } else {
+      // console.log("[AUTH] Redirecting to:", url);
+    }
   });
-};
 
-const closeAuthWindow = () => {
-  if (authWin && !authWin.isDestroyed()) {
-    authWin.close();
+  // // Log failed loads
+  // win.webContents.on("did-fail-load", (event, errorCode, errorDescription, validatedURL) => {
+  //   console.error("[AUTH] did-fail-load:", validatedURL, errorCode, errorDescription);
+  // });
+
+  // // Log when DOM is ready
+  // win.webContents.on("dom-ready", () => {
+  //   console.log("[AUTH] DOM ready for:", win.webContents.getURL());
+  // });
+
+  // // Capture console messages from Duo/CAS pages
+  // win.webContents.on("console-message", (event, level, message, line, sourceId) => {
+  //   console.log(`[AUTH][PAGE][console.${level}] ${message} (${sourceId}:${line})`);
+  // });
+
+  // Dev certs for local HTTPS
+  if (process.env.NODE_ENV === "development") {
+    const caPath = path.join(__dirname, "certs", "rootCA.pem");
+    if (fs.existsSync(caPath)) {
+      process.env.NODE_EXTRA_CA_CERTS = caPath;
+    }
   }
-};
+}
 
-module.exports = {
-  createAuthWindow,
-  closeAuthWindow,
-};
+module.exports = { createAuthWindow };

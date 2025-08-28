@@ -1,3 +1,5 @@
+// authToken should be set in store, start here
+
 const renewToken = async (store) => {
     try {
       const token = store.get('authToken');

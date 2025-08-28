@@ -37,7 +37,7 @@ const validateTicket = async (req, res, next) => {
     
     const isAdmin = await isNetIDAdmin(req.db, netid);
 
-    const token = jwt.sign({ netid, isAdmin }, JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ netid, isAdmin }, JWT_SECRET, { expiresIn: '1m' });
 
     res.json({
       success: true,
@@ -58,6 +58,7 @@ const renewToken = (req, res, next) => {
 
     res.json({ success: true, token: newToken });
   } catch (err) {
+    console.error(err);
     const error = new Error('Failed to renew token');
     error.status = 500;
     return next(error);

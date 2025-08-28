@@ -3,7 +3,7 @@ import { jwtDecode } from 'jwt-decode';
 import { handleLogout } from '../../helpers/auth/handleAuth';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import Modal from './Modal';
+import Modal from "../../components/general/Modal";
 import { Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 
@@ -35,6 +35,7 @@ const TokenExpiryHandler = ({ renewToken }) => {
         const expiryTimeMs = exp * 1000;
         const currentTimeMs = Date.now();
         const msUntilExpiry = expiryTimeMs - currentTimeMs;
+        console.log(msUntilExpiry);
 
         if (msUntilExpiry <= 0) {
           handleLogout(dispatch, navigate);

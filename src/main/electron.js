@@ -4,18 +4,6 @@ const path = require('path');
 const dotenv = require('dotenv');
 const fs = require("fs");
 
-// Path to your mkcert root CA
-const caPath = path.join(
-  process.env.HOME,
-  "Library",
-  "Application Support",
-  "mkcert",
-  "rootCA.pem"
-);
-
-// Make Node trust the mkcert root CA globally
-process.env.NODE_EXTRA_CA_CERTS = caPath;
-
 dotenv.config();
 const APP_MODE = process.env.APP_MODE || 'demo';
 
@@ -34,6 +22,20 @@ const store = new Store({
     cataloguePath: null
   }
 });
+
+// Only trust mkcert CA in dev
+if (isDev) {
+  const caPath = path.join(
+    process.env.HOME,
+    "Library",
+    "Application Support",
+    "mkcert",
+    "rootCA.pem"
+  );
+  if (fs.existsSync(caPath)) {
+    process.env.NODE_EXTRA_CA_CERTS = caPath;
+  }
+}
 
 if (!isDev) {
   require('../server/startServer');
@@ -73,9 +75,13 @@ function createMainWindow() {
   });
 }
 
+app.commandLine.appendSwitch("disable-features", "OutOfBlinkCors,SiteIsolationTrial");
+app.commandLine.appendSwitch("disable-gpu");
+
 app.whenReady().then(() => {
-  // eventually remove this
+  // ⚠️ temporary reset — remove later
   store.set("initialSetup", false);
+
   const DEV_HOST = process.env.HOST || 'localhost';
   const DEV_PORT = Number(process.env.PORT) || 3000;
   const DEV_HTTPS = String(process.env.HTTPS).toLowerCase() === 'true';
@@ -93,20 +99,38 @@ app.whenReady().then(() => {
     "img-src 'self' data: blob:",
     "font-src 'self' data:",
     `connect-src 'self' ${DEV_UI} ${DEV_WS} ${DEV_API}`,
-    "frame-src 'none'",
     "worker-src 'self' blob: https://cdnjs.cloudflare.com",
   ].join('; ');
 
+  // ✅ Inject CSP, but skip Yale CAS & Duo (they need their own policies)
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
-    callback({
-      responseHeaders: {
-        ...details.responseHeaders,
-        'Content-Security-Policy': [CSP],
-      },
-    });
+    const url = details.url;
+    if (
+      url.startsWith("https://secure.its.yale.edu/cas") ||
+      url.includes("duosecurity.com")
+    ) {
+      callback({ responseHeaders: details.responseHeaders });
+    } else {
+      callback({
+        responseHeaders: {
+          ...details.responseHeaders,
+          "Content-Security-Policy": [CSP],
+        },
+      });
+    }
   });
 
-  // Register IPC handlers (Option 1: no mainWindow dependency)
+  // ✅ Allow self-signed certs in dev for https://yourapp.local
+  app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
+    if (isDev && url.startsWith('https://yourapp.local')) {
+      event.preventDefault();
+      callback(true);
+    } else {
+      callback(false);
+    }
+  });
+
+  // Register IPC handlers
   handleFileHandlers(ipcMain, store);
   handleAuthHandlers(ipcMain, store);
   handleBackupHandlers(ipcMain, store);

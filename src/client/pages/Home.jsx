@@ -40,10 +40,10 @@ export default Home;
 
 // Weird styling on pagination controls when on third to last page
 // Change console.errors and throw Errors to toast
-// Issue with adding folders is that when navigating back through folder tree to root, somehow / gets removed
 
 // Demo call numbers
-// Token renewal not working
+// Token renewal not working <---- START HERE
+// Style manage digital catalogue
 
 // How to handle MySQL... bundle with app, docker, etc.?
 
