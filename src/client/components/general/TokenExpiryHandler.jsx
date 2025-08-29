@@ -1,142 +1,109 @@
 import { useEffect, useState, useRef } from 'react';
 import { jwtDecode } from 'jwt-decode';
-import { handleLogout } from '../../helpers/auth/handleAuth';
 import { useDispatch } from 'react-redux';
+import { login } from '../../../redux/authSlice';
 import { useNavigate } from 'react-router-dom';
-import Modal from "../../components/general/Modal";
+import Modal from '../../components/general/Modal';
 import { Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
+import { handleLogout } from '../../helpers/auth/handleAuth';
 
-const isDemo =
-  process.env.REACT_APP_APP_MODE === 'demo' ||
-  String(process.env.REACT_APP_CAS_ENABLED).toLowerCase() === 'false';
-
-const TokenExpiryHandler = ({ renewToken }) => {
+const TokenExpiryHandler = ({ token, renewToken, intervalRef, timeoutRef }) => {
   const [secondsLeft, setSecondsLeft] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const countdownInterval = useRef(null);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // Use passed refs if provided, otherwise create internal ones
+  const interval = intervalRef
+  const timeout = timeoutRef
+
   useEffect(() => {
-    if (isDemo) return;
-
-    let timeoutId;
-
-    const setupTokenWatcher = async () => {
-      try {
-        const token = await window?.api?.auth?.getToken?.();
-        if (!token) return;
-
-        const { exp } = jwtDecode(token);
-        if (!exp) return;
-
-        const expiryTimeMs = exp * 1000;
-        const currentTimeMs = Date.now();
-        const msUntilExpiry = expiryTimeMs - currentTimeMs;
-        console.log(msUntilExpiry);
-
-        if (msUntilExpiry <= 0) {
-          handleLogout(dispatch, navigate);
-          return;
-        }
-
-        const countdownStart = expiryTimeMs - 30_000;
-
-        if (currentTimeMs >= countdownStart) {
-          const seconds = Math.ceil((expiryTimeMs - currentTimeMs) / 1000);
-          setSecondsLeft(seconds);
-          setShowModal(true);
-          startCountdown(seconds);
-        } else {
-          timeoutId = setTimeout(() => {
-            setSecondsLeft(30);
-            setShowModal(true);
-            startCountdown(30);
-          }, countdownStart - currentTimeMs);
-        }
-      } catch (err) {
-        toast.error(`Token check/setup failed: ${err?.message || String(err)}`);
-      }
-    };
-
-    setupTokenWatcher();
-
-    return () => {
-      clearTimeout(timeoutId);
-      clearInterval(countdownInterval.current);
-    };
-  }, [dispatch, navigate]);
-
-  const startCountdown = (initialSeconds) => {
-    if (isDemo) return;
-    setSecondsLeft(initialSeconds);
-
-    clearInterval(countdownInterval.current);
-    countdownInterval.current = setInterval(() => {
-      setSecondsLeft((prev) => {
-        if (prev <= 1) {
-          clearInterval(countdownInterval.current);
-          toast.error('Your session has expired. You will be logged out.');
-          handleCloseModal();
-          handleLogout(dispatch, navigate);
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-  };
-
-  const handleRenew = async () => {
-    if (isDemo) {
-      clearInterval(countdownInterval.current);
-      setSecondsLeft(null);
-      setShowModal(false);
+    console.log("TokenExpiryHandler mounted or token changed");
+    console.log("token", token);
+    if (!token) {
+      console.log("No token available yet");
       return;
     }
 
-    clearInterval(countdownInterval.current);
-    setSecondsLeft(null);
+    let decoded;
+    try {
+      decoded = jwtDecode(token);
+    } catch (err) {
+      console.error("Failed to decode token:", err);
+      return;
+    }
+
+    const expiryTimeMs = decoded.exp * 1000;
+    const now = Date.now();
+    const msUntilExpiry = expiryTimeMs - now;
+
+    console.log('Token msUntilExpiry:', msUntilExpiry);
+
+    const startCountdown = (seconds) => {
+      console.log(`Starting countdown with ${seconds} seconds`);
+      setSecondsLeft(seconds);
+      setShowModal(true);
+
+      interval.current = setInterval(() => {
+        setSecondsLeft((prev) => {
+          console.log('Countdown tick:', prev);
+          if (prev <= 1) {
+            console.log('Countdown finished, logging out');
+            clearInterval(interval.current);
+            toast.error('Your session has expired. Logging out.');
+            setShowModal(false);
+            handleLogout(dispatch, navigate);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    };
+
+    if (msUntilExpiry <= 30_000) {
+      startCountdown(Math.ceil(msUntilExpiry / 1000));
+    } else {
+      console.log(`Scheduling countdown to start in ${msUntilExpiry - 30_000} ms`);
+      timeout.current = setTimeout(() => startCountdown(30), msUntilExpiry - 30_000);
+    }
+
+    return () => {
+      console.log('Clearing interval and timeout');
+      clearInterval(interval.current);
+      clearTimeout(timeout.current);
+    };
+  }, [token, dispatch, navigate]);
+
+  const handleRenew = async () => {
+    console.log("Renew session clicked");
+    clearInterval(interval.current);
+    clearTimeout(timeout.current);
     setShowModal(false);
+    setSecondsLeft(null);
 
     try {
       const result = await renewToken();
       if (result?.success && result?.token) {
-        const { exp } = jwtDecode(result.token);
-        const msUntilExpiry = exp * 1000 - Date.now();
-        if (msUntilExpiry > 30_000) {
-          setTimeout(() => {
-            setSecondsLeft(30);
-            setShowModal(true);
-            startCountdown(30);
-          }, msUntilExpiry - 30_000);
-        } else {
-          const secs = Math.max(1, Math.ceil(msUntilExpiry / 1000));
-          setSecondsLeft(secs);
-          setShowModal(true);
-          startCountdown(secs);
-        }
-        toast.success('Successfully renewed session');
-        handleCloseModal();
+        console.log("Session renewed successfully");
+        toast.success('Session renewed!');
+        dispatch(login({ netid: result.netid, isAdmin: result.isAdmin, token: result.token }));
       } else {
-        toast.error('Failed to renew session, please log in again.');
+        console.log("Session renewal failed");
+        toast.error('Failed to renew session.');
         handleLogout(dispatch, navigate);
       }
     } catch (err) {
-      toast.error(err?.message || 'Failed to renew session');
+      console.error("Error renewing session:", err);
+      toast.error(err?.message || 'Failed to renew session.');
       handleLogout(dispatch, navigate);
     }
   };
 
-  const handleCloseModal = () => setShowModal(false);
-
-  if (isDemo) return null;
-
   return (
     <Modal
       show={showModal}
-      header="Session will Expire"
+      header="Session Expiring"
       content={
         <div className="d-flex flex-column align-items-center">
           <p>
@@ -146,7 +113,7 @@ const TokenExpiryHandler = ({ renewToken }) => {
           <Button onClick={handleRenew}>Renew Session</Button>
         </div>
       }
-      handleCloseModal={handleCloseModal}
+      handleCloseModal={() => setShowModal(false)}
     />
   );
 };

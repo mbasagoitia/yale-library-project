@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { login } from './redux/authSlice';
 import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 import Header from "./client/components/general/Header.jsx";
@@ -31,11 +31,14 @@ const isDemo =
 function App() {
   const dispatch = useDispatch();
   const hasAttachedAuthListeners = useRef(false);
+  // This is null, how do we make sure redux updates on login? <----- START HERE
+  const token = useSelector((state) => state.auth.token);
+  console.log("token on initial load:", token);
 
-  const [authToken, setAuthToken] = useState(null);
   const [initialSetupComplete, setInitialSetupComplete] = useState(false);
   const [pathReset, setPathReset] = useState(false);
 
+  // Initial setup
   useEffect(() => {
     const result = window.api.setup.getInitialSetup();
     setInitialSetupComplete(result);
@@ -43,23 +46,23 @@ function App() {
 
   const { exists: cataloguePathExists } = useFolderCheck();
 
-  // demo login shortcut
+  // Demo login shortcut
   useEffect(() => {
     if (!isDemo) return;
-    dispatch(login({ netid: 'demo', isAdmin: true }));
+    dispatch(login({ netid: 'demo', isAdmin: true, token: null }));
   }, [dispatch]);
 
-  // attach auth listeners
+  // Attach auth listeners
   useEffect(() => {
     if (isDemo || hasAttachedAuthListeners.current) return;
     hasAttachedAuthListeners.current = true;
 
     const handleAuthSuccess = (_event, data) => {
-      if (!data?.netid) {
-        toast.error("Login failed: Invalid user data");
+      if (!data?.netid || !data?.token) {
+        toast.error("Login failed: Invalid user data or missing token");
         return;
       }
-      dispatch(login({ netid: data.netid, isAdmin: data.isAdmin }));
+      dispatch(login({ netid: data.netid, isAdmin: data.isAdmin, token: data.token }));
       toast.success(`Welcome back, ${data.netid}!`);
     };
 
@@ -76,20 +79,7 @@ function App() {
     };
   }, [dispatch]);
 
-  // fetch token
-  useEffect(() => {
-    if (isDemo) return;
-    const fetchToken = async () => {
-      try {
-        const token = await window.api.auth.getToken();
-        setAuthToken(token);
-      } catch (err) {
-        toast.error("Failed to fetch auth token");
-      }
-    };
-    fetchToken();
-  }, []);
-
+  // Fetch library holdings
   useEffect(() => {
     dispatch(fetchHoldings());
   }, [dispatch]);
@@ -98,8 +88,11 @@ function App() {
     return <div>Loading...</div>;
   }
 
-  // Layout wrapper for all pages (with header/nav, token handler, etc.)
+  // Base layout wrapper
   function BaseLayout({ children }) {
+    const intervalRef = useRef(null);
+    const timeoutRef = useRef(null);
+
     return (
       <div className="App">
         <Header />
@@ -115,18 +108,19 @@ function App() {
           pauseOnHover
           draggable
         />
-        {!isDemo && (
+        {!isDemo && token && (
           <TokenExpiryHandler
-            token={authToken}
-            dispatch={dispatch}
+            token={token}
             renewToken={handleRenewToken}
+            intervalRef={intervalRef}
+            timeoutRef={timeoutRef}
           />
         )}
       </div>
     );
   }
 
-  // Layout specifically for padded pages
+  // Layout for padded pages
   function PaddedLayout() {
     return (
       <div className="page-content">
@@ -140,7 +134,7 @@ function App() {
       <Routes>
         <Route path="setup" element={<SetupWizard />} />
 
-        {/* Home (no padding) */}
+        {/* Home page */}
         <Route
           path="/"
           element={
@@ -150,7 +144,7 @@ function App() {
           }
         />
 
-        {/* All other pages (inside .page-content) */}
+        {/* All other pages */}
         <Route
           element={
             <BaseLayout>
@@ -158,7 +152,7 @@ function App() {
             </BaseLayout>
           }
         >
-          {/* If catalogue missing, show notice */}
+          {/* If catalogue missing */}
           {!cataloguePathExists && !pathReset && (
             <Route
               path="*"

@@ -11,7 +11,7 @@ const handleAuthHandlers = (ipcMain, store) => {
     createAuthWindow(requestWin, store, {
       casLoginUrl: "https://secure.its.yale.edu/cas/login",
       serviceUrl: "https://yourapp.local/verify",
-      backendVerifyUrl: "https://localhost:5000/api/auth/validate-ticket"
+      backendVerifyUrl: "http://localhost:5000/api/auth/validate-ticket"
     });
 
     // Don’t return a BrowserWindow — just signal success

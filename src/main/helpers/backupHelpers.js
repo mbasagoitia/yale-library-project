@@ -25,7 +25,7 @@ const createReadableBackup = async (store) => {
   }
 
   try {
-    const backupUrl = `https://localhost:5000/api/backup/readable?filePath=${encodeURIComponent(filePath)}`;
+    const backupUrl = `http://localhost:5000/api/backup/readable?filePath=${encodeURIComponent(filePath)}`;
     const res = await fetch(backupUrl, {
       headers: { Authorization: `Bearer ${token}` },
     });

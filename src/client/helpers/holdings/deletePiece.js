@@ -4,7 +4,7 @@ const isDemo =
   process.env.REACT_APP_APP_MODE === "demo" ||
   String(process.env.REACT_APP_CAS_ENABLED).toLowerCase() === "false";
 
-const API_BASE = process.env.REACT_APP_API_BASE || "https://localhost:5000";
+const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:5000";
 
 const deletePiece = async (id) => {
   const url = `${API_BASE}/api/holdings-data/${id}`;

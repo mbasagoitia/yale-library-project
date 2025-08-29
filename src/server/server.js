@@ -25,7 +25,7 @@ app.use(express.json());
 app.use(morgan('dev'));
 
 const corsOptions = {
-  origin: 'https://yourapp.local:3000',
+  origin: 'http://localhost:3000',
   credentials: true,
 };
 app.use(cors(corsOptions));
@@ -34,7 +34,12 @@ app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, '../client/build')));
 
 const db = makeKnex();
+
 app.use((req, _res, next) => { req.db = db; next(); });
+app.use((req, res, next) => {
+  console.log("GLOBAL:", req.method, req.url);
+  next();
+});
 
 app.use('/api/resources', resourceRouter);
 app.use('/api/holdings-data', pieceRouter);

@@ -23,20 +23,6 @@ const store = new Store({
   }
 });
 
-// Only trust mkcert CA in dev
-if (isDev) {
-  const caPath = path.join(
-    process.env.HOME,
-    "Library",
-    "Application Support",
-    "mkcert",
-    "rootCA.pem"
-  );
-  if (fs.existsSync(caPath)) {
-    process.env.NODE_EXTRA_CA_CERTS = caPath;
-  }
-}
-
 if (!isDev) {
   require('../server/startServer');
 }
@@ -57,7 +43,7 @@ function createSetupWindow() {
   });
 
   if (isDev) {
-    setupWindow.loadURL('https://yourapp.local:3000/setup');
+    setupWindow.loadURL('http://localhost:3000/setup');
   } else {
     setupWindow.loadURL(`file://${path.join(__dirname, '../build/index.html')}#/setup`);
   }
@@ -84,11 +70,11 @@ app.whenReady().then(() => {
 
   const DEV_HOST = process.env.HOST || 'localhost';
   const DEV_PORT = Number(process.env.PORT) || 3000;
-  const DEV_HTTPS = String(process.env.HTTPS).toLowerCase() === 'true';
 
-  const DEV_UI = `${DEV_HTTPS ? 'https' : 'http'}://${DEV_HOST}:${DEV_PORT}`;
-  const DEV_WS = `${DEV_HTTPS ? 'wss' : 'ws'}://${DEV_HOST}:${DEV_PORT}`;
-  const DEV_API = process.env.REACT_APP_API_BASE || 'https://localhost:5000';
+  // Everything is HTTP in dev except CAS serviceUrl
+  const DEV_UI = `http://${DEV_HOST}:${DEV_PORT}`;
+  const DEV_WS = `ws://${DEV_HOST}:${DEV_PORT}`;
+  const DEV_API = process.env.REACT_APP_API_BASE || 'http://localhost:5000';
 
   const CSP = [
     "default-src 'self'",
@@ -117,16 +103,6 @@ app.whenReady().then(() => {
           "Content-Security-Policy": [CSP],
         },
       });
-    }
-  });
-
-  // ✅ Allow self-signed certs in dev for https://yourapp.local
-  app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
-    if (isDev && url.startsWith('https://yourapp.local')) {
-      event.preventDefault();
-      callback(true);
-    } else {
-      callback(false);
     }
   });
 

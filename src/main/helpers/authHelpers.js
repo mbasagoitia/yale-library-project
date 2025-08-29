@@ -1,13 +1,10 @@
-// authToken should be set in store, start here
-
 const renewToken = async (store) => {
     try {
       const token = store.get('authToken');
       if (!token) {
         throw new Error('No auth token found');
       }
-  
-      const response = await fetch('https://localhost:5000/api/auth/renew-token', {
+      const response = await fetch('http://localhost:5000/api/auth/renew-token', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -15,7 +12,6 @@ const renewToken = async (store) => {
         },
         credentials: 'include',
       });
-  
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(`Failed to renew token: ${response.status} ${errorText}`);
@@ -28,6 +24,7 @@ const renewToken = async (store) => {
       }
   
       store.set('authToken', data.token);
+      console.log("set auth token in store");
   
       return { success: true, token: data.token };
   

@@ -71,6 +71,7 @@ function createAuthWindow(parentWindow, store, { casLoginUrl, serviceUrl, backen
               parentWindow.webContents.send("auth-success", {
                 netid: data.netid,
                 isAdmin: data.isAdmin,
+                token: data.token
               });
               // console.log("[AUTH] User logged in:", data.netid);
             } else {

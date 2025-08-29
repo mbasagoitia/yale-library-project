@@ -16,7 +16,7 @@ const PieceInfo = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(`https://localhost:5000/api/holdings-data/${id}`);
+        const res = await fetch(`http://localhost:5000/api/holdings-data/${id}`);
         if (!res.ok) throw new Error('Network response was not ok');
         const data = await res.json();
         setData(data);

@@ -1,7 +1,8 @@
 import { toast } from "react-toastify";
 
 const fetchHoldings = async () => {
-    const apiUrl = "https://localhost:5000/api/holdings-data";
+    const apiUrl = "http://localhost:5000/api/holdings-data";
+    console.log(apiUrl);
     try {
         const res = await fetch(apiUrl);
         if (!res.ok) {
