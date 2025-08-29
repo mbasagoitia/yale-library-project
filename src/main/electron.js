@@ -32,9 +32,9 @@ let setupWindow;
 
 function createSetupWindow() {
   setupWindow = new BrowserWindow({
-    title: "Setup Wizard",
-    width: 800,
-    height: 600,
+    title: "Philharmonia Library Catalogue",
+    width: 1200,
+    height: 800,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },

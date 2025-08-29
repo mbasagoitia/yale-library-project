@@ -42,7 +42,6 @@ export default Home;
 // Change console.errors and throw Errors to toast
 
 // Demo call numbers
-// Token renewal not working <---- START HERE
 // Style manage digital catalogue
 
 // How to handle MySQL... bundle with app, docker, etc.?

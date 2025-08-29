@@ -65,18 +65,18 @@ const SetupWizard = () => {
     },
     {
       id: 2,
-      title: "Check Catalogue Folder",
+      title: "Scan for Digital Catalogue Folder",
       content: (
         <>
-          <p className="mb-4">Checking for catalogue folder at:</p>
-          <p className="font-mono text-sm mb-4">{defaultPath}</p>
+          <p className="mb-4">Scanning for folder at:</p>
+          <p className="font-monospace path-text mb-4">{defaultPath}</p>
           {defaultPathExists ? (
-            <div className="flex items-center text-green-600 mb-4">
+            <div className="flex items-center text-success mb-4">
               <CheckCircle className="mr-2" /> Folder found!
             </div>
           ) : (
-            <div className="flex flex-col gap-2 mb-4">
-              <div className="flex items-center text-red-600">
+            <div className="flex flex-col gap-2 mb-2">
+              <div className="flex items-center text-danger mb-2">
                 <XCircle className="mr-2" /> Folder not found.
               </div>
               <Button onClick={handleChooseFolder}>
@@ -100,39 +100,43 @@ const SetupWizard = () => {
   ];
 
   return (
-    <div className="setup-wizard max-w-xl mx-auto mt-10">
-      <Card className="p-6 shadow-lg rounded-2xl">
-        <motion.h2
-          key={steps[step - 1].title}
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-          className="text-xl font-bold mb-4"
-        >
-          {steps[step - 1].title}
-        </motion.h2>
+    <div className="setup-wizard max-w-xl mx-auto mt-10 d-flex flex-column justify-content-center align-items-center">
+      <div className="setup-wizard-content">
+        <Card className="p-6 shadow-lg rounded-2xl h-100">
+          <div className="mb-6">
+          <motion.h2
+            key={steps[step - 1].title}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="text-xl font-bold mb-4"
+          >
+            {steps[step - 1].title}
+          </motion.h2>
 
-        <motion.div
-          key={steps[step - 1].id}
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          {steps[step - 1].content}
-        </motion.div>
+          <motion.div
+            key={steps[step - 1].id}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            {steps[step - 1].content}
+          </motion.div>
+          </div>
 
-        <div className="flex justify-between mt-6">
-          {step > 1 ? (
-            <Button variant="outline" onClick={() => setStep(step - 1)}>Back</Button>
-          ) : <div />}
+          <div className="flex justify-between mt-6">
+            {step > 1 ? (
+              <Button variant="outline" onClick={() => setStep(step - 1)}>Back</Button>
+            ) : <div />}
 
-          {step < steps.length ? (
-            <Button onClick={() => setStep(step + 1)}>Next</Button>
-          ) : (
-            <Button variant="default" onClick={handleFinishSetup}>Finish</Button>
-          )}
-        </div>
-      </Card>
+            {step < steps.length ? (
+              <Button onClick={() => setStep(step + 1)}>Next</Button>
+            ) : (
+              <Button variant="default" onClick={handleFinishSetup}>Finish</Button>
+            )}
+          </div>
+        </Card>
+      </div>
     </div>
   );
 };

@@ -7,11 +7,9 @@ const speciesUrl = "http://localhost:5000/api/resources/species-data";
 const publisherUrl = "http://localhost:5000/api/resources/publisher-data";
 
 const fetchMediumData = async () => {
-  console.log("fetching medium data");
   try {
     const res = await fetch(mediumUrl);
     const data = await res.json();
-    console.log(data);
     
     if (!res.ok) {
       throw new Error(data.error || "Something went wrong while fetching medium data");

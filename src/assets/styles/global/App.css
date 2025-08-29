@@ -4,6 +4,10 @@
   text-align: center;
 }
 
+#root {
+  height: 100%;
+}
+
 :root {
   --yale-blue: #00356B;
   --modal-bg: #ffffff;

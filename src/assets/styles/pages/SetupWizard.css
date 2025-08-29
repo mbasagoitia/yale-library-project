@@ -1,4 +1,31 @@
 .setup-wizard {
     text-align: center;
-    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;   /* full window height */
+    padding: 1rem;   /* optional, prevents touching window edges on small screens */
+    box-sizing: border-box;
+}
+
+.setup-wizard-content {
+    width: 100%;
+    max-width: 600px; /* card will never get wider than this */
+    flex-shrink: 1;   /* allows shrinking on smaller screens */
+  }
+
+.setup-wizard .card {
+    padding: 4rem;
+    gap: 1rem;
+    min-width: 375px;
+    width: 100%;       /* fills parent container */
+    max-height: 80vh;  /* optional: keeps card from growing too tall */
+    overflow-y: auto;  /* scroll if content overflows */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.setup-wizard .path-text {
+    font-size: 12px;
 }
