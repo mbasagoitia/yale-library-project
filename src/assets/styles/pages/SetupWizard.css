@@ -14,10 +14,10 @@
     flex-shrink: 1;   /* allows shrinking on smaller screens */
   }
 
-.setup-wizard .card {
-    padding: 4rem;
+.setup-wizard .card-body {
+    margin: 1rem 0 2rem 0;
     gap: 1rem;
-    min-width: 375px;
+    min-width: 300px;
     width: 100%;       /* fills parent container */
     max-height: 80vh;  /* optional: keeps card from growing too tall */
     overflow-y: auto;  /* scroll if content overflows */

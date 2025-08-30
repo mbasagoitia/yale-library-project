@@ -58,7 +58,6 @@ const renewToken = (req, res, next) => {
 
     res.json({ success: true, token: newToken, netid: netid, isAdmin: isAdmin });
   } catch (err) {
-    console.error(err);
     const error = new Error('Failed to renew token');
     error.status = 500;
     return next(error);

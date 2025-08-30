@@ -12,7 +12,7 @@ const fetchMediumData = async () => {
     const data = await res.json();
     
     if (!res.ok) {
-      throw new Error(data.error || "Something went wrong while fetching medium data");
+      toast.error(data.error || "Something went wrong while fetching medium data");
     }
 
     return Array.isArray(data) ? organizeMediumData(data) : [];
@@ -28,7 +28,7 @@ const fetchComposerData = async () => {
     const data = await res.json();
 
     if (!res.ok) {
-      throw new Error(data.error || "Something went wrong while fetching composer data");
+      toast.error(data.error || "Something went wrong while fetching composer data");
     }
 
     return Array.isArray(data) ? data : [];
@@ -44,7 +44,7 @@ const fetchSpeciesData = async () => {
     const data = await res.json();
 
     if (!res.ok) {
-      throw new Error(data.error || "Something went wrong while fetching species data");
+      toast.error(data.error || "Something went wrong while fetching species data");
     }
 
     return Array.isArray(data) ? organizeSpeciesData(data) : [];
@@ -60,7 +60,7 @@ const fetchPublisherData = async () => {
     const data = await res.json();
 
     if (!res.ok) {
-      throw new Error(data.error || "Something went wrong while fetching publisher data");
+      toast.error(data.error || "Something went wrong while fetching publisher data");
     }
 
     return Array.isArray(data) ? organizePublisherData(data) : [];

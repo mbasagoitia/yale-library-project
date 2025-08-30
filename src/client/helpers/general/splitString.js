@@ -2,7 +2,7 @@ function splitString(inputString) {
     const parts = inputString.split(' ');
 
     if (parts.length < 4) {
-        throw new Error('Input string does not have enough parts');
+        return;
     }
 
     if (parts.length > 4) {

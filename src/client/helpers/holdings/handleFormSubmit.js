@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 const handleFormSubmit = async (formData, id, onSubmit) => {
     try {
       if (id) {
@@ -8,7 +10,7 @@ const handleFormSubmit = async (formData, id, onSubmit) => {
         return await onSubmit(formData);
       }
     } catch (error) {
-      throw new Error("Error submitting form:", error);
+      toast.error("Error submitting form:", error);
     }
   };
   

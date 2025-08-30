@@ -103,7 +103,7 @@ async function exportDatabaseBackup(db, filePath) {
 
     if (client === 'mysql2') {
       const conn = mysqlConnFromKnex(db);
-      if (!conn) throw new Error('Could not read MySQL connection from Knex');
+      if (!conn) console.log('Could not read MySQL connection from Knex');
 
       await mysqldump({
         connection: conn,
@@ -125,7 +125,7 @@ async function exportDatabaseBackup(db, filePath) {
       } catch {
         // Fallback: copy the DB file (may capture WAL; acceptable for a simple backup)
         const src = db?.client?.config?.connection?.filename;
-        if (!src) throw new Error('Could not resolve SQLite filename from Knex');
+        if (!src) console.log('Could not resolve SQLite filename from Knex');
         await fs.copy(src, filePath);
         return { success: true, filePath };
       }

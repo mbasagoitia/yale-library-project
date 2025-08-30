@@ -6,7 +6,7 @@ const fetchHoldings = async () => {
         const res = await fetch(apiUrl);
         if (!res.ok) {
             const data = await res.json();
-            throw new Error(data.error || "Something went wrong while fetching holdings");
+            toast.error(data.error || "Something went wrong while fetching holdings");
           }
 
         const data = await res.json();

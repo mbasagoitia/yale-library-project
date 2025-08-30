@@ -32,7 +32,7 @@ const catalogueNew = async (info) => {
     const data = text ? JSON.parse(text) : {};
 
     if (!res.ok) {
-      throw new Error(data.error || data.message || "Failed to create piece");
+      toast.error(data.error || data.message || "Failed to create piece");
     }
 
     return data;

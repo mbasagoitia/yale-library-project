@@ -37,7 +37,7 @@ const fetchReportData = async (reportType, options = {}) => {
     const data = text ? JSON.parse(text) : {};
 
     if (!res.ok) {
-      throw new Error(data.error || data.message || "Failed to fetch report data");
+      toast.error(data.error || data.message || "Failed to fetch report data");
     }
 
     return data;

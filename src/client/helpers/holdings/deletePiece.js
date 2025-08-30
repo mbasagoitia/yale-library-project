@@ -31,7 +31,7 @@ const deletePiece = async (id) => {
     const data = text ? JSON.parse(text) : {};
 
     if (!res.ok) {
-      throw new Error(data.error || data.message || "Failed to delete piece");
+      toast.error(data.error || data.message || "Failed to delete piece");
     }
 
     return data;

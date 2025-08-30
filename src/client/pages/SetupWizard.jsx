@@ -10,6 +10,7 @@ const SetupWizard = () => {
   const [defaultPath, setDefaultPath] = useState("");
   const [defaultPathExists, setDefaultPathExists] = useState(false);
   const [folderPath, setFolderPath] = useState("");
+  const [isScanning, setIsScanning] = useState(true);
 
   useEffect(() => {
     const checkDefaultPath = async () => {
@@ -23,6 +24,8 @@ const SetupWizard = () => {
     await window.api.filesystem.setBasePath(path);
     setDefaultPathExists(true)
     }
+    await new Promise(resolve => setTimeout(resolve, 5000));
+    setIsScanning(false);
   }
   checkDefaultPath();
 }, []);
@@ -68,32 +71,56 @@ const SetupWizard = () => {
       title: "Scan for Digital Catalogue Folder",
       content: (
         <>
-          <p className="mb-4">Scanning for folder at:</p>
-          <p className="font-monospace path-text mb-4">{defaultPath}</p>
-          {defaultPathExists ? (
-            <div className="flex items-center text-success mb-4">
-              <CheckCircle className="mr-2" /> Folder found!
-            </div>
-          ) : (
-            <div className="flex flex-col gap-2 mb-2">
-              <div className="flex items-center text-danger mb-2">
-                <XCircle className="mr-2" /> Folder not found.
+          {isScanning ? (
+            <>
+              <p className="mb-4">Scanning for folder at:</p>
+              <p className="font-monospace path-text mb-4">{defaultPath}</p>
+              <div className="flex items-center text-muted mb-4">
+                <span className="spinner-border spinner-border-sm mr-2" role="status" />
+                Scanning...
               </div>
-              <Button onClick={handleChooseFolder}>
-                <Folder className="mr-2 h-4 w-4" /> Choose Folder
-              </Button>
-            </div>
+            </>
+          ) : defaultPathExists ? (
+            <>
+              <p className="mb-4">Scanning for folder at:</p>
+              <p className="font-monospace path-text mb-4">{defaultPath}</p>
+              <div className="flex items-center text-success mb-4">
+                <CheckCircle className="mr-2" /> Folder found!
+              </div>
+            </>
+          ) : folderPath ? (
+            <>
+              <p className="mb-4">Path set to:</p>
+              <p className="font-monospace path-text mb-4">{folderPath}</p>
+              <div className="flex items-center text-success mb-4">
+                <CheckCircle className="mr-2" /> Folder path set!
+              </div>
+            </>
+          ) : (
+            <>
+              <p className="mb-4">Scanning for folder at:</p>
+              <p className="font-monospace path-text mb-4">{defaultPath}</p>
+              <div className="flex flex-col gap-2 mb-2">
+                <div className="flex items-center text-danger mb-2">
+                  <XCircle className="mr-2" /> Folder not found.
+                </div>
+                <Button onClick={handleChooseFolder}>
+                  <Folder className="mr-2 h-4 w-4" /> Choose Folder
+                </Button>
+              </div>
+            </>
           )}
         </>
       ),
-    },
+    },    
     {
       id: 3,
-      title: "Admin Access",
+      title: "Administrative Access",
       content: (
         <>
-          <p className="mb-4">Librarians with admin access can manage settings and add other admins.</p>
-          <p className="mb-4">If you need admin access, please contact your system administrator.</p>
+          <p className="mb-4">Librarians with admin access can manage this application and add other admins.</p>
+          <p className="mb-4">Please see the <strong>Admin Permissions</strong> page in the user manual.</p>
+          <p>You may also submit a request for admin access through <a href="#">this form</a>.</p>
         </>
       ),
     },
@@ -103,13 +130,16 @@ const SetupWizard = () => {
     <div className="setup-wizard max-w-xl mx-auto mt-10 d-flex flex-column justify-content-center align-items-center">
       <div className="setup-wizard-content">
         <Card className="p-6 shadow-lg rounded-2xl h-100">
-          <div className="mb-6">
+          <Card.Header>
+            <h5 className="mb-0">Setup Wizard</h5>
+          </Card.Header>
+          <Card.Body className="mb-6">
           <motion.h2
             key={steps[step - 1].title}
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-            className="text-xl font-bold mb-4"
+            className="text-xl font-bold mb-2"
           >
             {steps[step - 1].title}
           </motion.h2>
@@ -122,19 +152,18 @@ const SetupWizard = () => {
           >
             {steps[step - 1].content}
           </motion.div>
-          </div>
-
           <div className="flex justify-between mt-6">
             {step > 1 ? (
               <Button variant="outline" onClick={() => setStep(step - 1)}>Back</Button>
             ) : <div />}
 
             {step < steps.length ? (
-              <Button onClick={() => setStep(step + 1)}>Next</Button>
+              <Button disabled={step == 2 && !folderPath} onClick={() => setStep(step + 1)}>Next</Button>
             ) : (
-              <Button variant="default" onClick={handleFinishSetup}>Finish</Button>
+              <Button variant="primary" onClick={handleFinishSetup}>Finish</Button>
             )}
           </div>
+          </Card.Body>
         </Card>
       </div>
     </div>

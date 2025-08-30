@@ -138,8 +138,7 @@ const createFolder = async (basePath, folderName) => {
 
     return { success: true, path: fullPath };
   } catch (err) {
-    console.error("Error creating folder:", err);
-    throw err;
+    console.log("Error creating folder:", err);
   }
 }
 
@@ -162,7 +161,6 @@ const copyFile = async (filePath, targetDir) => {
     await fs.promises.copyFile(filePath, destPath);
     return { success: true, destPath };
   } catch (err) {
-    console.error("Copy error:", err);
     return { success: false, error: err.message };
   }
 }

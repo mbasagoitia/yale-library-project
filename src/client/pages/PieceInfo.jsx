@@ -17,7 +17,7 @@ const PieceInfo = () => {
     const fetchData = async () => {
       try {
         const res = await fetch(`http://localhost:5000/api/holdings-data/${id}`);
-        if (!res.ok) throw new Error('Network response was not ok');
+        if (!res.ok) toast.error('Network response was not ok');
         const data = await res.json();
         setData(data);
       } catch (error) {

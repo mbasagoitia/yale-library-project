@@ -32,7 +32,7 @@ const addComposer = async (info) => {
     const data = text ? JSON.parse(text) : {};
 
     if (!res.ok) {
-      throw new Error(data.error || data.message || "Failed to add composer");
+      toast.error(data.error || data.message || "Failed to add composer");
     }
 
     return data;

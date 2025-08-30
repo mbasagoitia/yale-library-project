@@ -32,17 +32,14 @@ const Home = () => {
 export default Home;
 
 // Create the PDF manual
-// Don't let setup wizard/warning close until base path is set  
-// Is the check catalogue folder actually working right?
-// Style the wizard and add logic for hiding/accepting new path etc.
+// Display somewhere in the app
 
 // Make sure the relative path is stored and it works no matter where the base path is! Try to make a copy of the root folder and rename it
 
-// Weird styling on pagination controls when on third to last page
-// Change console.errors and throw Errors to toast
+// What happens if someone logs in but is not an admin? Send message
 
 // Demo call numbers
-// Style manage digital catalogue
+// Style manage digital catalogue <---- START HERE
 
 // How to handle MySQL... bundle with app, docker, etc.?
 

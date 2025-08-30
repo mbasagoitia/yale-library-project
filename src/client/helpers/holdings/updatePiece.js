@@ -32,7 +32,7 @@ const updatePiece = async (info, id) => {
     const data = text ? JSON.parse(text) : {};
 
     if (!res.ok) {
-      throw new Error(data.error || data.message || "Failed to update piece");
+      toast.error(data.error || data.message || "Failed to update piece");
     }
 
     return data;
