@@ -1,4 +1,4 @@
-.setup-wizard {
+.missing-catalogue-notice {
     text-align: center;
     display: flex;
     justify-content: center;
@@ -8,23 +8,19 @@
     box-sizing: border-box;
 }
 
-.setup-wizard-content {
+.missing-catalogue-notice-content {
     width: 100%;
     max-width: 600px;
     flex-shrink: 1;
   }
 
-.setup-wizard .card-body {
-    margin: 1rem 0 2rem 0;
+.missing-catalogue-notice .card-body {
+    padding: 2rem 3rem;
     gap: 1rem;
-    width: 100%; 
+    width: 100%;
     max-height: 80vh;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-}
-
-.setup-wizard .path-text {
-    font-size: 12px;
 }

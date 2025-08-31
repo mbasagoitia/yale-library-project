@@ -41,7 +41,7 @@ export default Home;
 // Demo call numbers
 // Style manage digital catalogue <---- START HERE
 
-// How to handle MySQL... bundle with app, docker, etc.?
+// Keytar with .env
 
 // Consider all demo vs internal functions
 

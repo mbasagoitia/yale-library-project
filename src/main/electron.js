@@ -66,7 +66,7 @@ app.commandLine.appendSwitch("disable-gpu");
 
 app.whenReady().then(() => {
   // ⚠️ temporary reset — remove later
-  store.set("initialSetup", false);
+  // store.set("initialSetup", false);
 
   const DEV_HOST = process.env.HOST || 'localhost';
   const DEV_PORT = Number(process.env.PORT) || 3000;

@@ -33,7 +33,6 @@ function App() {
   const hasAttachedAuthListeners = useRef(false);
   // This is null, how do we make sure redux updates on login? <----- START HERE
   const token = useSelector((state) => state.auth.token);
-  console.log("token on initial load:", token);
 
   const [initialSetupComplete, setInitialSetupComplete] = useState(false);
   const [pathReset, setPathReset] = useState(false);
@@ -88,6 +87,11 @@ function App() {
     return <div>Loading...</div>;
   }
 
+  const handlePathReset = () => {
+    setPathReset(true);
+    cataloguePathExists = true;
+  }
+
   // Base layout wrapper
   function BaseLayout({ children }) {
     const intervalRef = useRef(null);
@@ -130,47 +134,39 @@ function App() {
   }
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="setup" element={<SetupWizard />} />
+<BrowserRouter>
+  {(!cataloguePathExists && !pathReset) ? (
+    <MissingCatalogueNotice onPathSet={handlePathReset} />
+  ) : (
+    <Routes>
+      <Route path="setup" element={<SetupWizard />} />
+      <Route
+        path="/"
+        element={
+          <BaseLayout>
+            <Home />
+          </BaseLayout>
+        }
+      />
+      <Route
+        element={
+          <BaseLayout>
+            <PaddedLayout />
+          </BaseLayout>
+        }
+      >
+        <Route path="/classification-guide" element={<ClassificationGuide />} />
+        <Route path="/manage-holdings" element={<ManageHoldings />} />
+        <Route path="/browse-holdings" element={<Browse />} />
+        <Route path="/settings" element={<Settings />} />
+        <Route path="/browse-holdings/:id" element={<PieceInfo />} />
+        <Route path="/digital-catalogue" element={<DigitalCatalogue />} />
+        <Route path="/reports" element={<Reports />} />
+      </Route>
+    </Routes>
+  )}
+</BrowserRouter>
 
-        {/* Home page */}
-        <Route
-          path="/"
-          element={
-            <BaseLayout>
-              <Home />
-            </BaseLayout>
-          }
-        />
-
-        {/* All other pages */}
-        <Route
-          element={
-            <BaseLayout>
-              <PaddedLayout />
-            </BaseLayout>
-          }
-        >
-          {/* If catalogue missing */}
-          {!cataloguePathExists && !pathReset && (
-            <Route
-              path="*"
-              element={
-                <MissingCatalogueNotice onPathSet={() => setPathReset(true)} />
-              }
-            />
-          )}
-          <Route path="/classification-guide" element={<ClassificationGuide />} />
-          <Route path="/manage-holdings" element={<ManageHoldings />} />
-          <Route path="/browse-holdings" element={<Browse />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/browse-holdings/:id" element={<PieceInfo />} />
-          <Route path="/digital-catalogue" element={<DigitalCatalogue />} />
-          <Route path="/reports" element={<Reports />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
   );
 }
 
