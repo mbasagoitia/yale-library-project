@@ -88,7 +88,7 @@ app.whenReady().then(() => {
     "worker-src 'self' blob: https://cdnjs.cloudflare.com",
   ].join('; ');
 
-  // ✅ Inject CSP, but skip Yale CAS & Duo (they need their own policies)
+  // Inject CSP but skip Yale CAS & Duo
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
     const url = details.url;
     if (

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useFolderContents } from "../../hooks/useFolderContents";
-import { handleOpenFile, handleOpenCurrentFolder } from "../../helpers/digital-catalogue/openContents";
+import { handleOpenFile } from "../../helpers/digital-catalogue/openContents";
 import PDFPreview from "./PDFPreview";
 import CreateFolderModal from "../general/CreateFolderModal";
 import { pdfjs } from "react-pdf";
@@ -10,7 +10,7 @@ import PaginationControls from "../general/PaginationControls";
 import Searchbar from "../search-filters/Searchbar";
 import { Trash2, MoveRight } from "lucide-react";
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const ManageDigitalCatalogue = ({ folderPath }) => {
   const { contents, currentPath, navigateTo, goUp } = useFolderContents(folderPath);
@@ -20,17 +20,17 @@ const ManageDigitalCatalogue = ({ folderPath }) => {
   const [showCFModal, setShowCFModal] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  // disable previous button if at base path
-  // Add guards when deleting folders
 
   const [moveDialogOpen, setMoveDialogOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [destinationPath, setDestinationPath] = useState("");
+  const [warningModal, setWarningModal] = useState(false);
 
-  const itemsPerPage = 10;
+  const itemsPerPage = 8;
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentItems = filteredItems.slice(startIndex, startIndex + itemsPerPage);
 
+  // 🔎 Refilter on contents/searchText change
   useEffect(() => {
     if (!searchText.trim()) {
       setFilteredItems(contents);
@@ -43,15 +43,13 @@ const ManageDigitalCatalogue = ({ folderPath }) => {
     }
   }, [contents, searchText]);
 
-  const handleCloseModal = () => setIsModalOpen(false);
-
   const handleNavigateUp = () => {
     if (selectedPDF) setSelectedPDF(null);
     goUp();
     setSearchText("");
   };
 
-  const handleClick = async (item) => {
+  const handleClick = (item) => {
     if (selectedPDF) setSelectedPDF(null);
 
     if (item.isDirectory) {
@@ -63,14 +61,20 @@ const ManageDigitalCatalogue = ({ folderPath }) => {
     }
   };
 
-  const handleSearch = (text) => {
-    setSearchText(text);
-  };
+  const handleDelete = async () => {
+    if (!selectedItem) return;
 
-  const handleDelete = async (item) => {
-    const fullPath = `${currentPath}/${item.name}`;
+    const fullPath = `${currentPath}/${selectedItem.name}`;
     await window.api.filesystem.deleteItem(fullPath);
-    navigateTo(currentPath); // refresh
+
+    // If this was the last item on the page, and we aren't already on page 1, move back
+    if (currentItems.length === 1 && currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+
+    navigateTo(currentPath);
+    setWarningModal(false);
+    setSelectedItem(null);
   };
 
   const handleMove = async () => {
@@ -103,43 +107,34 @@ const ManageDigitalCatalogue = ({ folderPath }) => {
     }
   };
 
-  // Instead, check if some are PDFs
   const hasSubfolders = contents.some((c) => c.isDirectory);
 
   return (
-    <Container fluid className="p-0 mt-4">
+    <Container fluid className="p-0 mt-4 manage-dc">
       {!currentPath ? (
-        <Searchbar
-          placeholder={"Search by name..."}
-          onSearch={handleSearch}
-        />
+        <Searchbar placeholder="Search by name..." onSearch={setSearchText} />
       ) : null}
 
       <div className="dc-nav-info my-4">
         <Button
           variant="outline-primary"
           onClick={handleNavigateUp}
-          disabled={!currentPath}
+          disabled={!currentPath || currentPath === folderPath}
           className="prev-folder-btn"
         >
           ← Previous
         </Button>
 
-        <Button
-          variant="outline-primary"
-          onClick={() => handleOpenCurrentFolder(folderPath, currentPath)}
-        >
-          Open Folder
-        </Button>
-
         {hasSubfolders ? (
-            <>
-              <Button onClick={() => setShowCFModal(true)} className="ms-2">+ Add Folder</Button>
-              <CreateFolderModal
-                show={showCFModal}
-                onClose={() => setShowCFModal(false)}
-                onCreate={handleCreateFolder}
-              />
+          <>
+            <Button onClick={() => setShowCFModal(true)} className="ms-2">
+              + Add Folder
+            </Button>
+            <CreateFolderModal
+              show={showCFModal}
+              onClose={() => setShowCFModal(false)}
+              onCreate={handleCreateFolder}
+            />
           </>
         ) : (
           <Button variant="success" className="ms-2" onClick={handleAddPDF}>
@@ -148,9 +143,9 @@ const ManageDigitalCatalogue = ({ folderPath }) => {
         )}
       </div>
 
-      <Row className="g-3">
+      <Row className="g-3 manage-dc-container">
         {currentItems.map((item) => (
-          <Col key={item.relativePath} xs={6} sm={4} md={3}>
+          <Col key={item.relativePath}>
             <Card
               className="text-center file-card h-100 position-relative"
               onClick={() => handleClick(item)}
@@ -160,33 +155,38 @@ const ManageDigitalCatalogue = ({ folderPath }) => {
                 <div style={{ fontSize: "3rem" }}>
                   {item.isDirectory ? "📁" : "📄"}
                 </div>
-                <Card.Text className="mt-2 small" title={item.name}>
+                <Card.Text className="mt-2" title={item.name}>
                   {item.name}
                 </Card.Text>
               </Card.Body>
 
-              {/* Hover actions */}
               <div
                 className="position-absolute top-0 end-0 m-2 d-flex gap-1"
                 style={{ opacity: 0.85 }}
               >
-                {item.name.endsWith(".pdf") ? (<Button
-                  size="sm"
-                  variant="light"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSelectedItem(item);
-                    setMoveDialogOpen(true);
-                  }}
-                >
-                <MoveRight size={14} />
-                </Button>) : null}
+                {item.name.endsWith(".pdf") && (
+                  <Button
+                    size="sm"
+                    variant="light"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setSelectedItem(item);
+                      setMoveDialogOpen(true);
+                    }}
+                  >
+                    <MoveRight size={14} />
+                  </Button>
+                )}
+
                 <Button
                   size="sm"
                   variant="danger"
                   onClick={(e) => {
+                    e.preventDefault();
                     e.stopPropagation();
-                    handleDelete(item);
+                    setSelectedItem(item);
+                    setWarningModal(true);
                   }}
                 >
                   <Trash2 size={14} />
@@ -211,7 +211,7 @@ const ManageDigitalCatalogue = ({ folderPath }) => {
       {/* PDF Preview */}
       <Modal
         show={isModalOpen}
-        header={"PDF Preview"}
+        header="PDF Preview"
         content={
           <div>
             <div className="d-flex justify-content-center mb-4">
@@ -226,7 +226,7 @@ const ManageDigitalCatalogue = ({ folderPath }) => {
             <PDFPreview filePath={selectedPDF} isVisible={isModalOpen} />
           </div>
         }
-        handleCloseModal={handleCloseModal}
+        handleCloseModal={() => setIsModalOpen(false)}
       />
 
       {/* Move To Modal */}
@@ -244,7 +244,7 @@ const ManageDigitalCatalogue = ({ folderPath }) => {
                 readOnly
                 placeholder="No folder selected"
               />
-              <Button variant="outline-secondary" onClick={openFolderPicker}>
+              <Button variant="outline-primary" onClick={openFolderPicker}>
                 Browse...
               </Button>
             </div>
@@ -261,6 +261,30 @@ const ManageDigitalCatalogue = ({ folderPath }) => {
             </Button>
           </div>
         }
+      />
+
+      {/* Delete confirmation modal */}
+      <Modal
+        show={warningModal}
+        header="Delete from Digital Catalogue"
+        content={
+          <div className="d-flex flex-column align-items-center">
+            <div className="text-center mb-4">
+              Are you sure you want to remove{" "}
+              <strong>{selectedItem?.name}</strong> from the catalogue?  
+              This action cannot be undone.
+            </div>
+            <div className="d-flex justify-content-end gap-2">
+              <Button variant="secondary" onClick={() => setWarningModal(false)}>
+                Cancel
+              </Button>
+              <Button variant="danger" onClick={handleDelete}>
+                Delete
+              </Button>
+            </div>
+          </div>
+        }
+        handleCloseModal={() => setWarningModal(false)}
       />
     </Container>
   );

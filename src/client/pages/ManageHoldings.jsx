@@ -77,7 +77,7 @@ const ManageHoldings = () => {
                             </Card>
                         </Col>
                         <Col xl={5}>
-                            <Card>
+                            <Card className="mb-4">
                                  <Card.Header>
                                     <h5 className="mb-0">Manage Digital Catalogue</h5>
                                 </Card.Header>

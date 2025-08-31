@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 
 const CreateFolderModal = ({ show, onClose, onCreate }) => {
-  const [folderName, setFolderName] = useState("New Folder");
+  const [folderName, setFolderName] = useState("");
 
   const handleSubmit = () => {
     if (folderName.trim()) {
@@ -13,8 +13,8 @@ const CreateFolderModal = ({ show, onClose, onCreate }) => {
 
   return (
     <Modal show={show} onHide={onClose} centered>
-      <Modal.Header closeButton>
-        <Modal.Title>Create Folder</Modal.Title>
+      <Modal.Header className="modal-header d-flex flex-column p-4" closeButton closeVariant="white">
+        <h1 className="order-2">Create Folder</h1>
       </Modal.Header>
       <Modal.Body>
         <Form.Control
@@ -26,7 +26,7 @@ const CreateFolderModal = ({ show, onClose, onCreate }) => {
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onClose}>Cancel</Button>
-        <Button variant="primary" onClick={handleSubmit}>Create</Button>
+        <Button variant="primary" onClick={handleSubmit} disabled={!folderName}>Create</Button>
       </Modal.Footer>
     </Modal>
   );
