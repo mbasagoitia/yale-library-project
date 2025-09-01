@@ -10,6 +10,8 @@
     container-type: inline-size;
 }
 
+/* Adjust? */
+
 @container (min-width: 500px) {
     .manage-dc .col {
       flex: 0 0 25%;

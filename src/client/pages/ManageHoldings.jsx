@@ -67,7 +67,7 @@ const ManageHoldings = () => {
                                     <h5 className="mb-0">Add New Piece</h5>
                                     ): 
                                     (
-                                    <h5 className="mb-0">Editing <em>{data?.title}</em> | <span onClick={handleSetNewAndClear}>Add New Piece</span></h5>
+                                    <h5 className="mb-0">Editing <em>{data?.title}</em> | <span onClick={handleSetNewAndClear} className="cursor-pointer text-underline">Add New Piece</span></h5>
                                     )}
 
                                 </Card.Header>

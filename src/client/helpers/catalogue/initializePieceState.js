@@ -3,7 +3,7 @@ import { findMediumById, findComposerById, findGenreById, findPublisherById } fr
 
 const initializePieceState = ({ initialData, resourceData, setMainInfo, setAdditionalInfo, setDataReady }) => {
     if (initialData && resourceData.mediumData.length) {
-  
+
       setMainInfo({
         title: initialData.title,
         identifierLabel: initialData.identifier_label,
@@ -13,7 +13,7 @@ const initializePieceState = ({ initialData, resourceData, setMainInfo, setAddit
         composer: findComposerById(resourceData.composerData, initialData.composer_id),
         genre: findGenreById(resourceData.speciesData, initialData.species_id),
         publisher: findPublisherById(resourceData.publisherData, initialData.publisher_id),
-        callNumber: splitString(initialData.call_number)
+        callNumber: splitString(initialData.call_number || "")
       });
   
       setAdditionalInfo({

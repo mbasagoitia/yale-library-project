@@ -136,6 +136,14 @@ body {
   align-items: center;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.text-underline {
+  text-decoration: underline;
+}
+
 
 @media (min-width: 576px) {
   .App-header {

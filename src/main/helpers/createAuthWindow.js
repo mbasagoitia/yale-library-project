@@ -68,8 +68,6 @@ function createAuthWindow(parentWindow, store, { casLoginUrl, serviceUrl, backen
         });
       });
       request.end();
-    } else {
-      console.log("[AUTH] Redirecting to:", url);
     }
   });
 

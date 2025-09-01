@@ -44,7 +44,7 @@ const handleFileHandlers = (ipcMain, store) => {
   ipcMain.handle('fs:getBasePath', () => {
     if (IS_DEMO) {
       const demoBase = resolveDemoBase();
-      return demoBase;
+      return { exists: true, basePath: demoBase }
     }
     return getBasePath(store);
   });

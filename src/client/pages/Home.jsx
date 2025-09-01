@@ -34,18 +34,15 @@ export default Home;
 // Create the PDF manual
 // Display somewhere in the app
 
-// What happens if someone logs in but is not an admin? Send message
-// Toast not working on login? <---- START HERE
-// Getting two toasts on automatic logout
+// Fix handle show call in handleShowCall helper <------ START HERE
 
 // Demo call numbers
+// Add more digital catalogue folders in demo
 
 // Keytar with .env
 
-// Consider all demo vs internal functions
-
 /* Testing:
-
+1. Make sure flow with Setup wizard/missing path notice works correctly on internal and demo
 1. Have someone else log in and try to do admin things
 2. Try all forms
 3. Try all backups
@@ -53,7 +50,7 @@ export default Home;
 5. All things involving base path; Check that things happen ONLY if base path is set--navigating to digital scans, etc.
 6. What if no call number is present?
 7. Test on different devices
-8. // Make sure the relative path is stored and it works no matter where the base path is! Try to make a copy of the root folder and rename it
+8. Make sure the relative path is stored and it works no matter where the base path is! Try to make a copy of the root folder and rename it
 
 */
 

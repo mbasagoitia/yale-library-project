@@ -31,24 +31,21 @@ const isDemo =
 function App() {
   const dispatch = useDispatch();
   const hasAttachedAuthListeners = useRef(false);
-  // This is null, how do we make sure redux updates on login? <----- START HERE
   const token = useSelector((state) => state.auth.token);
-
-  const [initialSetupComplete, setInitialSetupComplete] = useState(false);
   const [pathReset, setPathReset] = useState(false);
-
-  // Initial setup
-  useEffect(() => {
-    const result = window.api.setup.getInitialSetup();
-    setInitialSetupComplete(result);
-  }, []);
 
   const { exists: cataloguePathExists } = useFolderCheck();
 
   // Demo login shortcut
   useEffect(() => {
     if (!isDemo) return;
-    dispatch(login({ netid: 'demo', isAdmin: true, token: null }));
+  
+    const shown = localStorage.getItem("demoToastShown");
+    if (!shown) {
+      dispatch(login({ netid: 'demo', isAdmin: true, token: null }));
+      toast.success("Welcome, demo user!");
+      localStorage.setItem("demoToastShown", "true");
+    }
   }, [dispatch]);
 
   // Attach auth listeners
@@ -63,6 +60,9 @@ function App() {
       }
       dispatch(login({ netid: data.netid, isAdmin: data.isAdmin, token: data.token }));
       toast.success(`Welcome back, ${data.netid}!`);
+      if (!data?.isAdmin) {
+        alert("You successfully logged in with Yale credentials, but you do not have administrative access on this app. Please see the user manual if you need admin privileges.");
+      }
     };
 
     const handleAuthFailure = (_event, data) => {
@@ -103,15 +103,6 @@ function App() {
         <div className="hero"></div>
         <Navigation />
         {children}
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop
-          closeOnClick
-          pauseOnHover
-          draggable
-        />
         {!isDemo && token && (
           <TokenExpiryHandler
             token={token}
@@ -135,11 +126,20 @@ function App() {
 
   return (
 <BrowserRouter>
-  {(!cataloguePathExists && !pathReset) ? (
+  <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        pauseOnHover
+        draggable 
+      />
+  {(!isDemo && !cataloguePathExists && !pathReset) ? (
     <MissingCatalogueNotice onPathSet={handlePathReset} />
   ) : (
     <Routes>
-      <Route path="setup" element={<SetupWizard />} />
+      {!isDemo && <Route path="setup" element={<SetupWizard />} />}
       <Route
         path="/"
         element={
