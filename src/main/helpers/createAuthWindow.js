@@ -62,7 +62,7 @@ function createAuthWindow(parentWindow, store, { casLoginUrl, serviceUrl, backen
               parentWindow.webContents.send("auth-failed");
             }
           } catch (err) {
-            console.log("[AUTH] Error parsing backend response:", err, responseBody);
+            console.log(err);
           }
           win.close();
         });

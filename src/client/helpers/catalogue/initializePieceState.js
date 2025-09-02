@@ -3,12 +3,13 @@ import { findMediumById, findComposerById, findGenreById, findPublisherById } fr
 
 const initializePieceState = ({ initialData, resourceData, setMainInfo, setAdditionalInfo, setDataReady }) => {
     if (initialData && resourceData.mediumData.length) {
+      // console.log("initial data", initialData);
 
       setMainInfo({
         title: initialData.title,
-        identifierLabel: initialData.identifier_label,
-        identifierValue: initialData.identifier_value,
-        number: initialData.number,
+        identifierLabel: initialData.identifier_label || "",
+        identifierValue: initialData.identifier_value || "",
+        number: initialData.number || "",
         medium: findMediumById(resourceData.mediumData, initialData.medium_id),
         composer: findComposerById(resourceData.composerData, initialData.composer_id),
         genre: findGenreById(resourceData.speciesData, initialData.species_id),

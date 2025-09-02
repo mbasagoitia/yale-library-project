@@ -1,6 +1,5 @@
 const clearForm = (setShowCall, setMainInfo, setAdditionalInfo, setMediumResetKey, setFormErrors) => {
   setShowCall(false);
-
   // Reset Main Info
   setMainInfo({
     title: "",

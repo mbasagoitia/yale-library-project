@@ -1,5 +1,4 @@
 const generateCallNum = (info) => {
-  console.log("info", info);
     const { medium, identifierLabel, identifierValue, number, composer, genre, publisher } = info;
       let speciesTitle = ""
       if (genre) {

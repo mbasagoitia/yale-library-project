@@ -27,6 +27,7 @@ const processAndSubmitForm = async (mainInfo, setMainInfo, additionalInfo, setAd
       }
     } catch (error) {
       // Handle any errors during the submission process
+      console.error(error);
       return { success: false, message: `Error: ${error.message}` };
     }
   };

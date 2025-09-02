@@ -34,9 +34,7 @@ export default Home;
 // Create the PDF manual
 // Display somewhere in the app
 
-// Fix handle show call in handleShowCall helper <------ START HERE
-
-// Demo call numbers
+// Demo data needs to be created better; all should have call numbers
 // Add more digital catalogue folders in demo
 
 // Keytar with .env

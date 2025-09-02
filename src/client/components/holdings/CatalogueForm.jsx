@@ -110,6 +110,11 @@ const CatalogueForm = forwardRef((props, ref) => {
       }
   };
 
+  const handleShow = (e) => {
+    e.preventDefault();
+    handleShowCall(mainInfo, setMainInfo, setShowCall, setFormErrors);
+  };
+
   // Warn the user that they have clicked the delete button
   const [warningModal, setWarningModal] = useState(false);
 
@@ -157,7 +162,7 @@ const CatalogueForm = forwardRef((props, ref) => {
           <>
             <MainInfo mainInfo={mainInfo} setMainInfo={setMainInfo} formErrors={formErrors} mediumResetKey={mediumResetKey} setMediumResetKey={setMediumResetKey} />
             <div className="d-flex justify-content-center">
-              <Button onClick={(e) => handleShowCall(mainInfo, setMainInfo, setShowCall, setFormErrors)} className="btn btn-primary my-2">Generate Call Number</Button>
+              <Button onClick={(e) => handleShow(e)} className="btn btn-primary my-2">Generate Call Number</Button>
             </div>
             {showCall && <CallNumberDisplay callNumber={mainInfo.callNumber || []} />}
           </>

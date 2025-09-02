@@ -3,6 +3,7 @@ import { useMode } from "../../contexts/ModeContext.js";
 import { useNavigate } from 'react-router-dom';
 
 const PieceListItem = ({ data, behavior }) => {
+    // console.log(data);            
     // Data comes in as a single piece with the following properties,
     // some of which are ids for processing purposes and others are titles for display purposes:
 
@@ -27,7 +28,7 @@ const PieceListItem = ({ data, behavior }) => {
     }
 
     // Sets initial piece data on manage holdings page
-    const { setMode, setData, setMediumResetKey } = useMode();
+    const { setMode, setData, setMediumResetKey, catalogueFormRef } = useMode();
 
     // Navigates to single piece page
     const navigate = useNavigate();
@@ -37,6 +38,7 @@ const PieceListItem = ({ data, behavior }) => {
             className="mb-1 piece-list-item"
             onClick={() => {
                 if (behavior === "edit") {
+                    catalogueFormRef.current?.resetForm();
                     // Trigger reset of the medium dropdown component
                     setMediumResetKey(prev => prev + 1)
                     // Set initial data from this component

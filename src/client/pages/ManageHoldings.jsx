@@ -55,7 +55,7 @@ const ManageHoldings = () => {
     const [mediumResetKey, setMediumResetKey] = useState(0);
 
     return (
-        <ModeContext.Provider value={{ mode, setMode, setData, mediumResetKey, setMediumResetKey }}>
+        <ModeContext.Provider value={{ mode, setMode, setData, mediumResetKey, setMediumResetKey, catalogueFormRef }}>
             <div className="manage-holdings">
                 <h1>Manage Holdings</h1>
                 <Container fluid className="mt-4 m-0 p-0">

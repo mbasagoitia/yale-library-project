@@ -10,7 +10,7 @@ const MissingCatalogueNotice = ({ onPathSet }) => {
   const handleSelectFolder = async () => {
     try {
       const folderPath = await window.api.filesystem.chooseFolder();
-      console.log("path", folderPath);
+      // console.log("path", folderPath);
       if (folderPath) {
         await window.api.filesystem.setBasePath(folderPath);
         // maybe show a success message and then after a few seconds close the notice
