@@ -63,7 +63,7 @@ const ReportForm = () => {
           </Dropdown>
         </Form.Group>
 
-        {reportType === 'performance-history' && (
+        {reportType.type === 'performance-history' && (
           <Form.Group controlId="years" className="mb-3">
             <Form.Label>Number of Years</Form.Label>
             <Form.Control

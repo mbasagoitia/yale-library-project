@@ -70,9 +70,10 @@ const DigitalCatalogueFolders = ({ folderPath }) => {
       <div className="dc-nav-info my-4">
 
           <Button
+
             variant="outline-primary"
             onClick={handleNavigate}
-            disabled={!currentPath}
+            disabled={!currentPath || currentPath === folderPath}
             className="prev-folder-btn"
           >
           ← Previous
@@ -80,7 +81,7 @@ const DigitalCatalogueFolders = ({ folderPath }) => {
 
           <Button
             variant="outline-primary" 
-            onClick={() => handleOpenCurrentFolder(folderPath, currentPath)}
+            onClick={() => handleOpenCurrentFolder(currentPath)}
           >
             Open Folder
           </Button>

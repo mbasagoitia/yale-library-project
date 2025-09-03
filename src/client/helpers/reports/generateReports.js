@@ -14,8 +14,8 @@ const formatValue = (value) => {
 const generateReport = (data) => {
   const { reportType, holdings } = data;
 
-  if (!holdings || holdings.length === 0) {
-    toast.error('No holdings data provided.');
+  if (holdings.length === 0) {
+    toast.error("No results for number of years selected");
     return;
   }
 

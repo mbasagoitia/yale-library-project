@@ -5,9 +5,8 @@ const handleOpenFile = async (selectedPDF) => {
     if (!result.success) toast.error(`Could not open file: ${result.error}`);
 };
 
-const handleOpenCurrentFolder = async (basePath, currentPath) => {
-    const fullPath = await window.api.filesystem.getFullPath(basePath, currentPath);
-    const result = await window.api.filesystem.openFolder(fullPath);
+const handleOpenCurrentFolder = async (currentPath) => {
+    const result = await window.api.filesystem.openFolder(currentPath);
     if (!result.success) toast.error(`Could not open folder: ${result.error}`);
 };
 

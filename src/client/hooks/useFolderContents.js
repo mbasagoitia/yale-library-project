@@ -31,7 +31,7 @@ export const useFolderContents = (initialPath) => {
     const normalized = currentPath.replace(/\\/g, "/");
     const parts = normalized.split("/").filter(Boolean);
 
-    if (parts.length === 0) return; // already at root
+    if (parts.length === 0) return;
     parts.pop();
 
     // Reconstruct with leading slash (for absolute paths)

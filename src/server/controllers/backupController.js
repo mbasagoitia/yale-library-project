@@ -4,7 +4,7 @@ const { exportReadableBackup, exportMySQLDump } = require("../helpers/backupHelp
 const readableBackup = async (req, res, next) => {
   try {
     const db = req.db;
-    const filePath = req.query.filePath;
+    let filePath = req.query.filePath;
 
     if (!filePath) {
       const error = new Error("Missing filePath.");
