@@ -80,12 +80,10 @@ app.whenReady().then(() => {
     "default-src 'self'",
     "base-uri 'self'",
     "object-src 'none'",
-    "script-src 'self' https://cdnjs.cloudflare.com",
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: blob:",
     "font-src 'self' data:",
     `connect-src 'self' ${DEV_UI} ${DEV_WS} ${DEV_API}`,
-    "worker-src 'self' blob: https://cdnjs.cloudflare.com",
   ].join('; ');
 
   // Inject CSP but skip Yale CAS & Duo

@@ -38,11 +38,8 @@ export default Home;
 // Fix reports--giving ids instead of titles
 
 // Keytar with .env
-// pdfjs worker only works sometimes; handle without throwing error? 
-// Make names of backups/reports better
 // Change ui when editng piece (grey out edit interface); rearrange order on small screen size? This could be more clear, put next to add new section
 // Sort composers in digital catalogue alphabetically
-// How to sort in regular browse holdings? Probably fine by date added
 
 /* Testing:
 

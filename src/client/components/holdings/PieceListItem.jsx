@@ -28,7 +28,7 @@ const PieceListItem = ({ data, behavior }) => {
     }
 
     // Sets initial piece data on manage holdings page
-    const { setMode, setData, setMediumResetKey, catalogueFormRef } = useMode();
+    const { setMode, setData, setMediumResetKey, catalogueFormRef, windowWidth } = useMode();
 
     // Navigates to single piece page
     const navigate = useNavigate();
@@ -45,6 +45,11 @@ const PieceListItem = ({ data, behavior }) => {
                     setData(data);
                     // If a user clicks on this item, the mode should be set to edit instead of new
                     setMode("edit");
+                    // Scroll if on smaller screen size
+                    if (windowWidth < 1200 && catalogueFormRef.current) {
+                        // Not working; start here <-----------
+                        catalogueFormRef.current.scrollIntoView({ behavior: "smooth" });
+                      }
                 } else {
                 navigate(`/browse-holdings/${id}`);
                 }

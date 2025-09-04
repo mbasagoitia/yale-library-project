@@ -3,14 +3,14 @@ import useFolderContents from "../../hooks/useFolderContents";
 import { handleOpenFile } from "../../helpers/digital-catalogue/openContents";
 import PDFPreview from "./PDFPreview";
 import CreateFolderModal from "../general/CreateFolderModal";
-import { pdfjs } from "react-pdf";
 import { Container, Row, Col, Button, Card } from "react-bootstrap";
 import Modal from "../general/Modal";
 import PaginationControls from "../general/PaginationControls";
 import Searchbar from "../search-filters/Searchbar";
 import { Trash2, MoveRight } from "lucide-react";
+import { pdfjs } from "react-pdf";
 
-pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+pdfjs.GlobalWorkerOptions.workerSrc = `${window.location.origin}/pdf.worker.min.js`;
 
 const ManageDigitalCatalogue = ({ folderPath }) => {
   const { contents, currentPath, navigateTo, goUp } = useFolderContents(folderPath);

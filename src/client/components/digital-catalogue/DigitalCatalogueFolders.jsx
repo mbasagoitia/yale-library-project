@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import useFolderContents from '../../hooks/useFolderContents';
 import { handleOpenCurrentFolder } from "../../helpers/digital-catalogue/openContents";
 import PDFPreview from './PDFPreview';
-import { pdfjs } from 'react-pdf';
 import { Container, Row, Col, Button, Card } from 'react-bootstrap';
 import Modal from '../general/Modal';
 import PaginationControls from '../general/PaginationControls';
 import Searchbar from '../search-filters/Searchbar';
+import { pdfjs } from "react-pdf";
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+pdfjs.GlobalWorkerOptions.workerSrc = `${window.location.origin}/pdf.worker.min.js`;
 
 const DigitalCatalogueFolders = ({ folderPath }) => {
 

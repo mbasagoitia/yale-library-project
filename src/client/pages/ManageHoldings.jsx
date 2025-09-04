@@ -26,6 +26,18 @@ const ManageHoldings = () => {
     // Fetch base path to pass to manage digital catalogue component
     const [basePath, setBasePath] = useState("");
 
+    const [windowWidth, setWindowWidth] = useState(() => window.innerWidth);
+
+    // Listen for resize so that scroll behavior works
+    useEffect(() => {
+        const updateWidth = () => {
+            setWindowWidth(window.innerWidth);
+        };
+
+        window.addEventListener('resize', updateWidth);
+        return () => window.removeEventListener('resize', updateWidth);
+      }, []);
+
     useEffect(() => {
         const fetchPath = async () => {
             if (window.api.filesystem?.getBasePath) {
@@ -55,7 +67,7 @@ const ManageHoldings = () => {
     const [mediumResetKey, setMediumResetKey] = useState(0);
 
     return (
-        <ModeContext.Provider value={{ mode, setMode, setData, mediumResetKey, setMediumResetKey, catalogueFormRef }}>
+        <ModeContext.Provider value={{ mode, setMode, setData, mediumResetKey, setMediumResetKey, catalogueFormRef, windowWidth }}>
             <div className="manage-holdings">
                 <h1>Manage Holdings</h1>
                 <Container fluid className="mt-4 m-0 p-0">
@@ -77,25 +89,25 @@ const ManageHoldings = () => {
                             </Card>
                         </Col>
                         <Col xl={5}>
-                            <Card className="mb-4">
-                                 <Card.Header>
-                                    <h5 className="mb-0">Manage Digital Catalogue</h5>
-                                </Card.Header>
-                                <Card.Body>
-                                    <ManageDigitalCatalogue folderPath={basePath} />
-                                </Card.Body>
-                            </Card>
-                            <Card>
+                        <Card className="mb-4">
+                            <Card.Header>
+                                <h5 className="mb-0">Edit Existing Holdings</h5>
+                            </Card.Header>
+                            <Card.Body>
+                                <HoldingsFilter setShowResults={setShowResults}/>
+                                <hr />
+                                {showResults ? <h2 className="mt-2 mb-3">Results: {filteredItems.length}</h2> : null}
+                                <HoldingsList filteredItems={filteredItems} behavior={"edit"} />
+                            </Card.Body>
+                        </Card>
+                        <Card>
                                 <Card.Header>
-                                    <h5 className="mb-0">Edit Existing Holdings</h5>
-                                </Card.Header>
-                                <Card.Body>
-                                    <HoldingsFilter setShowResults={setShowResults}/>
-                                    <hr />
-                                    {showResults ? <h2 className="mt-2 mb-3">Results: {filteredItems.length}</h2> : null}
-                                    <HoldingsList filteredItems={filteredItems} behavior={"edit"} />
-                                </Card.Body>
-                            </Card>
+                                <h5 className="mb-0">Manage Digital Catalogue</h5>
+                            </Card.Header>
+                            <Card.Body>
+                                <ManageDigitalCatalogue folderPath={basePath} />
+                            </Card.Body>
+                        </Card>
                         </Col>
                     </Row>
                 </Container>

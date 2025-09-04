@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
-import { Document, Page, pdfjs } from 'react-pdf';
+import { Document, Page } from 'react-pdf';
 import { Button } from 'react-bootstrap';
 import { handleOpenFile } from '../../helpers/digital-catalogue/openContents';
 import { toast } from 'react-toastify';
+import { pdfjs } from "react-pdf";
 
-// Start here
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+pdfjs.GlobalWorkerOptions.workerSrc = `${window.location.origin}/pdf.worker.min.js`;
 
 function PDFPreview({ filePath }) {
 
@@ -52,7 +52,10 @@ function PDFPreview({ filePath }) {
       <Document
         file={pdfData}
         // onLoadSuccess={({ numPages }) => console.log('PDF loaded, pages:', numPages)}
-        onLoadError={(err) => toast.error('PDF load error:', err)}
+        onLoadError={(err) => {
+          toast.error('PDF load error:', err);
+          // console.log(err);
+        }}
         onSourceError={(err) => toast.error('PDF source error:', err)}>
         <Page pageNumber={1} width={containerWidth} />
       </Document>

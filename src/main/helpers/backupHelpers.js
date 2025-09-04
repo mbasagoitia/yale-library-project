@@ -16,7 +16,7 @@ const createReadableBackup = async (store) => {
   
   const { filePath, canceled } = await dialog.showSaveDialog({
     title: "Save CSV Backup",
-    defaultPath: `readable_backup_${timestamp}.csv`,
+    defaultPath: `library_backup_${timestamp}.csv`,
     filters: [{ name: "CSV File", extensions: ["csv"] }],
   });
 
