@@ -13,7 +13,7 @@ const DigitalCatalogue = () => {
     // Base path stored in Electron will be default folder
     useEffect(() => {
       const fetchBasePath = async () => {
-        if (window.api?.filesystem.getBasePath) {
+        if (window.api?.filesystem?.getBasePath) {
           const { exists, basePath } = await window.api.filesystem.getBasePath();
           if (exists) {
             setBasePath(basePath);

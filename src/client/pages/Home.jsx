@@ -42,7 +42,7 @@ export default Home;
 // Make names of backups/reports better
 // Change ui when editng piece (grey out edit interface); rearrange order on small screen size? This could be more clear, put next to add new section
 // Sort composers in digital catalogue alphabetically
-// How to sort in regular browse holdings?
+// How to sort in regular browse holdings? Probably fine by date added
 
 /* Testing:
 

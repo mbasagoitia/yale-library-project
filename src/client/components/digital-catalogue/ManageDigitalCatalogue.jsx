@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useFolderContents } from "../../hooks/useFolderContents";
+import useFolderContents from "../../hooks/useFolderContents";
 import { handleOpenFile } from "../../helpers/digital-catalogue/openContents";
 import PDFPreview from "./PDFPreview";
 import CreateFolderModal from "../general/CreateFolderModal";

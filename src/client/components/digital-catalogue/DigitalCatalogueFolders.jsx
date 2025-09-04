@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useFolderContents } from '../../hooks/useFolderContents';
-import { handleOpenFile, handleOpenCurrentFolder } from "../../helpers/digital-catalogue/openContents";
+import useFolderContents from '../../hooks/useFolderContents';
+import { handleOpenCurrentFolder } from "../../helpers/digital-catalogue/openContents";
 import PDFPreview from './PDFPreview';
 import { pdfjs } from 'react-pdf';
 import { Container, Row, Col, Button, Card } from 'react-bootstrap';
@@ -124,12 +124,7 @@ const DigitalCatalogueFolders = ({ folderPath }) => {
         header={"PDF Preview"}
         content={
           <div>
-            <div className="d-flex justify-content-center mb-4">
-              <Button variant="primary" className="mt-2" onClick={() => handleOpenFile(selectedPDF)}>
-                Open File
-              </Button>
-            </div>
-            <PDFPreview filePath={selectedPDF} isVisible={isModalOpen} />
+            <PDFPreview filePath={selectedPDF} />
           </div>
         }
         handleCloseModal={handleCloseModal}
