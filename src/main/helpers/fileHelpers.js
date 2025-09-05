@@ -101,8 +101,9 @@ const handleListDirectory = async (store, filePath = '') => {
   }
 
   const entries = await fs.promises.readdir(filePath, { withFileTypes: true });
+  const entries_alphabetical = entries.sort((a, b) => a.name.localeCompare(b.name));
 
-  return entries.map((entry) => ({
+  return entries_alphabetical.map((entry) => ({
     name: entry.name,
     isDirectory: entry.isDirectory(),
     relativePath: path.join(filePath, entry.name),

@@ -26,18 +26,6 @@ const ManageHoldings = () => {
     // Fetch base path to pass to manage digital catalogue component
     const [basePath, setBasePath] = useState("");
 
-    const [windowWidth, setWindowWidth] = useState(() => window.innerWidth);
-
-    // Listen for resize so that scroll behavior works
-    useEffect(() => {
-        const updateWidth = () => {
-            setWindowWidth(window.innerWidth);
-        };
-
-        window.addEventListener('resize', updateWidth);
-        return () => window.removeEventListener('resize', updateWidth);
-      }, []);
-
     useEffect(() => {
         const fetchPath = async () => {
             if (window.api.filesystem?.getBasePath) {
@@ -67,7 +55,7 @@ const ManageHoldings = () => {
     const [mediumResetKey, setMediumResetKey] = useState(0);
 
     return (
-        <ModeContext.Provider value={{ mode, setMode, setData, mediumResetKey, setMediumResetKey, catalogueFormRef, windowWidth }}>
+        <ModeContext.Provider value={{ mode, setMode, setData, mediumResetKey, setMediumResetKey, catalogueFormRef }}>
             <div className="manage-holdings">
                 <h1>Manage Holdings</h1>
                 <Container fluid className="mt-4 m-0 p-0">

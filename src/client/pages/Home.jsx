@@ -31,15 +31,14 @@ const Home = () => {
 
 export default Home;
 
-// Create the PDF manual
-// Display somewhere in the app
+
+// Create the PDF manual; bundle real one with internal and fake one with demo
 
 // Demo data needs to be created better; all should have call numbers
 // Fix reports--giving ids instead of titles
 
 // Keytar with .env
-// Change ui when editng piece (grey out edit interface); rearrange order on small screen size? This could be more clear, put next to add new section
-// Sort composers in digital catalogue alphabetically
+// Transfer actual digital catalogue here for testing
 
 /* Testing:
 

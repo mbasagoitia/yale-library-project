@@ -1,4 +1,4 @@
-import { useState, useEffect, useImperativeHandle, forwardRef, } from "react";
+import { useState, useEffect, useImperativeHandle, forwardRef, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from 'react-toastify';
 import { Form, FormGroup, Row, Button } from "react-bootstrap";
@@ -48,9 +48,16 @@ const CatalogueForm = forwardRef((props, ref) => {
   useScrollOnFormErrors(formErrors);
 
   // Define a resetForm function that can be called from parent component
+  const divRef = useRef(null);
+
   useImperativeHandle(ref, () => ({
-    resetForm () {
+    // Expose resetForm
+    resetForm() {
       clearForm(setShowCall, setMainInfo, setAdditionalInfo, setMediumResetKey, setFormErrors);
+    },
+    // Expose scrollIntoView
+    scrollIntoView(options) {
+      divRef.current?.scrollIntoView(options);
     }
   }));
 
@@ -156,7 +163,7 @@ const CatalogueForm = forwardRef((props, ref) => {
   }
 
   return (
-    <div className="catalogueForm">
+    <div className="catalogueForm" ref={divRef}>
       <Form onSubmit={(e) => onSubmit(e)}>
         {((mode === "new") || (mode === "edit" && initialData && dataReady)) && (
           <>
