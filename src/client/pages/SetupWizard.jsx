@@ -119,8 +119,7 @@ const SetupWizard = () => {
       content: (
         <>
           <p className="mb-4">Librarians with admin access can manage this application and add other admins.</p>
-          <p className="mb-4">Please see the <strong>Admin Permissions</strong> page in the user manual.</p>
-          <p>You may also submit a request for admin access through <a href="#">this form</a>.</p>
+          <p className="mb-4">Please see the <strong>Librarian Admin Permissions</strong> section in the user manual.</p>
         </>
       ),
     },

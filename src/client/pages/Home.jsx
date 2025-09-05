@@ -36,6 +36,8 @@ export default Home;
 
 // Demo data needs to be created better; all should have call numbers
 // Fix reports--giving ids instead of titles
+// Fix backup--remove timestamp from acquisition date and date last performed
+// Don't let user click next until scan is over in setup wizard!
 
 // Keytar with .env
 // Transfer actual digital catalogue here for testing

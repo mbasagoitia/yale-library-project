@@ -49,8 +49,9 @@ const handleFileHandlers = (ipcMain, store) => {
     return getBasePath(store);
   });
 
-  ipcMain.handle('fs:setBasePath', (_, newPath) => {
-    return setBasePath(store, newPath);
+  ipcMain.handle('fs:setBasePath', (event, newPath) => {
+    setBasePath(store, newPath);
+    event.sender.send("base-path-updated", newPath);
   });
 
   ipcMain.handle('fs:chooseFolder', (_, defaultPath) => {

@@ -44,7 +44,6 @@ const getBasePath = (store) => {
 const setBasePath = async (store, newPath) => {
     const normalizedPath = newPath.replace(/\\/g, '/');
     store.set("basePath", normalizedPath);
-  
     return null;
 }
 

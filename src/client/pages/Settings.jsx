@@ -1,14 +1,37 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from 'react-toastify';
 import { Container, Form, Button, Card, Row, Col } from "react-bootstrap";
+import FolderSelectButton from "../components/digital-catalogue/FolderSelectButton";
 import addNewAdmin from "../helpers/auth/addNewAdmin";
 import { handleCreateCSVBackup, handleBackupScans } from "../helpers/backups/createBackups";
 import "../../assets/styles/pages/SettingsPage.css";
 
 const Settings = () => {
   const [adminInfo, setAdminInfo] = useState({ name: "", netid: "" });
+  const [basePath, setBasePath] = useState("");
 
-  // const isDemo = process.env.REACT_APP_APP_MODE === 'demo' || process.env.REACT_APP_CAS_ENABLED === 'false';
+  useEffect(() => {
+    const fetchPath = async () => {
+        if (window.api.filesystem?.getBasePath) {
+            const { exists, basePath } = await window.api.filesystem.getBasePath();
+            if (exists) {
+                setBasePath(basePath);
+            }
+        }
+    }
+    fetchPath();
+    
+    const handleBasePathUpdate = (_event, newPath) => {
+      setBasePath(newPath);
+    };
+
+    window.api?.events.on("base-path-updated", handleBasePathUpdate);
+
+    return () => {
+      window.api?.events.remove("base-path-updated", handleBasePathUpdate);
+    };
+
+  }, []);
 
   const handleAddAdmin = async (e) => {
     e.preventDefault();
@@ -28,6 +51,18 @@ const Settings = () => {
 
   return (
     <Container className="settings">
+      <Row>
+        <Col>
+          <h1 className="mb-4">Settings</h1>
+          <h2>Set Digital Catalogue Folder</h2>
+          <Card className="mb-4">
+            <Card.Body className="choose-catalogue-folder-container">
+              <FolderSelectButton />
+              <div className="mt-2">{basePath ? `Current Path: ${basePath}` : "No base path set"}</div>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
       <Row>
         <Col lg={6}>
           <h2>Add New Admin</h2>
@@ -72,19 +107,18 @@ const Settings = () => {
               <Card.Body>
                 <p><strong>Export as CSV</strong></p>
                 <Card.Text>
-                  Download your library data in a simple spreadsheet format. Do this if you want to view or edit your collection in Excel, Google Sheets, or another program. Great for long-term access or migrating to a different system.
+                Download your library data in a simple spreadsheet format. Do this if you want to view or edit your collection in Excel, Google Sheets, or another program. Great for long-term access or migrating to a different system.
                 </Card.Text>
                 <Button variant="primary" onClick={handleCreateCSVBackup}>
                   Export as CSV
                 </Button>
               </Card.Body>
               <Card.Body>
-                <p><strong>Digital Catalogue Backup</strong></p>
-                <Card.Text>
-                Create and compress a backup of the digital library catalogue. Store in Google Drive or another safe location.
-                </Card.Text>
-                <div>
-                  <Button variant="primary" onClick={handleBackupScans}>
+                <div className="holdings-buttons-container">
+                  <Card.Text>
+                  Create and compress a backup of the digital library catalogue. Store in Google Drive or another safe location.
+                  </Card.Text>
+                  <Button variant="primary" onClick={handleBackupScans} disabled={!basePath}>
                       Export Digital Catalogue
                   </Button>
                 </div>
@@ -98,3 +132,8 @@ const Settings = () => {
 };
 
 export default Settings;
+
+
+
+
+

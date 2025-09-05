@@ -12,19 +12,19 @@ const createReadableBackup = async (store) => {
     return { success: false, message: "You must be logged in to create a CSV backup." };
   }
 
-  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-  
-  const { filePath, canceled } = await dialog.showSaveDialog({
-    title: "Save CSV Backup",
-    defaultPath: `library_backup_${timestamp}.csv`,
-    filters: [{ name: "CSV File", extensions: ["csv"] }],
-  });
-
-  if (canceled || !filePath) {
-    return { success: false, message: "Backup cancelled by user." };
+  const baseFolder = store.get("basePath");
+  if (!baseFolder) {
+    return { success: false, message: "No base path set in settings." };
   }
 
   try {
+    // Ensure backups folder exists next to base path
+    const backupFolder = path.join(baseFolder, '..', 'backups');
+    await fs.ensureDir(backupFolder);
+
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const filePath = path.join(backupFolder, `library_backup_${timestamp}.csv`);
+
     const backupUrl = `http://localhost:5000/api/backup/readable?filePath=${encodeURIComponent(filePath)}`;
     const res = await fetch(backupUrl, {
       headers: { Authorization: `Bearer ${token}` },
@@ -34,6 +34,7 @@ const createReadableBackup = async (store) => {
       return { success: false, message: `Backup failed: ${res.statusText}` };
     }
 
+    // Save the streamed CSV directly into the backups folder
     await streamPipeline(res.body, fs.createWriteStream(filePath));
 
     return { success: true, filePath };
