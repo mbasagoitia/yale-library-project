@@ -58,7 +58,7 @@ const Settings = () => {
           <Card className="mb-4">
             <Card.Body className="choose-catalogue-folder-container">
               <FolderSelectButton />
-              <div className="mt-2">{basePath ? `Current Path: ${basePath}` : "No base path set"}</div>
+              <div className="mt-lg-1 mt-3">{basePath ? `Current Path: ${basePath}` : "No base path set"}</div>
             </Card.Body>
           </Card>
         </Col>

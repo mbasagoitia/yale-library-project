@@ -13,22 +13,24 @@ const SetupWizard = () => {
   const [isScanning, setIsScanning] = useState(true);
 
   useEffect(() => {
-    const checkDefaultPath = async () => {
-    // Check to see if folder exists at expected default path (User/Documents/philharmonia_library_digital_catalogue)
-    const { exists, path } = await window.api.filesystem.checkDefaultBasePath();
-
-    setDefaultPath(path);
-    if (exists) {
-      setFolderPath(path) 
-    // set path in electron store
-    await window.api.filesystem.setBasePath(path);
-    setDefaultPathExists(true)
+    if (step === 2) {
+      const checkDefaultPath = async () => {
+        // Check to see if folder exists at expected default path (User/Documents/philharmonia_library_digital_catalogue)
+        const { exists, path } = await window.api.filesystem.checkDefaultBasePath();
+    
+        setDefaultPath(path);
+        if (exists) {
+          setFolderPath(path) 
+        // set path in electron store
+        await window.api.filesystem.setBasePath(path);
+        setDefaultPathExists(true)
+        }
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        setIsScanning(false);
+      }
+      checkDefaultPath();
     }
-    await new Promise(resolve => setTimeout(resolve, 5000));
-    setIsScanning(false);
-  }
-  checkDefaultPath();
-}, []);
+}, [step]);
 
   const handleChooseFolder = async () => {
     // No base path set, so choose from anywhere on the computer
@@ -157,7 +159,7 @@ const SetupWizard = () => {
             ) : <div />}
 
             {step < steps.length ? (
-              <Button disabled={step == 2 && !folderPath} onClick={() => setStep(step + 1)}>Next</Button>
+              <Button disabled={step === 2 && (!folderPath || isScanning)} onClick={() => setStep(step + 1)}>Next</Button>
             ) : (
               <Button variant="primary" onClick={handleFinishSetup}>Finish</Button>
             )}

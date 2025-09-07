@@ -1,4 +1,3 @@
-const { dialog } = require('electron');
 const path = require("path");
 const fs = require('fs-extra');
 const { pipeline } = require('stream');

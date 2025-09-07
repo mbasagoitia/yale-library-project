@@ -32,12 +32,11 @@ const Home = () => {
 export default Home;
 
 
-// Create the PDF manual; bundle real one with internal and fake one with demo
+// Create the PDF manual; bundle real one with internal and fake one with demo. Add screenshots
 
 // Demo data needs to be created better; all should have call numbers
 // Fix reports--giving ids instead of titles
 // Fix backup--remove timestamp from acquisition date and date last performed
-// Don't let user click next until scan is over in setup wizard!
 
 // Keytar with .env
 // Transfer actual digital catalogue here for testing
@@ -45,7 +44,7 @@ export default Home;
 /* Testing:
 
 1. Make sure flow with Setup wizard/missing path notice works correctly on internal and demo
-1. Have someone else log in and try to do admin things
+1. Have someone else log in and try to do admin things (just remove yourself as admin)
 2. Try all forms
 3. Try all backups
 4. All token renewal things
