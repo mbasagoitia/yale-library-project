@@ -54,7 +54,7 @@ const InfoTable = ({ data }) => {
                 </tr>
                 <tr>
                     <td><strong>Condition</strong></td>
-                    <td>{condition.charAt(0).toUpperCase() + condition.slice(1)}</td>
+                    <td>{condition}</td>
                 </tr>
                 {additional_notes && (
                     <tr>

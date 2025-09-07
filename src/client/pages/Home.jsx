@@ -35,8 +35,7 @@ export default Home;
 // Create the PDF manual; bundle real one with internal and fake one with demo. Add screenshots
 
 // Demo data needs to be created better; all should have call numbers
-// Fix reports--giving ids instead of titles
-// Fix backup--remove timestamp from acquisition date and date last performed
+// Continue fixing reports (demo and internal), start with missing <------ STArt heRE
 
 // Keytar with .env
 // Transfer actual digital catalogue here for testing

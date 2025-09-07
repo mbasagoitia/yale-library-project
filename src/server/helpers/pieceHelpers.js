@@ -58,8 +58,6 @@ async function getPieceById(id, db) {
   return baseSelect(db).where('p.id', id).first();
 }
 
-// sanitize + normalize incoming "info" payload -> DB row
-
 function normalizePieceInfo(info = {}) {
 
   let {

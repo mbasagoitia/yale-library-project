@@ -37,7 +37,7 @@ const ReportForm = () => {
 
     if (data) {
       const type = reportType.type;
-      generateReport({ reportType: type, holdings: data });
+      generateReport({ reportType: type, holdings: data, years: years });
     }
   };
 

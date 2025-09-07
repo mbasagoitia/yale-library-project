@@ -12,7 +12,7 @@ const formatValue = (value) => {
 };
 
 const generateReport = (data) => {
-  const { reportType, holdings } = data;
+  const { reportType, holdings, years } = data;
 
   if (holdings.length === 0) {
     toast.error("No results for number of years selected");
@@ -32,7 +32,7 @@ const generateReport = (data) => {
     'poor-condition': 'Poor Condition',
     'condition-summary': 'Condition Summary',
     'music-by-composer': 'Music by Composer',
-    'performance-history': 'Performance History'
+    'performance-history': `Performance History (${years} Years)`
   };
   
   const subHeadingText = reportTitles[reportType] || reportType;

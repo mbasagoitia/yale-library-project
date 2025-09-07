@@ -43,11 +43,6 @@ const exportReadableBackup = async (db, filePath) => {
       if (row["Date Last Performed"]) {
         row["Date Last Performed"] = formatDate(row["Date Last Performed"]);
       }
-
-      if (row["Condition"]) {
-        row["Condition"] = row["Condition"][0].toUpperCase() + row["Condition"].slice(1);
-      }
-
     });
 
     const csv = parse(rows, {

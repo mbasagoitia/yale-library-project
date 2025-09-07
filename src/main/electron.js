@@ -43,9 +43,18 @@ function createSetupWindow() {
   });
 
   if (isDev) {
-    setupWindow.loadURL('http://localhost:3000/setup');
+    if (APP_MODE === "demo") {
+      setupWindow.loadURL('http://localhost:3000/');
+    } else if (APP_MODE === "internal") {
+      setupWindow.loadURL('http://localhost:3000/setup');
+    }
+
   } else {
-    setupWindow.loadURL(`file://${path.join(__dirname, '../build/index.html')}#/setup`);
+    if (APP_MODE === "demo") {
+      setupWindow.loadURL(`file://${path.join(__dirname, '../build/index.html')}#/`);
+    } else if (APP_MODE === "internal") {
+      setupWindow.loadURL(`file://${path.join(__dirname, '../build/index.html')}#/setup`);
+    }
   }
 
   setupWindow.on('closed', () => {
