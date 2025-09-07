@@ -78,7 +78,7 @@ const SetupWizard = () => {
               <p className="mb-4">Scanning for folder at:</p>
               <p className="font-monospace path-text mb-4">{defaultPath}</p>
               <div className="flex items-center text-muted mb-4">
-                <span className="spinner-border spinner-border-sm mr-2" role="status" />
+                <div className="spinner-border spinner-border-sm mx-2" role="status" />
                 Scanning...
               </div>
             </>
@@ -87,15 +87,15 @@ const SetupWizard = () => {
               <p className="mb-4">Scanning for folder at:</p>
               <p className="font-monospace path-text mb-4">{defaultPath}</p>
               <div className="flex items-center text-success mb-4">
-                <CheckCircle className="mr-2" /> Folder found!
+                <CheckCircle /> Folder found!
               </div>
             </>
           ) : folderPath ? (
             <>
               <p className="mb-4">Path set to:</p>
               <p className="font-monospace path-text mb-4">{folderPath}</p>
-              <div className="flex items-center text-success mb-4">
-                <CheckCircle className="mr-2" /> Folder path set!
+              <div className="flex items-center text-success mb-4 mx-2">
+                <CheckCircle /> Folder path set!
               </div>
             </>
           ) : (
@@ -103,8 +103,8 @@ const SetupWizard = () => {
               <p className="mb-4">Scanning for folder at:</p>
               <p className="font-monospace path-text mb-4">{defaultPath}</p>
               <div className="flex flex-col gap-2 mb-2">
-                <div className="flex items-center text-danger mb-2">
-                  <XCircle className="mr-2" /> Folder not found.
+                <div className="flex items-center text-danger mb-2 mx-2">
+                  <XCircle /> Folder not found.
                 </div>
                 <Button onClick={handleChooseFolder}>
                   <Folder className="mr-2 h-4 w-4" /> Choose Folder
