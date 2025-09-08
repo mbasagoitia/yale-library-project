@@ -3,7 +3,8 @@ import { findMediumById, findComposerById, findGenreById, findPublisherById } fr
 
 const initializePieceState = ({ initialData, resourceData, setMainInfo, setAdditionalInfo, setDataReady }) => {
     if (initialData && resourceData.mediumData.length) {
-      // console.log("initial data", initialData);
+
+      console.log("dates", initialData.acquisition_date, initialData.date_last_performed);
 
       setMainInfo({
         title: initialData.title,
@@ -24,8 +25,8 @@ const initializePieceState = ({ initialData, resourceData, setMainInfo, setAddit
         publicDomain: initialData.public_domain === 1,
         condition: initialData.condition_id,
         missingParts: initialData.missing_parts === 1,
-        acquisitionDate: initialData.acquisition_date,
-        lastPerformed: initialData.date_last_performed,
+        acquisitionDate: initialData.acquisition_date ? new Date(Number(initialData.acquisition_date)) : null,
+        lastPerformed: initialData.date_last_performed ? new Date(Number(initialData.date_last_performed)) : null,
         notes: initialData.additional_notes
       });
   

@@ -34,7 +34,9 @@ export default Home;
 
 // Create the PDF manual; bundle real one with internal and fake one with demo. Add screenshots
 
-// Make demo data a small slice of the real catalogue, point some to digital catalogue links
+// Make demo holdings point some to (fake) digital catalogue links
+// Pagination controls are weird
+// Revisit font sizes in demo and internal
 
 // Keytar with .env
 // Transfer actual digital catalogue here for testing

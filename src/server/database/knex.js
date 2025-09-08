@@ -3,7 +3,7 @@ const os = require('os');
 const knexLib = require('knex');
 
 function sqlitePath() {
-  return process.env.SQLITE_FILE || path.join(process.cwd(), 'dev-data', 'demo.db');
+  return process.env.SQLITE_FILE || path.join(process.cwd(), 'demo-data', 'demo.db');
 }
 
 function makeKnex() {
