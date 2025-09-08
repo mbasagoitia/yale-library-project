@@ -34,10 +34,7 @@ export default Home;
 
 // Create the PDF manual; bundle real one with internal and fake one with demo. Add screenshots
 
-// Demo data needs to be created better; all should have call numbers.
-  // Acquisition date should be before date last performed. No flat or sharp symbols.
-  // Capitalize the condition titles
-
+// Make demo data a small slice of the real catalogue, point some to digital catalogue links
 
 // Keytar with .env
 // Transfer actual digital catalogue here for testing

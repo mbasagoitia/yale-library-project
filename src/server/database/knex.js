@@ -1,4 +1,3 @@
-// src/server/db/knex.js
 const path = require('path');
 const os = require('os');
 const knexLib = require('knex');

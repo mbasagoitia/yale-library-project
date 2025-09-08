@@ -47,7 +47,7 @@
     display: block;
 }
 
-.react-pdf__Page__annotations.annotationLayer {
+.react-pdf__Page__annotations.annotationLayer, .react-pdf__Page__textContent.textLayer {
     display: none;
 }
 
