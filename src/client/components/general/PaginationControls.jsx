@@ -16,17 +16,41 @@ const PaginationControls = ({
   const handlePageClick = (n) => setCurrentPage(n);
 
   const getDisplayPages = () => {
-    if (totalPages <= 4) return Array.from({ length: totalPages }, (_, i) => i + 1);
-
-    if (currentPage <= 2) {
-      return [1, 2, totalPages];
+    const pages = [];
+    const windowSize = 1; // number of neighbors to show around currentPage
+  
+    // Always include first and last
+    pages.push(1);
+  
+    // Calculate window range
+    let start = Math.max(2, currentPage - windowSize);
+    let end = Math.min(totalPages - 1, currentPage + windowSize);
+  
+    // Adjust if near the start
+    if (currentPage <= windowSize + 2) {
+      start = 2;
+      end = Math.min(totalPages - 1, 2 * windowSize + 2);
     }
-    if (currentPage >= totalPages - 1) {
-      return [1, totalPages - 2, totalPages];
+  
+    // Adjust if near the end
+    if (currentPage >= totalPages - (windowSize + 1)) {
+      start = Math.max(2, totalPages - (2 * windowSize + 1));
+      end = totalPages - 1;
     }
-    return [1, currentPage, totalPages];
+  
+    // Add range
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+  
+    // Always include last if >1
+    if (totalPages > 1) {
+      pages.push(totalPages);
+    }
+  
+    return pages;
   };
-
+  
   const pages = getDisplayPages();
 
   return (
