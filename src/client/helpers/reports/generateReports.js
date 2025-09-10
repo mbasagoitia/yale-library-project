@@ -1,8 +1,19 @@
 
-import { toast } from "react-toastify";import pdfMake from 'pdfmake/build/pdfmake';
-import * as pdfFonts from 'pdfmake/build/vfs_fonts';
-pdfMake.vfs = pdfFonts.vfs;
+import { toast } from "react-toastify";
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
 
+// Download Roboto from Google Fonts
+
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+pdfMake.fonts = {
+  Roboto: {
+    normal: "Roboto-Regular.ttf",
+    bold: "Roboto-Medium.ttf",
+    italics: "Roboto-Italic.ttf",
+    bolditalics: "Roboto-MediumItalic.ttf",
+  },
+};
 
 const formatValue = (value) => {
   if (Array.isArray(value)) return value.join(', ');
@@ -96,6 +107,7 @@ const generateReport = (data) => {
       }
     },
     defaultStyle: {
+      font: "Roboto",
       fontSize: 8
     }
   };
