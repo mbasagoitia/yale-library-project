@@ -39,7 +39,7 @@ const fetchReportData = async (reportType, options = {}) => {
     if (!res.ok) {
       toast.error(data.error || data.message || "Failed to fetch report data");
     }
-
+    console.log(data);
     return data;
   } catch (error) {
     toast.error(error.message || "An error occurred fetching report data");

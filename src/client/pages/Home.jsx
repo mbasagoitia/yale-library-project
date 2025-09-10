@@ -36,7 +36,7 @@ export default Home;
 
 // Make demo holdings point some to (fake) digital catalogue links
 // Revisit font sizes in demo and internal
-// Add jstor to CSP
+// shell.openExternal(); make electron api handle this <--- start here
 // Update all acquisition dates (anything added within past year...) and rebuild demo data
 // Ok to add fake acquisition dates for demo data
 // When navigating back from current piece page, should save page you were on

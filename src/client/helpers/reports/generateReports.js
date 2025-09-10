@@ -1,24 +1,34 @@
 
 import { toast } from "react-toastify";
 import pdfMake from "pdfmake/build/pdfmake";
-import pdfFonts from "pdfmake/build/vfs_fonts";
+import * as pdfFonts from "pdfmake/build/vfs_fonts";
 
-// Download Roboto from Google Fonts
+pdfMake.vfs = pdfFonts.pdfMake ? pdfFonts.pdfMake.vfs : pdfFonts.vfs;
 
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
 pdfMake.fonts = {
   Roboto: {
     normal: "Roboto-Regular.ttf",
     bold: "Roboto-Medium.ttf",
     italics: "Roboto-Italic.ttf",
     bolditalics: "Roboto-MediumItalic.ttf",
-  },
+  }, 
 };
 
 const formatValue = (value) => {
-  if (Array.isArray(value)) return value.join(', ');
-  if (value instanceof Date) return value.toLocaleDateString();
-  if (value === null || value === undefined) return '';
+  if (Array.isArray(value)) return value.join(", ");
+  if (value === null || value === undefined) return "";
+
+  // Handle MySQL DATE string (YYYY-MM-DD)
+  if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    const d = new Date(value);
+    return isNaN(d.getTime()) ? "" : d.toLocaleDateString("en-US");
+  }
+
+  // Handle JS Date
+  if (value instanceof Date) {
+    return isNaN(value.getTime()) ? "" : value.toLocaleDateString("en-US");
+  }
+
   return value.toString();
 };
 
@@ -31,85 +41,91 @@ const generateReport = (data) => {
   }
 
   const grouped = {};
-  holdings.forEach(item => {
-    const composer = item.Composer || '';
+  holdings.forEach((item) => {
+    const composer = item.Composer || "";
     if (!grouped[composer]) grouped[composer] = [];
     grouped[composer].push(item);
   });
 
   const reportTitles = {
-    'all': 'All Holdings',
-    'missing': 'Missing Parts',
-    'poor-condition': 'Poor Condition',
-    'condition-summary': 'Condition Summary',
-    'music-by-composer': 'Music by Composer',
-    'performance-history': `Performance History (${years} Years)`
+    all: "All Holdings",
+    missing: "Missing Parts",
+    "poor-condition": "Poor Condition",
+    "condition-summary": "Condition Summary",
+    "music-by-composer": "Music by Composer",
+    "performance-history": `Performance History (${years} Years)`,
   };
-  
+
   const subHeadingText = reportTitles[reportType] || reportType;
-  
+
   const content = [
-    { text: 'Philharmonia Library Report', style: 'header' },
-    { text: subHeadingText, style: 'subHeading' }
+    { text: "Philharmonia Library Report", style: "header" },
+    { text: subHeadingText, style: "subHeading" },
   ];
 
   Object.entries(grouped).forEach(([composer, pieces]) => {
-    const headings = Object.keys(pieces[0]).filter(key => key !== 'Composer' && key !== 'TotalPiecesByComposer');
-  
-    const body = [
-      headings.map(h => ({ text: h, style: 'tableHeader' }))
-    ];
-  
-    pieces.forEach(row => {
-      body.push(headings.map(key => formatValue(row[key])));
+    const headings = Object.keys(pieces[0]).filter(
+      (key) => key !== "Composer" && key !== "TotalPiecesByComposer"
+    );
+
+    const body = [headings.map((h) => ({ text: h, style: "tableHeader" }))];
+
+    pieces.forEach((row) => {
+      body.push(headings.map((key) => formatValue(row[key])));
     });
-  
+
     let composerLabel = composer;
-    if (reportType === 'music-by-composer' && pieces[0].TotalPiecesByComposer) {
+    if (
+      reportType === "music-by-composer" &&
+      pieces[0].TotalPiecesByComposer
+    ) {
       composerLabel += ` (${pieces[0].TotalPiecesByComposer})`;
     }
-  
-    content.push({ text: composerLabel, style: 'composerHeader', margin: [0, 10, 0, 4] });
+
+    content.push({
+      text: composerLabel,
+      style: "composerHeader",
+      margin: [0, 10, 0, 4],
+    });
     content.push({
       table: {
         headerRows: 1,
-        widths: Array(headings.length).fill('*'),
-        body
+        widths: Array(headings.length).fill("*"),
+        body,
       },
-      layout: 'lightHorizontalLines',
-      margin: [0, 0, 0, 10]
+      layout: "lightHorizontalLines",
+      margin: [0, 0, 0, 10],
     });
   });
-  
 
   const docDefinition = {
-    pageOrientation: reportType === "all" ? 'landscape' : 'portrait',
+    pageOrientation: reportType === "all" ? "landscape" : "portrait",
     content,
     styles: {
       header: {
         fontSize: 14,
         bold: true,
-        margin: [0, 0, 0, 10]
+        margin: [0, 0, 0, 10],
       },
       subHeading: {
         fontSize: 10,
         bold: true,
-        margin: [0, 0, 0, 10]
+        margin: [0, 0, 0, 10],
       },
       composerHeader: {
         fontSize: 10,
         bold: true,
-        margin: [0, 10, 0, 4]
+        margin: [0, 10, 0, 4],
       },
       tableHeader: {
         bold: true,
-        fillColor: '#eeeeee'
-      }
+        fillColor: "#eeeeee",
+      },
     },
     defaultStyle: {
       font: "Roboto",
-      fontSize: 8
-    }
+      fontSize: 8,
+    },
   };
 
   pdfMake.createPdf(docDefinition).download(`library-report-${reportType}.pdf`);

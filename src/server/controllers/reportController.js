@@ -1,35 +1,42 @@
+function formatDate(value) {
+  if (!value) return "";
+
+  // Handle MySQL DATE string (YYYY-MM-DD)
+  if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    const d = new Date(value);
+    return isNaN(d.getTime()) ? "" : d.toLocaleDateString("en-US");
+  }
+
+  // Handle JS Date object
+  if (value instanceof Date) {
+    return isNaN(value.getTime()) ? "" : value.toLocaleDateString("en-US");
+  }
+
+  return "";
+}
+
 async function getAllPieces(req, res, next) {
   try {
     const db = req.db;
-    const rows = await db('pieces as p')
-      .innerJoin('composers as c', 'p.composer_id', 'c.id')
-      .innerJoin('publisher_options as pub', 'p.publisher_id', 'pub.id')
-      .innerJoin('conditions as con', 'p.condition_id', 'con.id')
+    const rows = await db("pieces as p")
+      .innerJoin("composers as c", "p.composer_id", "c.id")
+      .innerJoin("publisher_options as pub", "p.publisher_id", "pub.id")
+      .innerJoin("conditions as con", "p.condition_id", "con.id")
       .select(
-        'c.last_name as lastName',
-        'c.first_name as firstName',
-        'p.title as title',
-        'pub.label as publisher',
-        'p.additional_notes as notes',
-        'con.label as condition',
-        'p.call_number as callNumber',
-        'p.acquisition_date as acquisitionDate',
-        'p.date_last_performed as lastPerformed'
+        "c.last_name as lastName",
+        "c.first_name as firstName",
+        "p.title as title",
+        "pub.label as publisher",
+        "p.additional_notes as notes",
+        "con.label as condition",
+        "p.call_number as callNumber",
+        "p.acquisition_date as acquisitionDate",
+        "p.date_last_performed as lastPerformed"
       )
-      .orderBy('c.last_name', 'asc')
-      .orderBy('p.title', 'asc');
+      .orderBy("c.last_name", "asc")
+      .orderBy("p.title", "asc");
 
-    // Date formatted as MM-DD-YYYY
-    const formatDate = (date) => {
-      if (!date) return "";
-      const d = new Date(date);
-      const month = String(d.getUTCMonth() + 1).padStart(2, '0');
-      const day = String(d.getUTCDate()).padStart(2, '0');
-      const year = d.getUTCFullYear();
-      return `${month}-${day}-${year}`;
-    };
-
-    const formatted = rows.map(r => ({
+    const formatted = rows.map((r) => ({
       Title: r.title,
       Composer: `${r.lastName}, ${r.firstName}`,
       Publisher: r.publisher,
@@ -43,87 +50,75 @@ async function getAllPieces(req, res, next) {
     res.status(200).json(formatted);
   } catch (err) {
     console.error(err);
-    next({ status: 500, message: 'Error retrieving piece list' });
+    next({ status: 500, message: "Error retrieving piece list" });
   }
 }
 
 async function getMissing(req, res, next) {
   try {
     const db = req.db;
-    const rows = await db('pieces as p')
-      .innerJoin('composers as c', 'p.composer_id', 'c.id')
-      .innerJoin('publisher_options as pub', 'p.publisher_id', 'pub.id')
-      .innerJoin('conditions as con', 'p.condition_id', 'con.id')
-      .where('p.missing_parts', 1)
+    const rows = await db("pieces as p")
+      .innerJoin("composers as c", "p.composer_id", "c.id")
+      .innerJoin("publisher_options as pub", "p.publisher_id", "pub.id")
+      .innerJoin("conditions as con", "p.condition_id", "con.id")
+      .where("p.missing_parts", 1)
       .select(
-        'p.title as Title',
+        "p.title as Title",
         db.raw("c.last_name || ', ' || c.first_name as Composer"),
-        'pub.label as Publisher',
-        'p.additional_notes as Notes',
-        'con.label as Condition',
-        'p.call_number as Call Number',
-        'p.acquisition_date as Acquisition Date'
+        "pub.label as Publisher",
+        "p.additional_notes as Notes",
+        "con.label as Condition",
+        "p.call_number as Call Number",
+        "p.acquisition_date as Acquisition Date"
       )
-      .orderBy([{ column: 'c.last_name' }, { column: 'c.first_name' }, { column: 'p.title' }]);
+      .orderBy([
+        { column: "c.last_name" },
+        { column: "c.first_name" },
+        { column: "p.title" },
+      ]);
 
-    // Normalize dates
-    const formatted = rows.map(r => ({
+    const formatted = rows.map((r) => ({
       ...r,
-      "Acquisition Date": r["Acquisition Date"]
-        ? new Date(r["Acquisition Date"]).toLocaleDateString('en-US', {
-            timeZone: 'UTC',
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit'
-          })
-        : ""
+      "Acquisition Date": formatDate(r["Acquisition Date"]),
     }));
 
     res.json(formatted);
   } catch (err) {
-    next({ status: 500, message: 'Error retrieving piece list' });
+    next({ status: 500, message: "Error retrieving piece list" });
   }
 }
-
 
 async function getPoorCondition(req, res, next) {
   try {
     const db = req.db;
-    const rows = await db('pieces as p')
-      .innerJoin('composers as c', 'p.composer_id', 'c.id')
-      .innerJoin('publisher_options as pub', 'p.publisher_id', 'pub.id')
-      .innerJoin('conditions as con', 'p.condition_id', 'con.id')
-      .where('p.condition_id', '>', 2)
+    const rows = await db("pieces as p")
+      .innerJoin("composers as c", "p.composer_id", "c.id")
+      .innerJoin("publisher_options as pub", "p.publisher_id", "pub.id")
+      .innerJoin("conditions as con", "p.condition_id", "con.id")
+      .where("p.condition_id", ">", 2)
       .select(
-        'p.title as Title',
+        "p.title as Title",
         db.raw("c.last_name || ', ' || c.first_name as Composer"),
-        'pub.label as Publisher',
-        'p.additional_notes as Notes',
-        'con.label as Condition',
-        'p.call_number as Call Number',
-        'p.acquisition_date as Acquisition Date'
+        "pub.label as Publisher",
+        "p.additional_notes as Notes",
+        "con.label as Condition",
+        "p.call_number as Call Number",
+        "p.acquisition_date as Acquisition Date"
       )
       .orderBy([
-        { column: 'p.condition_id', order: 'desc' },
-        { column: 'c.last_name' },
-        { column: 'p.title' }
+        { column: "p.condition_id", order: "desc" },
+        { column: "c.last_name" },
+        { column: "p.title" },
       ]);
 
-    const formatted = rows.map(r => ({
+    const formatted = rows.map((r) => ({
       ...r,
-      "Acquisition Date": r["Acquisition Date"]
-        ? new Date(r["Acquisition Date"]).toLocaleDateString('en-US', {
-            timeZone: 'UTC',
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit'
-          })
-        : ""
+      "Acquisition Date": formatDate(r["Acquisition Date"]),
     }));
 
     res.json(formatted);
   } catch (err) {
-    next({ status: 500, message: 'Error retrieving piece list' });
+    next({ status: 500, message: "Error retrieving piece list" });
   }
 }
 
@@ -131,50 +126,50 @@ async function getConditionSummary(req, res, next) {
   try {
     const db = req.db;
 
-    const [{ total_count }] = await db('pieces').count('* as total_count');
+    const [{ total_count }] = await db("pieces").count("* as total_count");
 
-    const rows = await db('conditions as con')
-      .leftJoin('pieces as p', 'p.condition_id', 'con.id')
-      .groupBy('con.id', 'con.label')
-      .orderBy('con.id', 'asc')
+    const rows = await db("conditions as con")
+      .leftJoin("pieces as p", "p.condition_id", "con.id")
+      .groupBy("con.id", "con.label")
+      .orderBy("con.id", "asc")
       .select(
-        'con.label as Condition',
-        db.raw('COUNT(p.id) as `Number of Pieces`'),
-        db.raw('(CAST(COUNT(p.id) AS FLOAT) / ?) * 100 as pct', [total_count])
+        "con.label as Condition",
+        db.raw("COUNT(p.id) as `Number of Pieces`"),
+        db.raw("(CAST(COUNT(p.id) AS FLOAT) / ?) * 100 as pct", [total_count])
       );
 
-    const formatted = rows.map(r => ({
+    const formatted = rows.map((r) => ({
       Condition: r.Condition,
       "Number of Pieces": r["Number of Pieces"],
-      Percentage: `${Math.round(r.pct)}%`
+      Percentage: `${Math.round(r.pct)}%`,
     }));
 
     res.json(formatted);
   } catch (err) {
-    next({ status: 500, message: 'Error retrieving condition summary' });
+    next({ status: 500, message: "Error retrieving condition summary" });
   }
 }
-
-
 
 async function getMusicByComposer(req, res, next) {
   try {
     const db = req.db;
 
-    const rows = await db('pieces as p')
-      .join('composers as c', 'p.composer_id', 'c.id')
-      .join('species_options as s', 'p.species_id', 's.id')
+    const rows = await db("pieces as p")
+      .join("composers as c", "p.composer_id", "c.id")
+      .join("species_options as s", "p.species_id", "s.id")
       .select(
         db.raw("CONCAT(c.last_name, ', ', c.first_name) as Composer"),
-        'p.title as Title',
-        's.label as Genre',
-        db.raw('COUNT(*) OVER (PARTITION BY c.id) as TotalPiecesByComposer')
+        "p.title as Title",
+        "s.label as Genre",
+        db.raw("COUNT(*) OVER (PARTITION BY c.id) as TotalPiecesByComposer")
       )
-      .orderByRaw("TotalPiecesByComposer DESC, c.last_name, c.first_name, s.label");
+      .orderByRaw(
+        "TotalPiecesByComposer DESC, c.last_name, c.first_name, s.label"
+      );
 
     res.json(rows);
   } catch (err) {
-    next({ status: 500, message: 'Error retrieving music by composer' });
+    next({ status: 500, message: "Error retrieving music by composer" });
   }
 }
 
@@ -184,54 +179,36 @@ async function getPerformanceHistory(req, res, next) {
     const yearsAgo = parseInt(req.query.years, 10);
 
     if (isNaN(yearsAgo)) {
-      return res.status(400).json({ error: 'Invalid number of years provided' });
+      return res.status(400).json({ error: "Invalid number of years provided" });
     }
 
-    // Calculate cutoff date
     const now = new Date();
     const cutoff = new Date();
     cutoff.setFullYear(now.getFullYear() - yearsAgo);
 
-    const rows = await db('pieces as p')
-      .innerJoin('composers as c', 'p.composer_id', 'c.id')
+    const rows = await db("pieces as p")
+      .innerJoin("composers as c", "p.composer_id", "c.id")
       .select(
-        'p.title as Title',
+        "p.title as Title",
         db.raw("c.last_name || ', ' || c.first_name as Composer"),
-        'p.date_last_performed as Last Performed',
-        'p.acquisition_date as Acquisition Date'
+        "p.date_last_performed as Last Performed",
+        "p.acquisition_date as Acquisition Date"
       )
-      .whereNotNull('p.date_last_performed')
-      .andWhere('p.date_last_performed', '>=', cutoff.toISOString())
-      .orderBy('p.date_last_performed', 'desc');
+      .whereNotNull("p.date_last_performed")
+      .andWhere("p.date_last_performed", ">=", cutoff.toISOString())
+      .orderBy("p.date_last_performed", "desc");
 
-    // Format dates consistently (MM-DD-YYYY)
-    const formatDate = (date) => {
-      if (!date) return "";
-      const d = new Date(date);
-      const month = String(d.getUTCMonth() + 1).padStart(2, '0');
-      const day = String(d.getUTCDate()).padStart(2, '0');
-      const year = d.getUTCFullYear();
-      return `${month}-${day}-${year}`;
-    };
-
-    const formatted = rows.map(r => ({
+    const formatted = rows.map((r) => ({
       ...r,
-      "Acquisition Date": r["Acquisition Date"]
-        ? formatDate(r["Acquisition Date"])
-        : "",
-      "Last Performed": r["Last Performed"]
-        ? formatDate(r["Last Performed"])
-        : "",
+      "Acquisition Date": formatDate(r["Acquisition Date"]),
+      "Last Performed": formatDate(r["Last Performed"]),
     }));
 
     res.json(formatted);
   } catch (err) {
-    next({ status: 500, message: 'Error retrieving performance history' });
+    next({ status: 500, message: "Error retrieving performance history" });
   }
 }
-
-
-
 
 module.exports = {
   getAllPieces,
