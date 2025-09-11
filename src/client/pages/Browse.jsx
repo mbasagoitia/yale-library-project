@@ -1,34 +1,42 @@
-import { useState, useEffect } from "react";
-import { useSelector } from 'react-redux';
-import HoldingsList from "../components/holdings/HoldingsList";
+import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import HoldingsFilter from "../components/search-filters/HoldingsFilter";
+import HoldingsList from "../components/holdings/HoldingsList";
 import { selectFilteredHoldings } from "../../redux/searchSelectors";
+import { useState, useEffect } from "react";
 
 const Browse = () => {
+  const location = useLocation();
+  const filteredItems = useSelector(selectFilteredHoldings);
+  const [showResults, setShowResults] = useState(false);
+  const search = useSelector((state) => state.search);
 
-    const filteredItems = useSelector(selectFilteredHoldings);
-    const [showResults, setShowResults] = useState(false);
+  useEffect(() => {
+    if (search.searchType) setShowResults(true);
+  }, [search]);
 
-    const search = useSelector((state) => state.search);
+  // Pass the starting page from location.state down to HoldingsList
+  const initialPage = location.state?.page || 1;
 
-    useEffect(() => {
-        if (search.searchType) {
-            setShowResults(true);
-        }
-    }, [])
+  return (
+    <div className="browse-collection">
+      <h1>Browse Collection</h1>
 
-    return (
-            <div className="browse-collection">
-            <h1>Browse Collection</h1>
-            <div className="holdings-content mt-4">
-                <div className="mb-4">
-                    <HoldingsFilter setShowResults={setShowResults} />
-                </div>
-                {showResults ? <h2>Results: {filteredItems.length}</h2> : null}
-                <HoldingsList filteredItems={filteredItems} behavior={"search"} />
-            </div>
+      <div className="holdings-content mt-4">
+        <div className="mb-4">
+          <HoldingsFilter setShowResults={setShowResults} />
         </div>
-    )
-}
+
+        {showResults && <h2>Results: {filteredItems.length}</h2>}
+
+        <HoldingsList
+          filteredItems={filteredItems}
+          initialPage={initialPage}
+          behavior="search"
+        />
+      </div>
+    </div>
+  );
+};
 
 export default Browse;

@@ -1,4 +1,12 @@
 const ClassificationGuide = () => {
+
+    const handleOpenUrl = async (e, url) => {
+        e.preventDefault();
+        if (window?.api?.external?.openExternal) {
+            await window.api.external.openExternal(url);
+        }
+    }
+
     return (
         <div className="classification-guide">
             <h1>The Dickinson Classification Scheme for Musical Compositions</h1>
@@ -29,7 +37,7 @@ const ClassificationGuide = () => {
                 <h2>References</h2>
                 <p>For further reading on the Dickinson Classification Scheme and its application, refer to:</p>
                 <ul>
-                    <li><a href="https://www.jstor.org/stable/23505207" target="_blank" rel="noreferrer">Bradley, Carol June. <em>The Dickinson Classification for Music</em>.</a></li>
+                    <li className="link-text" onClick={(e) => handleOpenUrl(e, "https://www.jstor.org/stable/23505207")}>Bradley, Carol June. <em>The Dickinson Classification for Music</em>.</li>
                 </ul>
             </section>
         </div>

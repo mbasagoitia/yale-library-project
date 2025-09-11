@@ -144,6 +144,12 @@ body {
   text-decoration: underline;
 }
 
+.link-text {
+  color: #0D6EFD;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 
 @media (min-width: 576px) {
   .App-header {

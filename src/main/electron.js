@@ -11,7 +11,9 @@ const handleFileHandlers = require("./ipcHandlers/fileHandlers.js");
 const handleAuthHandlers = require("./ipcHandlers/authHandlers.js");
 const handleBackupHandlers = require("./ipcHandlers/backupHandlers.js");
 const handleSetupHandlers = require('./ipcHandlers/setupHandlers.js');
+const handleExternalHandlers = require("./ipcHandlers/externalHandlers.js");
 const { createWindow } = require("./helpers/createMainWindow.js");
+
 
 const isDev = !app.isPackaged;
 const Store = require('electron-store').default;
@@ -118,6 +120,7 @@ app.whenReady().then(() => {
   handleAuthHandlers(ipcMain, store);
   handleBackupHandlers(ipcMain, store);
   handleSetupHandlers(ipcMain, store);
+  handleExternalHandlers(ipcMain);
 
   // Open the appropriate window
   if (!store.get("initialSetup")) {

@@ -40,6 +40,10 @@ contextBridge.exposeInMainWorld("api", {
     setupComplete: () => ipcRenderer.send("setup-complete")
   },
 
+  external: {
+    openExternal: (url) => ipcRenderer.invoke("external:openExternal", url)
+  },
+
   events: {
     on: (channel, callback) => {
       const validChannels = ["auth-success", "auth-failed", "setup-complete", "base-path-updated"];
