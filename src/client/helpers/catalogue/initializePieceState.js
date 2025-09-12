@@ -4,8 +4,6 @@ import { findMediumById, findComposerById, findGenreById, findPublisherById } fr
 const initializePieceState = ({ initialData, resourceData, setMainInfo, setAdditionalInfo, setDataReady }) => {
     if (initialData && resourceData.mediumData.length) {
 
-      console.log("dates", initialData.acquisition_date, initialData.date_last_performed);
-
       setMainInfo({
         title: initialData.title,
         identifierLabel: initialData.identifier_label || "",

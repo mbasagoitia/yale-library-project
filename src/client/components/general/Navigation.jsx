@@ -44,6 +44,7 @@ const Navigation = () => {
 
   const handleSearch = (searchText) => {
     dispatch(generalSearch({ query: searchText }));
+    setNavExpanded(false);
     navigate("/browse-holdings");
   };
 

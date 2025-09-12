@@ -12,7 +12,6 @@ const PaginationControls = ({
   if (totalPages <= 1) return null;
 
   const changePage = (page) => {
-    console.log(page);
     const clamped = Math.max(1, Math.min(page, totalPages));
     onPageChange(clamped);
   };

@@ -2,8 +2,7 @@ import { Card, Row, Col } from 'react-bootstrap';
 import { useMode } from "../../contexts/ModeContext.js";
 import { useNavigate } from 'react-router-dom';
 
-const PieceListItem = ({ data, behavior }) => {
-    // console.log(data);            
+const PieceListItem = ({ data, behavior, currentPage }) => {          
     // Data comes in as a single piece with the following properties,
     // some of which are ids for processing purposes and others are titles for display purposes:
 
@@ -42,7 +41,8 @@ const PieceListItem = ({ data, behavior }) => {
                     // Trigger reset of the medium dropdown component
                     setMediumResetKey(prev => prev + 1)
                     // Set initial data from this component
-                    setData(data);
+                    setData({ ...data });
+    
                     // If a user clicks on this item, the mode should be set to edit instead of new
                     setMode("edit");
                     // Scroll if on smaller screen size
@@ -50,7 +50,7 @@ const PieceListItem = ({ data, behavior }) => {
                         catalogueFormRef.current.scrollIntoView({ behavior: "smooth" });
                       }
                 } else {
-                navigate(`/browse-holdings/${id}`);
+                    navigate(`/browse-holdings/${id}`, { state: { page: currentPage } });
                 }
             }}
         >

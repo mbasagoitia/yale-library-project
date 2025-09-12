@@ -39,8 +39,6 @@ export default Home;
 
 // Update all acquisition dates (anything added within past year...) and rebuild demo data
 // Ok to add fake acquisition dates for demo data
-// When navigating back from current piece page, should save page you were on
-// Behavior in edit mode where if you click a piece twice, it goes blank
 
 // Keytar with .env
 // Transfer actual digital catalogue here for testing
