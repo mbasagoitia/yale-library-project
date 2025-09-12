@@ -33,12 +33,15 @@ export default Home;
 
 
 // Create the PDF manual; bundle real one with internal and fake one with demo
-// Dont erase notes when toggling missing parts
+// Display somewhere in app
+
+
+// Fix demo sqlite path
+// Delete extra db files
 
 // Revisit font sizes in demo and internal
 
-// Update all acquisition dates (anything added within past year...) and rebuild demo data
-// Ok to add fake acquisition dates for demo data
+// Update all acquisition dates (anything added within past year...) for real data
 
 // Keytar with .env
 // Transfer actual digital catalogue here for testing
