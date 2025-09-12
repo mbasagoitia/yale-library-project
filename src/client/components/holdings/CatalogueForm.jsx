@@ -90,7 +90,11 @@ const CatalogueForm = forwardRef((props, ref) => {
   // Set initial data on component if it exists
   useEffect(() => {
     if (initialData) {
-      initializePieceState({ initialData, resourceData, setMainInfo, setAdditionalInfo, setDataReady });
+      try {
+        initializePieceState({ initialData, resourceData, setMainInfo, setAdditionalInfo, setDataReady });
+      } catch (err) {
+        toast.error(err);
+      }
     }
 
   }, [initialData, resourceData]);  

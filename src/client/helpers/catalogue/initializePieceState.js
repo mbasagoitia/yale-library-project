@@ -23,9 +23,9 @@ const initializePieceState = ({ initialData, resourceData, setMainInfo, setAddit
         publicDomain: initialData.public_domain === 1,
         condition: initialData.condition_id,
         missingParts: initialData.missing_parts === 1,
-        acquisitionDate: initialData.acquisition_date ? new Date(Number(initialData.acquisition_date)) : null,
-        lastPerformed: initialData.date_last_performed ? new Date(Number(initialData.date_last_performed)) : null,
-        notes: initialData.additional_notes
+        acquisitionDate: initialData.acquisition_date ? initialData.acquisition_date : null,
+        lastPerformed: initialData.date_last_performed ? initialData.date_last_performed : null,
+        notes: initialData.additional_notes || ""
       });
   
       setDataReady(true);

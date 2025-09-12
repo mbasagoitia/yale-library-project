@@ -3,6 +3,20 @@ const path = require('path');
 const fs = require('fs-extra');
 const os = require("os");
 
+const IS_DEMO =
+  process.env.APP_MODE === 'demo' ||
+  process.env.REACT_APP_APP_MODE === 'demo' ||
+  String(process.env.REACT_APP_CAS_ENABLED || '').toLowerCase() === 'false';
+
+  // put in separate helper function
+function resolveDemoBase() {
+  const devDir = path.join(process.cwd(), 'src', 'assets', 'demo', 'digital-catalogue');
+  const prodDir = path.join(process.resourcesPath, 'demo-catalogue');
+  if (fs.existsSync(prodDir)) return prodDir;
+  if (fs.existsSync(devDir)) return devDir;
+  return null;
+}
+
 const checkDefaultBasePath = async () => {
   const getDocumentsPath = () => {
     const homeDir = os.homedir();
@@ -39,6 +53,19 @@ const getBasePath = (store) => {
   const exists = fs.existsSync(path.resolve(basePath));
 
   return { exists, basePath };
+};
+
+const getFullPath = (store, relativePath) => {
+  if (IS_DEMO) {
+    demoBase = resolveDemoBase();
+    return path.join(demoBase, relativePath);
+  } else {
+    const { exists, basePath } = getBasePath(store);
+    if (exists) {
+      return path.join(basePath, relativePath);
+    } 
+    return null;
+  }
 };
 
 const setBasePath = async (store, newPath) => {
@@ -168,6 +195,7 @@ const copyFile = async (filePath, targetDir) => {
 module.exports = {
     checkDefaultBasePath,
     getBasePath,
+    getFullPath,
     chooseFolder,
     setBasePath,
     handleReadFile,

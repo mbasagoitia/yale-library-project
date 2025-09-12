@@ -4,6 +4,7 @@ const fs = require('fs');
 const {
   checkDefaultBasePath,
   getBasePath,
+  getFullPath,
   chooseFolder,
   setBasePath,
   handleReadFile,
@@ -58,8 +59,8 @@ const handleFileHandlers = (ipcMain, store) => {
     return chooseFolder(store, defaultPath);
   });
 
-  ipcMain.handle('fs:getFullPath', (_, basePath, relativePath) => {
-    return path.join(basePath, relativePath);
+  ipcMain.handle('fs:getFullPath', (_, relativePath) => {
+    return getFullPath(store, relativePath);
   });
 
   ipcMain.handle('fs:readFile', (_, filePath) => {

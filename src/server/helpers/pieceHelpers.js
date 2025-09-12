@@ -1,19 +1,5 @@
+const { to01, fmtDate } = require("./utils.js");
 const xss = require('xss');
-
-// Utilities
-
-const to01 = (v) => (v ? 1 : 0);
-function fmtDate(d) {
-  // <--- START HERE (may need to delete haydn cello concerto from database directly)
-  // why doesn't scans redirect work
-  console.log("formatting date", d);
-  if (!d) return null;
-  if (typeof d === 'string') return d.slice(0, 10);
-  const dt = new Date(d);
-  const mm = String(dt.getMonth() + 1).padStart(2, '0');
-  const dd = String(dt.getDate()).padStart(2, '0');
-  return `${dt.getFullYear()}-${mm}-${dd}`;
-}
 
 function mediumCategoryExpr(db) {
   return db.raw(`
@@ -83,6 +69,9 @@ function normalizePieceInfo(info = {}) {
     acquisitionDate,
     lastPerformed,
   } = info;
+
+  console.log("acq date", acquisitionDate);
+  console.log("last perf", lastPerformed);
 
   title = title ? xss(String(title).trim()) : null;
   identifierLabel = identifierLabel ? xss(String(identifierLabel)) : null;

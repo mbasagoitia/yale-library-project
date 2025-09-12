@@ -198,7 +198,8 @@ const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setForm
                 <Col sm={8} className="my-2">
                 <DatePicker
                     selected={
-                        additionalInfo.acquisitionDate
+                        additionalInfo.acquisitionDate &&
+                        !isNaN(new Date(additionalInfo.acquisitionDate).getTime())
                         ? new Date(additionalInfo.acquisitionDate)
                         : null
                     }
@@ -207,7 +208,7 @@ const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setForm
                     dateFormat="MM-dd-yyyy"
                     isClearable
                     placeholderText="Select date"
-                />
+                    />
                 </Col>
             </FormGroup>
 
@@ -218,7 +219,8 @@ const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setForm
                 <Col sm={8} className="my-2">
                 <DatePicker
                     selected={
-                        additionalInfo.lastPerformed
+                        additionalInfo.lastPerformed &&
+                        !isNaN(new Date(additionalInfo.acquisitionDate).getTime())
                         ? new Date(additionalInfo.lastPerformed)
                         : null
                     }

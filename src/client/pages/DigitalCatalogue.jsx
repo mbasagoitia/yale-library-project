@@ -27,9 +27,16 @@ const DigitalCatalogue = () => {
 
     // If the user has navigated here from a different page, set that as the basePath instead
     useEffect(() => {
-      if (initialPath) {
-        setBasePath(initialPath);
+      const getFullPath = async () => {
+        if (initialPath) {
+          if (window?.api?.filesystem?.getFullPath) {
+            const fullPath = await window.api.filesystem.getFullPath(initialPath);
+            setBasePath(fullPath);
+          }
+        }
       }
+      getFullPath();
+
     }, [initialPath]);
     
 
