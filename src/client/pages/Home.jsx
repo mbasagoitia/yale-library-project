@@ -32,9 +32,9 @@ const Home = () => {
 export default Home;
 
 
-// Create the PDF manual; bundle real one with internal and fake one with demo. Add screenshots
+// Create the PDF manual; bundle real one with internal and fake one with demo
+// Dont erase notes when toggling missing parts
 
-// Make demo holdings point some to (fake) digital catalogue links
 // Revisit font sizes in demo and internal
 
 // Update all acquisition dates (anything added within past year...) and rebuild demo data

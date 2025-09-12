@@ -31,6 +31,7 @@ const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setForm
     }
 
     const handleMissingPartsSelect = (e) => {
+        // Start here <-----
         const missing = e.target.id === "missingYes";
         setAdditionalInfo(prevState => ({ ...prevState, missingParts: missing }));
         if (!missing) {
