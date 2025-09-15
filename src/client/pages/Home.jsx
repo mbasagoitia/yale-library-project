@@ -34,10 +34,7 @@ export default Home;
 
 // Create the PDF manual; bundle real one with internal and fake one with demo
 // Display somewhere in app
-
-
-// Fix demo sqlite path
-// Delete extra db files
+// Resolve path to public folder in electron
 
 // Revisit font sizes in demo and internal
 

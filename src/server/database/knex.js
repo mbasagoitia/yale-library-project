@@ -2,10 +2,8 @@ const path = require('path');
 const knexLib = require('knex');
 
 function sqlitePath() {
-  console.log(__dirname, 'demo.db');
   return (
-    process.env.SQLITE_FILE ||
-    path.join(__dirname, 'demo.db')
+    path.join(__dirname, process.env.SQLITE_FILE)
   );
 }
 

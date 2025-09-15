@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Button, Card } from "react-bootstrap";
 import { CheckCircle, XCircle, FileText, Folder } from "lucide-react";
+import Modal from "../components/general/Modal";
+import PDFViewer from "../components/general/PDFViewer";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import "../../assets/styles/pages/SetupWizard.css";
@@ -11,6 +13,23 @@ const SetupWizard = () => {
   const [defaultPathExists, setDefaultPathExists] = useState(false);
   const [folderPath, setFolderPath] = useState("");
   const [isScanning, setIsScanning] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const isDemo =
+  process.env.REACT_APP_APP_MODE === 'demo' ||
+  process.env.REACT_APP_CAS_ENABLED === 'false';
+
+  const manualFilePath = isDemo
+  ? "/manuals/demo/user_manual_demo.pdf"
+  : "/manuals/internal/user_manual.pdf";
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  }
+
+  const saveManual = async () => {
+    console.log("saving manual");
+  }
 
   useEffect(() => {
     if (step === 2) {
@@ -62,8 +81,18 @@ const SetupWizard = () => {
           <p className="mb-4">Welcome to the Philharmonia Library Catalogue!</p>
           <p className="mb-4">You can open or save the user manual below.</p>
           <div className="flex gap-2">
-            <Button><FileText className="mr-2 h-4 w-4" /> Open Manual</Button>
-            <Button variant="outline"><FileText className="mr-2 h-4 w-4" /> Save Manual</Button>
+            <Button onClick={() => setModalOpen(true)}><FileText className="mr-2 h-4 w-4" /> Open Manual</Button>
+            <Button variant="outline" onClick={saveManual}><FileText className="mr-2 h-4 w-4" /> Save Manual</Button>
+            <Modal
+            show={modalOpen}
+            header={"User Manual"}
+            content={
+              <div>
+                <PDFViewer filePath={manualFilePath} />
+              </div>
+            }
+            handleCloseModal={handleCloseModal}
+          />
           </div>
         </>
       ),
