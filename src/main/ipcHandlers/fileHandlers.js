@@ -8,6 +8,7 @@ const {
   chooseFolder,
   setBasePath,
   handleReadFile,
+  handleReadPublicFile,
   handleOpenFile,
   handleOpenFolder,
   handleListDirectory,
@@ -65,6 +66,10 @@ const handleFileHandlers = (ipcMain, store) => {
 
   ipcMain.handle('fs:readFile', (_, filePath) => {
     return handleReadFile(filePath);
+  });
+
+  ipcMain.handle("fs:readPublicFile", (_, relPath) => {
+    return handleReadPublicFile(relPath);
   });
 
   ipcMain.handle('fs:openFile', (_, filePath) => {

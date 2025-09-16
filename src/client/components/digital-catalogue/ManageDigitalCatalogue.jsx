@@ -30,7 +30,6 @@ const ManageDigitalCatalogue = ({ folderPath }) => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentItems = filteredItems.slice(startIndex, startIndex + itemsPerPage);
 
-  // 🔎 Refilter on contents/searchText change
   useEffect(() => {
     if (!searchText.trim()) {
       setFilteredItems(contents);

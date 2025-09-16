@@ -88,7 +88,7 @@ const SetupWizard = () => {
             header={"User Manual"}
             content={
               <div>
-                <PDFViewer filePath={manualFilePath} />
+                <PDFViewer filePath={manualFilePath} fileLocation={"public"} />
               </div>
             }
             handleCloseModal={handleCloseModal}

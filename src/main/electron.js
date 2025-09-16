@@ -87,15 +87,18 @@ app.whenReady().then(() => {
   const DEV_WS = `ws://${DEV_HOST}:${DEV_PORT}`;
   const DEV_API = process.env.REACT_APP_API_BASE || 'http://localhost:5000';
 
-  const CSP = [
-    "default-src 'self'",
-    "base-uri 'self'",
-    "object-src 'none'",
-    "style-src 'self' 'unsafe-inline'",
-    "img-src 'self' data: blob:",
-    "font-src 'self' data:",
-    `connect-src 'self' ${DEV_UI} ${DEV_WS} ${DEV_API}`,
-  ].join('; ');
+const CSP = [
+  "default-src 'self'",
+  "base-uri 'self'",
+  "object-src 'none'",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: blob: https://*.typeform.com https://public-assets.typeform.com",
+  "font-src 'self' data:",
+  "script-src 'self' https://*.typeform.com 'unsafe-inline'",
+  "frame-src 'self' https://*.typeform.com",
+  `connect-src 'self' ${DEV_UI} ${DEV_WS} ${DEV_API}`,
+].join("; ");
+
 
   // Inject CSP but skip Yale CAS & Duo
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {

@@ -1,4 +1,4 @@
-const { dialog, shell } = require('electron');
+const { dialog, shell, app } = require('electron');
 const path = require('path');
 const fs = require('fs-extra');
 const os = require("os");
@@ -15,6 +15,14 @@ function resolveDemoBase() {
   if (fs.existsSync(prodDir)) return prodDir;
   if (fs.existsSync(devDir)) return devDir;
   return null;
+}
+
+function getPublicPath() {
+  // In dev we want the actual /public folder;
+  // in production use process.resourcesPath (or app.getAppPath()).
+  return app.isPackaged
+    ? path.join(process.resourcesPath, "public")
+    : path.join(app.getAppPath(), "public");
 }
 
 const checkDefaultBasePath = async () => {
@@ -95,6 +103,13 @@ const chooseFolder = async (store, defaultPath) => {
 const handleReadFile = async (filePath) => {
     const data = await fs.promises.readFile(filePath);
     return data.buffer;
+};
+
+const handleReadPublicFile = async (relPath) => {
+  const safeRel = relPath.replace(/^\/+/, "");
+  const absPath = path.join(getPublicPath(), safeRel);
+  const data = await fs.promises.readFile(absPath);
+  return data.buffer;
 };
 
 const handleOpenFile = async (fullPath) => {
@@ -199,6 +214,7 @@ module.exports = {
     chooseFolder,
     setBasePath,
     handleReadFile,
+    handleReadPublicFile,
     handleOpenFile,
     handleOpenFolder,
     handleListDirectory,
