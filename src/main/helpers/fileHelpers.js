@@ -136,6 +136,22 @@ const handleOpenFolder = async (folderPath) => {
     }
 };
 
+const handleSavePublicFile = async (srcRelative, saveAs) => {
+  try {
+    const publicDir = getPublicPath();
+    const sourcePath = path.join(publicDir, srcRelative);
+  
+    const { canceled, filePath } = await dialog.showSaveDialog({ defaultPath: saveAs });
+    if (canceled) return { canceled: true };
+  
+    const data = await fs.readFile(sourcePath);
+    await fs.writeFile(filePath, data);
+    return { canceled: false, success:true, filePath };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+}
+
 const handleListDirectory = async (store, filePath = '') => {
   if (!path.isAbsolute(filePath)) {
     filePath = path.resolve('/', filePath);
@@ -217,6 +233,7 @@ module.exports = {
     handleReadPublicFile,
     handleOpenFile,
     handleOpenFolder,
+    handleSavePublicFile,
     handleListDirectory,
     deleteItem,
     moveItem,

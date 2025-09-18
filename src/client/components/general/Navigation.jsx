@@ -34,7 +34,7 @@ const Navigation = () => {
   const handleNavLogout = async () => {
     try {
       await handleLogout(dispatch, navigate);
-      toast.success('Successfully logged out');
+      toast.success('Logged out');
       setIsHovered(false);
       setNavExpanded(false);
     } catch (error) {

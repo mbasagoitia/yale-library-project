@@ -11,6 +11,7 @@ const {
   handleReadPublicFile,
   handleOpenFile,
   handleOpenFolder,
+  handleSavePublicFile,
   handleListDirectory,
   deleteItem,
   moveItem,
@@ -70,6 +71,10 @@ const handleFileHandlers = (ipcMain, store) => {
 
   ipcMain.handle("fs:readPublicFile", (_, relPath) => {
     return handleReadPublicFile(relPath);
+  });
+
+  ipcMain.handle("fs:handleSavePublicFile", (_, srcRelative, saveAs) => {
+    return handleSavePublicFile(srcRelative, saveAs);
   });
 
   ipcMain.handle('fs:openFile', (_, filePath) => {

@@ -11,6 +11,7 @@
 
 .header-content {
     width: 100%;
+    margin: 0 1.5rem;
   }
   
 .site-header a {
@@ -22,4 +23,10 @@
 
 .site-title {
     font-size: clamp(1.2rem, 3vw, 2rem);
+}
+
+.help-btn {
+  background: transparent;
+  border: none;
+  color: white;
 }

@@ -31,11 +31,16 @@ const Home = () => {
 
 export default Home;
 
-
-// Implement save manual to computer
-// Display somewhere in app
-
 // Revisit font sizes in demo and internal
+// Body height just under navbar
+// Acquisition date and DLP on Don Giovanni and La Mer is weird, fix
+// Genre dropdown not opening all the way initially?
+// Performance history report; what if they enter 0 years (make sure this works on both versions)
+// Add new piece form should be a card body, not a container (or just edit padding/margin)
+// Make sure navigation from single piece to digital catalogue works on internal
+// Users should not be able to change digital catalogue base path in demo mode (make sure backend and front end are protected)
+// Test add new admin on internal
+// Export as csv doesn't work on demo (not logged in error)
 
 // Update all acquisition dates (anything added within past year...) for real data
 

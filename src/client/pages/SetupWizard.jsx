@@ -28,7 +28,14 @@ const SetupWizard = () => {
   }
 
   const saveManual = async () => {
-    console.log("saving manual");
+    if (window?.api?.filesystem?.savePublicFile) {
+      const result = await window.api.filesystem.savePublicFile(manualFilePath, "philharmonia_library_catalogue_user-manual.pdf");
+      if (!result.canceled && result.success) {
+        toast.success("Saved user manual");
+      } else if (!result.canceled) {
+        toast.error("Error saving file");
+      }
+    }
   }
 
   useEffect(() => {
@@ -149,8 +156,8 @@ const SetupWizard = () => {
       title: "Administrative Access",
       content: (
         <>
-          <p className="mb-4">Librarians with admin access can manage this application and add other admins.</p>
-          <p className="mb-4">Please see the <strong>Librarian Admin Permissions</strong> section in the user manual.</p>
+          <p className="mb-4">You must request or be granted administrative access to manage this application.</p>
+          <p className="mb-4">Please see the <strong>Librarian Admin Permissions</strong> section on page 6 of the user manual.</p>
         </>
       ),
     },
