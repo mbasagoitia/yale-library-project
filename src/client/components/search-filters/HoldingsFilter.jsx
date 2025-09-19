@@ -75,7 +75,7 @@ const HoldingsFilter = ({ setShowResults }) => {
     return (
         <div className="holdings-filter">
             <Form onSubmit={handleSubmit}>
-                <div className="open-basic-filter d-flex justify-content-end mb-1" onClick={handleFilterSwitch}>
+                <div className="open-basic-filter d-flex mb-1" onClick={handleFilterSwitch}>
                     <BiFilter size={20} />
                     <span className="filter-text ms-2">{`${advancedFilter ? "Basic" : "Advanced"} Filter`}</span>
                 </div>

@@ -18,6 +18,10 @@
     margin-bottom: 4px;
 }
 
+.holdings-filter .medium-select-container {
+    width: 100%;
+}
+
 .open-advanced-filter, .open-basic-filter {
     font-size: clamp(0.8rem, 2vw, 1rem);
     cursor: pointer;
@@ -60,4 +64,11 @@
     background-color: transparent !important;
     border-color: transparent !important;
     color: #222 !important;
+}
+
+@media (min-width: 1200px) {
+    .holdings-filter .medium-select-container {
+        width: 50%;
+        padding: 0 12px 0 0;
+    }
 }

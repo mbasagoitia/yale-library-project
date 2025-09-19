@@ -19,7 +19,7 @@ const DigitalCatalogueFolders = ({ folderPath }) => {
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
-  const itemsPerPage = 10;
+  const itemsPerPage = 8;
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentItems = filteredFolders.slice(startIndex, startIndex + itemsPerPage);
 
@@ -113,7 +113,7 @@ const DigitalCatalogueFolders = ({ folderPath }) => {
         <div className="mt-4">
           <PaginationControls
             currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
+            onPageChange={setCurrentPage}
             totalItems={filteredFolders.length}
             itemsPerPage={itemsPerPage}
           />

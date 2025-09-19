@@ -31,14 +31,12 @@ const Home = () => {
 
 export default Home;
 
-// Revisit font sizes in demo and internal
-// Acquisition date and DLP on Don Giovanni and La Mer is weird, fix
-// Genre dropdown not opening all the way initially?
-// Make sure navigation from single piece to digital catalogue works on internal
-// Users should not be able to change digital catalogue base path in demo mode (make sure backend and front end are protected)
-// Test add new admin on internal
-// Export as csv doesn't work on demo (not logged in error)
-// Add location.back button from digital catalogue but only if user navigate there from piece info page
+// Manage dc folders very weird flex styling
+// Add further privacy on page 6 of user manual (demo)
+// Weird behavior when switching to advanced filter
+// Resize reset text on advanced filter
+
+// Move isDemo logic to redux instead of querying on every page?
 
 // Update all acquisition dates (anything added within past year...) for real data
 

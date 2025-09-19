@@ -1,5 +1,5 @@
 .custom-dropdown-menu {
-    max-height: 20vh;
+    max-height: 30vh;
     overflow-y: auto;
     position: absolute;
     width: 100%;
@@ -8,6 +8,7 @@
     z-index: 1000;
     background-color: white;
     border: 1px solid rgba(0, 0, 0, 0.15);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
   }
   
 .custom-dropdown-menu .dropdown-item {
@@ -23,4 +24,22 @@
 
 .searchableList {
     position: relative;
+}
+
+.basic-filter-row {
+    container-type: inline-size;
+    container-name: filter;
+  }
+
+.basic-filter-container {
+    flex: 0 0 auto;
+    width: 100%;
+}
+
+@container filter (min-width: 800px) {
+    /* I need to override the bootstrap defaults for this to work */
+    .basic-filter-container {
+        width: 50% !important;
+        flex: 0 0 auto !important;
+    }
 }

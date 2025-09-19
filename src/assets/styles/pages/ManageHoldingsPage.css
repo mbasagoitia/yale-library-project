@@ -5,21 +5,3 @@
 .manage-dc .card-text {
     font-size: clamp(0.8rem, 2vw, 1rem);
 }
-
-.manage-dc-container {
-    container-type: inline-size;
-}
-
-/* Adjust? */
-
-@container (min-width: 500px) {
-    .manage-dc .col {
-      flex: 0 0 25%;
-    }
-  }
-  
-@container (max-width: 499px) {
-    .manage-dc .col {
-        flex: 0 0 50%;
-    }
-}

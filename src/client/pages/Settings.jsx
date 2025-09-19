@@ -116,7 +116,7 @@ const Settings = () => {
               <Card.Body>
                 <div className="holdings-buttons-container">
                   <Card.Text>
-                  Create and compress a backup of the digital library catalogue. Store in Google Drive or another safe location. This process may take a few minutes.
+                    Create and compress a backup of the digital library catalogue. Store in Google Drive or another safe location. This process may take a few minutes.
                   </Card.Text>
                   <Button variant="primary" onClick={handleBackupScans} disabled={!basePath}>
                       Export Digital Catalogue

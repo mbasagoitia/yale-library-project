@@ -34,7 +34,7 @@ function App() {
   const token = useSelector((state) => state.auth.token);
   const [pathReset, setPathReset] = useState(false);
 
-  const { exists: cataloguePathExists } = useFolderCheck();
+  let { exists: cataloguePathExists } = useFolderCheck();
 
   // Demo login shortcut
   useEffect(() => {

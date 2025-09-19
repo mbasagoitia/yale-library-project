@@ -106,6 +106,7 @@ const AdvancedFilter = ({ searchCriteria, setSearchCriteria, resetHoldings }) =>
     }
     
     return (
+      resourceData.publisherData.length > 0 && resourceData.speciesData.length > 0 && (
         <div className="advanced-filter">
             <div className="mt-4">
             <div className="reset-text mb-2" onClick={clearSearchCriteria}>Reset</div>
@@ -119,10 +120,10 @@ const AdvancedFilter = ({ searchCriteria, setSearchCriteria, resetHoldings }) =>
                 </Row>
                 <Row>
                     <Col md={6} className="my-2 my-md-0">
-                        {resourceData.publisherData.length > 0 && <PublisherSelect key={publisherKey} items={resourceData.publisherData} selectedItem={searchCriteria?.publisher} onItemClick={onPublisherSelect} />}
+                      <PublisherSelect key={publisherKey} items={resourceData.publisherData} selectedItem={searchCriteria?.publisher} onItemClick={onPublisherSelect} />
                     </Col>
                     <Col md={6} className="my-2 my-md-0">
-                            <SpeciesSelect key={genreKey} items={resourceData.speciesData} selectedItem={searchCriteria?.genre} onItemClick={onGenreSelect}  />    
+                      <SpeciesSelect key={genreKey} items={resourceData.speciesData} selectedItem={searchCriteria?.genre} onItemClick={onGenreSelect}  />   
                     </Col>
                 </Row>
                 <Row className="my-0 my-md-3">
@@ -130,11 +131,14 @@ const AdvancedFilter = ({ searchCriteria, setSearchCriteria, resetHoldings }) =>
                         <Form.Label>
                             <Dropdown.Toggle id="dropdown-basic" className="p-0 ensemble-toggle-btn" onClick={handleToggleMediumSelect}>Ensemble Type</Dropdown.Toggle>
                         </Form.Label>
-                        {mediumSelectShown && <MediumSelect items={resourceData.mediumData} handleItemSelect={onMediumSelect} />}
+                        <div className="medium-select-container">
+                          {mediumSelectShown && <MediumSelect items={resourceData.mediumData} handleItemSelect={onMediumSelect} />}
+                        </div>
                     </Col>
                 </Row>
             </div>
         </div>
+      )
     )
 }
 

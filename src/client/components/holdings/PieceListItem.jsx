@@ -56,19 +56,17 @@ const PieceListItem = ({ data, behavior, currentPage }) => {
         >
             <Card.Body>
                 <Row className="align-items-center">
-                    <Col xs={0} sm={1} className="empty-col">
+                    <Col sm={1} className="empty-col">
                         <div className="empty-tag"></div>
                     </Col>
-                    <Col xs={5} sm={4} className='d-flex op-col'>
+                    <Col xs={6} sm={4} className='d-flex op-col'>
                         <p className="mb-0">{title}</p>
                     </Col>
-                    <Col xs={4}>
+                    <Col xs={6} sm={4}>
                         <p className="mb-0 text-muted">{`${last_name}, ${first_name}`}</p>
                     </Col>
-                    <Col xs={3}>
-                        <div>
-                            {publisher && <div>{publisher}</div>}
-                        </div>
+                    <Col sm={3} className="d-none d-sm-block">
+                        {publisher && <div>{publisher}</div>}
                     </Col>
                 </Row>
             </Card.Body>

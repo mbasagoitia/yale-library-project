@@ -40,9 +40,8 @@ body {
 .page-content {
   max-width: 1500px;
   width: 100%;
-  /* Height of navbar is 15vh */
   min-height: 100vh;
-  margin: 0;
+  margin: 0 auto;
   text-align: left;
   padding: 2rem 1rem;
   color: #222;

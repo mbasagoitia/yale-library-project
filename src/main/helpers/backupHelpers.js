@@ -6,10 +6,6 @@ const streamPipeline = promisify(pipeline);
 const archiver = require("archiver");
 
 const createReadableBackup = async (store) => {
-  const token = store.get("authToken");
-  if (!token) {
-    return { success: false, message: "You must be logged in to create a CSV backup." };
-  }
 
   const baseFolder = store.get("basePath");
   if (!baseFolder) {
@@ -25,9 +21,7 @@ const createReadableBackup = async (store) => {
     const filePath = path.join(backupFolder, `library_backup_${timestamp}.csv`);
 
     const backupUrl = `http://localhost:5000/api/backup/readable?filePath=${encodeURIComponent(filePath)}`;
-    const res = await fetch(backupUrl, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const res = await fetch(backupUrl);
 
     if (!res.ok) {
       return { success: false, message: `Backup failed: ${res.statusText}` };

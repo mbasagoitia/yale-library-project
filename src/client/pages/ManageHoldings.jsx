@@ -82,6 +82,7 @@ const ManageHoldings = () => {
                                 <h5 className="mb-0">Edit Existing Holdings</h5>
                             </Card.Header>
                             <Card.Body>
+                                <h3>Edit</h3>
                                 <HoldingsFilter setShowResults={setShowResults}/>
                                 <hr />
                                 {showResults ? <h2 className="mt-2 mb-3">Results: {filteredItems.length}</h2> : null}

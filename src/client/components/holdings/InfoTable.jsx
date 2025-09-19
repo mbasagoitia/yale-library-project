@@ -1,9 +1,12 @@
 import { Table } from 'react-bootstrap';
-import formatDate from "../../helpers/general/formatDate";
 import { useNavigate } from "react-router-dom";
+import formatDate from '../../helpers/general/formatDate';
 
 const InfoTable = ({ data }) => {
-    const { first_name, last_name, genre, publisher, acquisition_date, call_number, public_domain, own_digital, scans_url, condition, date_last_performed, additional_notes } = data;
+    let { first_name, last_name, genre, publisher, acquisition_date, call_number, public_domain, own_digital, scans_url, condition, date_last_performed, additional_notes } = data;
+
+    acquisition_date = formatDate(acquisition_date);
+    date_last_performed = formatDate(date_last_performed);
 
     const navigate = useNavigate();
 
@@ -36,11 +39,11 @@ const InfoTable = ({ data }) => {
                 </tr>
                 <tr>
                     <td><strong>Acquisition Date</strong></td>
-                    <td>{acquisition_date ? formatDate(acquisition_date) : "Unknown"}</td>
+                    <td>{acquisition_date || "Unknown"}</td>
                 </tr>
                 <tr>
                     <td><strong>Date Last Performed</strong></td>
-                    <td>{date_last_performed ? formatDate(date_last_performed) : "Unknown"}</td>
+                    <td>{date_last_performed || "Unknown"}</td>
                 </tr>
                 <tr>
                     <td><strong>Public Domain</strong></td>

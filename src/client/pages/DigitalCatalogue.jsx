@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import DigitalCatalogueFolders from "../components/digital-catalogue/DigitalCatalogueFolders";
 import "../../assets/styles/pages/DigitalCataloguePage.css";
+import { ArrowLeft } from "react-bootstrap-icons";
 
 const DigitalCatalogue = () => {
 
@@ -9,6 +10,8 @@ const DigitalCatalogue = () => {
 
     const location = useLocation();
     const initialPath = location.state?.initialPath;
+
+    const navigate = useNavigate();
 
     // Base path stored in Electron will be default folder
     useEffect(() => {
@@ -42,6 +45,15 @@ const DigitalCatalogue = () => {
 
     return (
         <div className="digital-catalogue">
+          {location.state?.initialPath && 
+            (<button
+              onClick={() =>
+                navigate(-1)
+              }
+              className="back-arrow-btn mb-4"
+            >
+              <ArrowLeft size={20} />
+            </button>)}
           <h1>Digital Catalogue</h1>
           {basePath ? <DigitalCatalogueFolders folderPath={basePath} /> : null}
         </div>

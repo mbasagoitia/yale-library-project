@@ -24,7 +24,10 @@ const Browse = () => {
 
       <div className="holdings-content mt-4">
         <div className="mb-4">
-          <HoldingsFilter setShowResults={setShowResults} />
+          <h2>Search</h2>
+          <div className="mt-4">
+            <HoldingsFilter setShowResults={setShowResults} />
+          </div>
         </div>
 
         {showResults && <h2>Results: {filteredItems.length}</h2>}

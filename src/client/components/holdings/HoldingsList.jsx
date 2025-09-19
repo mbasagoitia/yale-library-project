@@ -3,7 +3,7 @@ import PieceListItem from "./PieceListItem";
 import PaginationControls from "../general/PaginationControls";
 import "../../../assets/styles/components/HoldingsList.css";
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 8;
 
 const HoldingsList = ({ filteredItems, behavior, initialPage = 1 }) => {
   const [currentPage, setCurrentPage] = useState(initialPage);

@@ -5,10 +5,9 @@
   }
 
 .nav-content {
-    width: 100vw;
+    width: 100%;
     background-color: #f8f9fa;
     padding: 1rem;
-    max-width: 1200px;
     font-family: sans-serif;
     z-index: 100;
 }
@@ -55,7 +54,6 @@
         justify-content: flex-start;
         transition: height 0.3s ease;
         height: 160px;
-        width: 100vw;
         z-index: 100;
         overflow: visible;
     }
@@ -66,11 +64,11 @@
 
     .nav-content {
         display: flex;
+        justify-content: space-between;
         flex: 0 0 auto;
         position: relative;
         padding: 3rem 1.5rem;
         z-index: 101;
         align-items: center;
-        width: 100vw;
     }
 }
