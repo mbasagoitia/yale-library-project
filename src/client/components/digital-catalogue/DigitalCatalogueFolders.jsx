@@ -68,9 +68,7 @@ const DigitalCatalogueFolders = ({ folderPath }) => {
         />
       ) : null}
       <div className="dc-nav-info my-4">
-
           <Button
-
             variant="outline-primary"
             onClick={handleNavigate}
             disabled={!currentPath || currentPath === folderPath}

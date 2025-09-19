@@ -83,7 +83,9 @@ const ManageHoldings = () => {
                             </Card.Header>
                             <Card.Body>
                                 <h3>Edit</h3>
-                                <HoldingsFilter setShowResults={setShowResults}/>
+                                <div className="mt-4">
+                                    <HoldingsFilter setShowResults={setShowResults}/>
+                                </div>
                                 <hr />
                                 {showResults ? <h2 className="mt-2 mb-3">Results: {filteredItems.length}</h2> : null}
                                 <HoldingsList filteredItems={filteredItems} behavior={"edit"} />
@@ -94,6 +96,7 @@ const ManageHoldings = () => {
                                 <h5 className="mb-0">Manage Digital Catalogue</h5>
                             </Card.Header>
                             <Card.Body>
+                                <h3>Manage Digital Catalogue</h3>
                                 <ManageDigitalCatalogue folderPath={basePath} />
                             </Card.Body>
                         </Card>

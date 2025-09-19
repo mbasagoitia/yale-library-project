@@ -1,6 +1,5 @@
 .pagination-controls {
     display: flex;
-    min-width: 250px;
     justify-content: space-between;
     gap: 0.5rem;
     margin-top: 1rem;

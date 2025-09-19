@@ -2,6 +2,22 @@
     font-size: clamp(1rem, 3vw, 1.2rem);
 }
 
+.manage-holdings h3 {
+    color: #286dc0;
+}
+
 .manage-dc .card-text {
     font-size: clamp(0.8rem, 2vw, 1rem);
+}
+
+.manage-dc-container {
+    flex-wrap: wrap;    
+    justify-content: center;
+    gap: 10px;
+}
+
+.manage-dc-item {
+    min-width: 150px;
+    max-width: 180px;
+    flex-grow: 1;
 }

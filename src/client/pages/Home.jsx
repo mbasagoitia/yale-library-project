@@ -31,10 +31,8 @@ const Home = () => {
 
 export default Home;
 
-// Manage dc folders very weird flex styling
 // Add further privacy on page 6 of user manual (demo)
-// Weird behavior when switching to advanced filter
-// Resize reset text on advanced filter
+// Token expiry issues
 
 // Move isDemo logic to redux instead of querying on every page?
 

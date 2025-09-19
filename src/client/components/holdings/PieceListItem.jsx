@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Card, Row, Col } from 'react-bootstrap';
 import { useMode } from "../../contexts/ModeContext.js";
 import { useNavigate } from 'react-router-dom';
@@ -26,8 +27,22 @@ const PieceListItem = ({ data, behavior, currentPage }) => {
         title += ` ${identifier_label} ${identifier_value}`;
     }
 
+    // Listen to resize event and get container width
+    const [windowWidth, setWindowWidth] = useState(null);
+
     // Sets initial piece data on manage holdings page
     const { setMode, setData, setMediumResetKey, catalogueFormRef } = useMode();
+
+    useEffect(() => {
+        const updateWidth = () => {
+            setWindowWidth(window.innerWidth);
+        };
+    
+        updateWidth();
+        window.addEventListener('resize', updateWidth);
+        return () => window.removeEventListener('resize', updateWidth);
+        }, []);
+
 
     // Navigates to single piece page
     const navigate = useNavigate();
@@ -46,7 +61,7 @@ const PieceListItem = ({ data, behavior, currentPage }) => {
                     // If a user clicks on this item, the mode should be set to edit instead of new
                     setMode("edit");
                     // Scroll if on smaller screen size
-                    if (catalogueFormRef.current) {
+                    if (catalogueFormRef.current && windowWidth < 1200) {
                         catalogueFormRef.current.scrollIntoView({ behavior: "smooth" });
                       }
                 } else {

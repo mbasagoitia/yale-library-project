@@ -9,137 +9,173 @@ import { useDispatch } from "react-redux";
 import { clearSearch } from "../../../redux/searchSlice";
 
 const AdvancedFilter = ({ searchCriteria, setSearchCriteria, resetHoldings }) => {
+  const [mediumSelectShown, setMediumSelectShown] = useState(false);
+  const [genreKey, setGenreKey] = useState(1);
+  const [publisherKey, setPublisherKey] = useState(1);
 
-    const [mediumSelectShown, setMediumSelectShown] = useState(false);
-    const [genreKey, setGenreKey] = useState(1);
-    const [publisherKey, setPublisherKey] = useState(1);
+  const resourceData = useFetchResourceData();
+  const dispatch = useDispatch();
 
-    const resourceData = useFetchResourceData();
-
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        if (mediumSelectShown && resourceData.mediumData.length > 0) {
-          setSearchCriteria(prev => {
-            if (!prev.medium) {
-              return {
-                ...prev,
-                medium: resourceData.mediumData[0]?.options?.[0] || null,
-              };
-            }
-            return prev;
-          });
-        }
-      
-        if (!mediumSelectShown) {
-          setSearchCriteria(prev => ({
+  useEffect(() => {
+    if (mediumSelectShown && resourceData.mediumData.length > 0) {
+      setSearchCriteria((prev) => {
+        if (!prev.medium) {
+          return {
             ...prev,
-            medium: null
-          }));
+            medium: resourceData.mediumData[0]?.options?.[0] || null,
+          };
         }
-      }, [mediumSelectShown, resourceData.mediumData]);
-
-    const onTitleChange = (e) => {
-        setSearchCriteria({
-            ...searchCriteria,
-            title: e.target.value
-        });
+        return prev;
+      });
     }
 
-    const onComposerChange = (e) => {
-        setSearchCriteria({
-            ...searchCriteria,
-            composer: e.target.value
-        });
+    if (!mediumSelectShown) {
+      setSearchCriteria((prev) => ({
+        ...prev,
+        medium: null,
+      }));
     }
+  }, [mediumSelectShown, resourceData.mediumData]);
 
-    const onMediumSelect = (item) => {
-        setSearchCriteria({
-          ...searchCriteria,
-          medium: item
-        });
-      };
+  const onTitleChange = (e) =>
+    setSearchCriteria({
+      ...searchCriteria,
+      title: e.target.value,
+    });
 
-    const onGenreSelect = (item) => {
-        setSearchCriteria({
-            ...searchCriteria,
-            genre: item
-        });
-    }
+  const onComposerChange = (e) =>
+    setSearchCriteria({
+      ...searchCriteria,
+      composer: e.target.value,
+    });
 
-    const onPublisherSelect = (item) => {
-        setSearchCriteria({
-            ...searchCriteria,
-            publisher: item
-        });
-    }
+  const onMediumSelect = (item) =>
+    setSearchCriteria({
+      ...searchCriteria,
+      medium: item,
+    });
 
-    const handleToggleMediumSelect = () => {
-        setMediumSelectShown((prev) => {
-          const newShown = !prev;
-      
-          if (!newShown) {
-            setSearchCriteria((prevCriteria) => ({
-              ...prevCriteria,
-              medium: null,
-            }));
-          }
-      
-          return newShown;
-        });
-    };
+  const onGenreSelect = (item) =>
+    setSearchCriteria({
+      ...searchCriteria,
+      genre: item,
+    });
 
-    const clearSearchCriteria = () => {
+  const onPublisherSelect = (item) =>
+    setSearchCriteria({
+      ...searchCriteria,
+      publisher: item,
+    });
 
-        dispatch(clearSearch());
-        resetHoldings();
-        setMediumSelectShown(false);
-        setGenreKey(genreKey + 1);
-        setPublisherKey(publisherKey + 1);
-        setSearchCriteria({
-            composer: "",
-            title: "",
-            medium: "",
-            publisher: "",
-            genre: ""
-        })
-    }
-    
-    return (
-      resourceData.publisherData.length > 0 && resourceData.speciesData.length > 0 && (
-        <div className="advanced-filter">
-            <div className="mt-4">
-            <div className="reset-text mb-2" onClick={clearSearchCriteria}>Reset</div>
-                <Row className="mb-0 mb-md-4">
-                    <Col md={6} className="my-2 my-md-0">
-                        <FilterInput placeholder={"Title"} value={searchCriteria.title || ''} onChange={onTitleChange} />
-                    </Col>
-                    <Col md={6} className="my-2 my-md-0">
-                        <FilterInput placeholder={"Composer"} value={searchCriteria.composer || ''} onChange={onComposerChange} />
-                    </Col>
-                </Row>
-                <Row>
-                    <Col md={6} className="my-2 my-md-0">
-                      <PublisherSelect key={publisherKey} items={resourceData.publisherData} selectedItem={searchCriteria?.publisher} onItemClick={onPublisherSelect} />
-                    </Col>
-                    <Col md={6} className="my-2 my-md-0">
-                      <SpeciesSelect key={genreKey} items={resourceData.speciesData} selectedItem={searchCriteria?.genre} onItemClick={onGenreSelect}  />   
-                    </Col>
-                </Row>
-                <Row className="my-0 my-md-3">
-                    <Col xs={12} className="my-2 my-md-0">
-                        <Form.Label>
-                            <Dropdown.Toggle id="dropdown-basic" className="p-0 ensemble-toggle-btn" onClick={handleToggleMediumSelect}>Ensemble Type</Dropdown.Toggle>
-                        </Form.Label>
-                        <div className="medium-select-container">
-                          {mediumSelectShown && <MediumSelect items={resourceData.mediumData} handleItemSelect={onMediumSelect} />}
-                        </div>
-                    </Col>
-                </Row>
-            </div>
+  const handleToggleMediumSelect = () =>
+    setMediumSelectShown((prev) => {
+      const newShown = !prev;
+      if (!newShown) {
+        setSearchCriteria((prevCriteria) => ({
+          ...prevCriteria,
+          medium: null,
+        }));
+      }
+      return newShown;
+    });
+
+  const clearSearchCriteria = () => {
+    dispatch(clearSearch());
+    resetHoldings();
+    setMediumSelectShown(false);
+    setGenreKey((k) => k + 1);
+    setPublisherKey((k) => k + 1);
+    setSearchCriteria({
+      composer: "",
+      title: "",
+      medium: "",
+      publisher: "",
+      genre: "",
+    });
+  };
+
+  return (
+    <div className="advanced-filter">
+      <div className="mt-2">
+        <div className="reset-text mb-2" onClick={clearSearchCriteria}>
+          Reset
         </div>
-      )
-    )
-}
+
+        {/* Title / Composer */}
+        <Row className="mb-0 mb-md-4">
+          <Col md={6} className="my-2 my-md-0">
+            <FilterInput
+              placeholder="Title"
+              value={searchCriteria.title || ""}
+              onChange={onTitleChange}
+            />
+          </Col>
+          <Col md={6} className="my-2 my-md-0">
+            <FilterInput
+              placeholder="Composer"
+              value={searchCriteria.composer || ""}
+              onChange={onComposerChange}
+            />
+          </Col>
+        </Row>
+
+        {/* Publisher / Species */}
+        <Row>
+          <Col md={6} className="my-2 my-md-0">
+            {resourceData.publisherData.length > 0 ? (
+              <PublisherSelect
+                key={publisherKey}
+                items={resourceData.publisherData}
+                selectedItem={searchCriteria?.publisher}
+                onItemClick={onPublisherSelect}
+              />
+            ) : (
+              <div className="skeleton skeleton-select">Loading publishers…</div>
+            )}
+          </Col>
+
+          <Col md={6} className="my-2 my-md-0">
+            {resourceData.speciesData.length > 0 ? (
+              <SpeciesSelect
+                key={genreKey}
+                items={resourceData.speciesData}
+                selectedItem={searchCriteria?.genre}
+                onItemClick={onGenreSelect}
+              />
+            ) : (
+              <div className="skeleton skeleton-select">Loading genres…</div>
+            )}
+          </Col>
+        </Row>
+
+        {/* Medium select */}
+        <Row className="my-0 my-md-3">
+          <Col xs={12} className="my-2 my-md-0">
+            <Form.Label>
+              <Dropdown.Toggle
+                id="dropdown-basic"
+                className="p-0 ensemble-toggle-btn"
+                onClick={handleToggleMediumSelect}
+              >
+                Ensemble Type
+              </Dropdown.Toggle>
+            </Form.Label>
+            <div className="medium-select-container">
+              {mediumSelectShown &&
+                (resourceData.mediumData.length > 0 ? (
+                  <MediumSelect
+                    items={resourceData.mediumData}
+                    handleItemSelect={onMediumSelect}
+                  />
+                ) : (
+                  <div className="skeleton skeleton-list">Loading…</div>
+                ))}
+            </div>
+          </Col>
+        </Row>
+      </div>
+    </div>
+  );
+};
 
 export default AdvancedFilter;

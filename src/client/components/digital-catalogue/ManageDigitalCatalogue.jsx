@@ -126,7 +126,7 @@ const ManageDigitalCatalogue = ({ folderPath }) => {
 
         {hasSubfolders ? (
           <>
-            <Button onClick={() => setShowCFModal(true)} className="ms-2">
+            <Button onClick={() => setShowCFModal(true)}>
               + Add Folder
             </Button>
             <CreateFolderModal
@@ -136,15 +136,15 @@ const ManageDigitalCatalogue = ({ folderPath }) => {
             />
           </>
         ) : (
-          <Button variant="success" className="ms-2" onClick={handleAddPDF}>
+          <Button variant="success" onClick={handleAddPDF}>
             + Add PDF Files
           </Button>
         )}
       </div>
 
-      <Row className="g-3 manage-dc-container">
+      <div className="manage-dc-container d-flex">
         {currentItems.map((item) => (
-          <Col key={item.relativePath}>
+          <div key={item.relativePath} className="manage-dc-item">
             <Card
               className="text-center file-card h-100 position-relative"
               onClick={() => handleClick(item)}
@@ -192,15 +192,15 @@ const ManageDigitalCatalogue = ({ folderPath }) => {
                 </Button>
               </div>
             </Card>
-          </Col>
+          </div>
         ))}
-      </Row>
+      </div>
 
       <Row>
         <div className="mt-4">
           <PaginationControls
             currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
+            onPageChange={setCurrentPage}
             totalItems={filteredItems.length}
             itemsPerPage={itemsPerPage}
           />

@@ -1,5 +1,6 @@
 .catalogueForm form .container {
     margin: 0;
+    padding: 0;
 }
 
 .catalogueForm button {
@@ -86,6 +87,7 @@
     color: #002b50;
     text-align: left;
     cursor: pointer;
+    font-size: 0.8rem;
 }
 
 .id-num-col {
