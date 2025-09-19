@@ -1,3 +1,7 @@
+.catalogueForm form .container {
+    margin: 0;
+}
+
 .catalogueForm button {
     font-size: clamp(0.8rem, 4vw, 1rem);
 }

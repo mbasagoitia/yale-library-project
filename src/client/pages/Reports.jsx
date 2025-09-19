@@ -58,9 +58,15 @@ const Reports = () => {
     const options =
       reportType === "performance-history" ? { years } : {};
 
-    if (reportType === "performance-history" && !years) {
-      toast.warn("Please enter number of years");
-      return;
+    if (reportType === "performance-history") {
+      if (!years) {
+        toast.warn("Please enter number of years");
+        return;
+      }
+      if (years < 1) {
+        toast.warn("Please enter a positive number of years");
+        return;
+      }
     }
 
     const data = await fetchReportData(reportType, options);

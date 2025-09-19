@@ -41,7 +41,7 @@ body {
   max-width: 1500px;
   width: 100%;
   /* Height of navbar is 15vh */
-  min-height: 85vh;
+  min-height: 100vh;
   margin: 0;
   text-align: left;
   padding: 2rem 1rem;
