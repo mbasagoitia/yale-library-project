@@ -1,4 +1,6 @@
-export const cfg = {
-  mode: process.env.REACT_APP_APP_MODE === 'internal' ? 'internal' : 'demo',
+const cfg = {
+  isDemo: process.env.REACT_APP_APP_MODE !== 'internal',
   brand: process.env.REACT_APP_BRAND || 'Demo',
 };
+
+export default cfg;

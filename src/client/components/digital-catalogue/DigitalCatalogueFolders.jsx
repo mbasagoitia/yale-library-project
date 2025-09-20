@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import useFolderContents from '../../hooks/useFolderContents';
-import { handleOpenCurrentFolder } from "../../helpers/digital-catalogue/openContents";
+import { handleOpenCurrentFolder } from "../../helpers/digital-catalogue/openContents.js";
 import PDFPreview from './PDFPreview';
 import { Container, Row, Col, Button, Card } from 'react-bootstrap';
 import Modal from '../general/Modal';

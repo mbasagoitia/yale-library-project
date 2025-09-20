@@ -20,15 +20,15 @@ import { toast } from 'react-toastify';
 import SetupWizard from "./client/pages/SetupWizard.jsx";
 import useFolderCheck from "./client/hooks/useFolderCheck.js";
 import MissingCatalogueNotice from "./client/components/general/MissingCatalogueNotice.jsx";
+import cfg from './config/appConfig.js';
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./assets/styles/global/App.css";
 
-const isDemo =
-  process.env.REACT_APP_APP_MODE === 'demo' ||
-  process.env.REACT_APP_CAS_ENABLED === 'false';
-
 function App() {
+
+  const isDemo = cfg.isDemo;
+  
   const dispatch = useDispatch();
   const hasAttachedAuthListeners = useRef(false);
   const token = useSelector((state) => state.auth.token);
@@ -40,9 +40,10 @@ function App() {
   useEffect(() => {
     if (!isDemo) return;
   
+    dispatch(login({ netid: 'demo', isAdmin: true, token: null }));
     const shown = localStorage.getItem("demoToastShown");
+
     if (!shown) {
-      dispatch(login({ netid: 'demo', isAdmin: true, token: null }));
       toast.success("Welcome, demo user!");
       localStorage.setItem("demoToastShown", "true");
     }

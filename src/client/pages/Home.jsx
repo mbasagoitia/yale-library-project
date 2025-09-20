@@ -31,11 +31,6 @@ const Home = () => {
 
 export default Home;
 
-// Add further privacy on page 6 of user manual (demo)
-// Session expiring modal; fix sizing of dynamic numbers <--- START HERE
-
-// Move isDemo logic to redux instead of querying on every page?
-
 // Update all acquisition dates (anything added within past year...) for real data
 
 // Keytar with .env

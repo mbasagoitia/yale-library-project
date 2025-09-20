@@ -92,7 +92,7 @@ const TokenExpiryHandler = ({ token, renewToken, intervalRef, timeoutRef }) => {
       show={showModal}
       header="Session Expiring"
       content={
-        <div className="d-flex flex-column align-items-center p-4">
+        <div className="d-flex flex-column align-items-center p-4 session-modal-content">
           <p>
             Your session will expire in {secondsLeft ?? 0} second
             {secondsLeft !== 1 ? 's' : ''}.

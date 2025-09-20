@@ -10,9 +10,10 @@ import { useNavigate } from 'react-router-dom';
 import { FaUserCircle} from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import "../../../assets/styles/components/Navbar.css";
+import cfg from "../../../config/appConfig";
 
 const Navigation = () => {
-  const isDemo = process.env.REACT_APP_APP_MODE === 'demo' || process.env.REACT_APP_CAS_ENABLED === 'false';
+  const isDemo = cfg.isDemo;
 
   const [isHovered, setIsHovered] = useState(false);
   const [navExpanded, setNavExpanded] = useState(false);

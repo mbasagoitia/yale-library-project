@@ -6,6 +6,7 @@ import PDFViewer from "../components/general/PDFViewer";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import "../../assets/styles/pages/SetupWizard.css";
+import cfg from "../../config/appConfig";
 
 const SetupWizard = () => {
   const [step, setStep] = useState(1);
@@ -15,9 +16,7 @@ const SetupWizard = () => {
   const [isScanning, setIsScanning] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
 
-  const isDemo =
-  process.env.REACT_APP_APP_MODE === 'demo' ||
-  process.env.REACT_APP_CAS_ENABLED === 'false';
+  const isDemo = cfg.isDemo;
 
   const manualFilePath = isDemo
   ? "/manuals/demo/user_manual_demo.pdf"

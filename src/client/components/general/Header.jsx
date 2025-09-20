@@ -6,6 +6,7 @@ import PDFViewer from "./PDFViewer";
 import Modal from "./Modal";
 import "../../../assets/styles/components/Header.css";
 import { toast } from "react-toastify";
+import cfg from "../../../config/appConfig";
 
 const Header = () => {
 
@@ -21,9 +22,7 @@ const Header = () => {
         setModalOpen(false);
     }
 
-    const isDemo =
-    process.env.REACT_APP_APP_MODE === 'demo' ||
-    process.env.REACT_APP_CAS_ENABLED === 'false';
+    const isDemo = cfg.isDemo;
   
     const manualFilePath = isDemo
     ? "/manuals/demo/user_manual_demo.pdf"

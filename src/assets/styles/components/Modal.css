@@ -41,3 +41,15 @@
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   }
 
+.session-modal-content {
+  width: 250px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+@media (min-width: 576px) {
+  .session-modal-content {
+    width: 350px;
+  }
+}
+

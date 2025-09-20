@@ -3,7 +3,7 @@ import useFolderContents from "../../hooks/useFolderContents";
 import { handleOpenFile } from "../../helpers/digital-catalogue/openContents";
 import PDFPreview from "./PDFPreview";
 import CreateFolderModal from "../general/CreateFolderModal";
-import { Container, Row, Col, Button, Card } from "react-bootstrap";
+import { Container, Row, Button, Card } from "react-bootstrap";
 import Modal from "../general/Modal";
 import PaginationControls from "../general/PaginationControls";
 import Searchbar from "../search-filters/Searchbar";

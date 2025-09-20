@@ -1,8 +1,7 @@
 import { toast } from 'react-toastify';
+import cfg from '../../../config/appConfig';
 
-const isDemo =
-  process.env.REACT_APP_APP_MODE === 'demo' ||
-  String(process.env.REACT_APP_CAS_ENABLED).toLowerCase() === 'false';
+const isDemo = cfg.isDemo;
 
 const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:5000';
 

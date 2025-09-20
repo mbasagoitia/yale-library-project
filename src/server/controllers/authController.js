@@ -37,7 +37,7 @@ const validateTicket = async (req, res, next) => {
     
     const isAdmin = await isNetIDAdmin(req.db, netid);
 
-    const token = jwt.sign({ netid, isAdmin }, JWT_SECRET, { expiresIn: '40s' });
+    const token = jwt.sign({ netid, isAdmin }, JWT_SECRET, { expiresIn: '1h' });
 
     res.json({
       success: true,
@@ -54,7 +54,7 @@ const validateTicket = async (req, res, next) => {
 const renewToken = (req, res, next) => {
   try {
     const { netid, isAdmin } = req.user;
-    const newToken = jwt.sign({ netid, isAdmin }, JWT_SECRET, { expiresIn: '40s' });
+    const newToken = jwt.sign({ netid, isAdmin }, JWT_SECRET, { expiresIn: '1h' });
 
     res.json({ success: true, token: newToken, netid: netid, isAdmin: isAdmin });
   } catch (err) {

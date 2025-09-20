@@ -15,7 +15,7 @@ const Browse = () => {
     if (search.searchType) setShowResults(true);
   }, [search]);
 
-  // Pass the starting page from location.state down to HoldingsList
+  // Keep track of current page in case user navigates back and wants to go to the same page they were on
   const initialPage = location.state?.page || 1;
 
   return (

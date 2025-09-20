@@ -28,7 +28,7 @@ const DigitalCatalogue = () => {
       
     }, []);
 
-    // If the user has navigated here from a different page, set that as the basePath instead
+    // If the user has navigated here from a different page (piece info), set that as the basePath instead
     useEffect(() => {
       const getFullPath = async () => {
         if (initialPath) {
@@ -42,7 +42,6 @@ const DigitalCatalogue = () => {
 
     }, [initialPath]);
     
-
     return (
         <div className="digital-catalogue">
           {location.state?.initialPath && 
