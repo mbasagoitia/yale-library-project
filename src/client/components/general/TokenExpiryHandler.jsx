@@ -74,7 +74,6 @@ const TokenExpiryHandler = ({ token, renewToken, intervalRef, timeoutRef }) => {
     try {
       const result = await renewToken();
       if (result?.success && result?.token) {
-        console.log(result);
         toast.success('Session renewed!');
         dispatch(login({ netid: result.netid, isAdmin: result.isAdmin, token: result.token }));
       } else {

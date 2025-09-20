@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import useFolderContents from "../../hooks/useFolderContents";
-import { handleOpenFile } from "../../helpers/digital-catalogue/openContents";
 import PaginationControls from "../general/PaginationControls";
 import Toolbar from "./Toolbar";
 import CatalogueGrid from "./CatalogueGrid";
@@ -9,8 +8,23 @@ import MoveModal from "./MoveModal";
 import DeleteModal from "./DeleteModal";
 import { Container, Row } from "react-bootstrap";
 
-const ManageDigitalCatalogue = ({ folderPath }) => {
-  const { contents, currentPath, navigateTo, goUp } = useFolderContents(folderPath);
+const ManageDigitalCatalogue = () => {
+
+  const [basePath, setBasePath] = useState("");
+
+  const { contents, currentPath, navigateTo, goUp } = useFolderContents(basePath);
+
+  useEffect(() => {
+      const fetchPath = async () => {
+          if (window.api.filesystem?.getBasePath) {
+              const { exists, basePath } = await window.api.filesystem.getBasePath();
+              if (exists) {
+                  setBasePath(basePath);
+              }
+          }
+      }
+      fetchPath();
+  }, [])
 
   const [filteredItems, setFilteredItems] = useState([]);
   const [selectedPDF, setSelectedPDF] = useState(null);
@@ -91,7 +105,7 @@ const ManageDigitalCatalogue = ({ folderPath }) => {
   };
 
   const openFolderPicker = async () => {
-    const folder = await window.api.filesystem.chooseFolder(folderPath);
+    const folder = await window.api.filesystem.chooseFolder(basePath);
     if (folder) setDestinationPath(folder);
   };
 
@@ -101,7 +115,7 @@ const ManageDigitalCatalogue = ({ folderPath }) => {
     <Container fluid className="p-0 mt-4 manage-dc">
       <Toolbar
         currentPath={currentPath}
-        rootPath={folderPath}
+        rootPath={basePath}
         hasSubfolders={hasSubfolders}
         onNavigateUp={handleNavigateUp}
         onCreateFolder={handleCreateFolder}
