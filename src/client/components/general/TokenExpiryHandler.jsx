@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import { useDispatch } from 'react-redux';
 import { login } from '../../../redux/authSlice';
@@ -74,6 +74,7 @@ const TokenExpiryHandler = ({ token, renewToken, intervalRef, timeoutRef }) => {
     try {
       const result = await renewToken();
       if (result?.success && result?.token) {
+        console.log(result);
         toast.success('Session renewed!');
         dispatch(login({ netid: result.netid, isAdmin: result.isAdmin, token: result.token }));
       } else {
@@ -91,7 +92,7 @@ const TokenExpiryHandler = ({ token, renewToken, intervalRef, timeoutRef }) => {
       show={showModal}
       header="Session Expiring"
       content={
-        <div className="d-flex flex-column align-items-center">
+        <div className="d-flex flex-column align-items-center p-4">
           <p>
             Your session will expire in {secondsLeft ?? 0} second
             {secondsLeft !== 1 ? 's' : ''}.

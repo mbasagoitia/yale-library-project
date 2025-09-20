@@ -66,7 +66,7 @@ const Navigation = () => {
             <Nav.Link href="/digital-catalogue" onClick={() => setNavExpanded(false)}>Digital Catalogue</Nav.Link>
             <Nav.Link href="/classification-guide" onClick={() => setNavExpanded(false)}>Classification Guide</Nav.Link>
 
-            {isLoggedIn ? (
+            {isLoggedIn && isAdmin ? (
               <Nav.Link href="/reports" onClick={() => setNavExpanded(false)}>Reports</Nav.Link>
             ) : (
               <Nav.Link
@@ -82,7 +82,7 @@ const Navigation = () => {
               <Searchbar placeholder={"Search the collection"} onSearch={handleSearch} />
             </div>
 
-            {isAdmin ? (
+            {isLoggedIn && isAdmin ? (
               <div
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}

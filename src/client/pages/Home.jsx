@@ -32,7 +32,7 @@ const Home = () => {
 export default Home;
 
 // Add further privacy on page 6 of user manual (demo)
-// Token expiry issues
+// Session expiring modal; fix sizing of dynamic numbers <--- START HERE
 
 // Move isDemo logic to redux instead of querying on every page?
 

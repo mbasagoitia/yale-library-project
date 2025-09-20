@@ -1,4 +1,4 @@
-.modal-overlay {
+ .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -8,13 +8,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 100;
+    z-index: 1060;
   }
-  
+
   .modal-width {
     --bs-modal-width: fit-content;
   }
-  
+
   .modal-header {
     background-color: var(--yale-blue);
     color: white;
@@ -32,7 +32,7 @@
   .modal-body {
     background-color: var(--modal-bg);
     color: var(--text-dark);
-    padding: 1.5rem;
+    padding: 1rem;
     border-radius: 0.75rem;
     width: fit-content;
   }
@@ -40,3 +40,4 @@
   .modal-content {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   }
+

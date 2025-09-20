@@ -26,7 +26,7 @@ const renewToken = async (store) => {
       store.set('authToken', data.token);
       // console.log("set auth token in store");
   
-      return { success: true, token: data.token };
+      return { success: true, token: data.token, netid: data.netid, isAdmin: data.isAdmin };
   
     } catch (error) {
       return { success: false, message: error.message };
