@@ -67,7 +67,7 @@
         justify-content: space-between;
         flex: 0 0 auto;
         position: relative;
-        padding: 3rem 1.5rem;
+        padding: 2.6rem 1.5rem 3rem 1.5rem;
         z-index: 101;
         align-items: center;
     }

@@ -101,7 +101,6 @@ const AdvancedFilter = ({ searchCriteria, setSearchCriteria, resetHoldings }) =>
           Reset
         </div>
 
-        {/* Title / Composer */}
         <Row className="mb-0 mb-md-4">
           <Col md={6} className="my-2 my-md-0">
             <FilterInput
@@ -119,7 +118,6 @@ const AdvancedFilter = ({ searchCriteria, setSearchCriteria, resetHoldings }) =>
           </Col>
         </Row>
 
-        {/* Publisher / Species */}
         <Row>
           <Col md={6} className="my-2 my-md-0">
             {resourceData.publisherData.length > 0 ? (
@@ -148,9 +146,8 @@ const AdvancedFilter = ({ searchCriteria, setSearchCriteria, resetHoldings }) =>
           </Col>
         </Row>
 
-        {/* Medium select */}
-        <Row className="my-0 my-md-3">
-          <Col xs={12} className="my-2 my-md-0">
+        <Row className="my-0 my-md-3 advanced-filter-row">
+          <Col className="my-2 my-md-0 medium-select-col">
             <Form.Label>
               <Dropdown.Toggle
                 id="dropdown-basic"

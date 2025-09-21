@@ -6,7 +6,6 @@ import CreateFolderModal from "../general/CreateFolderModal";
 const Toolbar = ({
   currentPath,
   rootPath,
-  hasSubfolders,
   onNavigateUp,
   onCreateFolder,
   onAddPDF,
@@ -30,16 +29,13 @@ const Toolbar = ({
         ← Previous
       </Button>
 
-      {hasSubfolders ? (
-        <>
-          <Button onClick={() => setShowCFModal(true)}>+ Add Folder</Button>
-          <CreateFolderModal
-            show={showCFModal}
-            onClose={() => setShowCFModal(false)}
-            onCreate={onCreateFolder}
-          />
-        </>
-      ) : (
+      <Button onClick={() => setShowCFModal(true)}>+ Add Folder</Button>
+      <CreateFolderModal
+        show={showCFModal}
+        onClose={() => setShowCFModal(false)}
+        onCreate={onCreateFolder}
+      />
+      {currentPath !== rootPath && (
         <Button variant="success" onClick={onAddPDF}>
           + Add PDF Files
         </Button>

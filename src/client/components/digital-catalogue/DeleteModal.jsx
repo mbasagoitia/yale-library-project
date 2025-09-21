@@ -7,7 +7,7 @@ const DeleteModal = ({ show, item, onDelete, onClose }) => (
     show={show}
     header="Delete from Digital Catalogue"
     content={
-      <div className="d-flex flex-column align-items-center">
+      <div className="d-flex flex-column align-items-center p-4 delete-modal-content">
         <div className="text-center mb-4">
           Are you sure you want to remove <strong>{item?.name}</strong> from the catalogue?  
           This action cannot be undone.

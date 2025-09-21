@@ -26,19 +26,19 @@
     position: relative;
 }
 
-.basic-filter-row {
+.basic-filter-row, .advanced-filter-row {
     container-type: inline-size;
     container-name: filter;
-  }
+}
 
-.basic-filter-container {
+.basic-filter-container, .medium-select-col {
     flex: 0 0 auto;
     width: 100%;
 }
 
 @container filter (min-width: 800px) {
     /* I need to override the bootstrap defaults for this to work */
-    .basic-filter-container {
+    .basic-filter-container, .medium-select-col {
         width: 50% !important;
         flex: 0 0 auto !important;
     }

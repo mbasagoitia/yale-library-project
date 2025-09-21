@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { login } from './redux/authSlice';
 import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 import Header from "./client/components/general/Header.jsx";
-import Navigation from "./client/components/general/Navigation.jsx";
+import Navigation from "./client/components/navigation/Navigation.jsx";
 import Home from "./client/pages/Home.jsx";
 import ClassificationGuide from './client/pages/ClassificationGuide.jsx';
 import DigitalCatalogue from './client/pages/DigitalCatalogue.jsx';

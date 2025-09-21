@@ -1,204 +1,69 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button, Card } from "react-bootstrap";
-import { CheckCircle, XCircle, FileText, Folder } from "lucide-react";
-import Modal from "../components/general/Modal";
-import PDFViewer from "../components/general/PDFViewer";
 import { motion } from "framer-motion";
-import { toast } from "react-toastify";
 import "../../assets/styles/pages/SetupWizard.css";
-import cfg from "../../config/appConfig";
+
+import WelcomeCard from "../components/setup-wizard/WelcomeCard.jsx";
+import SetFolderCard from "../components/setup-wizard/SetFolderCard.jsx";
+import AdminPermissionCard from "../components/setup-wizard/AdminPermissionCard.jsx";
 
 const SetupWizard = () => {
   const [step, setStep] = useState(1);
-  const [defaultPath, setDefaultPath] = useState("");
-  const [defaultPathExists, setDefaultPathExists] = useState(false);
-  const [folderPath, setFolderPath] = useState("");
-  const [isScanning, setIsScanning] = useState(true);
-  const [modalOpen, setModalOpen] = useState(false);
-
-  const isDemo = cfg.isDemo;
-
-  const manualFilePath = isDemo
-  ? "/manuals/demo/user_manual_demo.pdf"
-  : "/manuals/internal/user_manual.pdf";
-
-  const handleCloseModal = () => {
-    setModalOpen(false);
-  }
-
-  const saveManual = async () => {
-    if (window?.api?.filesystem?.savePublicFile) {
-      const result = await window.api.filesystem.savePublicFile(manualFilePath, "philharmonia_library_catalogue_user-manual.pdf");
-      if (!result.canceled && result.success) {
-        toast.success("Saved user manual");
-      } else if (!result.canceled) {
-        toast.error("Error saving file");
-      }
-    }
-  }
-
-  useEffect(() => {
-    if (step === 2) {
-      const checkDefaultPath = async () => {
-        // Check to see if folder exists at expected default path (User/Documents/philharmonia_library_digital_catalogue)
-        const { exists, path } = await window.api.filesystem.checkDefaultBasePath();
-    
-        setDefaultPath(path);
-        if (exists) {
-          setFolderPath(path) 
-        // set path in electron store
-        await window.api.filesystem.setBasePath(path);
-        setDefaultPathExists(true)
-        }
-        await new Promise(resolve => setTimeout(resolve, 3000));
-        setIsScanning(false);
-      }
-      checkDefaultPath();
-    }
-}, [step]);
-
-  const handleChooseFolder = async () => {
-    // No base path set, so choose from anywhere on the computer
-    const defaultPath = "";
-    const newPath = await window.api.filesystem.chooseFolder(defaultPath);
-    if (newPath) {
-      setFolderPath(newPath);
-      await window.api.filesystem.setBasePath(newPath);
-    }
-  };
-
-  const handleFinishSetup = async () => {
-    if (!folderPath) {
-      toast.error("Please choose a folder first.");
-      return;
-    }
-
-    // Notify Electron setup is complete
-    window.api.setup.setupComplete();
-    toast.success("Setup complete!");
-  };
 
   const steps = [
-    {
-      id: 1,
-      title: "Welcome",
-      content: (
-        <>
-          <p className="mb-4">Welcome to the Philharmonia Library Catalogue!</p>
-          <p className="mb-4">You can open or save the user manual below.</p>
-          <div className="flex gap-2">
-            <Button onClick={() => setModalOpen(true)}><FileText className="mr-2 h-4 w-4" /> Open Manual</Button>
-            <Button variant="outline" onClick={saveManual}><FileText className="mr-2 h-4 w-4" /> Save Manual</Button>
-            <Modal
-            show={modalOpen}
-            header={"User Manual"}
-            content={
-              <div>
-                <PDFViewer filePath={manualFilePath} fileLocation={"public"} />
-              </div>
-            }
-            handleCloseModal={handleCloseModal}
-          />
-          </div>
-        </>
-      ),
-    },
-    {
-      id: 2,
-      title: "Scan for Digital Catalogue Folder",
-      content: (
-        <>
-          {isScanning ? (
-            <>
-              <p className="mb-4">Scanning for folder at:</p>
-              <p className="font-monospace path-text mb-4">{defaultPath}</p>
-              <div className="flex items-center text-muted mb-4">
-                <div className="spinner-border spinner-border-sm mx-2" role="status" />
-                Scanning...
-              </div>
-            </>
-          ) : defaultPathExists ? (
-            <>
-              <p className="mb-4">Scanning for folder at:</p>
-              <p className="font-monospace path-text mb-4">{defaultPath}</p>
-              <div className="flex items-center text-success mb-4">
-                <CheckCircle /> Folder found!
-              </div>
-            </>
-          ) : folderPath ? (
-            <>
-              <p className="mb-4">Path set to:</p>
-              <p className="font-monospace path-text mb-4">{folderPath}</p>
-              <div className="flex items-center text-success mb-4 mx-2">
-                <CheckCircle /> Folder path set!
-              </div>
-            </>
-          ) : (
-            <>
-              <p className="mb-4">Scanning for folder at:</p>
-              <p className="font-monospace path-text mb-4">{defaultPath}</p>
-              <div className="flex flex-col gap-2 mb-2">
-                <div className="flex items-center text-danger mb-2 mx-2">
-                  <XCircle /> Folder not found.
-                </div>
-                <Button onClick={handleChooseFolder}>
-                  <Folder className="mr-2 h-4 w-4" /> Choose Folder
-                </Button>
-              </div>
-            </>
-          )}
-        </>
-      ),
-    },    
-    {
-      id: 3,
-      title: "Administrative Access",
-      content: (
-        <>
-          <p className="mb-4">You must request or be granted administrative access to manage this application.</p>
-          <p className="mb-4">Please see the <strong>Librarian Admin Permissions</strong> section on page 6 of the user manual.</p>
-        </>
-      ),
-    },
+    { id: 1, title: "Welcome", component: <WelcomeCard /> },
+    { id: 2, title: "Scan for Digital Catalogue Folder", component: <SetFolderCard /> },
+    { id: 3, title: "Administrative Access", component: <AdminPermissionCard /> },
   ];
+
+  const currentStep = steps[step - 1];
 
   return (
     <div className="setup-wizard max-w-xl mx-auto mt-10 d-flex flex-column justify-content-center align-items-center">
-      <div className="setup-wizard-content">
+      <div className="setup-wizard-content w-100">
         <Card className="p-6 shadow-lg rounded-2xl h-100">
           <Card.Header>
             <h5 className="mb-0">Setup Wizard</h5>
           </Card.Header>
           <Card.Body className="mb-6">
-          <motion.h2
-            key={steps[step - 1].title}
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-            className="text-xl font-bold mb-2"
-          >
-            {steps[step - 1].title}
-          </motion.h2>
+            <motion.h2
+              key={currentStep.title}
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              className="text-xl font-bold mb-4"
+            >
+              {currentStep.title}
+            </motion.h2>
 
-          <motion.div
-            key={steps[step - 1].id}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            {steps[step - 1].content}
-          </motion.div>
-          <div className="flex justify-between mt-6">
-            {step > 1 ? (
-              <Button variant="outline" onClick={() => setStep(step - 1)}>Back</Button>
-            ) : <div />}
+            <motion.div
+              key={currentStep.id}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              {currentStep.component}
+            </motion.div>
 
-            {step < steps.length ? (
-              <Button disabled={step === 2 && (!folderPath || isScanning)} onClick={() => setStep(step + 1)}>Next</Button>
-            ) : (
-              <Button variant="primary" onClick={handleFinishSetup}>Finish</Button>
-            )}
-          </div>
+            <div className="flex justify-between mt-6">
+              {step > 1 ? (
+                <Button variant="outline" onClick={() => setStep(step - 1)}>
+                  Back
+                </Button>
+              ) : (
+                <div />
+              )}
+              {step < steps.length ? (
+                <Button onClick={() => setStep(step + 1)}>Next</Button>
+              ) : (
+                <Button
+                  variant="primary"
+                  onClick={() => window.api.setup.setupComplete()}
+                >
+                  Finish
+                </Button>
+              )}
+            </div>
           </Card.Body>
         </Card>
       </div>

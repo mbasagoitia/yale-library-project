@@ -32,7 +32,6 @@ const Home = () => {
 export default Home;
 
 // Update all acquisition dates (anything added within past year...) for real data
-// Width of medium select container (in manage holdings page)
 
 // Keytar with .env
 

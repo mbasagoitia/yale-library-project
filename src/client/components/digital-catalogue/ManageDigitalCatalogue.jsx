@@ -109,14 +109,11 @@ const ManageDigitalCatalogue = () => {
     if (folder) setDestinationPath(folder);
   };
 
-  const hasSubfolders = contents.some((c) => c.isDirectory);
-
   return (
     <Container fluid className="p-0 mt-4 manage-dc">
       <Toolbar
         currentPath={currentPath}
         rootPath={basePath}
-        hasSubfolders={hasSubfolders}
         onNavigateUp={handleNavigateUp}
         onCreateFolder={handleCreateFolder}
         onAddPDF={handleAddPDF}
