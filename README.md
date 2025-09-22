@@ -1,4 +1,4 @@
-# Yale Philharmonia Library Application
+# Yale Philharmonia Library Catalogue Application
 
 A desktop application for cataloguing, reporting, and managing the Yale Philharmonia Library collection.
 
@@ -10,9 +10,9 @@ Built with [Electron](https://www.electronjs.org/), [React](https://reactjs.org/
 
 ## Features
 
-- **Catalogue Holdings and Management**  
+- **Catalogue and Manage Library Holdings**  
   - Add new scores or parts with automatically-generated call numbers
-  - Advanced metadata records (condition, public domain, missing parts, etc.)
+  - Thorough metadata records (condition, public domain, missing parts, etc.)
   - Edit or delete existing holdings  
   - Automatic record validation
 
@@ -29,12 +29,12 @@ Built with [Electron](https://www.electronjs.org/), [React](https://reactjs.org/
   - Summarize holdings for inventory or programming purposes
 
 - **Data Backups**
-    - Export holdings data as a CSV file to preserve data/transfer to another system
-    - Automatically compress and export the digital catalogue
+  - Export holdings data as a CSV file to preserve data/transfer to another system
+  - Automatically compress and export the digital catalogue
 
 - **Admin Management**  
-  - Permissions handled via Yale Central Authentication System (CAS) authentication  
-  - Admins can add/edit other admins and manage library settings/holdings
+  - User authentication handled via Yale University's Central Authentication System (CAS), with additional RBAC logic for app-specific permissions
+  - Admins can add/remove other admins and manage library settings/holdings
 
 ---
 
@@ -49,7 +49,7 @@ Built with [Electron](https://www.electronjs.org/), [React](https://reactjs.org/
 
 ## Development Notes
 
-Built as a real-world tool adopted by Yale University to improve workflow, this app also showcases:
+Built as a real-world tool adopted and currently used by the Yale School of Music to improve workflow, this application also showcases:
 
 - Cross-platform desktop development
 - Secure authentication and role management
@@ -90,10 +90,22 @@ See Environment Variables for setup details.
 
 This project has two versions:
 
-- Demo Build – safe for public review, uses sample data, no sensitive keys.
-- Internal Build – configured with private environment variables and deployed only on the Yale Philharmonia library computer.
+- **Demo Build** – safe for public review, uses sample data, and contains no sensitive keys.  
+- **Internal Build** – configured with private environment variables and deployed only within the Yale School of Music.
 
-The source code runs in demo mode by default; to protect library data, the internal version requires a protected configuration and is not publicly distributed.
+The source code runs in demo mode by default. To protect library data, the internal version requires a protected configuration and is not publicly distributed.
+
+### Database
+
+The demo database contains a small subset of the Philharmonia's catalogue holdings, along with public-domain scans sourced from IMSLP, for demonstration purposes only. The demo SQLite database is built and bundled locally.
+
+The internal database is hosted on MySQL in a virtual machine on Google Cloud Platform and requires configuration and authentication available only to users of the internal build.
+
+### Fonts & Assets
+
+Licensed Yale typeface and other proprietary assets are included only in the internal build, in accordance with Yale University’s licensing agreements.
+
+The public demo build uses open-source or system-default typefaces to ensure that no protected intellectual property is distributed.
 
 ## Environment Variables
 
