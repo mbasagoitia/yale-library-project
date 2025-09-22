@@ -9,7 +9,7 @@ const ClassificationGuide = () => {
 
     return (
         <div className="classification-guide">
-            <h1>The Dickinson Classification Scheme for Musical Compositions</h1>
+            <h1 className="mb-5">The Dickinson Classification Scheme for Musical Compositions</h1>
             <section className="mt-4">
                 <h2>Overview</h2>
                 <p>The Dickinson Classification Scheme is a library classification system designed specifically for cataloging and organizing musical compositions. Developed by George Sherman Dickinson in 1938, it has been widely adopted by music libraries, including those at Vassar College and Columbia University.</p>

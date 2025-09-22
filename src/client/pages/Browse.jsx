@@ -20,7 +20,7 @@ const Browse = () => {
 
   return (
     <div className="browse-collection">
-      <h1>Browse Collection</h1>
+      <h1 className="mb-5">Browse Collection</h1>
 
       <div className="holdings-content mt-4">
         <div className="mb-4">

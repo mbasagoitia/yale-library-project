@@ -10,7 +10,7 @@ const Reports = () => {
   return (
     <div className="reports">
       <div className="reports-header">
-        <h1>Library Reports</h1>
+        <h1 className="mb-5">Library Reports</h1>
       </div>
       <Row className="report-page-container">
         <Col md={12}>

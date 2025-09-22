@@ -76,8 +76,8 @@ app.commandLine.appendSwitch("disable-features", "OutOfBlinkCors,SiteIsolationTr
 app.commandLine.appendSwitch("disable-gpu");
 
 app.whenReady().then(() => {
-  // remove later
-  store.set("initialSetup", false);
+  // Used for testing setup wizard
+  // store.set("initialSetup", false);
 
   const DEV_HOST = process.env.HOST || 'localhost';
   const DEV_PORT = Number(process.env.PORT) || 3000;

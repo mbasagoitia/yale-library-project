@@ -13,7 +13,7 @@ const Home = () => {
       >
         <div className="home-content">
           <motion.h1
-            className="text-center text-3xl font-bold"
+            className="text-center text-3xl font-bold mb-5"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
@@ -32,6 +32,7 @@ const Home = () => {
 export default Home;
 
 // Update all acquisition dates (anything added within past year...) for real data
+// Write README
 
 // Keytar with .env
 

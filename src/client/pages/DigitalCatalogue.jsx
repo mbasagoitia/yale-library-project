@@ -53,7 +53,7 @@ const DigitalCatalogue = () => {
             >
               <ArrowLeft size={20} />
             </button>)}
-          <h1>Digital Catalogue</h1>
+          <h1 className="mb-5">Digital Catalogue</h1>
           {basePath ? <DigitalCatalogueFolders folderPath={basePath} /> : null}
         </div>
     )

@@ -1,40 +1,37 @@
-import React from "react";
-import Modal from "../general/Modal";
-import { Button } from "react-bootstrap";
+import { Modal, Button, Form } from "react-bootstrap";
 
-const MoveModal = ({ show, item, destination, onBrowse, onMove, onClose }) => (
-  <Modal
-    show={show}
-    header={`Move "${item?.name}"`}
-    content={
-      <div>
+const MoveModal = ({ show, item, destination, onBrowse, onMove, onClose }) => {
+  return (
+    <Modal show={show} onHide={onClose} centered>
+      <Modal.Header className="modal-header d-flex flex-column p-4" closeButton closeVariant="white">
+        <h1 className="order-2">Move “{item?.name}”</h1>
+      </Modal.Header>
+
+      <Modal.Body>
         <p>Choose destination folder:</p>
-        <div className="d-flex gap-2">
-          <input
+        <div className="d-flex gap-2 align-items-center">
+          <Form.Control
             type="text"
-            className="form-control"
             value={destination}
             readOnly
             placeholder="No folder selected"
           />
           <Button variant="outline-primary" onClick={onBrowse}>
-            Browse...
+            Browse…
           </Button>
         </div>
-      </div>
-    }
-    handleCloseModal={onClose}
-    footer={
-      <div className="d-flex justify-content-end gap-2">
+      </Modal.Body>
+
+      <Modal.Footer>
         <Button variant="secondary" onClick={onClose}>
           Cancel
         </Button>
-        <Button onClick={onMove} disabled={!destination}>
+        <Button variant="primary" onClick={onMove} disabled={!destination}>
           Move
         </Button>
-      </div>
-    }
-  />
-);
+      </Modal.Footer>
+    </Modal>
+  );
+};
 
 export default MoveModal;

@@ -42,7 +42,7 @@ const ManageHoldings = () => {
     return (
         <ModeContext.Provider value={{ mode, setMode, setData, mediumResetKey, setMediumResetKey, catalogueFormRef }}>
             <div className="manage-holdings">
-                <h1>Manage Holdings</h1>
+                <h1 className="mb-5">Manage Holdings</h1>
                 <Container fluid className="mt-4 m-0 p-0">
                     <Row className="d-flex justify-content-evenly">
                         <Col xl={7} className="mb-4 mb-xl-0">

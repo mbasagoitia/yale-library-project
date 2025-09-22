@@ -42,7 +42,7 @@ const PieceInfo = () => {
             >
               <ArrowLeft size={20} />
             </button>
-            <h1 className="mb-4">
+            <h1 className="mb-5">
               {data.title} {renderIdAndNumber(data)}
             </h1>
             <InfoTable data={data} />

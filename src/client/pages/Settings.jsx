@@ -9,7 +9,7 @@ const Settings = () => {
     <Container className="settings">
       <Row>
         <Col>
-          <h1 className="mb-4">Settings</h1>
+          <h1 className="mb-5">Settings</h1>
           <h2>Set Digital Catalogue Folder</h2>
           <UpdateBasePathForm />
         </Col>
