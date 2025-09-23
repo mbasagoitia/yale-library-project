@@ -54,7 +54,7 @@ const DigitalCatalogue = () => {
               <ArrowLeft size={20} />
             </button>)}
           <h1 className="mb-5">Digital Catalogue</h1>
-          {basePath ? <DigitalCatalogueFolders folderPath={basePath} /> : null}
+          {basePath ? <DigitalCatalogueFolders folderPath={basePath} /> : <p>Digital Catalogue data not found. Please make sure the folder exists on your computer and set the folder location in <strong>Settings.</strong></p>}
         </div>
     )
 }

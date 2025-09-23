@@ -52,9 +52,14 @@ Built with [Electron](https://www.electronjs.org/), [React](https://reactjs.org/
 Built as a real-world tool adopted and currently used by the Yale School of Music to improve workflow, this application also showcases:
 
 - Cross-platform desktop development
-- Secure authentication and role management
+- Secure authentication and role management 
 - CRUD interfaces and data validation
 - Clean code structure and component-based UI with modern state management tools (Redux, Electron store)
+- Security Features
+  - Parameterized queries to prevent SQL injection
+  - Secure storage of credentials and environment variables with Keytar
+  - XSS sanitization middleware for user input
+  - Authentication and role-checking middleware to protect admin-only routes
 
 ---
 

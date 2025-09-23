@@ -2,8 +2,10 @@ import { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from './redux/authSlice';
 import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
 import Header from "./client/components/general/Header.jsx";
 import Navigation from "./client/components/navigation/Navigation.jsx";
+import Modal from './client/components/general/Modal.jsx';
 import Home from "./client/pages/Home.jsx";
 import ClassificationGuide from './client/pages/ClassificationGuide.jsx';
 import DigitalCatalogue from './client/pages/DigitalCatalogue.jsx';
@@ -33,6 +35,7 @@ function App() {
   const hasAttachedAuthListeners = useRef(false);
   const token = useSelector((state) => state.auth.token);
   const [pathReset, setPathReset] = useState(false);
+  const [authModal, setAuthModal] = useState(false);
 
   let { exists: cataloguePathExists } = useFolderCheck();
 
@@ -54,16 +57,16 @@ function App() {
     if (isDemo || hasAttachedAuthListeners.current) return;
     hasAttachedAuthListeners.current = true;
 
-    const handleAuthSuccess = (_event, data) => {
+    const handleAuthSuccess = (_, data) => {
       if (!data?.netid || !data?.token) {
         toast.error("Login failed: Invalid user data or missing token");
         return;
       }
       dispatch(login({ netid: data.netid, isAdmin: data.isAdmin, token: data.token }));
       toast.success(`Welcome back, ${data.netid}!`);
+      console.log(data.isAdmin);
       if (!data?.isAdmin) {
-        // Show modal instead
-        alert("You successfully logged in with Yale credentials, but you do not have administrative access on this app. Please see the user manual if you need admin privileges.");
+        setAuthModal(true);
       }
     };
 
@@ -92,6 +95,10 @@ function App() {
   const handlePathReset = () => {
     setPathReset(true);
     cataloguePathExists = true;
+  }
+
+  const closeAuthModal = () => {
+    setAuthModal(false);
   }
 
   // Base layout wrapper
@@ -127,49 +134,67 @@ function App() {
   }
 
   return (
-<BrowserRouter>
-  <ToastContainer
+    <BrowserRouter>
+      <ToastContainer
         position="top-right"
         autoClose={3000}
         hideProgressBar={false}
         newestOnTop
         closeOnClick
         pauseOnHover
-        draggable 
+        draggable
       />
-  {(!isDemo && !cataloguePathExists && !pathReset) ? (
-    <MissingCatalogueNotice onPathSet={handlePathReset} />
-  ) : (
-    <Routes>
-      {!isDemo && <Route path="setup" element={<SetupWizard />} />}
-      <Route
-        path="/"
-        element={
-          <BaseLayout>
-            <Home />
-          </BaseLayout>
+      <Modal
+        show={authModal}
+        header={<h1>No Admin Permission</h1>}
+        content={
+          <div className="auth-modal-content m-4 text-center">
+            <p>
+              You have successfully logged in with your Yale credentials.  
+              You can view and explore the Philharmonia library catalogue, but only users
+              with administrative privileges can make changes or manage holdings.  
+              Please refer to the user manual if you need admin access.
+            </p>
+            <div className="d-flex justify-content-center">
+              <Button variant="secondary" onClick={closeAuthModal}>Close</Button>
+            </div>
+          </div>
         }
+        handleCloseModal={closeAuthModal}
       />
-      <Route
-        element={
-          <BaseLayout>
-            <PaddedLayout />
-          </BaseLayout>
-        }
-      >
-        <Route path="/classification-guide" element={<ClassificationGuide />} />
-        <Route path="/manage-holdings" element={<ManageHoldings />} />
-        <Route path="/browse-holdings" element={<Browse />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/browse-holdings/:id" element={<PieceInfo />} />
-        <Route path="/digital-catalogue" element={<DigitalCatalogue />} />
-        <Route path="/reports" element={<Reports />} />
-      </Route>
-    </Routes>
-  )}
-</BrowserRouter>
-
-  );
+  
+      {(!isDemo && !cataloguePathExists && !pathReset) ? (
+        <MissingCatalogueNotice onPathSet={handlePathReset} />
+      ) : (
+        <Routes>
+          {!isDemo && <Route path="setup" element={<SetupWizard />} />}
+          <Route
+            path="/"
+            element={
+              <BaseLayout>
+                <Home />
+              </BaseLayout>
+            }
+          />
+          <Route
+            element={
+              <BaseLayout>
+                <PaddedLayout />
+              </BaseLayout>
+            }
+          >
+            <Route path="/classification-guide" element={<ClassificationGuide />} />
+            <Route path="/manage-holdings" element={<ManageHoldings />} />
+            <Route path="/browse-holdings" element={<Browse />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/browse-holdings/:id" element={<PieceInfo />} />
+            <Route path="/digital-catalogue" element={<DigitalCatalogue />} />
+            <Route path="/reports" element={<Reports />} />
+          </Route>
+        </Routes>
+      )}
+    </BrowserRouter>
+  );  
 }
 
 export default App;

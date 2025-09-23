@@ -58,6 +58,10 @@
   margin: 0 auto;
 }
 
+.auth-modal-content {
+  max-width: 400px;
+}
+
 @media (min-width: 576px) {
   .session-modal-content {
     width: 350px;

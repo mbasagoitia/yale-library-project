@@ -1,12 +1,11 @@
 const { BrowserWindow, net } = require("electron");
 const path = require("path");
-const fs = require("fs");
 const dotenv = require("dotenv");
 
 dotenv.config();
 
 function createAuthWindow(parentWindow, store, { casLoginUrl, serviceUrl, backendVerifyUrl }) {
-  const win = new BrowserWindow({
+  let win = new BrowserWindow({
     parent: parentWindow,
     modal: false,
     show: true,
@@ -23,21 +22,21 @@ function createAuthWindow(parentWindow, store, { casLoginUrl, serviceUrl, backen
     frame: true,
     titleBarStyle: "default",
     trafficLightPosition: undefined,
-    fullscreenable: false   
+    fullscreenable: false
   });
 
   const loginUrl = `${casLoginUrl}?service=${encodeURIComponent(serviceUrl)}`;
   win.loadURL(loginUrl);
 
-  // Capture CAS ticket on redirect and send to backend via GET
+  // Capture CAS ticket on redirect and send to backend
   win.webContents.on("will-redirect", (event, url) => {
+    if (!win || win.isDestroyed()) return;
+
     if (url.startsWith(serviceUrl)) {
-      event.preventDefault(); // stop Electron from navigating
+      event.preventDefault();
       const ticket = new URL(url).searchParams.get("ticket");
 
-      // Build GET URL with query param
       const verifyUrl = `${backendVerifyUrl}?ticket=${encodeURIComponent(ticket)}`;
-
       const request = net.request(verifyUrl);
 
       let responseBody = "";
@@ -53,31 +52,40 @@ function createAuthWindow(parentWindow, store, { casLoginUrl, serviceUrl, backen
               store.set("authToken", data.token);
               store.set("netid", data.netid);
               store.set("isAdmin", data.isAdmin);
-              parentWindow.webContents.send("auth-success", {
-                netid: data.netid,
-                isAdmin: data.isAdmin,
-                token: data.token
-              });
+
+              if (parentWindow && !parentWindow.isDestroyed()) {
+                parentWindow.webContents.send("auth-success", {
+                  netid: data.netid,
+                  isAdmin: data.isAdmin,
+                  token: data.token
+                });
+              }
             } else {
-              parentWindow.webContents.send("auth-failed");
+              if (parentWindow && !parentWindow.isDestroyed()) {
+                parentWindow.webContents.send("auth-failed");
+              }
             }
           } catch (err) {
-            console.log(err);
+            console.error("Auth parse error:", err);
           }
-          win.close();
+
+          if (win && !win.isDestroyed()) {
+            win.close();
+          }
         });
       });
+
+      request.on("error", (err) => {
+        console.error("Auth request failed:", err);
+      });
+
       request.end();
     }
   });
 
-  // Dev certs for local HTTPS
-  if (process.env.NODE_ENV === "development") {
-    const caPath = path.join(__dirname, "certs", "rootCA.pem");
-    if (fs.existsSync(caPath)) {
-      process.env.NODE_EXTRA_CA_CERTS = caPath;
-    }
-  }
+  win.on("closed", () => {
+    win = null;
+  });
 }
 
 module.exports = { createAuthWindow };

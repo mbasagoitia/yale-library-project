@@ -30,30 +30,3 @@ const Home = () => {
 };
 
 export default Home;
-
-// Update all acquisition dates (anything added within past year...) for real data
-// Write README
-
-// Keytar with .env
-
-/* Testing:
-
-// In demo, moved base path does not throw any errors, just doesn't display digital catalogue
-
-1. Protect setting base path on backend if in demo mode?
-
-7. Test on different devices
-
-Issue when cancelling login window?
-// Show modal instead of alert when giving "you're not an admin" warning in App.js <---- START HERE
-// Put admins back in the VM database
-
-*/
-
-/* Long-term goals:
-
-1. Add optional cloud integration for digital catalogue (BackBlaze)
-2. Add metadata for advanced filtering in digital catalogue
-
-*/
-
