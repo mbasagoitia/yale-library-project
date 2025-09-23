@@ -120,7 +120,7 @@ The public demo build uses open-source or system-default typefaces to ensure tha
 
 This application is designed to implement and follow the **Dickinson Classification Scheme for Musical Compositions**, a system widely adopted by music libraries, including those at Vassar College and Columbia University. An overview and examples can be found here: https://www.jstor.org/stable/23505207
 
-## Roadmap
+## Future Additions and Improvements
 
 - Bulk import of library records
 - Advanced batch editing tools
