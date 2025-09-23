@@ -1,8 +1,10 @@
 # Yale Philharmonia Library Catalogue Application
 
-A desktop application for cataloguing, reporting, and managing the Yale Philharmonia Library collection.
+A desktop application developed specifically for and used internally by the Yale School of Music for cataloguing, reporting, and managing the Yale Philharmonia Library collection.
 
-It replaces a slow, spreadsheet-based workflow with a **fast, centralized system** for tracking, searching, and organizing scores and parts.
+A demo build is available for outside review.
+
+This project replaces a slow, spreadsheet-based workflow with a **fast, centralized system** for tracking, searching, and organizing scores and parts.
 
 Built with [Electron](https://www.electronjs.org/), [React](https://reactjs.org/), and [Node/Express](https://expressjs.com/) as a portfolio project to demonstrate full-stack desktop app development.
 
@@ -95,8 +97,8 @@ See Environment Variables for setup details.
 
 This project has two versions:
 
-- **Demo Build** – safe for public review, uses sample data, and contains no sensitive keys.  
-- **Internal Build** – configured with private environment variables and deployed only within the Yale School of Music.
+- **Demo Build:** Safe for public review, uses sample data, and contains no sensitive keys.  
+- **Internal Build:** Configured with private environment variables and deployed only within the Yale School of Music.
 
 The source code runs in demo mode by default. To protect library data, the internal version requires a protected configuration and is not publicly distributed.
 
@@ -104,7 +106,7 @@ The source code runs in demo mode by default. To protect library data, the inter
 
 The demo database contains a small subset of the Philharmonia's catalogue holdings, along with public-domain scans sourced from IMSLP, for demonstration purposes only. The demo SQLite database is built and bundled locally.
 
-The internal database is hosted on MySQL in a virtual machine on Google Cloud Platform and requires configuration and authentication available only to users of the internal build.
+The internal database is hosted on MySQL in a virtual machine on Google Cloud Platform and requires configuration and authentication available only to users of the internal build. The database is hosted remotely to allow connections from multiple clients in the Yale School of Music.
 
 ### Fonts & Assets
 
