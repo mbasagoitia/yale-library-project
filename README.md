@@ -124,7 +124,6 @@ This application is designed to implement and follow the **Dickinson Classificat
 
 - Bulk import of library records
 - Advanced batch editing tools
-- Optional cloud sync for offsite access
 - Improved reporting filters and templates
 - Add optional cloud integration for digital catalogue (BackBlaze or similar)
 - Add metadata for advanced filtering in digital catalogue
