@@ -62,6 +62,7 @@ function App() {
       dispatch(login({ netid: data.netid, isAdmin: data.isAdmin, token: data.token }));
       toast.success(`Welcome back, ${data.netid}!`);
       if (!data?.isAdmin) {
+        // Show modal instead
         alert("You successfully logged in with Yale credentials, but you do not have administrative access on this app. Please see the user manual if you need admin privileges.");
       }
     };

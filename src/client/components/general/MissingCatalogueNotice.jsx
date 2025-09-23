@@ -35,7 +35,12 @@ const MissingCatalogueNotice = ({ onPathSet }) => {
               Please select a new folder to continue.
             </p>
             {error && <p className="text-danger">{error}</p>}
-            {newPathSet && !error &&<div className="flex items-center text-success mb-4"><CheckCircle className="mr-2" /> New path set!</div>}
+            {newPathSet && !error &&
+            <div className="flex items-center text-success mb-2">
+              <CheckCircle className="mr-2" />
+              <p>New path set!</p>
+              <p>Redirecting...</p>
+            </div>}
             <div>
             <Button
               variant="primary"

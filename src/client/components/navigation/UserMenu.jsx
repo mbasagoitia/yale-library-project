@@ -46,6 +46,19 @@ const UserMenu = ({ isLoggedIn, isAdmin, isHovered, setIsHovered, setNavExpanded
         </NavDropdown>
       </div>
     );
+  } else if (isLoggedIn && !isAdmin) {
+    return (
+      <div className="d-flex align-items-center">
+      <FaUserCircle size={24} />
+      <Nav.Link
+      as="span"
+      className="logout-text m-2 p-0"
+      onClick={handleNavLogout}
+    >
+      Log Out
+    </Nav.Link>
+    </div>
+    )
   } else {
     return (
       <Nav.Link as="span" onClick={handleLogin}>

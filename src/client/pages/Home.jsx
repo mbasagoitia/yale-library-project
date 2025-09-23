@@ -38,14 +38,15 @@ export default Home;
 
 /* Testing:
 
-1. Make sure flow with Setup wizard/missing path notice works correctly on internal and demo
-1. Have someone else log in and try to do admin things (just remove yourself as admin)
-2. Try all forms
-3. Try all backups
-4. All token renewal things
-5. All things involving base path; Check that things happen ONLY if base path is set--navigating to digital scans, etc.
+// In demo, moved base path does not throw any errors, just doesn't display digital catalogue
+
+1. Protect setting base path on backend if in demo mode?
+
 7. Test on different devices
-8. Make sure the relative path is stored and it works no matter where the base path is! Try to make a copy of the root folder and rename it
+
+Issue when cancelling login window?
+// Show modal instead of alert when giving "you're not an admin" warning in App.js <---- START HERE
+// Put admins back in the VM database
 
 */
 
