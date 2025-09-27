@@ -1,10 +1,13 @@
+const { appConfig } = require("../helpers/config.js");
+const API_BASE = appConfig.API_BASE;
+
 const renewToken = async (store) => {
     try {
       const token = store.get('authToken');
       if (!token) {
         // console.log('No auth token found');
       }
-      const response = await fetch('http://localhost:5000/api/auth/renew-token', {
+      const response = await fetch(`http://${API_BASE}/api/auth/renew-token`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

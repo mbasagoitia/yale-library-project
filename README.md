@@ -59,7 +59,7 @@ Built as a real-world tool adopted and currently used by the Yale School of Musi
 - Clean code structure and component-based UI with modern state management tools (Redux, Electron store)
 - Security Features
   - Parameterized queries to prevent SQL injection
-  - Secure storage of credentials and environment variables with Keytar
+  - Secure storage of credentials and environment variables
   - XSS sanitization middleware for user input
   - Authentication and role-checking middleware to protect admin-only routes
 

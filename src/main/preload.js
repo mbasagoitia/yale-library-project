@@ -8,7 +8,7 @@ contextBridge.exposeInMainWorld("api", {
     getIsAdmin: () => ipcRenderer.invoke("auth:getIsAdmin"),
     clear: () => ipcRenderer.invoke("auth:clear"),
     openLoginWindow: () => ipcRenderer.invoke('auth:open'),
-    cancelLogin:     () => ipcRenderer.invoke('auth:cancel'),
+    cancelLogin: () => ipcRenderer.invoke('auth:cancel'),
   },
 
   backup: {
@@ -38,7 +38,8 @@ contextBridge.exposeInMainWorld("api", {
 
   setup: {
     getInitialSetup: () => ipcRenderer.invoke("setup:getInitialSetup"),
-    setupComplete: () => ipcRenderer.send("setup-complete")
+    setupComplete: () => ipcRenderer.send("setup-complete"),
+    reset: () => ipcRenderer.invoke("setup:reset"),
   },
 
   external: {

@@ -53,11 +53,17 @@ const UpdateBasePathForm = () => {
     <Card className="mb-4">
         <Card.Body className="choose-catalogue-folder-container">
         <div>
-            <Button variant="primary" type="button" onClick={handleSelectBasePath} disabled={isDemo}>
+            <Button variant="primary" type="button" className="text-nowrap" onClick={handleSelectBasePath} disabled={isDemo}>
                 Choose Folder
             </Button>
         </div>
-      <div className="mt-lg-1 mt-3">{basePath ? `Current Path: ${basePath}` : "No base path set"}</div>
+        <div 
+            className="mt-lg-1 mt-3 text-truncate bp-text-container" 
+            // tooltip for full path on hover in case it gets chopped off
+            title={basePath}
+          >
+            {basePath ? `Current Path: ${basePath}` : "No base path set"}
+          </div>
     </Card.Body>
   </Card>
   )

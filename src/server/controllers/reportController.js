@@ -49,7 +49,6 @@ async function getAllPieces(req, res, next) {
 
     res.status(200).json(formatted);
   } catch (err) {
-    console.error(err);
     next({ status: 500, message: "Error retrieving piece list" });
   }
 }

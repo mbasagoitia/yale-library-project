@@ -3,10 +3,11 @@ const dotenv = require('dotenv');
 const xss = require('xss');
 const { parseStringPromise } = require('xml2js');
 const { httpsRequest, isNetIDAdmin } = require('../helpers/authHelpers.js');
+const { appConfig } = require("../../main/helpers/config.js");
 
 dotenv.config();
 
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = appConfig.JWT_SECRET;
 
 const validateTicket = async (req, res, next) => {
   let { ticket } = req.query;

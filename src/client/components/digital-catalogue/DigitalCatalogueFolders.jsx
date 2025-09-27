@@ -8,7 +8,7 @@ import PaginationControls from '../general/PaginationControls';
 import Searchbar from '../search-filters/Searchbar';
 import { pdfjs } from "react-pdf";
 
-pdfjs.GlobalWorkerOptions.workerSrc = `${window.location.origin}/pdf.worker.min.js`;
+pdfjs.GlobalWorkerOptions.workerSrc = `${process.env.PUBLIC_URL}/pdf.worker.min.js`;
 
 const DigitalCatalogueFolders = ({ folderPath }) => {
 

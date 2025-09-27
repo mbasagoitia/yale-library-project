@@ -1,0 +1,37 @@
+extends: null
+
+appId: com.yale.app
+productName: Yale Philharmonia Library Catalogue
+asar: true
+
+# Output directory
+directories:
+  output: dist/internal
+
+files:
+  - src/main/**/*.js
+  - src/helpers/**/*.js
+  - src/server/**/*
+  - src/main/preload.js
+
+extraResources:
+  - from: build
+    to: build
+  - from: config.internal.json
+    to: config.json
+  - from: public
+    to: public
+
+# Windows build settings
+win:
+  target:
+    - portable 
+  artifactName: "${productName}-${version}-portable.exe"
+
+# macOS build settings
+mac:
+  target:
+    - dir
+
+asarUnpack:
+  - "bin/**/*"  

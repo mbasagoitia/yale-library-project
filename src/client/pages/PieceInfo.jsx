@@ -7,6 +7,8 @@ import InfoTable from "../components/holdings/InfoTable.jsx";
 import "../../assets/styles/pages/PieceInfoPage.css";
 import { toast } from "react-toastify";
 
+const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:5000";
+
 const PieceInfo = () => {
   const { id } = useParams();
   const [data, setData] = useState(null);
@@ -17,7 +19,7 @@ const PieceInfo = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/holdings-data/${id}`);
+        const res = await fetch(`${API_BASE}/api/holdings-data/${id}`);
         if (!res.ok) toast.error("Network response was not ok");
         const data = await res.json();
         setData(data);

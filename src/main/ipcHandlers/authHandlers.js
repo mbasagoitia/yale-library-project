@@ -1,20 +1,21 @@
 const { BrowserWindow } = require("electron");
 const { createAuthWindow, closeAuthWindow } = require("../helpers/createAuthWindow.js");
 const { renewToken } = require("../helpers/authHelpers.js");
+const { appConfig } = require("../helpers/config.js");
 
 const handleAuthHandlers = (ipcMain, store) => {
+
+  const API_BASE = appConfig.API_BASE;
 
   ipcMain.handle("auth:open", (event) => {
     const requestWin = BrowserWindow.fromWebContents(event.sender);
 
-    // Hardcode CAS + service for now
     createAuthWindow(requestWin, store, {
       casLoginUrl: "https://secure.its.yale.edu/cas/login",
       serviceUrl: "https://yourapp.local/verify",
-      backendVerifyUrl: "http://localhost:5000/api/auth/validate-ticket"
+      backendVerifyUrl: `http://${API_BASE}/api/auth/validate-ticket`
     });
 
-    // Don’t return a BrowserWindow — just signal success
     return true;
   });
 

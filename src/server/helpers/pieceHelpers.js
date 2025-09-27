@@ -70,9 +70,6 @@ function normalizePieceInfo(info = {}) {
     lastPerformed,
   } = info;
 
-  console.log("acq date", acquisitionDate);
-  console.log("last perf", lastPerformed);
-
   title = title ? xss(String(title).trim()) : null;
   identifierLabel = identifierLabel ? xss(String(identifierLabel)) : null;
 

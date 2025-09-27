@@ -11,6 +11,7 @@ async function getAllPieces(req, res, next) {
     const rows = await getAllPiecesQuery(req.db);
     res.status(200).json(rows);
   } catch (err) {
+    console.error(err);
     err.status = 500;
     err.message = 'Error retrieving piece list';
     next(err);

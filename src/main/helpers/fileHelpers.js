@@ -2,13 +2,11 @@ const { dialog, shell, app } = require('electron');
 const path = require('path');
 const fs = require('fs-extra');
 const os = require("os");
+const { isDev, appConfig } = require("../../main/helpers/config.js");
 
-const IS_DEMO =
-  process.env.APP_MODE === 'demo' ||
-  process.env.REACT_APP_APP_MODE === 'demo' ||
-  String(process.env.REACT_APP_CAS_ENABLED || '').toLowerCase() === 'false';
 
-  // put in separate helper function
+const IS_DEMO = appConfig.APP_MODE === 'demo';
+
 function resolveDemoBase() {
   const devDir = path.join(process.cwd(), 'src', 'assets', 'demo', 'digital-catalogue');
   const prodDir = path.join(process.resourcesPath, 'demo-catalogue');
@@ -18,11 +16,12 @@ function resolveDemoBase() {
 }
 
 function getPublicPath() {
-  // In dev we want the actual /public folder;
-  // in production use process.resourcesPath (or app.getAppPath()).
-  return app.isPackaged
-    ? path.join(process.resourcesPath, "public")
-    : path.join(app.getAppPath(), "public");
+  if (isDev) {
+    // In dev, points to public folder
+    return path.join(app.getAppPath(), "public");
+  }
+  // In production, point to resources path
+  return path.join(process.resourcesPath, "public");
 }
 
 const checkDefaultBasePath = async () => {
@@ -81,7 +80,6 @@ const setBasePath = async (store, newPath) => {
     store.set("basePath", normalizedPath);
     return null;
 }
-
 
 // Generic get path of chosen folder
 const chooseFolder = async (store, defaultPath) => {
@@ -151,6 +149,8 @@ const handleSavePublicFile = async (srcRelative, saveAs) => {
     return { success: false, error: err.message };
   }
 }
+
+// Digital catalogue manipulation
 
 const handleListDirectory = async (store, filePath = '') => {
   if (!path.isAbsolute(filePath)) {
@@ -224,6 +224,7 @@ const copyFile = async (filePath, targetDir) => {
 }
 
 module.exports = {
+    resolveDemoBase,
     checkDefaultBasePath,
     getBasePath,
     getFullPath,

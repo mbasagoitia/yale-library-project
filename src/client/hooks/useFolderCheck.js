@@ -1,21 +1,22 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { useLocation } from "react-router-dom";
 
 const useFolderCheck = () => {
   const [exists, setExists] = useState(null);
   const [cataloguePath, setCataloguePath] = useState("");
+  const location = useLocation();
 
-  useEffect(() => {
-    const checkFolder = async () => {
-      // Does the folder still exist where we expect it (does it match what is stored in Electron store)?
-      const { exists, basePath } = await window.api.filesystem.getBasePath();
-      setExists(exists);
-      setCataloguePath(basePath);
-    };
-
-    checkFolder();
+  const checkFolder = useCallback(async () => {
+    const { exists, basePath } = await window.api.filesystem.getBasePath();
+    setExists(exists);
+    setCataloguePath(basePath);
   }, []);
 
-  return { exists, cataloguePath };
+  useEffect(() => {
+    checkFolder();
+  }, [checkFolder, location.pathname]);
+
+  return { exists, cataloguePath, refresh: checkFolder };
 };
 
 export default useFolderCheck;

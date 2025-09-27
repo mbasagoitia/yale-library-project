@@ -4,6 +4,10 @@
     flex-direction: column;
 }
 
+.bp-text-container {
+    max-width: 875px;
+}
+
 .settings .row>* {
     padding-left: 0;
 }
@@ -11,6 +15,7 @@
 @media (min-width: 992px) {
     .choose-catalogue-folder-container {
         flex-direction: row;
-        justify-content: space-between;
+        justify-content: flex-start;
+        gap: 1rem;
     }
 }

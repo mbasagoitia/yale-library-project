@@ -1,55 +1,89 @@
-const APP_MODE = process.env.APP_MODE || 'demo';
+const express = require("express");
+const cors = require("cors");
+const path = require("path");
+const morgan = require("morgan");
+const dotenv = require("dotenv");
 
-const express = require('express');
-const cors = require('cors');
-const path = require('path');
-const morgan = require('morgan');
-const dotenv = require('dotenv');
-const pieceRouter = require('./routes/pieceRouter.js');
-const resourceRouter = require('./routes/resourceRouter.js');
-const adminRouter = require('./routes/adminRouter.js');
-const authRouter = require('./routes/authRouter');
-const reportRouter = require('./routes/reportRouter.js');
-const backupRouter = require('./routes/backupRouter.js');
+const { isDev } = require("../main/helpers/config.js");
 
-const { authenticateAdmin } = require('./middlewares/authenticateAdmin.js');
-const { errorHandler } = require('./middlewares/errorHandler.js');
+// Routers
+const pieceRouter = require("./routes/pieceRouter.js");
+const resourceRouter = require("./routes/resourceRouter.js");
+const adminRouter = require("./routes/adminRouter.js");
+const authRouter = require("./routes/authRouter.js");
+const reportRouter = require("./routes/reportRouter.js");
+const backupRouter = require("./routes/backupRouter.js");
 
-// Knex factory
+// Custom middlewares
+const { authenticateAdmin } = require("./middlewares/authenticateAdmin.js");
+const { errorHandler } = require("./middlewares/errorHandler.js");
+
+// Database connection (handles dev/production and demo/internal logic internally)
 const makeKnex = require("./database/knex.js");
 
+// Environment setup
+if (isDev) {
+  dotenv.config({ path: path.resolve(__dirname, "../../.env") });
+}
+
 const app = express();
-dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
+// Middleware
 app.use(express.json());
-app.use(morgan('dev'));
+app.use(morgan("dev"));
 
-const corsOptions = {
-  origin: 'http://localhost:3000',
-  credentials: true,
-};
-app.use(cors(corsOptions));
+// CORS
+app.use(
+  cors({
+    origin: isDev ? "http://localhost:3000" : true,
+    credentials: true,
+  })
+);
 
-app.use(express.static('public'));
-app.use(express.static(path.join(__dirname, '../client/build')));
-
+// Database injection
 const db = makeKnex();
-
-app.use((req, _res, next) => { req.db = db; next(); });
-app.use((req, res, next) => {
-  console.log("GLOBAL:", req.method, req.url);
+app.use((req, _res, next) => {
+  req.db = db;
   next();
 });
 
-app.use('/api/resources', resourceRouter);
-app.use('/api/holdings-data', pieceRouter);
-app.use('/api/auth', authRouter);
-app.use('/api/admin', authenticateAdmin, adminRouter);
-app.use('/api/report-data', authenticateAdmin, reportRouter);
-app.use('/api/backup', authenticateAdmin, backupRouter);
+// Request logger
+app.use((req, _res, next) => {
+  console.log(`[GLOBAL] ${req.method} ${req.url}`);
+  next();
+});
 
+// Routes
+app.use("/api/resources", resourceRouter);
+app.use("/api/holdings-data", pieceRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/admin", authenticateAdmin, adminRouter);
+app.use("/api/report-data", authenticateAdmin, reportRouter);
+app.use("/api/backup", authenticateAdmin, backupRouter);
+
+// Static file serving React build
+if (isDev) {
+  app.use(express.static(path.join(__dirname, "../client/build")));
+} else {
+  const buildRoot = process.resourcesPath || path.resolve(__dirname, "../../build");
+  const buildPath = path.join(buildRoot, "build");
+
+  app.use(express.static(buildPath));
+  app.get("*", (_req, res) => {
+    res.sendFile(path.join(buildPath, "index.html"));
+  });
+}
+
+// Error handler
 app.use(errorHandler);
 
-process.on('SIGINT', async () => { await db.destroy(); process.exit(0); });
+// Graceful shutdown
+const shutdown = async () => {
+  console.log("Shutting down server...");
+  await db.destroy();
+  process.exit(0);
+};
+process.on("SIGINT", shutdown);
+process.on("SIGTERM", shutdown);
 
 module.exports = app;

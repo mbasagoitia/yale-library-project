@@ -1,5 +1,39 @@
+extends: null
+
+appId: com.yale.demoapp
+productName: Yale Philharmonia Library Catalogue Demo
+asar: true
+
+# Output directory
+directories:
+  output: dist/demo
+
+files:
+  - src/main/**/*.js
+  - src/helpers/**/*.js
+  - src/server/**/*
+  - src/main/preload.js
+
 extraResources:
+  - from: build
+    to: build
+
   - from: src/assets/demo/digital-catalogue
     to: demo-catalogue
-    filter:
-      - "**/*"
+
+  - from: src/assets/demo/demo.db
+    to: demo.db
+
+# Windows build settings
+win:
+  target:
+    - portable
+  artifactName: "${productName}-${version}-portable.exe"
+
+# macOS build settings
+mac:
+  target:
+    - dir
+
+asarUnpack:
+  - "bin/**/*"  

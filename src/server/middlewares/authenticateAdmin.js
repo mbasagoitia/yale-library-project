@@ -1,8 +1,9 @@
 const jwt = require('jsonwebtoken');
+const { appConfig } = require("../../main/helpers/config.js");
 
-const isDemo = (process.env.APP_MODE || 'demo') === 'demo';
+const isDemo = appConfig.APP_MODE === "demo";
 
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = appConfig.JWT_SECRET;
 
 const authenticateAdmin = (req, res, next) => {
 

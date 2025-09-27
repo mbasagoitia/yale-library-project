@@ -5,7 +5,7 @@ import { handleOpenFile } from '../../helpers/digital-catalogue/openContents';
 import { toast } from 'react-toastify';
 import { pdfjs } from "react-pdf";
 
-pdfjs.GlobalWorkerOptions.workerSrc = `${window.location.origin}/pdf.worker.min.js`;
+pdfjs.GlobalWorkerOptions.workerSrc = `${process.env.PUBLIC_URL}/pdf.worker.min.js`;
 
 function PDFPreview({ filePath }) {
 

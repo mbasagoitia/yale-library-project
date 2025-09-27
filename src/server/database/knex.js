@@ -1,35 +1,46 @@
 const path = require('path');
 const knexLib = require('knex');
+const { isDev, appConfig } = require("../../main/helpers/config.js");
 
 function sqlitePath() {
-  return (
-    path.join(__dirname, process.env.SQLITE_FILE)
-  );
+  const mode = appConfig.APP_MODE || 'demo';
+
+  if (mode === 'demo' && isDev) {
+    const dbPath = path.resolve(process.cwd(), process.env.SQLITE_FILE);
+    console.log("Knex: Using dev sqlite file:", dbPath);
+    return dbPath;
+  } else {
+    const dbPath = path.join(process.resourcesPath, 'demo.db');
+    console.log("Knex: Using packaged sqlite file:", dbPath);
+    return dbPath;
+  }
 }
 
 function makeKnex() {
-  const mode = process.env.APP_MODE || 'demo';
+  const mode = appConfig.APP_MODE || 'demo';
 
   if (mode === 'internal') {
-    const url = process.env.DATABASE_URL;
     return knexLib({
       client: 'mysql2',
       connection:
-        url || {
-          host: process.env.DB_HOST,
-          user: process.env.DB_USER,
-          password: process.env.DB_PW,
-          database: process.env.DB_DATABASE,
-          port: process.env.DB_PORT ? Number(process.env.DB_PORT) : 3306,
+        {
+          host: appConfig.DB_HOST,
+          user: appConfig.DB_USER,
+          password: appConfig.DB_PW,
+          database: appConfig.DB_DATABASE,
+          port: appConfig.DB_PORT ? Number(appConfig.DB_PORT) : 3306,
         },
       pool: { min: 0, max: 10 },
     });
   }
 
-  // demo sqlite db
+  console.log("Knex: Connecting to sqlite DB...");
+  const filename = sqlitePath();
+  console.log("Knex: DB filename =", filename);
+
   return knexLib({
     client: 'sqlite3',
-    connection: { filename: sqlitePath() },
+    connection: { filename },
     useNullAsDefault: true,
   });
 }

@@ -1,10 +1,11 @@
 import { organizeMediumData, organizePublisherData, organizeSpeciesData } from "./organizeData";
 import { toast } from "react-toastify";
+const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:5000";
 
-const mediumUrl = "http://localhost:5000/api/resources/medium-data";
-const composerUrl = "http://localhost:5000/api/resources/composer-data";
-const speciesUrl = "http://localhost:5000/api/resources/species-data";
-const publisherUrl = "http://localhost:5000/api/resources/publisher-data";
+const mediumUrl = `${API_BASE}/api/resources/medium-data`;
+const composerUrl = `${API_BASE}/api/resources/composer-data`;
+const speciesUrl = `${API_BASE}/api/resources/species-data`;
+const publisherUrl = `${API_BASE}/api/resources/publisher-data`;
 
 const fetchMediumData = async () => {
   try {

@@ -1,13 +1,11 @@
-/* eslint-disable no-console */
 const fs = require("fs");
 const path = require("path");
 const knexLib = require("knex");
-require("dotenv").config(); // load .env at project root
+require("dotenv").config();
 
-// ---------- CONFIG ----------
-const SQLITE_OUT = path.join(process.cwd(), "demo-data", "demo.db");
-const SAMPLE_SIZE = 75; // number of pieces to copy
-// ----------------------------
+const SQLITE_OUT = path.join(process.cwd(), "src", "assets", "demo", "demo.db");
+// number of pieces to copy
+const SAMPLE_SIZE = 75; 
 
 function ensureDirFor(file) { 
   const dir = path.dirname(file);
@@ -41,7 +39,7 @@ async function copySamplePieces(src, dst) {
 
   const rows = await src("pieces")
     .select("*")
-    .orderByRaw("RAND()") // MySQL random order
+    .orderByRaw("RAND()")
     .limit(SAMPLE_SIZE);
 
   if (rows.length) await dst.batchInsert("pieces", rows, 500);
@@ -51,7 +49,7 @@ async function copySamplePieces(src, dst) {
 
 async function main() {
 
-  // 1. Remote MySQL connection
+  // Remote MySQL connection
   const src = knexLib({
     client: "mysql2",
     connection: {
@@ -63,7 +61,7 @@ async function main() {
     },
   });
 
-  // 2. Local SQLite file
+  // Local SQLite file
   ensureDirFor(SQLITE_OUT);
   if (fs.existsSync(SQLITE_OUT)) fs.unlinkSync(SQLITE_OUT);
 
