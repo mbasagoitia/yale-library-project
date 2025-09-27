@@ -14,14 +14,11 @@ const TokenExpiryHandler = ({ token, renewToken, intervalRef, timeoutRef }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // Use passed refs if provided, otherwise create internal ones
-  const interval = intervalRef
-  const timeout = timeoutRef
+  const interval = intervalRef;
+  const timeout = timeoutRef;
 
   useEffect(() => {
-    if (!token) {
-      return;
-    }
+    if (!token) return;
 
     let decoded;
     try {
@@ -35,7 +32,19 @@ const TokenExpiryHandler = ({ token, renewToken, intervalRef, timeoutRef }) => {
     const now = Date.now();
     const msUntilExpiry = expiryTimeMs - now;
 
+    // If already expired, logout silently
+    if (msUntilExpiry <= 0) {
+      handleLogout(dispatch, navigate);
+      return;
+    }
+
     const startCountdown = (seconds) => {
+      if (seconds <= 0) {
+        // Don’t show modal at all if already expired
+        handleLogout(dispatch, navigate);
+        return;
+      }
+
       setSecondsLeft(seconds);
       setShowModal(true);
 
@@ -75,12 +84,19 @@ const TokenExpiryHandler = ({ token, renewToken, intervalRef, timeoutRef }) => {
       const result = await renewToken();
       if (result?.success && result?.token) {
         toast.success('Session renewed!');
-        dispatch(login({ netid: result.netid, isAdmin: result.isAdmin, token: result.token }));
+        dispatch(
+          login({
+            netid: result.netid,
+            isAdmin: result.isAdmin,
+            token: result.token,
+          })
+        );
       } else {
         toast.error('Failed to renew session.');
         handleLogout(dispatch, navigate);
       }
     } catch (err) {
+      console.error(err);
       toast.error(err?.message || 'Failed to renew session.');
       handleLogout(dispatch, navigate);
     }
@@ -93,7 +109,7 @@ const TokenExpiryHandler = ({ token, renewToken, intervalRef, timeoutRef }) => {
       content={
         <div className="d-flex flex-column align-items-center p-4 session-modal-content">
           <p>
-            Your session will expire in {secondsLeft ?? 0} second
+            You will be logged out in {secondsLeft ?? 0} second
             {secondsLeft !== 1 ? 's' : ''}.
           </p>
           <Button onClick={handleRenew}>Renew Session</Button>

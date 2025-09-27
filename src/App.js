@@ -21,6 +21,7 @@ import Browse from "./client/pages/Browse.jsx";
 import PieceInfo from "./client/pages/PieceInfo.jsx";
 import Reports from "./client/pages/Reports.jsx";
 import TokenExpiryHandler from "./client/components/general/TokenExpiryHandler.jsx";
+import handleRenewToken from './client/helpers/auth/handleRenewToken.js';
 import { fetchHoldings } from "../src/redux/librarySlice";
 import { ToastContainer, toast } from "react-toastify";
 import SetupWizard from "./client/pages/SetupWizard.jsx";
@@ -121,7 +122,7 @@ function App() {
         {!isDemo && token && (
           <TokenExpiryHandler
             token={token}
-            renewToken={() => {}}
+            renewToken={handleRenewToken}
             intervalRef={intervalRef}
             timeoutRef={timeoutRef}
           />

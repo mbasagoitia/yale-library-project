@@ -13,7 +13,7 @@ const handleAuthHandlers = (ipcMain, store) => {
     createAuthWindow(requestWin, store, {
       casLoginUrl: "https://secure.its.yale.edu/cas/login",
       serviceUrl: "https://yourapp.local/verify",
-      backendVerifyUrl: `http://${API_BASE}/api/auth/validate-ticket`
+      backendVerifyUrl: `${API_BASE}/api/auth/validate-ticket`
     });
 
     return true;

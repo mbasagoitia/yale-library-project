@@ -7,7 +7,7 @@ const renewToken = async (store) => {
       if (!token) {
         // console.log('No auth token found');
       }
-      const response = await fetch(`http://${API_BASE}/api/auth/renew-token`, {
+      const response = await fetch(`${API_BASE}/api/auth/renew-token`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -15,6 +15,7 @@ const renewToken = async (store) => {
         },
         credentials: 'include',
       });
+      // console.log(response);
       if (!response.ok) {
         const errorText = await response.text();
         // console.log(`Failed to renew token: ${response.status} ${errorText}`);

@@ -23,7 +23,7 @@ const createReadableBackup = async (store) => {
     const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
     const filePath = path.join(backupFolder, `library_backup_${timestamp}.csv`);
 
-    const backupUrl = `http://${API_BASE}/api/backup/readable?filePath=${encodeURIComponent(filePath)}`;
+    const backupUrl = `${API_BASE}/api/backup/readable?filePath=${encodeURIComponent(filePath)}`;
     const token = store.get("authToken");
 
     if (!token) {

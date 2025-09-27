@@ -28,12 +28,14 @@ extraResources:
 win:
   target:
     - portable
+  icon: build/music-book.ico
   artifactName: "${productName}-${version}-portable.exe"
 
 # macOS build settings
 mac:
   target:
     - dir
+  icon: build/music-book.icns
 
 asarUnpack:
-  - "bin/**/*"  
+  - "bin/**/*"

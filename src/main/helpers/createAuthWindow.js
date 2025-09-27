@@ -26,7 +26,7 @@ function createAuthWindow(parentWindow, store, { casLoginUrl, serviceUrl, backen
   });
 
   const loginUrl = `${casLoginUrl}?service=${encodeURIComponent(serviceUrl)}`;
-  console.log("loginUrl", loginUrl);
+  // console.log("loginUrl", loginUrl);
   win.loadURL(loginUrl);
 
   // Capture CAS ticket on redirect and send to backend

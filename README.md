@@ -104,21 +104,46 @@ The source code runs in demo mode by default. To protect library data, the inter
 
 ### Database
 
-The demo database contains a small subset of the Philharmonia's catalogue holdings, along with public-domain scans sourced from IMSLP, for demonstration purposes only. The demo SQLite database is built and bundled locally.
+The **demo database** contains a small subset of the Philharmonia's catalogue holdings, along with public-domain scans sourced from IMSLP, for demonstration purposes only. The demo SQLite database is built and bundled locally.
 
-The internal database is hosted on MySQL in a virtual machine on Google Cloud Platform and requires configuration and authentication available only to users of the internal build. The database is hosted remotely to allow connections from multiple clients in the Yale School of Music.
+The **internal database** is hosted on MySQL in a virtual machine on Google Cloud Platform and requires configuration and authentication available only to users of the internal build. The database is hosted remotely to allow connections from multiple clients in the Yale School of Music.
 
 ### Fonts & Assets
+
+#### Fonts
 
 Licensed Yale typeface and other proprietary assets are included only in the internal build, in accordance with Yale University’s licensing agreements.
 
 The public demo build uses open-source or system-default typefaces to ensure that no protected intellectual property is distributed.
+
+#### Images
+
+- All original images are used with permission 
+- Decorative images are sourced from <a href="https://unsplash.com/">Unsplash</a>, an open-source image repository.
+
+- Desktop icon: <a href="https://www.flaticon.com/free-icons/music-book" title="music book icons">Music book icons created by Freepik - Flaticon</a>
+
+#### Build Size
+
+This demo build is approximately 800 MB. The larger size is intentional:
+
+It includes multiple full-length PDF music scans for demonstration purposes only. These files are bundled locally so the app works with no external dependencies.
+
+The build also contains the standard Electron runtime (~150–200 MB).
+
+In the production build, the digital catalogue is not bundled locally. The application is designed to have the PDFs hosted on the user's computer or an external service.
+
+Since this project is designed as a portfolio demo, the complete set of materials is included to fully demonstrate the app’s functionality.
 
 ## Environment Variables
 
 ## Classification Guide
 
 This application is designed to implement and follow the **Dickinson Classification Scheme for Musical Compositions**, a system widely adopted by music libraries, including those at Vassar College and Columbia University. An overview and examples can be found here: https://www.jstor.org/stable/23505207
+
+## License
+
+This project is licensed under the MIT License — see the LICENSE file for details.
 
 ## Future Additions and Improvements
 
