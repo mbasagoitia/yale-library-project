@@ -72,7 +72,7 @@ const TokenExpiryHandler = ({ token, renewToken, intervalRef, timeoutRef }) => {
       clearInterval(interval.current);
       clearTimeout(timeout.current);
     };
-  }, [token, dispatch, navigate]);
+  }, [token, dispatch, navigate, interval, timeout]);
 
   const handleRenew = async () => {
     clearInterval(interval.current);

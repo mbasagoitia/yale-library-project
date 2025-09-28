@@ -60,7 +60,7 @@
     "server": "node src/server/startServer.js",
     "electron": "wait-on --log --timeout 120000 tcp:3000 && cross-env ELECTRON_START_URL=http://localhost:3000 electron .",
     "build:internal": "cross-env NODE_ENV=production APP_MODE=internal dotenv -e .env.production.internal -- react-scripts build && electron-builder -c electron-builder.internal.yml",
-    "build:demo": "cross-env REACT_APP_APP_MODE=demo NODE_ENV=production react-scripts build && electron-builder -c electron-builder.demo.yml",
+    "build:demo": "cross-env CI=false REACT_APP_APP_MODE=demo NODE_ENV=production react-scripts build && electron-builder -c electron-builder.demo.yml",
     "demo:builddb": "node scripts/demoBuilder/buildDemoDb.js"
   },
   "eslintConfig": {

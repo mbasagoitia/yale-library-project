@@ -19,7 +19,7 @@ const IdAndNumber = ({ mainInfo, setMainInfo }) => {
     } else {
       setSelectedItem(identifiers[0]);
     }
-  }, [mainInfo])
+  }, [mainInfo, identifiers])
 
   const handleIdLabelChange = (e) => {
     setMainInfo(prev => {
