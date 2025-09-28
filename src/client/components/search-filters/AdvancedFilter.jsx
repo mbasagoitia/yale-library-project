@@ -35,7 +35,7 @@ const AdvancedFilter = ({ searchCriteria, setSearchCriteria, resetHoldings }) =>
         medium: null,
       }));
     }
-  }, [mediumSelectShown, resourceData.mediumData, setSearchCriteria]);
+  }, [mediumSelectShown, resourceData.mediumData]);
 
   const onTitleChange = (e) =>
     setSearchCriteria({
