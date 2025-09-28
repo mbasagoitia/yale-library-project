@@ -9,6 +9,7 @@
 
 # licensed fonts
 /src/assets/fonts/yale-typeface/
+/src/assets/styles/fonts/yale-fonts.css
 
 # testing
 /coverage
