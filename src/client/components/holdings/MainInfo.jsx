@@ -14,7 +14,7 @@ const MainInfo = ({ mainInfo, setMainInfo, formErrors, mediumResetKey, setMedium
 
   useEffect(() => {
       setMediumResetKey(mediumResetKey + 1);
-  }, [mediumResetKey, setMainInfo])
+  }, [mediumResetKey, setMediumResetKey])
 
   const setMedium = (item) => {
     const selected =

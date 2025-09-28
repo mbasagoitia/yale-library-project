@@ -79,19 +79,29 @@ This project centralizes cataloguing, searching, reporting, and administration i
 1. Download the packaged build (`LibraryCatalogue-demo.exe`, `.dmg`, or `.AppImage`).  
 2. Double-click to run — demo data is preloaded.
 
-### Option 2: Run from Source (For Developers)
+### Option 2: Run the Demo from Source (For Developers)
+
+This project is designed to run in **demo** mode for local development.
+
+*Internal mode requires protected assets and environment files that are not included in this repository, so attempting to run in internal mode will break the build.*
 
 1. Clone the repository.  
 2. Install dependencies:
    ```bash
    npm install
+3. This project uses .env.development.demo for demo mode configuration.
+    ```bash
+    npm run prepare-env
+Or, manually copy .env.development.demo.example → .env.development.demo.
 3. Start in development mode:
-    npm run start
-4. To build a production package:
-    npm run build
+    ```bash
+    npm run start:demo
 
-Environment variables (e.g., database path, CAS keys) are configured via a .env file.
-See Environment Variables for setup details.
+This runs:
+
+- The React development server
+- Your backend server
+- Electron app in demo mode
 
 ## Demo vs Internal Builds
 
@@ -118,7 +128,7 @@ The public demo build uses open-source or system-default typefaces to ensure tha
 
 #### Images
 
-- All original images are used with permission 
+- All original images are used with permission from the Yale media and communications department
 - Decorative images are sourced from <a href="https://unsplash.com/">Unsplash</a>, an open-source image repository.
 
 - Desktop icon: <a href="https://www.flaticon.com/free-icons/music-book" title="music book icons">Music book icons created by Freepik - Flaticon</a>
@@ -134,8 +144,6 @@ The build also contains the standard Electron runtime (~150–200 MB).
 In the production build, the digital catalogue is not bundled locally. The application is designed to have the PDFs hosted on the user's computer or an external service.
 
 Since this project is designed as a portfolio demo, the complete set of materials is included to fully demonstrate the app’s functionality.
-
-## Environment Variables
 
 ## Classification Guide
 
