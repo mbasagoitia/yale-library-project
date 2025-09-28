@@ -5,7 +5,6 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/styles/fonts/fontVars.css';
-import { cfg } from './config/appConfig';
 import '@fortawesome/fontawesome-free/css/all.css';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
