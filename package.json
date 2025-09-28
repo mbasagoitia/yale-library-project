@@ -51,7 +51,8 @@
     "seedrandom": "^3.0.5",
     "sqlite3": "^5.1.7",
     "web-vitals": "^2.1.4",
-    "xml2js": "^0.6.2"
+    "xml2js": "^0.6.2",
+    "xss": "^1.0.15"
   },
   "scripts": {
     "start:internal": "cross-env dotenv -e .env.development.internal -- concurrently -k -n server,react,electron -c blue,green,yellow \"npm run server\" \"npm run react\" \"npm run electron\"",
