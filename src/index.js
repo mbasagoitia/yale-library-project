@@ -13,7 +13,7 @@ import { store, persistor } from './redux/store';
   // Only bundle Yale fonts in internal build
 // if (process.env.REACT_APP_APP_MODE === 'internal') {
 //   require('./assets/styles/fonts/yale-fonts.css');
-//   document.documentElement.classList.add('yale-fonts');
+//   document.documentElement.classList.add('yale-fonts')
 // }
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
