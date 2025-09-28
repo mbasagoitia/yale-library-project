@@ -74,6 +74,7 @@ app.commandLine.appendSwitch(
 app.commandLine.appendSwitch("disable-gpu");
 
 app.whenReady().then(() => {
+  // Change this to use config instead of .env
   const DEV_HOST = process.env.HOST || "localhost";
   const DEV_PORT = Number(process.env.PORT) || 3000;
   const DEV_UI = `http://${DEV_HOST}:${DEV_PORT}`;

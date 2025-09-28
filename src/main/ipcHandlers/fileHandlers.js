@@ -1,3 +1,5 @@
+const { appConfig } = require("../helpers/config.js");
+
 const {
   resolveDemoBase,
   checkDefaultBasePath,
@@ -18,10 +20,7 @@ const {
   copyFile
 } = require("../helpers/fileHelpers");
 
-const IS_DEMO =
-  process.env.APP_MODE === 'demo' ||
-  process.env.REACT_APP_APP_MODE === 'demo' ||
-  String(process.env.REACT_APP_CAS_ENABLED || '').toLowerCase() === 'false';
+const IS_DEMO = appConfig.APP_MODE === "demo";
 
 const handleFileHandlers = (ipcMain, store) => {
 

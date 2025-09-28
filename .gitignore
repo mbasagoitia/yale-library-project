@@ -28,6 +28,7 @@
 .env.*.internal
 .env.*.demo
 config.internal.json
+config.demo.json
 
 npm-debug.log*
 yarn-debug.log*

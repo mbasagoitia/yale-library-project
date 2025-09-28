@@ -31,7 +31,10 @@ const Home = () => {
 
 export default Home;
 
+// Demo is good
 
-// Build on multiple OSs?
+// Internal - check
 
-// Add MIT license
+// Try cloning, copying .env, and running locally (as a dev would)
+
+// VM for windows build

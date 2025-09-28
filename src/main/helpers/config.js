@@ -23,6 +23,7 @@ function normalizeValue(key, value) {
     case "DB_PW":
     case "DB_DATABASE":
     case "JWT_SECRET":
+    case "SQLITE_FILE":
       return String(value);
 
     default:
@@ -39,7 +40,7 @@ function loadAppConfig() {
       appConfig = JSON.parse(fs.readFileSync(configPath, "utf-8"));
     }
   } catch (err) {
-    console.warn("No internal config.json found, using environment vars instead");
+    console.warn("No config.json found, using environment vars instead");
   }
 
   const keys = [

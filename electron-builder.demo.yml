@@ -18,6 +18,9 @@ extraResources:
   - from: build
     to: build
 
+  - from: config.demo.json
+    to: config.json
+
   - from: src/assets/demo/digital-catalogue
     to: demo-catalogue
 
