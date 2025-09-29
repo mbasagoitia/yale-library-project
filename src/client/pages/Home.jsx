@@ -32,6 +32,7 @@ const Home = () => {
 export default Home;
 
 // Demo is good
+// Fix README for download instructions and install instructions (cd into the project, fix styling of bash)
 
 // Internal - check
 
