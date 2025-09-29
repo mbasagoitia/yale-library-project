@@ -95,7 +95,8 @@ This project is designed to run in **demo** mode for local development.
 3. Configure environment variables:
     ```bash
     npm run prepare-env
-    Or, manually copy .env.development.demo.example → .env.development.demo. No secrets (database credentials, keys, etc.) are included as all demo data is bundled locally.
+  
+  Or, manually copy .env.development.demo.example → .env.development.demo. No secrets (database credentials, keys, etc.) are included as all demo data is bundled locally.
 4. Start in development mode:
     ```bash
     npm run start:demo
