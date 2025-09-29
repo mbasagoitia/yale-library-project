@@ -86,6 +86,8 @@ This project is designed to run in **demo** mode for local development.
 *Internal mode requires protected assets and environment files that are not included in this repository, so attempting to run in internal mode will break the build.*
 
 1. Clone the repository.  
+   ```bash
+   git clone https://github.com/mbasagoitia/yale-library-project.git
 2. Install dependencies:
    ```bash
    npm install
