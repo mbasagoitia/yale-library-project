@@ -121,7 +121,7 @@ The source code runs in demo mode by default. To protect library data, the inter
 
 ### Database
 
-The **demo database** contains a small subset of the Philharmonia's catalogue holdings, along with public-domain scans sourced from IMSLP, for demonstration purposes only. The demo SQLite database is built and bundled locally.
+The **demo database** contains a small subset of the Yale Philharmonia's publicly-available catalogue holdings, along with public-domain scans sourced from IMSLP, for demonstration purposes only. The demo SQLite database is built and bundled locally.
 
 The **internal database** is hosted on MySQL in a virtual machine on Google Cloud Platform and requires configuration and authentication available only to users of the internal build. The database is hosted remotely to allow connections from multiple clients in the Yale School of Music.
 
