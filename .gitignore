@@ -18,6 +18,9 @@
 /build
 /dist
 
+# manuals
+/public/manuals/internal
+
 # misc
 .DS_Store
 .env.local
