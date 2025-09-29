@@ -89,15 +89,16 @@ This project is designed to run in **demo** mode for local development.
 2. Install dependencies:
    ```bash
    npm install
-2. Navigate to the repo:
+3. Navigate to the repo:
    ```bash
    cd yale-library-project
-3. Configure environment variables:
+4. Configure environment variables:
     ```bash
     npm run prepare-env
   
   Or, manually copy .env.development.demo.example → .env.development.demo. No secrets (database credentials, keys, etc.) are included as all demo data is bundled locally.
-4. Start in development mode:
+
+5. Start in development mode:
     ```bash
     npm run start:demo
 
