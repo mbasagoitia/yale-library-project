@@ -88,12 +88,12 @@ This project is designed to run in **demo** mode for local development.
 1. Clone the repository.  
    ```bash
    git clone https://github.com/mbasagoitia/yale-library-project.git
-2. Install dependencies:
-   ```bash
-   npm install
-3. Navigate to the repo:
+2. Navigate to the repo:
    ```bash
    cd yale-library-project
+3. Install dependencies:
+   ```bash
+   npm install
 4. Configure environment variables:
     ```bash
     npm run prepare-env
