@@ -76,7 +76,7 @@ This project centralizes cataloguing, searching, reporting, and administration i
 
 ### Option 1: Download the Demo (Recommended)
 
-1. Download the packaged build (`LibraryCatalogue-demo.exe`, `.dmg`, or `.AppImage`).  
+1. Download the packaged build (`Philharmonia Library Catalogue-demo.exe`).  
 2. Double-click to run — demo data is preloaded.
 
 ### Option 2: Run the Demo from Source (For Developers)
@@ -89,18 +89,21 @@ This project is designed to run in **demo** mode for local development.
 2. Install dependencies:
    ```bash
    npm install
-3. This project uses .env.development.demo for demo mode configuration.
+2. Navigate to the repo:
+   ```bash
+   cd yale-library-project
+3. Configure environment variables:
     ```bash
     npm run prepare-env
-Or, manually copy .env.development.demo.example → .env.development.demo.
+Or, manually copy .env.development.demo.example → .env.development.demo. No secrets (database credentials, keys, etc.) are included as all demo data is bundled locally.
 3. Start in development mode:
     ```bash
     npm run start:demo
 
 This runs:
 
-- The React development server
-- Your backend server
+- React development server
+- Express backend server
 - Electron app in demo mode
 
 ## Demo vs Internal Builds

@@ -1,7 +1,7 @@
 extends: null
 
 appId: com.yale.app
-productName: Yale Philharmonia Library Catalogue
+productName: Philharmonia Library Catalogue
 asar: true
 
 # Output directory
