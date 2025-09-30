@@ -93,6 +93,7 @@
   },
   "build": {
     "appId": "com.yourdomain.yalelibraryproject",
+    "identity": "Developer ID Application: Marika Basagoitia (R9ZPUC7AGS)",
     "productName": "YaleLibraryProject",
     "files": [
       "build/**/*",
