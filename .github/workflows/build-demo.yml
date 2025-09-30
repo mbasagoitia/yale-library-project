@@ -1,37 +1,67 @@
-name: Build Electron App (Demo)
+name: Build and Release
 
 on:
   push:
-    branches:
-      - main
-  workflow_dispatch:
+    tags:
+      - "v*.*.*"
 
 jobs:
-  build:
+  build-mac:
     runs-on: macos-latest
-    strategy:
-      matrix:
-        platform: [mac, win]
-
     steps:
       - uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Set up Node
+        uses: actions/setup-node@v4
         with:
           node-version: 20
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build React app
-        run: npm run build:demo
-
-      - name: Build Electron app
-        run: npx electron-builder -c electron-builder.demo.yml --${{ matrix.platform }}
-
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
+      - run: npm ci
+      - run: npm run build:demo
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: false
+          CSC_NAME: "Developer ID Application: Marika Basagoitia (R9ZPUC7AGS)"
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      - uses: actions/upload-artifact@v4
         with:
-          name: build-${{ matrix.platform }}
-          path: dist/
+          name: mac-build
+          path: dist/demo/*
+
+  build-win:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npm run build:demo
+        env:
+          WIN_CSC_LINK: ${{ secrets.WIN_CSC_LINK }}
+          WIN_CSC_KEY_PASSWORD: ${{ secrets.WIN_CSC_KEY_PASSWORD }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: win-build
+          path: dist/demo/*
+
+  release:
+    runs-on: ubuntu-latest
+    needs: [build-mac, build-win]
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: mac-build
+          path: dist-mac
+      - uses: actions/download-artifact@v4
+        with:
+          name: win-build
+          path: dist-win
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist-mac/*
+            dist-win/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

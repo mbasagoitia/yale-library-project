@@ -31,11 +31,13 @@ const Home = () => {
 
 export default Home;
 
-// Demo is good
-// Fix README for download instructions and install instructions (cd into the project, fix styling of bash)
 
-// Internal - check
+// Add .zip files of the executables to the README
+
+// Test both versions once built
+// Inject .env in Github Actions
 
 // Try cloning, copying .env, and running locally (as a dev would)
 
-// VM for windows build
+// VM for windows build?
+// Reset the setupwizard variable again

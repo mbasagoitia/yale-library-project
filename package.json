@@ -60,8 +60,8 @@
     "react": "cross-env PORT=3000 HOST=localhost HTTPS=false BROWSER=none WDS_SOCKET_PORT=3000 react-scripts start",
     "server": "node src/server/startServer.js",
     "electron": "wait-on --log --timeout 120000 tcp:3000 && cross-env ELECTRON_START_URL=http://localhost:3000 electron .",
-    "build:internal": "cross-env NODE_ENV=production APP_MODE=internal dotenv -e .env.production.internal -- react-scripts build && electron-builder -c electron-builder.internal.yml",
-    "build:demo": "cross-env CI=false NODE_ENV=production APP_MODE=demo dotenv -e .env.production.demo -- react-scripts build && electron-builder -c electron-builder.demo.yml",
+    "build:internal": "cross-env CI=false NODE_ENV=production APP_MODE=internal GENERATE_SOURCEMAP=false dotenv -e .env.production.internal -- react-scripts build && electron-builder -c electron-builder.internal.yml",
+    "build:demo": "cross-env CI=false NODE_ENV=production APP_MODE=demo GENERATE_SOURCEMAP=false dotenv -e .env.production.demo -- react-scripts build && electron-builder -c electron-builder.demo.yml",  
     "demo:builddb": "node scripts/demoBuilder/buildDemoDb.js",
     "prepare-env": "cp .env.development.demo.example .env.development.demo || true"
   },
