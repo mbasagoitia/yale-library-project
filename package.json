@@ -6,7 +6,7 @@
   "license": "MIT",
   "version": "0.1.0",
   "private": true,
-  "main": "src/main/electron.js",
+  "main": "dist/electron.js",
   "homepage": "./",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.5.2",
