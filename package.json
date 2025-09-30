@@ -93,7 +93,6 @@
   },
   "build": {
     "appId": "com.yourdomain.yalelibraryproject",
-    "identity": "Developer ID Application: Marika Basagoitia (R9ZPUC7AGS)",
     "productName": "YaleLibraryProject",
     "files": [
       "build/**/*",
@@ -104,6 +103,14 @@
     ],
     "directories": {
       "buildResources": "assets"
+    },
+    "mac": {
+      "category": "public.app-category.productivity",
+      "hardenedRuntime": true,
+      "entitlements": "entitlements.mac.plist",
+      "entitlementsInherit": "entitlements.mac.plist",
+      "identity": "Developer ID Application: Marika Basagoitia (R9ZPUC7AGS)"
     }
   }
+
 }
