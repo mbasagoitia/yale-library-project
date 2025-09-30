@@ -40,16 +40,32 @@ jobs:
 
       - run: npm ci
 
+      # Import Developer ID certificate into a temporary keychain
+      - name: Import Developer ID Certificate
+        run: |
+          echo "$CSC_LINK" | base64 --decode > dev-id-application.p12
+          security create-keychain -p actions build.keychain
+          security import dev-id-application.p12 -k build.keychain -P "$CSC_KEY_PASSWORD" -T /usr/bin/codesign
+          security list-keychains -s build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p actions build.keychain
+          security set-keychain-settings -t 3600 -u build.keychain
+          security find-identity -v -p codesigning build.keychain
+        env:
+          CSC_LINK: ${{ secrets.CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+
       # Build with electron-builder and sign
       - run: npm run build:demo
         env:
-          CSC_LINK: ${{ secrets.CSC_LINK }}   # base64 of .p12 cert
+          CSC_LINK: ${{ secrets.CSC_LINK }}
           CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
-          CSC_IDENTITY_AUTO_DISCOVERY: false
+          CSC_IDENTITY_AUTO_DISCOVERY: true
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
 
+      # Upload artifacts
       - uses: actions/upload-artifact@v4
         with:
           name: mac-build
