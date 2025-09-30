@@ -44,7 +44,7 @@ mac:
   target:
     - dmg
   icon: src/assets/icons/music-book.icns
-  identity: "Developer ID Application: Marika Basagoitia (R9ZPUC7AGS)"
+  identity: "Marika Basagoitia (R9ZPUC7AGS)"
 
 # Notarization
 afterSign: ./scripts/notarize.js
