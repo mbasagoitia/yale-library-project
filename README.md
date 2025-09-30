@@ -110,6 +110,28 @@ This runs:
 - Express backend server
 - Electron app in demo mode
 
+## Installation Notes
+
+### macOS (Signed & Notarized)
+
+- The macOS version of this app is signed with my Apple Developer ID and notarized by Apple.
+- This means you can open the .dmg or .app file directly without needing to bypass security warnings.
+- If you still see a Gatekeeper prompt (rare), right-click the app → select Open → confirm once. After that, macOS will remember your choice.
+
+### Windows (Unsigned)
+
+- The Windows version is currently unsigned. This means Windows SmartScreen may show a warning when you try to run the .exe installer.
+
+To proceed:
+
+- Click More info.
+- Then click Run anyway.
+- The app does not contain malware — the warning only appears because the installer is unsigned.
+
+#### Future Plans
+
+I plan to obtain a Windows code-signing certificate in the future. Once signed, the Windows installer will no longer trigger SmartScreen warnings.
+
 ## Demo vs Internal Builds
 
 This project has two versions:
