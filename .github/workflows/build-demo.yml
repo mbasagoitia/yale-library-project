@@ -21,7 +21,7 @@ jobs:
         run: |
           echo "${{ secrets.DEMO_ENV_FILE }}" > .env.production.demo
 
-      # Generate config.demo.json dynamically
+      # Generate config.demo.json
       - name: Generate config.demo.json
         run: |
           cat <<EOF > config.demo.json
