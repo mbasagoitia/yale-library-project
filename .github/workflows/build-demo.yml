@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: 20
 
-      # Restore .env.production.demo from a GitHub secret
+      # Restore .env.production.demo from a GitHub secrets
       - name: Restore .env.production.demo
         run: |
           echo "${{ secrets.DEMO_ENV_FILE }}" > .env.production.demo
