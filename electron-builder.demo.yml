@@ -1,10 +1,7 @@
-extends: null
-
 appId: com.yale.demoapp
 productName: Yale Philharmonia Library Catalogue-demo
 asar: true
 
-# Output directory
 directories:
   output: dist/demo
 
@@ -19,42 +16,37 @@ files:
 extraResources:
   - from: build
     to: build
-
   - from: config.demo.json
     to: config.json
-
   - from: src/assets/demo/digital-catalogue
     to: demo-catalogue
-
   - from: src/assets/demo/demo.db
     to: demo.db
-
   - from: src/assets/icons
     to: icons
 
-# Windows build settings
+extraMetadata:
+  main: "src/main/electron.js"
+
 win:
   target:
     - portable
   icon: src/assets/icons/music-book.ico
   artifactName: "${productName}-${version}-portable.exe"
 
-# macOS build settings
 mac:
   category: public.app-category.productivity
   hardenedRuntime: true
   entitlements: entitlements.mac.plist
   entitlementsInherit: entitlements.mac.plist
+  gatekeeperAssess: false
   target:
     - dmg
   icon: src/assets/icons/music-book.icns
+  identity: "Marika Basagoitia (R9ZPUC7AGS)"
 
-# Remove CSC_NAME, use CSC_LINK and CSC_KEY_PASSWORD instead
-# electron-builder will automatically detect your certificate from CSC_LINK
-# Signing will happen using the p12 certificate you pass in via GitHub Actions
-
-# Notarization
-afterSign: ./scripts/notarize.js
+# afterPack:
+#   - ./scripts/cleanXattrs.js
 
 asarUnpack:
   - "bin/**/*"

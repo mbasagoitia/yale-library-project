@@ -32,7 +32,13 @@ win:
 # macOS build settings
 mac:
   target:
-    - dir
+    - dmg
+    - zip
+  category: public.app-category.utilities
+  hardenedRuntime: true
+  gatekeeperAssess: false
+  entitlements: build/entitlements.mac.plist
+  entitlementsInherit: build/entitlements.mac.plist
   icon: src/assets/icons/music-book.icns
 
 asarUnpack:

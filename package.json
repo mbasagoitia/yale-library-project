@@ -60,28 +60,20 @@
     "react": "cross-env PORT=3000 HOST=localhost HTTPS=false BROWSER=none WDS_SOCKET_PORT=3000 react-scripts start",
     "server": "node src/server/startServer.js",
     "electron": "wait-on --log --timeout 120000 tcp:3000 && cross-env ELECTRON_START_URL=http://localhost:3000 electron .",
-    "build:internal": "cross-env CI=false NODE_ENV=production APP_MODE=internal GENERATE_SOURCEMAP=false dotenv -e .env.production.internal -- react-scripts build && electron-builder -c electron-builder.internal.yml",
-    "build:demo": "cross-env CI=false NODE_ENV=production APP_MODE=demo GENERATE_SOURCEMAP=false dotenv -e .env.production.demo -- react-scripts build && electron-builder -c electron-builder.demo.yml",  
+
+  "prebuild": "rm -rf dist && mkdir -p dist",
+  "build:internal": "npm run prebuild && cross-env CI=false NODE_ENV=production APP_MODE=internal GENERATE_SOURCEMAP=false dotenv -e .env.production.internal -- react-scripts build && electron-builder -c electron-builder.internal.yml",
+  "build:demo": "npm run prebuild && cross-env CI=false NODE_ENV=production APP_MODE=demo GENERATE_SOURCEMAP=false dotenv -e .env.production.demo -- react-scripts build && electron-builder -c electron-builder.demo.yml",
+
     "demo:builddb": "node scripts/demoBuilder/buildDemoDb.js",
     "prepare-env": "cp .env.development.demo.example .env.development.demo || true"
   },
   "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "extends": ["react-app", "react-app/jest"]
   },
   "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "production": [">0.2%", "not dead", "not op_mini all"],
+    "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
   },
   "devDependencies": {
     "concurrently": "^9.1.2",
@@ -90,27 +82,5 @@
     "electron": "^37.4.0",
     "electron-builder": "^26.0.12",
     "wait-on": "^8.0.3"
-  },
-  "build": {
-    "appId": "com.yourdomain.yalelibraryproject",
-    "productName": "YaleLibraryProject",
-    "files": [
-      "build/**/*",
-      "electron.js",
-      "preload.js",
-      "node_modules/**/*",
-      "package.json"
-    ],
-    "directories": {
-      "buildResources": "assets"
-    },
-    "mac": {
-      "category": "public.app-category.productivity",
-      "hardenedRuntime": true,
-      "entitlements": "entitlements.mac.plist",
-      "entitlementsInherit": "entitlements.mac.plist",
-      "identity": "Developer ID Application: Marika Basagoitia (R9ZPUC7AGS)"
-    }
   }
-
 }
