@@ -17,8 +17,7 @@ jobs:
           node-version: 20
 
       - name: Restore .env.production.demo
-        run: |
-          echo "${{ secrets.DEMO_ENV_FILE }}" > .env.production.demo
+        run: echo "${{ secrets.DEMO_ENV_FILE }}" > .env.production.demo
 
       - name: Generate config.demo.json
         run: |
@@ -64,8 +63,7 @@ EOF
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
 
       - name: Verify extended attributes
-        run: |
-          xattr -rl dist/demo/mac-arm64/Yale\ Philharmonia\ Library\ Catalogue-demo.app || true
+        run: xattr -rl dist/demo/mac-arm64/Yale\ Philharmonia\ Library\ Catalogue-demo.app || true
 
       - name: Upload mac build
         uses: actions/upload-artifact@v4
@@ -84,22 +82,21 @@ EOF
           node-version: 20
 
       - name: Restore .env.production.demo
-        run: |
-          echo "${{ secrets.DEMO_ENV_FILE }}" > .env.production.demo
+        run: echo "${{ secrets.DEMO_ENV_FILE }}" > .env.production.demo
 
       - name: Generate config.demo.json
         run: |
           echo "{
-            \"APP_MODE\": \"demo\",
-            \"APP_DEV_MODE\": false,
-            \"HTTPS\": false,
-            \"HOST\": \"localhost\",
-            \"PORT\": 3000,
-            \"WDS_SOCKET_PORT\": 3000,
-            \"API_BASE\": \"${{ secrets.DEMO_API_BASE }}\",
-            \"API_PORT\": 5000,
-            \"SQLITE_FILE\": \"${{ secrets.DEMO_SQLITE_FILE }}\"
-          }" > config.demo.json
+  \"APP_MODE\": \"demo\",
+  \"APP_DEV_MODE\": false,
+  \"HTTPS\": false,
+  \"HOST\": \"localhost\",
+  \"PORT\": 3000,
+  \"WDS_SOCKET_PORT\": 3000,
+  \"API_BASE\": \"${{ secrets.DEMO_API_BASE }}\",
+  \"API_PORT\": 5000,
+  \"SQLITE_FILE\": \"${{ secrets.DEMO_SQLITE_FILE }}\"
+}" > config.demo.json
 
       - name: Install dependencies
         run: npm ci
