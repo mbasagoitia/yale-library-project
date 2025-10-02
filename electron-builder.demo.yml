@@ -43,10 +43,3 @@ mac:
   target:
     - dmg
   icon: src/assets/icons/music-book.icns
-  identity: "Marika Basagoitia (R9ZPUC7AGS)"
-
-# afterPack:
-#   - ./scripts/cleanXattrs.js
-
-asarUnpack:
-  - "bin/**/*"
