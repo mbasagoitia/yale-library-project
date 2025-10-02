@@ -1,3 +1,4 @@
+# Sign and Notarize
 name: Sign and Notarize App
 
 on:
@@ -51,6 +52,12 @@ jobs:
         env:
           CSC_LINK: ${{ secrets.CSC_LINK }}
           CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+
+      - name: Clean up resource forks
+        run: |
+          # Remove AppleDouble files and extended attributes
+          find unsigned-build -name "._*" -delete
+          xattr -cr unsigned-build
 
       - name: Sign app
         run: |
