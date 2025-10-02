@@ -1,75 +1,20 @@
-# name: Sign and Notarize
-
-# on:
-#   workflow_dispatch: {}   # trigger manually after uploading artifact
-#   # release:
-#   #   types: [created]      # optional if you want auto on release
-
-# jobs:
-#   sign-mac:
-#     runs-on: macos-latest
-#     steps:
-#       - uses: actions/checkout@v4
-
-#       - name: Download unsigned build
-#         uses: actions/download-artifact@v4
-#         with:
-#           name: mac-unsigned
-#           path: dist/demo
-
-#       - name: Import Developer ID Certificate
-#         run: |
-#           echo "$CSC_LINK" | base64 --decode > dev-id-application.p12
-#           security create-keychain -p actions build.keychain
-#           security import dev-id-application.p12 -k build.keychain -P "$CSC_KEY_PASSWORD" -T /usr/bin/codesign
-#           security list-keychains -s build.keychain
-#           security default-keychain -s build.keychain
-#           security unlock-keychain -p actions build.keychain
-#           security set-keychain-settings -t 3600 -u build.keychain
-#         env:
-#           CSC_LINK: ${{ secrets.CSC_LINK }}
-#           CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
-
-#       - name: Sign & Notarize
-#         run: npm run sign:demo
-#         env:
-#           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-#           CSC_LINK: ${{ secrets.CSC_LINK }}
-#           CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
-#           CSC_IDENTITY_AUTO_DISCOVERY: true
-#           APPLE_ID: ${{ secrets.APPLE_ID }}
-#           APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
-#           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-
-#       - uses: actions/upload-artifact@v4
-#         with:
-#           name: mac-signed
-#           path: dist/demo/*
-
-name: Sign and Notarize App
+name: Sign and Notarize
 
 on:
-  release:
-    types: [created]
+  workflow_dispatch: {} # Only trigger manually
 
 jobs:
-  notarize-mac:
+  sign-mac:
     runs-on: macos-latest
 
     steps:
-      - name: Download unsigned app tarball
-        uses: actions/download-release-asset@v1
-        with:
-          repo: ${{ github.repository }}
-          tag: ${{ github.event.release.tag_name }}
-          file: unsigned-mac-build.tar.gz
-          path: ./unsigned.tar.gz
-          token: ${{ secrets.GH_TOKEN }}
+      - uses: actions/checkout@v4
 
-      - name: Extract unsigned app
-        run: |
-          mkdir unsigned-build
-          tar -xzvf unsigned.tar.gz -C unsigned-build
+      - name: Download unsigned build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mac-unsigned
+          path: dist/demo
 
       - name: Import Developer ID Certificate
         run: |
@@ -88,12 +33,12 @@ jobs:
         run: |
           codesign --deep --force --options runtime \
             --sign "Developer ID Application: Marika Basagoitia (R9ZPUC7AGS)" \
-            "unsigned-build/Yale Philharmonia Library Catalogue-demo.app"
+            "dist/demo/mac-arm64/Yale Philharmonia Library Catalogue-demo.app"
 
       - name: Notarize app
         uses: devbotsxyz/xcode-notarize@v1
         with:
-          product-path: "unsigned-build/Yale Philharmonia Library Catalogue-demo.app"
+          product-path: "dist/demo/mac-arm64/Yale Philharmonia Library Catalogue-demo.app"
           primary-bundle-id: "com.yale.demoapp"
           apple-id: ${{ secrets.APPLE_ID }}
           password: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
@@ -101,15 +46,10 @@ jobs:
 
       - name: Staple notarization
         run: |
-          xcrun stapler staple "unsigned-build/Yale Philharmonia Library Catalogue-demo.app"
+          xcrun stapler staple "dist/demo/mac-arm64/Yale Philharmonia Library Catalogue-demo.app"
 
-      - name: Repack signed app
-        run: |
-          tar -czvf signed-mac-build.tar.gz -C unsigned-build "Yale Philharmonia Library Catalogue-demo.app"
-
-      - name: Upload notarized app to release
-        uses: softprops/action-gh-release@v2
+      - name: Upload notarized app
+        uses: actions/upload-artifact@v4
         with:
-          files: signed-mac-build.tar.gz
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          name: mac-signed
+          path: dist/demo/*
