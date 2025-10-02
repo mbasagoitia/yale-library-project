@@ -12,29 +12,31 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - name: Download unsigned app tarball
-        uses: robinraju/release-downloader@v1.9
-        with:
-          repository: ${{ github.repository }}
-          tag: ${{ github.event.inputs.tag }}
-          fileName: unsigned-mac-build.tar.gz
-          out-file-path: ./unsigned.tar.gz
-          token: ${{ secrets.GH_TOKEN }}
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download unsigned app.tar.gz
+        run: |
+          gh release download "${{ github.event.inputs.tag }}" \
+            --repo "${{ github.repository }}" \
+            --pattern "unsigned-mac-build.tar.gz" \
+            --dir .
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Extract unsigned app
         run: |
           mkdir unsigned-build
-          tar -xzvf unsigned.tar.gz -C unsigned-build
+          tar -xzvf unsigned-mac-build.tar.gz -C unsigned-build
 
       - name: Find .app bundle
         id: find-app
         run: |
-          APP_PATH=$(find unsigned-build -type d -name "*.app" | head -n 1)
+          APP_PATH=$(find unsigned-build -type d -name "*.app" | head -n1)
           if [ -z "$APP_PATH" ]; then
-            echo "No .app bundle found!"
+            echo "No .app found!"
             exit 1
           fi
-          echo "App found at: $APP_PATH"
           echo "app-path=$APP_PATH" >> $GITHUB_OUTPUT
 
       - name: Import Developer ID Certificate
@@ -56,26 +58,24 @@ jobs:
             --sign "Developer ID Application: Marika Basagoitia (R9ZPUC7AGS)" \
             "${{ steps.find-app.outputs.app-path }}"
 
-      - name: Notarize app
-        uses: devbotsxyz/xcode-notarize@v1
+      - name: Notarize & staple using notary-tools action
+        uses: GuillaumeFalourd/notary-tools@v1
         with:
-          product-path: "${{ steps.find-app.outputs.app-path }}"
-          primary-bundle-id: "com.yale.demoapp"
-          apple-id: ${{ secrets.APPLE_ID }}
+          product_path: "${{ steps.find-app.outputs.app-path }}"
+          apple_id: ${{ secrets.APPLE_ID }}
           password: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
-          team-id: ${{ secrets.APPLE_TEAM_ID }}
-
-      - name: Staple notarization
-        run: |
-          xcrun stapler staple "${{ steps.find-app.outputs.app-path }}"
+          team_id: ${{ secrets.APPLE_TEAM_ID }}
+          staple: 'true'
 
       - name: Repack signed app
         run: |
-          tar -czvf signed-mac-build.tar.gz -C "$(dirname "${{ steps.find-app.outputs.app-path }}")" "$(basename "${{ steps.find-app.outputs.app-path }}")"
+          BASE_DIR=$(dirname "${{ steps.find-app.outputs.app-path }}")
+          APP_NAME=$(basename "${{ steps.find-app.outputs.app-path }}")
+          tar -czvf signed-mac-build.tar.gz -C "$BASE_DIR" "$APP_NAME"
 
-      - name: Upload notarized app to release
+      - name: Upload notarized app
         uses: softprops/action-gh-release@v2
         with:
           files: signed-mac-build.tar.gz
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
