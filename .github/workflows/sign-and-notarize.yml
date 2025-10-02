@@ -55,7 +55,6 @@ jobs:
 
       - name: Clean up resource forks
         run: |
-          # Remove AppleDouble files and extended attributes
           find unsigned-build -name "._*" -delete
           xattr -cr unsigned-build
 
@@ -64,8 +63,11 @@ jobs:
           codesign --deep --force --options runtime \
             --sign "Developer ID Application: Marika Basagoitia (R9ZPUC7AGS)" \
             "${{ steps.find-app.outputs.app-path }}"
+          # Verify the signature
+          codesign --verify --deep --strict --verbose=2 "${{ steps.find-app.outputs.app-path }}"
+          spctl --assess --type exec -v "${{ steps.find-app.outputs.app-path }}"
 
-      - name: Notarize & staple using notary-tools action
+      - name: Notarize & staple app
         uses: GuillaumeFalourd/notary-tools@v1
         with:
           product_path: "${{ steps.find-app.outputs.app-path }}"
