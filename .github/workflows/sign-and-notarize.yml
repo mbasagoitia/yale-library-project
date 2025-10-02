@@ -1,4 +1,3 @@
-# Sign and Notarize
 name: Sign and Notarize App
 
 on:
@@ -13,22 +12,30 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
       - name: Download unsigned app tarball
-        run: |
-          gh release download "${{ github.event.inputs.tag }}" \
-            --repo "${{ github.repository }}" \
-            --pattern "unsigned-mac-build.tar.gz" \
-            --dir .
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        uses: robinraju/release-downloader@v1.9
+        with:
+          repository: ${{ github.repository }}
+          tag: ${{ github.event.inputs.tag }}
+          fileName: unsigned-mac-build.tar.gz
+          out-file-path: ./unsigned.tar.gz
+          token: ${{ secrets.GH_TOKEN }}
 
       - name: Extract unsigned app
         run: |
           mkdir unsigned-build
-          tar -xzvf unsigned-mac-build.tar.gz -C unsigned-build
+          tar -xzvf unsigned.tar.gz -C unsigned-build
+
+      - name: Find .app bundle
+        id: find-app
+        run: |
+          APP_PATH=$(find unsigned-build -type d -name "*.app" | head -n 1)
+          if [ -z "$APP_PATH" ]; then
+            echo "No .app bundle found!"
+            exit 1
+          fi
+          echo "App found at: $APP_PATH"
+          echo "app-path=$APP_PATH" >> $GITHUB_OUTPUT
 
       - name: Import Developer ID Certificate
         run: |
@@ -47,27 +54,28 @@ jobs:
         run: |
           codesign --deep --force --options runtime \
             --sign "Developer ID Application: Marika Basagoitia (R9ZPUC7AGS)" \
-            "unsigned-build/Yale Philharmonia Library Catalogue-demo.app"
+            "${{ steps.find-app.outputs.app-path }}"
 
-      - name: Notarize app with notarytool
-        run: |
-          xcrun notarytool submit "unsigned-build/Yale Philharmonia Library Catalogue-demo.app" \
-            --apple-id "${{ secrets.APPLE_ID }}" \
-            --password "${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}" \
-            --team-id "${{ secrets.APPLE_TEAM_ID }}" \
-            --wait
+      - name: Notarize app
+        uses: devbotsxyz/xcode-notarize@v1
+        with:
+          product-path: "${{ steps.find-app.outputs.app-path }}"
+          primary-bundle-id: "com.yale.demoapp"
+          apple-id: ${{ secrets.APPLE_ID }}
+          password: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          team-id: ${{ secrets.APPLE_TEAM_ID }}
 
       - name: Staple notarization
         run: |
-          xcrun stapler staple "unsigned-build/Yale Philharmonia Library Catalogue-demo.app"
+          xcrun stapler staple "${{ steps.find-app.outputs.app-path }}"
 
       - name: Repack signed app
         run: |
-          tar -czvf signed-mac-build.tar.gz -C unsigned-build "Yale Philharmonia Library Catalogue-demo.app"
+          tar -czvf signed-mac-build.tar.gz -C "$(dirname "${{ steps.find-app.outputs.app-path }}")" "$(basename "${{ steps.find-app.outputs.app-path }}")"
 
       - name: Upload notarized app to release
         uses: softprops/action-gh-release@v2
         with:
           files: signed-mac-build.tar.gz
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
