@@ -1,4 +1,4 @@
-# Sign and Notarize Only
+# Sign and Notarize
 name: Sign and Notarize App
 
 on:
