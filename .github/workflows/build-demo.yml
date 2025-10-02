@@ -55,9 +55,10 @@ jobs:
           CSC_LINK: ${{ secrets.CSC_LINK }}
           CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
 
-      # Build with electron-builder and sign
+      # Build with electron-builder and sign/notarize
       - run: npm run build:demo
         env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
           CSC_LINK: ${{ secrets.CSC_LINK }}
           CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
           CSC_IDENTITY_AUTO_DISCOVERY: true
@@ -103,8 +104,10 @@ jobs:
 
       - run: npm ci
 
+      # Build with electron-builder on Windows
       - run: npm run build:demo
         env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
           WIN_CSC_LINK: ${{ secrets.WIN_CSC_LINK }}
           WIN_CSC_KEY_PASSWORD: ${{ secrets.WIN_CSC_KEY_PASSWORD }}
 
