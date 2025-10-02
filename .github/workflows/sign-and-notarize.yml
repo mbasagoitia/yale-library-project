@@ -1,3 +1,4 @@
+# Sign and Notarize Only
 name: Sign and Notarize App
 
 on:
