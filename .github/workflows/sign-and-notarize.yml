@@ -120,8 +120,19 @@ jobs:
             exit 1
           fi
 
+      - name: Fetch notarization log
+        if: failure()
+        run: |
+          ID=$(jq -r '.id' notarization-result.json)
+          echo "Fetching notarization log for ID $ID..."
+          xcrun notarytool log "$ID" \
+            --apple-id "${{ secrets.APPLE_ID }}" \
+            --password "${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}" \
+            --team-id "${{ secrets.APPLE_TEAM_ID}"
+
       - name: Staple notarization ticket
         id: staple
+        if: success()
         run: |
           unzip -q signed-mac-build.zip -d stapled-build
           APP=$(find stapled-build -type d -name "*.app" | head -n1)
@@ -129,11 +140,13 @@ jobs:
           echo "stapled-app=$APP" >> $GITHUB_OUTPUT
 
       - name: Verify notarized app with spctl
+        if: success()
         run: |
           APP="${{ steps.staple.outputs.stapled-app }}"
           spctl --assess --type exec -v "$APP"
 
       - name: Upload notarized app
+        if: success()
         uses: softprops/action-gh-release@v2
         with:
           files: signed-mac-build.zip
