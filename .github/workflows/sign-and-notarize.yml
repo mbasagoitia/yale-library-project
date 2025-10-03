@@ -1,3 +1,4 @@
+# Sign and Notarize
 name: Sign and Notarize App
 
 on:
@@ -12,54 +13,121 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      # 🔍 Auto-detect and select latest Xcode installed on the GitHub runner
-      - name: Select latest Xcode
+      - name: Download unsigned app.tar.gz
         run: |
-          LATEST_XCODE=$(ls -1 /Applications | grep "Xcode_" | sort -V | tail -n 1)
-          if [ -z "$LATEST_XCODE" ]; then
-            echo "⚠️ No specific Xcode version found, falling back to default"
-            sudo xcode-select -s /Applications/Xcode.app
-          else
-            echo "✅ Selecting $LATEST_XCODE"
-            sudo xcode-select -s "/Applications/$LATEST_XCODE"
+          gh release download "${{ github.event.inputs.tag }}" \
+            --repo "${{ github.repository }}" \
+            --pattern "unsigned-mac-build.tar.gz" \
+            --dir .
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Extract unsigned app
+        run: |
+          mkdir unsigned-build
+          tar -xzvf unsigned-mac-build.tar.gz -C unsigned-build
+
+      - name: Find .app bundle
+        id: find-app
+        run: |
+          APP_PATH=$(find unsigned-build -type d -name "*.app" | head -n1)
+          if [ -z "$APP_PATH" ]; then
+            echo "No .app found!"
+            exit 1
           fi
-          xcode-select -p
+          echo "app-path=$APP_PATH" >> $GITHUB_OUTPUT
 
-      # 🔑 Import Apple signing certificate (from GitHub secrets)
-      - name: Import Code-Signing Certificates
-        uses: apple-actions/import-codesign-certs@v2
-        with:
-          p12-file-base64: ${{ secrets.MAC_CERTIFICATE }}
-          p12-password: ${{ secrets.MAC_CERTIFICATE_PASSWORD }}
-
-      # 📦 Build your unsigned app (replace with your actual build step)
-      - name: Build App
+      # 🔧 Auto-detect and set the active Xcode version
+      - name: Select latest installed Xcode
         run: |
-          npm install
-          npm run build
+          echo "Available Xcodes:"
+          ls -1 /Applications | grep Xcode || true
+          # Pick the default installed by the GitHub macOS runner
+          XCODE_PATH=$(xcode-select -p)
+          echo "Using Xcode at: $XCODE_PATH"
+          sudo xcode-select -s "$XCODE_PATH"
 
-      # ✍️ Sign the app
-      - name: Code Sign App
+      - name: Import Developer ID Certificate
         run: |
-          codesign --deep --force --options runtime \
-          --entitlements entitlements.mac.plist \
-          --sign "Developer ID Application: Marika Basagoitia (R9ZPUC7AGS)" \
-          "unsigned-build/dist/demo/mac-arm64/Yale Philharmonia Library Catalogue-demo.app"
+          echo "$CSC_LINK" | base64 --decode > dev-id-application.p12
 
-      # 📨 Notarize using Apple API Key
-      - name: Notarize App
+          security create-keychain -p actions build.keychain
+          security import dev-id-application.p12 \
+            -k ~/Library/Keychains/build.keychain-db \
+            -P "$CSC_KEY_PASSWORD" \
+            -T /usr/bin/codesign
+
+          security list-keychains -d user -s ~/Library/Keychains/build.keychain-db
+          security default-keychain -s ~/Library/Keychains/build.keychain-db
+          security unlock-keychain -p actions ~/Library/Keychains/build.keychain-db
+          security set-keychain-settings -lut 3600 ~/Library/Keychains/build.keychain-db
+
+          # 👇 allow codesign to use the key non-interactively
+          security set-key-partition-list -S apple-tool:,apple: -s -k actions ~/Library/Keychains/build.keychain-db
+        env:
+          CSC_LINK: ${{ secrets.CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+
+      - name: Clean up resource forks
+        run: |
+          find unsigned-build -name "._*" -delete
+          xattr -cr unsigned-build
+
+      - name: Sign app (all components)
+        run: |
+          set -ex
+          APP="${{ steps.find-app.outputs.app-path }}"
+          SIGN_ID="Developer ID Application: Marika Basagoitia (R9ZPUC7AGS)"
+
+          # 1. Sign all .dylib / executables inside Frameworks
+          find "$APP/Contents/Frameworks" -type f \( -name "*.dylib" -o -perm +111 \) -print0 | while IFS= read -r -d '' file; do
+            codesign --force --options runtime --sign "$SIGN_ID" "$file"
+          done
+
+          # 2. Sign all .framework bundles
+          find "$APP/Contents/Frameworks" -type d -name "*.framework" -print0 | while IFS= read -r -d '' fw; do
+            codesign --force --options runtime --sign "$SIGN_ID" "$fw"
+          done
+
+          # 3. Sign all Helper apps
+          for helper in "$APP/Contents/Frameworks/"*Helper.app; do
+            if [ -d "$helper" ]; then
+              codesign --force --options runtime --sign "$SIGN_ID" "$helper"
+            fi
+          done
+
+          # 4. Finally, sign the top-level app
+          codesign --force --options runtime --sign "$SIGN_ID" "$APP"
+
+          # 5. Verify structural signature (ok even before notarization)
+          codesign --verify --deep --strict --verbose=4 "$APP"
+
+      - name: Notarize & staple app
         uses: GuillaumeFalourd/notary-tools@v1
         with:
-          product-path: unsigned-build/dist/demo/mac-arm64/Yale Philharmonia Library Catalogue-demo.app
-          apple-id: ${{ secrets.APPLE_ID }}
+          product_path: "${{ steps.find-app.outputs.app-path }}"
+          apple_id: ${{ secrets.APPLE_ID }}
           password: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
-          team-id: R9ZPUC7AGS
+          team_id: ${{ secrets.APPLE_TEAM_ID }}
+          staple: 'true'
 
-      # ✅ Staple notarization ticket
-      - name: Staple Notarization
+      - name: Verify notarized app with spctl
         run: |
-          xcrun stapler staple "unsigned-build/dist/demo/mac-arm64/Yale Philharmonia Library Catalogue-demo.app"
-          spctl --assess --type exec -v "unsigned-build/dist/demo/mac-arm64/Yale Philharmonia Library Catalogue-demo.app"
+          APP="${{ steps.find-app.outputs.app-path }}"
+          spctl --assess --type exec -v "$APP"
+
+      - name: Repack signed app
+        run: |
+          BASE_DIR=$(dirname "${{ steps.find-app.outputs.app-path }}")
+          APP_NAME=$(basename "${{ steps.find-app.outputs.app-path }}")
+          tar -czvf signed-mac-build.tar.gz -C "$BASE_DIR" "$APP_NAME"
+
+      - name: Upload notarized app
+        uses: softprops/action-gh-release@v2
+        with:
+          files: signed-mac-build.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
