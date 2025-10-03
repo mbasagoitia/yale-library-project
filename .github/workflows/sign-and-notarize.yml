@@ -44,18 +44,18 @@ jobs:
         run: |
           echo "$CSC_LINK" | base64 --decode > dev-id-application.p12
 
-          # Create and unlock a new keychain
           security create-keychain -p actions build.keychain
           security import dev-id-application.p12 \
             -k ~/Library/Keychains/build.keychain-db \
             -P "$CSC_KEY_PASSWORD" \
             -T /usr/bin/codesign
+
           security list-keychains -d user -s ~/Library/Keychains/build.keychain-db
           security default-keychain -s ~/Library/Keychains/build.keychain-db
           security unlock-keychain -p actions ~/Library/Keychains/build.keychain-db
           security set-keychain-settings -lut 3600 ~/Library/Keychains/build.keychain-db
 
-          # 👇 Critical: allow codesign to use the key non-interactively
+          # 👇 critical: allow non-interactive codesign
           security set-key-partition-list -S apple-tool:,apple: -s -k actions ~/Library/Keychains/build.keychain-db
         env:
           CSC_LINK: ${{ secrets.CSC_LINK }}
@@ -66,16 +66,35 @@ jobs:
           find unsigned-build -name "._*" -delete
           xattr -cr unsigned-build
 
-      - name: Sign app
+      - name: Sign app (all components)
         run: |
-          set -x
-          codesign --verbose=4 --force --options runtime \
-            --sign "Developer ID Application: Marika Basagoitia (R9ZPUC7AGS)" \
-            "${{ steps.find-app.outputs.app-path }}"
+          set -ex
+          APP="${{ steps.find-app.outputs.app-path }}"
+          SIGN_ID="Developer ID Application: Marika Basagoitia (R9ZPUC7AGS)"
 
-          # Verify the signature
-          codesign --verify --deep --strict --verbose=4 "${{ steps.find-app.outputs.app-path }}"
-          spctl --assess --type exec -v "${{ steps.find-app.outputs.app-path }}"
+          # 1. Sign all .dylib / executables inside Frameworks
+          find "$APP/Contents/Frameworks" -type f \( -name "*.dylib" -o -perm +111 \) -print0 | while IFS= read -r -d '' file; do
+            codesign --force --options runtime --sign "$SIGN_ID" "$file"
+          done
+
+          # 2. Sign all .framework bundles
+          find "$APP/Contents/Frameworks" -type d -name "*.framework" -print0 | while IFS= read -r -d '' fw; do
+            codesign --force --options runtime --sign "$SIGN_ID" "$fw"
+          done
+
+          # 3. Sign all Helper apps
+          for helper in "$APP/Contents/Frameworks/"*Helper.app; do
+            if [ -d "$helper" ]; then
+              codesign --force --options runtime --sign "$SIGN_ID" "$helper"
+            fi
+          done
+
+          # 4. Finally, sign the top-level app
+          codesign --force --options runtime --sign "$SIGN_ID" "$APP"
+
+          # 5. Verify the signature
+          codesign --verify --deep --strict --verbose=4 "$APP"
+          spctl --assess --type exec -v "$APP"
 
       - name: Notarize & staple app
         uses: GuillaumeFalourd/notary-tools@v1
