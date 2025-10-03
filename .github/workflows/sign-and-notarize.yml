@@ -43,12 +43,20 @@ jobs:
       - name: Import Developer ID Certificate
         run: |
           echo "$CSC_LINK" | base64 --decode > dev-id-application.p12
+
+          # Create and unlock a new keychain
           security create-keychain -p actions build.keychain
-          security import dev-id-application.p12 -k build.keychain -P "$CSC_KEY_PASSWORD" -T /usr/bin/codesign
-          security list-keychains -s build.keychain
-          security default-keychain -s build.keychain
-          security unlock-keychain -p actions build.keychain
-          security set-keychain-settings -t 3600 -u build.keychain
+          security import dev-id-application.p12 \
+            -k ~/Library/Keychains/build.keychain-db \
+            -P "$CSC_KEY_PASSWORD" \
+            -T /usr/bin/codesign
+          security list-keychains -d user -s ~/Library/Keychains/build.keychain-db
+          security default-keychain -s ~/Library/Keychains/build.keychain-db
+          security unlock-keychain -p actions ~/Library/Keychains/build.keychain-db
+          security set-keychain-settings -lut 3600 ~/Library/Keychains/build.keychain-db
+
+          # 👇 Critical: allow codesign to use the key non-interactively
+          security set-key-partition-list -S apple-tool:,apple: -s -k actions ~/Library/Keychains/build.keychain-db
         env:
           CSC_LINK: ${{ secrets.CSC_LINK }}
           CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
@@ -60,11 +68,13 @@ jobs:
 
       - name: Sign app
         run: |
-          codesign --deep --force --options runtime \
+          set -x
+          codesign --verbose=4 --force --options runtime \
             --sign "Developer ID Application: Marika Basagoitia (R9ZPUC7AGS)" \
             "${{ steps.find-app.outputs.app-path }}"
+
           # Verify the signature
-          codesign --verify --deep --strict --verbose=2 "${{ steps.find-app.outputs.app-path }}"
+          codesign --verify --deep --strict --verbose=4 "${{ steps.find-app.outputs.app-path }}"
           spctl --assess --type exec -v "${{ steps.find-app.outputs.app-path }}"
 
       - name: Notarize & staple app
