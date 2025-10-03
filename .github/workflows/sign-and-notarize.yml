@@ -1,4 +1,5 @@
-name: Build, Sign, and Notarize App
+# Sign and Notarize
+name: Sign and Notarize App
 
 on:
   workflow_dispatch:
@@ -8,51 +9,120 @@ on:
         required: true
 
 jobs:
-  build-sign-notarize:
+  notarize-mac:
     runs-on: macos-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build Electron app
-        run: npm run build:demo
-
-      - name: Import code signing certificates
-        uses: apple-actions/import-codesign-certs@v2
-        with:
-          p12-file-base64: ${{ secrets.CERT_P12_BASE64 }}
-          p12-password: ${{ secrets.CERT_P12_PASSWORD }}
-
-      - name: Zip .app for notarization
+      - name: Download unsigned app.zip
         run: |
-          cd unsigned-build/dist/demo/mac-arm64
-          ditto -c -k --keepParent "Yale Philharmonia Library Catalogue-demo.app" "YalePhilharmonia.zip"
-          ls -lh
+          gh release download "${{ github.event.inputs.tag }}" \
+            --repo "${{ github.repository }}" \
+            --pattern "unsigned-mac-build.zip" \
+            --dir .
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
-      - name: Notarize app with Apple
+      - name: Extract unsigned app
         run: |
-          xcrun notarytool submit "unsigned-build/dist/demo/mac-arm64/YalePhilharmonia.zip" \
+          mkdir unsigned-build
+          unzip -q unsigned-mac-build.zip -d unsigned-build
+
+      - name: Find .app bundle
+        id: find-app
+        run: |
+          APP_PATH=$(find unsigned-build -type d -name "*.app" | head -n1)
+          if [ -z "$APP_PATH" ]; then
+            echo "No .app found!"
+            exit 1
+          fi
+          echo "app-path=$APP_PATH" >> $GITHUB_OUTPUT
+
+      - name: Import Developer ID Certificate
+        run: |
+          echo "$CSC_LINK" | base64 --decode > dev-id-application.p12
+
+          security create-keychain -p actions build.keychain
+          security import dev-id-application.p12 \
+            -k ~/Library/Keychains/build.keychain-db \
+            -P "$CSC_KEY_PASSWORD" \
+            -T /usr/bin/codesign
+
+          security list-keychains -d user -s ~/Library/Keychains/build.keychain-db
+          security default-keychain -s ~/Library/Keychains/build.keychain-db
+          security unlock-keychain -p actions ~/Library/Keychains/build.keychain-db
+          security set-keychain-settings -lut 3600 ~/Library/Keychains/build.keychain-db
+
+          # 👇 allow codesign to use the key non-interactively
+          security set-key-partition-list -S apple-tool:,apple: -s -k actions ~/Library/Keychains/build.keychain-db
+        env:
+          CSC_LINK: ${{ secrets.CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+
+      - name: Clean up resource forks
+        run: |
+          find unsigned-build -name "._*" -delete
+          xattr -cr unsigned-build
+
+      - name: Sign app (all components)
+        run: |
+          set -ex
+          APP="${{ steps.find-app.outputs.app-path }}"
+          SIGN_ID="Developer ID Application: Marika Basagoitia (R9ZPUC7AGS)"
+
+          # 1. Sign all .dylib / executables inside Frameworks
+          find "$APP/Contents/Frameworks" -type f \( -name "*.dylib" -o -perm +111 \) -print0 | while IFS= read -r -d '' file; do
+            codesign --force --options runtime --sign "$SIGN_ID" "$file"
+          done
+
+          # 2. Sign all .framework bundles
+          find "$APP/Contents/Frameworks" -type d -name "*.framework" -print0 | while IFS= read -r -d '' fw; do
+            codesign --force --options runtime --sign "$SIGN_ID" "$fw"
+          done
+
+          # 3. Sign all Helper apps
+          for helper in "$APP/Contents/Frameworks/"*Helper.app; do
+            if [ -d "$helper" ]; then
+              codesign --force --options runtime --sign "$SIGN_ID" "$helper"
+            fi
+          done
+
+          # 4. Finally, sign the top-level app
+          codesign --force --options runtime --sign "$SIGN_ID" "$APP"
+
+          # 5. Verify structural signature (ok even before notarization)
+          codesign --verify --deep --strict --verbose=4 "$APP"
+
+      - name: Re-zip app for notarization
+        run: |
+          APP="${{ steps.find-app.outputs.app-path }}"
+          ZIP_PATH="signed-mac-build.zip"
+          ditto -c -k --keepParent "$APP" "$ZIP_PATH"
+          echo "zip-path=$ZIP_PATH" >> $GITHUB_OUTPUT
+
+      - name: Notarize app with notarytool
+        run: |
+          xcrun notarytool submit "signed-mac-build.zip" \
             --apple-id "${{ secrets.APPLE_ID }}" \
-            --team-id "${{ secrets.APPLE_TEAM_ID }}" \
             --password "${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}" \
+            --team-id "${{ secrets.APPLE_TEAM_ID }}" \
             --wait
 
       - name: Staple notarization ticket
         run: |
-          xcrun stapler staple "unsigned-build/dist/demo/mac-arm64/Yale Philharmonia Library Catalogue-demo.app"
-          spctl --assess --type exec -v "unsigned-build/dist/demo/mac-arm64/Yale Philharmonia Library Catalogue-demo.app"
+          APP="${{ steps.find-app.outputs.app-path }}"
+          xcrun stapler staple "$APP"
 
-      - name: Upload notarized app artifact
-        uses: actions/upload-artifact@v4
+      - name: Verify notarized app with spctl
+        run: |
+          APP="${{ steps.find-app.outputs.app-path }}"
+          spctl --assess --type exec -v "$APP"
+
+      - name: Upload notarized app
+        uses: softprops/action-gh-release@v2
         with:
-          name: notarized-app
-          path: unsigned-build/dist/demo/mac-arm64/Yale Philharmonia Library Catalogue-demo.app
+          files: signed-mac-build.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
