@@ -40,16 +40,6 @@ jobs:
           fi
           echo "app-path=$APP_PATH" >> $GITHUB_OUTPUT
 
-      # 🔧 Auto-detect and set the active Xcode version
-      - name: Select latest installed Xcode
-        run: |
-          echo "Available Xcodes:"
-          ls -1 /Applications | grep Xcode || true
-          # Pick the default installed by the GitHub macOS runner
-          XCODE_PATH=$(xcode-select -p)
-          echo "Using Xcode at: $XCODE_PATH"
-          sudo xcode-select -s "$XCODE_PATH"
-
       - name: Import Developer ID Certificate
         run: |
           echo "$CSC_LINK" | base64 --decode > dev-id-application.p12
@@ -105,14 +95,17 @@ jobs:
           # 5. Verify structural signature (ok even before notarization)
           codesign --verify --deep --strict --verbose=4 "$APP"
 
-      - name: Notarize & staple app
-        uses: GuillaumeFalourd/notary-tools@v1
-        with:
-          product_path: "${{ steps.find-app.outputs.app-path }}"
-          apple_id: ${{ secrets.APPLE_ID }}
-          password: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
-          team_id: ${{ secrets.APPLE_TEAM_ID }}
-          staple: 'true'
+      - name: Notarize app with notarytool
+        run: |
+          xcrun notarytool submit "${{ steps.find-app.outputs.app-path }}" \
+            --apple-id "${{ secrets.APPLE_ID }}" \
+            --password "${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}" \
+            --team-id "${{ secrets.APPLE_TEAM_ID }}" \
+            --wait
+
+      - name: Staple notarization ticket
+        run: |
+          xcrun stapler staple "${{ steps.find-app.outputs.app-path }}"
 
       - name: Verify notarized app with spctl
         run: |
