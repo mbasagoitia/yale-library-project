@@ -110,16 +110,21 @@ jobs:
             --apple-id "${{ secrets.APPLE_ID }}" \
             --password "${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}" \
             --team-id "${{ secrets.APPLE_TEAM_ID }}" \
-            --wait
+            --wait --output-format json > notarization-result.json
+
+          echo "🔍 Notarization result:"
+          cat notarization-result.json
 
       - name: Staple notarization ticket
         run: |
-          APP="${{ steps.find-app.outputs.app-path }}"
+          unzip -q signed-mac-build.zip -d stapled-build
+          APP=$(find stapled-build -type d -name "*.app" | head -n1)
           xcrun stapler staple "$APP"
+          echo "stapled-app=$APP" >> $GITHUB_OUTPUT
 
       - name: Verify notarized app with spctl
         run: |
-          APP="${{ steps.find-app.outputs.app-path }}"
+          APP="${{ steps.staple.outputs.stapled-app }}"
           spctl --assess --type exec -v "$APP"
 
       - name: Upload notarized app
