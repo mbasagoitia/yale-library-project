@@ -55,7 +55,7 @@ jobs:
           security unlock-keychain -p actions ~/Library/Keychains/build.keychain-db
           security set-keychain-settings -lut 3600 ~/Library/Keychains/build.keychain-db
 
-          # 👇 allow codesign to use the key non-interactively
+          # allow codesign to use the key non-interactively
           security set-key-partition-list -S apple-tool:,apple: -s -k actions ~/Library/Keychains/build.keychain-db
         env:
           CSC_LINK: ${{ secrets.CSC_LINK }}
