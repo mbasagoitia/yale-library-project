@@ -116,7 +116,7 @@ jobs:
 
           STATUS=$(jq -r '.status' notarization-result.json)
           if [ "$STATUS" != "Accepted" ]; then
-            echo "❌ Notarization failed (status: $STATUS)"
+            echo "Notarization failed (status: $STATUS)"
             exit 1
           fi
 
