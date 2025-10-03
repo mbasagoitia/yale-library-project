@@ -54,8 +54,6 @@ jobs:
           security default-keychain -s ~/Library/Keychains/build.keychain-db
           security unlock-keychain -p actions ~/Library/Keychains/build.keychain-db
           security set-keychain-settings -lut 3600 ~/Library/Keychains/build.keychain-db
-
-          # allow codesign to use the key non-interactively
           security set-key-partition-list -S apple-tool:,apple: -s -k actions ~/Library/Keychains/build.keychain-db
         env:
           CSC_LINK: ${{ secrets.CSC_LINK }}
@@ -72,7 +70,7 @@ jobs:
           APP="${{ steps.find-app.outputs.app-path }}"
           SIGN_ID="Developer ID Application: Marika Basagoitia (R9ZPUC7AGS)"
 
-          # 1. Sign all .dylib / executables inside Frameworks
+          # 1. Sign .dylib / executables in Frameworks
           find "$APP/Contents/Frameworks" -type f \( -name "*.dylib" -o -perm +111 \) -print0 | while IFS= read -r -d '' file; do
             codesign --force --options runtime --sign "$SIGN_ID" "$file"
           done
@@ -82,17 +80,17 @@ jobs:
             codesign --force --options runtime --sign "$SIGN_ID" "$fw"
           done
 
-          # 3. Sign all Helper apps
+          # 3. Sign Helper apps
           for helper in "$APP/Contents/Frameworks/"*Helper.app; do
             if [ -d "$helper" ]; then
               codesign --force --options runtime --sign "$SIGN_ID" "$helper"
             fi
           done
 
-          # 4. Finally, sign the top-level app
+          # 4. Sign the top-level app
           codesign --force --options runtime --sign "$SIGN_ID" "$APP"
 
-          # 5. Verify structural signature
+          # 5. Verify
           codesign --verify --deep --strict --verbose=4 "$APP"
 
       - name: Re-zip app for notarization
@@ -104,6 +102,7 @@ jobs:
           echo "zip-path=$ZIP_PATH" >> $GITHUB_OUTPUT
 
       - name: Notarize app with notarytool
+        id: notarize
         run: |
           ZIP="${{ steps.zip-app.outputs.zip-path }}"
           xcrun notarytool submit "$ZIP" \
@@ -115,7 +114,14 @@ jobs:
           echo "🔍 Notarization result:"
           cat notarization-result.json
 
+          STATUS=$(jq -r '.status' notarization-result.json)
+          if [ "$STATUS" != "Accepted" ]; then
+            echo "❌ Notarization failed (status: $STATUS)"
+            exit 1
+          fi
+
       - name: Staple notarization ticket
+        id: staple
         run: |
           unzip -q signed-mac-build.zip -d stapled-build
           APP=$(find stapled-build -type d -name "*.app" | head -n1)
