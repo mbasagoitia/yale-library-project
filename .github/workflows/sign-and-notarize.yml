@@ -55,7 +55,7 @@ jobs:
           security unlock-keychain -p actions ~/Library/Keychains/build.keychain-db
           security set-keychain-settings -lut 3600 ~/Library/Keychains/build.keychain-db
 
-          # 👇 critical: allow non-interactive codesign
+          # 👇 allow codesign to use the key non-interactively
           security set-key-partition-list -S apple-tool:,apple: -s -k actions ~/Library/Keychains/build.keychain-db
         env:
           CSC_LINK: ${{ secrets.CSC_LINK }}
@@ -92,9 +92,8 @@ jobs:
           # 4. Finally, sign the top-level app
           codesign --force --options runtime --sign "$SIGN_ID" "$APP"
 
-          # 5. Verify the signature
+          # 5. Verify structural signature (ok even before notarization)
           codesign --verify --deep --strict --verbose=4 "$APP"
-          spctl --assess --type exec -v "$APP"
 
       - name: Notarize & staple app
         uses: GuillaumeFalourd/notary-tools@v1
@@ -104,6 +103,11 @@ jobs:
           password: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
           team_id: ${{ secrets.APPLE_TEAM_ID }}
           staple: 'true'
+
+      - name: Verify notarized app with spctl
+        run: |
+          APP="${{ steps.find-app.outputs.app-path }}"
+          spctl --assess --type exec -v "$APP"
 
       - name: Repack signed app
         run: |
