@@ -4,7 +4,7 @@ A desktop application developed specifically for and used internally by the Yale
 
 A demo build is available for outside review.
 
-This project replaces a slow, spreadsheet-based workflow with a **fast, centralized system** for tracking, searching, and organizing scores and parts.
+This project replaces a slow, spreadsheet-based workflow with a fast, centralized system for tracking, searching, and organizing scores and parts.
 
 Built with [Electron](https://www.electronjs.org/), [React](https://reactjs.org/), and [Node/Express](https://expressjs.com/) as a portfolio project to demonstrate full-stack desktop app development.
 
@@ -37,6 +37,12 @@ Built with [Electron](https://www.electronjs.org/), [React](https://reactjs.org/
 - **Admin Management**  
   - User authentication handled via Yale University's Central Authentication System (CAS), with additional RBAC logic for app-specific permissions
   - Admins can add/remove other admins and manage library settings/holdings
+
+---
+
+## Classification Guide
+
+This application is designed to implement the **Dickinson Classification Scheme for Musical Compositions**, a system widely adopted by music libraries, including those at Vassar College and Columbia University. An overview and examples can be found here: https://www.jstor.org/stable/23505207
 
 ---
 
@@ -79,11 +85,13 @@ This project centralizes cataloguing, searching, reporting, and administration i
 1. Download the packaged build (`Philharmonia Library Catalogue-demo.exe`).  
 2. Double-click to run — demo data is preloaded.
 
+*Note: As of December 2025, there are some issues opening the Demo Mac Build because of Apple signing and notarization restrictions. To review this project in demo mode, please see Option 2.*
+
 ### Option 2: Run the Demo from Source (For Developers)
 
 This project is designed to run in **demo** mode for local development.
 
-*Internal mode requires protected assets and environment files that are not included in this repository, so attempting to run in internal mode will break the build.*
+*Internal mode requires protected assets and environment variables that are not included in this repository, so attempting to run in internal mode will break the build.*
 
 1. Clone the repository.  
    ```bash
@@ -98,7 +106,7 @@ This project is designed to run in **demo** mode for local development.
     ```bash
     npm run prepare-env
   
-  Or, manually copy .env.development.demo.example → .env.development.demo. No secrets (database credentials, keys, etc.) are included as all demo data is bundled locally.
+  Or, manually copy .env.development.demo.example → .env.development.demo. No secrets (database credentials, keys, etc.) are included, as all demo data is bundled locally.
 
 5. Start in development mode:
     ```bash
@@ -143,7 +151,7 @@ The source code runs in demo mode by default. To protect library data, the inter
 
 ### Database
 
-The **demo database** contains a small subset of the Yale Philharmonia's publicly-available catalogue holdings, along with public-domain scans sourced from IMSLP, for demonstration purposes only. The demo SQLite database is built and bundled locally.
+The **demo database** contains a small subset of the Yale Philharmonia's publicly-available catalogue holdings, along with public-domain PDF files sourced from the International Music Score Library Project (IMSLP) for demonstration purposes only. The demo SQLite database is built and bundled locally.
 
 The **internal database** is hosted on MySQL in a virtual machine on Google Cloud Platform and requires configuration and authentication available only to users of the internal build. The database is hosted remotely to allow connections from multiple clients in the Yale School of Music.
 
@@ -161,22 +169,6 @@ The public demo build uses open-source or system-default typefaces to ensure tha
 - Decorative images are sourced from <a href="https://unsplash.com/">Unsplash</a>, an open-source image repository.
 
 - Desktop icon: <a href="https://www.flaticon.com/free-icons/music-book" title="music book icons">Music book icons created by Freepik - Flaticon</a>
-
-#### Build Size
-
-This demo build is approximately 800 MB. The larger size is intentional:
-
-It includes multiple full-length PDF music scans for demonstration purposes only. These files are bundled locally so the app works with no external dependencies.
-
-The build also contains the standard Electron runtime (~150–200 MB).
-
-In the production build, the digital catalogue is not bundled locally. The application is designed to have the PDFs hosted on the user's computer or an external service.
-
-Since this project is designed as a portfolio demo, the complete set of materials is included to fully demonstrate the app’s functionality.
-
-## Classification Guide
-
-This application is designed to implement and follow the **Dickinson Classification Scheme for Musical Compositions**, a system widely adopted by music libraries, including those at Vassar College and Columbia University. An overview and examples can be found here: https://www.jstor.org/stable/23505207
 
 ## License
 

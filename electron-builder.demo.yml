@@ -40,6 +40,7 @@ mac:
   entitlements: entitlements.mac.plist
   entitlementsInherit: entitlements.mac.plist
   gatekeeperAssess: false
+  identity: null
   target:
     - dmg
   icon: src/assets/icons/music-book.icns

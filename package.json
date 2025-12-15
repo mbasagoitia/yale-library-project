@@ -45,7 +45,6 @@
     "react-pdf": "^7.7.3",
     "react-redux": "^9.2.0",
     "react-router-dom": "^6.23.1",
-    "react-scripts": "5.0.1",
     "react-toastify": "^11.0.5",
     "redux-persist": "^6.0.0",
     "seedrandom": "^3.0.5",
@@ -60,31 +59,39 @@
     "react": "cross-env PORT=3000 HOST=localhost HTTPS=false BROWSER=none WDS_SOCKET_PORT=3000 react-scripts start",
     "server": "node src/server/startServer.js",
     "electron": "wait-on --log --timeout 120000 tcp:3000 && cross-env ELECTRON_START_URL=http://localhost:3000 electron .",
-
     "prebuild": "rm -rf dist && mkdir -p dist",
-
     "build:demo:unsigned": "npm run prebuild && CSC_IDENTITY_AUTO_DISCOVERY=false && cross-env CI=false NODE_ENV=production APP_MODE=demo GENERATE_SOURCEMAP=false dotenv -e .env.production.demo -- react-scripts build && electron-builder -c electron-builder.demo.yml --dir",
     "sign:demo": "electron-builder -c electron-builder.demo.yml --mac dmg",
     "build:demo": "npm run prebuild && cross-env CI=false NODE_ENV=production APP_MODE=demo GENERATE_SOURCEMAP=false dotenv -e .env.production.demo -- react-scripts build && electron-builder -c electron-builder.demo.yml",
-
     "build:internal": "npm run prebuild && cross-env CI=false NODE_ENV=production APP_MODE=internal GENERATE_SOURCEMAP=false dotenv -e .env.production.internal -- react-scripts build && electron-builder -c electron-builder.internal.yml",
-
     "demo:builddb": "node scripts/demoBuilder/buildDemoDb.js",
     "prepare-env": "cp .env.development.demo.example .env.development.demo || true"
   },
   "eslintConfig": {
-    "extends": ["react-app", "react-app/jest"]
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
   "browserslist": {
-    "production": [">0.2%", "not dead", "not op_mini all"],
-    "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
   "devDependencies": {
-    "concurrently": "^9.1.2",
-    "cross-env": "^10.0.0",
+    "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
     "dotenv-cli": "^10.0.0",
-    "electron": "^37.4.0",
+    "electron": "^38.2.1",
     "electron-builder": "^26.0.12",
-    "wait-on": "^8.0.3"
+    "react-scripts": "^5.0.1",
+    "wait-on": "^9.0.1"
   }
 }
