@@ -7,8 +7,6 @@ const MediumSelect = ({ initialValue, items, handleItemSelect, resetKey }) => {
   const [userHasInteracted, setUserHasInteracted] = useState(false);
 
   // Update the current item only when resetKey changes or the initialValue changes, but preserve user interaction
-
-
   useEffect(() => {
     if (resetKey && !userHasInteracted) {
       setSelectionHistory([initialValue || items[0]]); // Reset to initialValue or first item

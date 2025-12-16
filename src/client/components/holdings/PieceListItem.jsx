@@ -31,7 +31,7 @@ const PieceListItem = ({ data, behavior, currentPage }) => {
     const [windowWidth, setWindowWidth] = useState(null);
 
     // Sets initial piece data on manage holdings page
-    const { setMode, setData, setMediumResetKey, catalogueFormRef } = useMode();
+    const { setMode, setData, setMediumSelectShown, catalogueFormRef } = useMode();
 
     useEffect(() => {
         const updateWidth = () => {
@@ -54,7 +54,9 @@ const PieceListItem = ({ data, behavior, currentPage }) => {
                 if (behavior === "edit") {
                     catalogueFormRef.current?.resetForm();
                     // Trigger reset of the medium dropdown component
-                    setMediumResetKey(prev => prev + 1)
+
+                    setMediumSelectShown(false);
+                    setTimeout(() => setMediumSelectShown(true), 0);
                     // Set initial data from this component
                     setData({ ...data });
     

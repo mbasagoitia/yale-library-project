@@ -2,7 +2,7 @@ import validateForm from "./validateForm.js";
 import handleFormSubmit from "./handleFormSubmit.js";
 import clearForm from "./clearForm.js";
 
-const processAndSubmitForm = async (mainInfo, setMainInfo, additionalInfo, setAdditionalInfo, setFormErrors, setShowCall, id, setMediumResetKey, onSubmit, dispatch, dispatchMethod) => {
+const processAndSubmitForm = async (mainInfo, setMainInfo, additionalInfo, setAdditionalInfo, setFormErrors, setShowCall, id, onSubmit, dispatch, dispatchMethod) => {
     try {
       // Validate the form
       const isValid = validateForm(mainInfo, additionalInfo, setFormErrors);
@@ -19,7 +19,7 @@ const processAndSubmitForm = async (mainInfo, setMainInfo, additionalInfo, setAd
   
         // Reset the form after submission
         setShowCall(false);
-        clearForm(setShowCall, setMainInfo, setAdditionalInfo, setMediumResetKey, setFormErrors);
+        clearForm(setShowCall, setMainInfo, setAdditionalInfo, setFormErrors);
         
         return { success: true };
       } else {

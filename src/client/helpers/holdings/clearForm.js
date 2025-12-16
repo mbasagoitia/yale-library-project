@@ -1,4 +1,4 @@
-const clearForm = (setShowCall, setMainInfo, setAdditionalInfo, setMediumResetKey, setFormErrors) => {
+const clearForm = (setShowCall, setMainInfo, setAdditionalInfo, setFormErrors) => {
   setShowCall(false);
   // Reset Main Info
   setMainInfo({
@@ -12,9 +12,6 @@ const clearForm = (setShowCall, setMainInfo, setAdditionalInfo, setMediumResetKe
     publisher: {},
     callNumber: [],
   });
-
-  // Reset MediumResetKey
-  setMediumResetKey((prev) => prev + 1);
 
   // Reset Additional Info
   setAdditionalInfo({

@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { Container, Row, Form } from "react-bootstrap";
+import { useMode } from "../../contexts/ModeContext.js";
+import { Container, Row, Form, Button } from "react-bootstrap";
 import generateCallNum from "../../helpers/holdings/generateCallNum.js";
 import MediumSelect from '../holdings/call-number-selects/MediumSelect';
 import ComposerSelect from "../holdings/call-number-selects/ComposerSelect";
@@ -8,13 +8,22 @@ import PublisherSelect from "../holdings/call-number-selects/PublisherSelect";
 import IdAndNumber from "../holdings/call-number-selects/IdAndNumber";
 import useFetchResourceData from "../../hooks/useFetchResourceData.js";
 
-const MainInfo = ({ mainInfo, setMainInfo, formErrors, mediumResetKey, setMediumResetKey }) => {
-  
+const MainInfo = ({ mainInfo, setMainInfo, formErrors }) => {
   const resourceData = useFetchResourceData();
+  const { mediumSelectShown, setMediumSelectShown } = useMode();
 
-  useEffect(() => {
-      setMediumResetKey(mediumResetKey + 1);
-  }, [mediumResetKey, setMediumResetKey])
+  const handleToggleMediumSelect = () => {
+    setMediumSelectShown((prev) => {
+      const newShown = !prev;
+
+      if (!newShown) {
+        // Reset medium when hiding the dropdown
+        setMainInfo((prevInfo) => ({ ...prevInfo, medium: null }));
+      }
+
+      return newShown;
+    });
+  };
 
   const setMedium = (item) => {
     const selected =
@@ -83,11 +92,10 @@ const MainInfo = ({ mainInfo, setMainInfo, formErrors, mediumResetKey, setMedium
         </div>
 
         <div>
-        <Form.Label htmlFor="medium-select"><h3>Ensemble Type</h3></Form.Label>
-          {resourceData.mediumData.length > 0 && (
+          <Form.Label htmlFor="medium-select"><h3>Ensemble Type</h3></Form.Label>
+          {mediumSelectShown && resourceData.mediumData.length > 0 && (
             <MediumSelect
               initialValue={mainInfo.medium || ""}
-              key={mediumResetKey}
               items={resourceData.mediumData}
               handleItemSelect={setMedium}
             />
@@ -97,7 +105,7 @@ const MainInfo = ({ mainInfo, setMainInfo, formErrors, mediumResetKey, setMedium
 
       <Row className="my-4">
         <div>
-        <Form.Label htmlFor="composer-select"><h3>Composer</h3></Form.Label>
+          <Form.Label htmlFor="composer-select"><h3>Composer</h3></Form.Label>
           {resourceData.composerData.length > 0 && (
             <ComposerSelect items={resourceData.composerData} mainInfo={mainInfo} onItemClick={setComposer} />
           )}
@@ -106,7 +114,7 @@ const MainInfo = ({ mainInfo, setMainInfo, formErrors, mediumResetKey, setMedium
 
       <Row className="my-4">
         <div>
-        <Form.Label htmlFor="species-select"><h3>Genre</h3></Form.Label>
+          <Form.Label htmlFor="species-select"><h3>Genre</h3></Form.Label>
           {resourceData.speciesData.length > 0 && (
             <SpeciesSelect items={resourceData.speciesData} mainInfo={mainInfo} onItemClick={setSpecies} />
           )}
@@ -115,7 +123,7 @@ const MainInfo = ({ mainInfo, setMainInfo, formErrors, mediumResetKey, setMedium
 
       <Row className="my-4">
         <div>
-        <Form.Label htmlFor="publisher-select"><h3>Publisher</h3></Form.Label>
+          <Form.Label htmlFor="publisher-select"><h3>Publisher</h3></Form.Label>
           {resourceData.publisherData.length > 0 && (
             <PublisherSelect items={resourceData.publisherData} mainInfo={mainInfo} onItemClick={setPublisher} />
           )}

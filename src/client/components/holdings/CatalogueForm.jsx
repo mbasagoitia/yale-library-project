@@ -31,7 +31,7 @@ const CatalogueForm = forwardRef((props, ref) => {
   const [formErrors, setFormErrors] = useState({});
 
     // Get info from parent component
-  const { mode, setMode, mediumResetKey, setMediumResetKey } = useMode();
+  const { mode, setMode, mediumResetKey } = useMode();
 
   const [showCall, setShowCall] = useState(mode === "edit" ? true : false);
 
@@ -53,7 +53,7 @@ const CatalogueForm = forwardRef((props, ref) => {
   useImperativeHandle(ref, () => ({
     // Expose resetForm
     resetForm() {
-      clearForm(setShowCall, setMainInfo, setAdditionalInfo, setMediumResetKey, setFormErrors);
+      clearForm(setShowCall, setMainInfo, setAdditionalInfo, setFormErrors);
     },
     // Expose scrollIntoView
     scrollIntoView(options) {
@@ -101,7 +101,7 @@ const CatalogueForm = forwardRef((props, ref) => {
 
   // Add new piece to the database
   const handleAddNewPiece = async () => {
-      const result = await processAndSubmitForm(mainInfo, setMainInfo, additionalInfo, setAdditionalInfo, setFormErrors, setShowCall, id, setMediumResetKey, catalogueNew, dispatch, dispatchNewPiece);
+      const result = await processAndSubmitForm(mainInfo, setMainInfo, additionalInfo, setAdditionalInfo, setFormErrors, setShowCall, id, catalogueNew, dispatch, dispatchNewPiece);
       if (result.success) {
         toast.success("Successfully added new piece");
         setMode("new");
@@ -112,7 +112,7 @@ const CatalogueForm = forwardRef((props, ref) => {
 
   // Update existing piece
   const handleUpdatePiece = async () => {
-      const result = await processAndSubmitForm(mainInfo, setMainInfo, additionalInfo, setAdditionalInfo, setFormErrors, setShowCall, id, setMediumResetKey, updatePiece, dispatch, dispatchUpdatePiece);
+      const result = await processAndSubmitForm(mainInfo, setMainInfo, additionalInfo, setAdditionalInfo, setFormErrors, setShowCall, id, updatePiece, dispatch, dispatchUpdatePiece);
       if (result.success) {
         toast.success("Piece successfully updated");
         setMode("new");
@@ -146,7 +146,7 @@ const CatalogueForm = forwardRef((props, ref) => {
       dispatchDeletePiece(dispatch, deleted);
       // Clear form
       setWarningModal(false);
-      clearForm(setShowCall, setMainInfo, setAdditionalInfo, setMediumResetKey, setFormErrors);
+      clearForm(setShowCall, setMainInfo, setAdditionalInfo, setFormErrors);
       toast.success("Successfully deleted piece from library")
       // Set mode back to new (default)
       setMode("new");
@@ -171,7 +171,7 @@ const CatalogueForm = forwardRef((props, ref) => {
       <Form onSubmit={(e) => onSubmit(e)}>
         {((mode === "new") || (mode === "edit" && initialData && dataReady)) && (
           <>
-            <MainInfo mainInfo={mainInfo} setMainInfo={setMainInfo} formErrors={formErrors} mediumResetKey={mediumResetKey} setMediumResetKey={setMediumResetKey} />
+            <MainInfo mainInfo={mainInfo} setMainInfo={setMainInfo} formErrors={formErrors} mediumResetKey={mediumResetKey} />
             <div className="d-flex justify-content-center">
               <Button onClick={(e) => handleShow(e)} className="btn btn-primary my-2">Generate Call Number</Button>
             </div>
