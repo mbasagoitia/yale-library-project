@@ -26,10 +26,6 @@ const createReadableBackup = async (store) => {
     const backupUrl = `${API_BASE}/api/backup/readable?filePath=${encodeURIComponent(filePath)}`;
     const token = store.get("authToken");
 
-    if (!token) {
-      return { success: false, message: "Backup failed: No auth token found." };
-    }
-
     const res = await fetch(backupUrl, {
       headers: {
         Authorization: `Bearer ${token}`
@@ -37,7 +33,7 @@ const createReadableBackup = async (store) => {
     });
 
     if (!res.ok) {
-      return { success: false, message: `Backup failed: ${res.statusText}` };
+      return { success: false, message: `${res.statusText}` };
     }
 
     await streamPipeline(res.body, fs.createWriteStream(filePath));

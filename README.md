@@ -78,18 +78,20 @@ This project centralizes cataloguing, searching, reporting, and administration i
 
 ---
 
+## Features Visualized
+
+
+
 ## Getting Started
 
-### Option 1: Watch the Demo Video (Recommended for Non-Developers)
-
-### Option 2: Download the Demo (Coming Soon)
+### Option 1: Download the Demo
 
 1. Download the packaged build (`Philharmonia Library Catalogue-demo.exe`).  
 2. Double-click to run — demo data is preloaded.
 
-*Note: As of December 2025, there are some issues opening the Demo Mac Build because of Apple signing and notarization restrictions. To review this project in demo mode, please see Options 1 or 3.*
+*Note: As of December 2025, there are some issues opening the Demo Mac Build because of Apple signing and notarization restrictions. To review this project in demo mode, please see Option 2.*
 
-### Option 3: Run the Demo from Source (Recommended For Developers)
+### Option 2: Run the Demo from Source (Recommended For Developers)
 
 #### Prerequisites
 
@@ -125,7 +127,7 @@ This runs:
 - Express backend server
 - Electron app in demo mode
 
-### Option 4: Build and Run Locally
+### Option 3: Build and Run Locally
 
 If you prefer a faster, production-level experience, build the demo locally:
 

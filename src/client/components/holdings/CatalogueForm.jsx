@@ -31,7 +31,7 @@ const CatalogueForm = forwardRef((props, ref) => {
   const [formErrors, setFormErrors] = useState({});
 
     // Get info from parent component
-  const { mode, setMode, mediumResetKey } = useMode();
+  const { mode, setMode } = useMode();
 
   const [showCall, setShowCall] = useState(mode === "edit" ? true : false);
 
@@ -106,7 +106,7 @@ const CatalogueForm = forwardRef((props, ref) => {
         toast.success("Successfully added new piece");
         setMode("new");
       } else {
-        toast.error("Error adding piece:" + result.message);
+        toast.error("Error adding piece: " + result.message);
       }
   };
 
@@ -151,7 +151,7 @@ const CatalogueForm = forwardRef((props, ref) => {
       // Set mode back to new (default)
       setMode("new");
     } catch (err) {
-      toast.error("Error deleting holding:", err);
+      toast.error("Error deleting holding: ", err);
     }
   };
 
@@ -171,7 +171,7 @@ const CatalogueForm = forwardRef((props, ref) => {
       <Form onSubmit={(e) => onSubmit(e)}>
         {((mode === "new") || (mode === "edit" && initialData && dataReady)) && (
           <>
-            <MainInfo mainInfo={mainInfo} setMainInfo={setMainInfo} formErrors={formErrors} mediumResetKey={mediumResetKey} />
+            <MainInfo mainInfo={mainInfo} setMainInfo={setMainInfo} formErrors={formErrors} />
             <div className="d-flex justify-content-center">
               <Button onClick={(e) => handleShow(e)} className="btn btn-primary my-2">Generate Call Number</Button>
             </div>

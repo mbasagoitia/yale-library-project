@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 
-const MediumSelect = ({ initialValue, items, handleItemSelect, resetKey }) => {
+const MediumSelect = ({ initialValue, items, handleItemSelect }) => {
   const [currentItem, setCurrentItem] = useState(initialValue); // Track the currently selected item for the top-level dropdown
   const [selectionHistory, setSelectionHistory] = useState([initialValue]); // Track the selection history for each level
   const [userHasInteracted, setUserHasInteracted] = useState(false);
 
-  // Update the current item only when resetKey changes or the initialValue changes, but preserve user interaction
+  // Update the current item only when the initialValue changes, but preserve user interaction
   useEffect(() => {
-    if (resetKey && !userHasInteracted) {
+    if (!userHasInteracted) {
       setSelectionHistory([initialValue || items[0]]); // Reset to initialValue or first item
       setCurrentItem(initialValue || items[0]); // Ensure the top-level dropdown resets correctly
       setUserHasInteracted(false); // Reset user interaction flag
     }
-  }, [resetKey, initialValue, items, userHasInteracted]);
+  }, [initialValue, items, userHasInteracted]);
 
   // Update the state if initialValue changes after user interaction
   useEffect(() => {

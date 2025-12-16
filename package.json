@@ -1,7 +1,6 @@
 {
   "name": "philharmonia-library-catalogue",
   "description": "A desktop app for the Yale School of Music Philharmonia library system",
-  "author": "Marika Basagoitia marika.basagoitia@yale.edu",
   "productName": "Yale Philharmonia Library Catalogue",
   "license": "MIT",
   "version": "0.1.0",
@@ -69,6 +68,7 @@
     "sign:demo": "electron-builder -c electron-builder.demo.yml --mac dmg",
     "build:demo": "npm run prebuild && cross-env CI=false NODE_ENV=production APP_MODE=demo GENERATE_SOURCEMAP=false dotenv -e .env.production.demo -- react-scripts build && electron-builder -c electron-builder.demo.yml",
     "build:internal": "npm run prebuild && cross-env CI=false NODE_ENV=production APP_MODE=internal GENERATE_SOURCEMAP=false dotenv -e .env.production.internal -- react-scripts build && electron-builder -c electron-builder.internal.yml",
+    "build:internal:unsigned": "npm run prebuild && cross-env CI=false NODE_ENV=production APP_MODE=internal GENERATE_SOURCEMAP=false CSC_IDENTITY_AUTO_DISCOVERY=false dotenv -e .env.production.internal -- react-scripts build && electron-builder -c electron-builder.internal.yml",
     "demo:builddb": "node scripts/demoBuilder/buildDemoDb.js",
     "prepare-env": "cp .env.development.demo.example .env.development.demo || true"
   },

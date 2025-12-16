@@ -124,7 +124,7 @@ const AdditionalInfo = ({ additionalInfo, setAdditionalInfo, formErrors, setForm
                         <div>
                         {basePath ? 
                             (<div className="mt-2 mt-md-0">
-                                <Button onClick={handleScansPath}>Select Scans Folder</Button>
+                                <Button onClick={handleScansPath}>Select Folder</Button>
                                 <div className="pathname-text text-muted mt-2">{additionalInfo.scansUrl ? additionalInfo.scansUrl : null}</div>
                             </div>)
                         : <p>Please set a base path for the digital catalogue folder.</p>
