@@ -80,18 +80,25 @@ This project centralizes cataloguing, searching, reporting, and administration i
 
 ## Getting Started
 
-### Option 1: Download the Demo (Recommended)
+### Option 1: Watch the Demo Video (Recommended for Non-Developers)
+
+### Option 2: Download the Demo (Coming Soon)
 
 1. Download the packaged build (`Philharmonia Library Catalogue-demo.exe`).  
 2. Double-click to run — demo data is preloaded.
 
-*Note: As of December 2025, there are some issues opening the Demo Mac Build because of Apple signing and notarization restrictions. To review this project in demo mode, please see Option 2.*
+*Note: As of December 2025, there are some issues opening the Demo Mac Build because of Apple signing and notarization restrictions. To review this project in demo mode, please see Options 1 or 3.*
 
-### Option 2: Run the Demo from Source (For Developers)
+### Option 3: Run the Demo from Source (Recommended For Developers)
+
+#### Prerequisites
+
+- Node.js v18 or higher
+- npm v9 or higher
 
 This project is designed to run in **demo** mode for local development.
 
-*Internal mode requires protected assets and environment variables that are not included in this repository, so attempting to run in internal mode will break the build.*
+*Internal mode requires protected assets and environment variables that are not included in this repository, so modifying renderer flags or attempting to run in internal mode will break the build.*
 
 1. Clone the repository.  
    ```bash
@@ -117,6 +124,16 @@ This runs:
 - React development server
 - Express backend server
 - Electron app in demo mode
+
+### Option 4: Build and Run Locally
+
+If you prefer a faster, production-level experience, build the demo locally:
+
+1. Follow steps 1-4 above
+2. `npm run build:demo`
+3. Navigate to `dist/demo' and open `Yale Philharmonia Library Catalogue-demo-0.1.1-arm64.dmg` (or similar file)
+
+*Note: The project was developed on macOS. Running in development mode should work on Linux and Windows, but some OS-specific adjustments may be required (e.g., native dependencies or file paths). For full demo experience, macOS is recommended.*
 
 ## Installation Notes
 
