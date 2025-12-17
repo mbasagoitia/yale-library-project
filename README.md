@@ -6,7 +6,7 @@ A demo build is available for outside review.
 
 This project replaces a slow, spreadsheet-based workflow with a fast, centralized system for tracking, searching, and organizing scores and parts.
 
-Built with [Electron](https://www.electronjs.org/), [React](https://reactjs.org/), and [Node/Express](https://expressjs.com/) as a portfolio project to demonstrate full-stack desktop app development.
+Built with [Electron](https://www.electronjs.org/), [React](https://reactjs.org/), and [Node/Express](https://expressjs.com/)
 
 ---
 
