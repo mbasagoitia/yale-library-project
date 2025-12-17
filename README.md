@@ -80,7 +80,13 @@ This project centralizes cataloguing, searching, reporting, and administration i
 
 ## Features Visualized
 
-![Setup Wizard](/screenshots/setup-wizard.png "Setup Wizard step to set digital catalogue folder")
+Setup Wizard step to set digital catalogue folder
+
+![Setup Wizard](screenshots/setup-wizard.png)
+
+Secure authentication with Yale Central Authentication System (CAS)
+
+![Auth Window](screenshots/auth-window.png)
 
 ## Getting Started
 
