@@ -88,6 +88,36 @@ Secure authentication with Yale Central Authentication System (CAS)
 
 ![Auth Window](screenshots/auth-window.png)
 
+Browse catalogue holdings with basic or advanced filter
+
+![Browse Holdings](screenshots/browse-holdings-page.png)
+
+Browse the collection of digital materials
+
+![Digital Catalogue](screenshots/digital-catalogue-page.png)
+
+PDF preview of digital materials
+
+![PDF Preview](screenshots/pdf-preview.png)
+
+Manage physical collection and digital catalogue
+
+![Manage Holdings](screenshots/manage-holdings-page.png)
+
+![Manage Holdings cont.](screenshots/manage-holdings.png)
+
+Generate library reports
+
+![Reports](screenshots/reports.png)
+
+Report example (all holdings)
+
+![Report example](screenshots/report-example.png)
+
+Manage admins, digital catalogue path, and data exports
+
+![Settings](screenshots/settings-page.png)
+
 ## Getting Started
 
 ### Option 1: Download the Demo
