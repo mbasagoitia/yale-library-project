@@ -108,7 +108,7 @@ Manage physical collection and digital catalogue
 
 Generate library reports
 
-![Reports](screenshots/reports.png)
+![Reports](screenshots/Reports.png)
 
 Report example (all holdings)
 
