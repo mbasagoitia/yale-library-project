@@ -80,7 +80,7 @@ This project centralizes cataloguing, searching, reporting, and administration i
 
 ## Features Visualized
 
-
+![Setup Wizard](screenshots/setup-wizard.png "Setup Wizard step to set digital catalogue folder")
 
 ## Getting Started
 
