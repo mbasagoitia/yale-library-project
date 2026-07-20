@@ -36,7 +36,7 @@ Built with [Electron](https://www.electronjs.org/), [React](https://reactjs.org/
 
 - **Admin Management**  
   - User authentication handled via Yale University's Central Authentication System (CAS), with additional RBAC logic for app-specific permissions
-  - Admins can add/remove other admins and manage library settings/holdings
+  - Admins can add/remove other admins and manage library settings/holdings while logged-in users (non-admins) can view holdings and generate reports
 
 ---
 
@@ -124,8 +124,6 @@ Manage admins, digital catalogue path, and data exports
 
 1. Download the packaged build (`Philharmonia Library Catalogue-demo.exe`).  
 2. Double-click to run — demo data is preloaded.
-
-*Note: As of December 2025, there are some issues opening the Demo Mac Build because of Apple signing and notarization restrictions. To review this project in demo mode, please see Option 2.*
 
 ### Option 2: Run the Demo from Source (Recommended For Developers)
 
